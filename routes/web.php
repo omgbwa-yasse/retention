@@ -15,30 +15,32 @@ Route::get('/', function () {
 
 
 */
+
+
+// Routes sans préfixe
 Route::get('/search', function () {
     return view('search.searchActivity');
 })->name('searchActivity');
 
 Route::get('/add', function () {
     return view('search.searchActivity');
-})->name('searchActivity');
+})->name('addActivity');
 
 Route::get('/setting', function () {
     return view('search.searchActivity');
-})->name('searchActivity');
+})->name('setting');
 
 Route::get('/forum', function () {
     return view('search.searchActivity');
-})->name('searchActivity');
+})->name('forum');
 
 
 
-
+// Routes avec préfixe
 Route::prefix('/search')->group(function () {
-
-    Route::get('/class', function () {
+    Route::get('/classification', function () {
         return view('search.searchActivity');
-    })->name('searchActivity');
+    })->name('searchClassification');
 
     Route::get('/typology', function () {
         return view('search.searchTypology');
@@ -48,10 +50,6 @@ Route::prefix('/search')->group(function () {
         return view('search.searchRule');
     })->name('searchRule');
 
-    Route::get('/mission', function () {
-        return view('search.searchMission');
-    })->name('searchMission');
-
     Route::get('/reference', function () {
         return view('search.searchReference');
     })->name('searchReference');
@@ -59,8 +57,6 @@ Route::prefix('/search')->group(function () {
     Route::get('/basket', function () {
         return view('search.searchBasket');
     })->name('searchBasket');
-
-
 });
 
 
@@ -76,7 +72,7 @@ Route::prefix('/add')->group(function () {
 
     Route::get('/activity', function () {
         return view('add.addActivity');
-    })->name('addActivity');
+     })->name('addActivity');
 
     Route::get('/typology', function () {
         return view('add.addTypology');
@@ -86,10 +82,21 @@ Route::prefix('/add')->group(function () {
         return view('add.addRule');
     })->name('addRule');
 
-    Route::get('/mission', function () {
-        return view('add.addMission');
-    })->name('addMission');
+
 });
+/*
+
+
+    Paramètres de l'application
+
+
+*/
+
+use App\Http\Controllers\MissionController;
+
+Route::resource('mission', MissionController::class);
+Route::get('/mission/{id}/edit', [MissionController::class, 'edit'])->name('mission.edit');
+
 
 
 /*
@@ -148,7 +155,6 @@ Route::prefix('/forum')->group(function () {
         Route::get('/comment', function () {
             return "Afficher les commentaires";
         })->name('forumComment');
-
 
         Route::get('/react', function () {
             return "Afficher les réactions";

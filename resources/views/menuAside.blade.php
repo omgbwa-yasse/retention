@@ -14,7 +14,7 @@
           <li><a href="#">Ajouter</a></li>
           <ol class="option">
             <li><a href="{{ route('addActivity') }}">Une classe</a></li>
-            <li><a href="{{ route('addMission') }}">Un domaine</a></li>
+            <li><a href="{{ route('mission.index') }}">Un domaine</a></li>
             <li><a href="{{ route('addRule') }}">Un règle</a></li>
             <li><a href="{{ route('addTypology') }}">Un typologie</a></li>
           </ol>
