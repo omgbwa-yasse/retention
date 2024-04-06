@@ -34,12 +34,12 @@ class MissionController extends Controller
         $request->validate([
             'cote' => 'required',
             'title' => 'required',
-            'parent_id' => 'nullable|exists:your_table,id',
+            'parent_id' => 'nullable|exists:classification,id',
         ]);
 
         Classification::create($request->all());
 
-        return redirect()->route('classification.index')->with('success', 'Item created successfully.');
+        return redirect()->route('mission.index')->with('success', 'Item created successfully.');
     }
 
 
@@ -56,28 +56,32 @@ class MissionController extends Controller
 
 
     // Affiche le formulaire de modification d'un élément
+
     public function edit($id)
     {
-        $classification = Classification::findOrFail($id);
-        return view('update', compact('classification'));
+        $mission = Classification::findOrFail($id);
+        $items = Classification::all();
+        return view('mission.edit', compact('mission', 'items'));
     }
 
 
 
 
     // Met à jour un élément spécifique
+
     public function update(Request $request, $id)
     {
         $request->validate([
             'cote' => 'required',
-            'title' => 'required',
-            'parent_id' => 'nullable|exists:classification,id',
+            'title' => 'required'
         ]);
 
         $item = Classification::findOrFail($id);
-        $item->update($request->all());
+        $item->cote = $request->input('cote');
+        $item->title = $request->input('title');
+        $item->save();
 
-        return redirect()->route('classification.index')->with('success', 'Item updated successfully.');
+        return redirect()->route('mission.index')->with('success', 'Item updated successfully.');
     }
 
 
@@ -88,8 +92,7 @@ class MissionController extends Controller
     {
         $item = Classification::findOrFail($id);
         $item->delete();
-
-        return redirect()->route('classification.index')->with('success', 'Item deleted successfully.');
+        return redirect()->route('mission.index')->with('success', 'Item deleted successfully.');
     }
 }
 

@@ -95,7 +95,6 @@ Route::prefix('/add')->group(function () {
 use App\Http\Controllers\MissionController;
 
 Route::resource('mission', MissionController::class);
-Route::get('/mission/{id}/edit', [MissionController::class, 'edit'])->name('mission.edit');
 
 
 
