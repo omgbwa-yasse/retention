@@ -13,7 +13,6 @@ class Classification extends Model
     protected $fillable = [
         'cote',
         'title',
-        'level',
         'parent_id'
     ];
 }

@@ -136,7 +136,6 @@ return new class extends Migration
             $table->increments('id');
             $table->string('cote', 10);
             $table->string('title', 50)->unique();
-            $table->string('level', 10);
             $table->unsignedInteger('parent_id')->nullable();
             $table->timestamps();
 

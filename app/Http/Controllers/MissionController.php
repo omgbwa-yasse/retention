@@ -34,7 +34,6 @@ class MissionController extends Controller
         $request->validate([
             'cote' => 'required',
             'title' => 'required',
-            'level' => 'required',
             'parent_id' => 'nullable|exists:your_table,id',
         ]);
 
@@ -72,7 +71,6 @@ class MissionController extends Controller
         $request->validate([
             'cote' => 'required',
             'title' => 'required',
-            'level' => 'required',
             'parent_id' => 'nullable|exists:classification,id',
         ]);
 
