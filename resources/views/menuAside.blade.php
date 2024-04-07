@@ -16,8 +16,8 @@
             </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link bg-dark text-white" data-toggle="collapse" href="#ajouter"><i class="bi bi-plus-circle"></i> Ajouter</a>
-            <div class="collapse" id="ajouter">
+            <a class="nav-link bg-dark text-white" data-toggle="collapse" href="#ajouter" aria-expanded="true"><i class="bi bi-plus-circle"></i> Ajouter</a>
+            <div class="collapse show" id="ajouter">
                 <ul class="list-unstyled pl-3">
                     <li><a href="{{ route('activity.create') }}" class="text-dark"><i class="bi bi-plus-square"></i> Une classe</a></li>
                     <li><a href="{{ route('mission.create') }}" class="text-dark"><i class="bi bi-plus-square"></i> Un domaine</a></li>
