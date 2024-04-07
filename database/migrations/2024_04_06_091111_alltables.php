@@ -99,7 +99,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('title', 50)->unique();
             $table->string('description', 500)->nullable();
-            $table->string('file_sha1', 500)->nullable();
+            $table->string('file_crypt', 500)->nullable();
             $table->unsignedInteger('typology_id');
             $table->timestamps();
 
