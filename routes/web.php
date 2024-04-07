@@ -48,6 +48,9 @@ Route::resource('setting', SettingController::class);
 use App\Http\Controllers\RuleController;
 Route::resource('rule', RuleController::class);
 
+use App\Http\Controllers\BasketController;
+Route::resource('basket', BasketController::class);
+
 
 use App\Http\Controllers\ForumController;
 Route::resource('forum', ForumController::class);

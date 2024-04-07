@@ -6,38 +6,39 @@
           <ol class="option">
             <li><a href="{{ route('activity.index') }}">Activités</a></li>
             <li><a href="{{ route('mission.index') }}">Missions</a></li>
-            <li><a href="{{ route('searchRule') }}">Règles</a></li>
-            <li><a href="{{ route('searchTypology') }}">Typologies</a></li>
-            <li><a href="{{ route('searchReference') }}">références</a></li>
-            <li><a href="{{ route('searchBasket') }}">Paniers</a></li>
+            <li><a href="{{ route('rule.index') }}">Règles</a></li>
+            <li><a href="{{ route('typology.index') }}">Typologies</a></li>
+            <li><a href="{{ route('reference.index') }}">références</a></li>
+            <li><a href="{{ route('basket.index') }}">Paniers</a></li>
           </ol>
 
           <li><a href="#">Ajouter</a></li>
           <ol class="option">
             <li><a href="{{ route('activity.create') }}">Une classe</a></li>
             <li><a href="{{ route('mission.create') }}">Un domaine</a></li>
-            <li><a href="{{ route('addRule') }}">Un règle</a></li>
-            <li><a href="{{ route('addTypology') }}">Un typologie</a></li>
+            <li><a href="{{ route('rule.create') }}">Un règle</a></li>
+            <li><a href="{{ route('typology.create') }}">Une typologie</a></li>
+            <li><a href="{{ route('reference.create') }}">Une réferenece</a></li>
           </ol>
 
           <li><a href="#">Contrôle</a></li>
           <ol class="option">
-            <li><a href="{{ route('approved') }}">Approuvée</a></li>
-            <li><a href="{{ route('noApproved') }}">Attente</a></li>
+            <li><a href="{{ route('validation.index') }}">Approuvée</a></li>
+            <li><a href="{{ route('validation.index') }}">Attente</a></li>
           </ol>
 
           <li><a href="#">Paramtre</a></li>
           <ol class="option">
-            <li><a href="{{ route('settingUser') }}">Mon compte</a></li>
-            <li><a href="{{ route('settingHome') }}">Généraux</a></li>
+            <li><a href="{{ route('setting.index') }}">Mon compte</a></li>
+            <li><a href="{{ route('setting.index') }}">Généraux</a></li>
           </ol>
 
 
           <li><a href="#">Forum</a></li>
           <ol class="option">
-            <li><a href="{{ route('forumTopic') }}">Nouveautés</a></li>
-            <li><a href="{{ route('forumTopicBasket') }}">Sujets épinglés</a></li>
-            <li><a href="{{ route('forumOnline') }}">En ligne</a></li>
+            <li><a href="{{ route('forum.index') }}">Nouveautés</a></li>
+            <li><a href="{{ route('forum.index') }}">Sujets épinglés</a></li>
+            <li><a href="{{ route('forum.index') }}">En ligne</a></li>
           </ol>
         </ul>
 </aside>
