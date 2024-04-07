@@ -7,13 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class ressource extends Model
 {
-    use HasFactory;
+        use HasFactory;
 
-    protected $fillable = [
-        'title',
-        'description',
-        'file_link',
-        'file_path',
-        'file_crypt'
-    ];
+        protected $table = 'ressource';
+
+        protected $fillable = [
+            'title',
+            'description',
+            'link',
+            'file_path',
+            'file_crypt',
+        ];
+
+        public function references()
+        {
+            return $this->belongsToMany(Reference::class, 'reference_ressource');
+        }
+
 }
