@@ -62,3 +62,11 @@ Route::resource('user', UserController::class);
 use App\Http\Controllers\ValidationController;
 Route::resource('validation', ValidationController::class);
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
