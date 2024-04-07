@@ -87,8 +87,8 @@ return new class extends Migration
             $table->foreign('sort_id')->references('id')->on('sort')->onDelete('cascade');
         });
 
-        // Create reference_typology table
-        Schema::create('reference_typology', function (Blueprint $table) {
+        // Create reference_category table
+        Schema::create('reference_category', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title', 50);
             $table->timestamps();
@@ -98,14 +98,39 @@ return new class extends Migration
         Schema::create('reference', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title', 50)->unique();
-            $table->string('link', 500)->nullable();
+            $table->string('description', 500)->nullable();
             $table->string('file_sha1', 500)->nullable();
             $table->unsignedInteger('typology_id');
             $table->timestamps();
 
             // Foreign key constraint
-            $table->foreign('typology_id')->references('id')->on('reference_typology')->onDelete('cascade');
+            $table->foreign('typology_id')->references('id')->on('reference_category')->onDelete('cascade');
         });
+
+        // Create reference_ressource table
+        Schema::create('reference_ressource', function (Blueprint $table) {
+            $table->unsignedInteger('reference_id');
+            $table->unsignedInteger('ressource_id');
+            $table->primary(['reference_id', 'ressource_id']);
+            $table->timestamps();
+
+            // Foreign key constraints
+            $table->foreign('reference_id')->references('id')->on('reference')->onDelete('cascade');
+            $table->foreign('ressource_id')->references('id')->on('ressource')->onDelete('cascade');
+        });
+
+        // Create ressource table
+        Schema::create('ressource', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title', 100);
+            $table->string('description', 500);
+            $table->string('link', 255);
+            $table->string('file_path', 255);
+            $table->string('file_crypt', 255)->nullable();
+            $table->timestamps();
+        });
+
+
 
         // Create typology_category table
         Schema::create('typology_category', function (Blueprint $table) {
@@ -119,7 +144,6 @@ return new class extends Migration
 
         // Create typology table
         Schema::create('typology', function (Blueprint $table) {
-
             $table->increments('id');
             $table->string('title', 50)->unique();
             $table->text('description')->nullable();
@@ -383,7 +407,9 @@ return new class extends Migration
         Schema::dropIfExists('typology');
         Schema::dropIfExists('typology_category');
         Schema::dropIfExists('reference');
-        Schema::dropIfExists('reference_typology');
+        Schema::dropIfExists('reference_category');
+        Schema::dropIfExists('reference_ressource');
+        Schema::dropIfExists('ressource');
         Schema::dropIfExists('dul');
         Schema::dropIfExists('sort');
         Schema::dropIfExists('trigger');

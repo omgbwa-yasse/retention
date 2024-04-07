@@ -12,7 +12,6 @@ class Reference extends Model
 
     protected $fillable = [
         'title',
-        'datetime',
         'link',
         'file_sha1',
         'typology_id'
