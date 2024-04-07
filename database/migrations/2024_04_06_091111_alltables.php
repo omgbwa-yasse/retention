@@ -87,6 +87,21 @@ return new class extends Migration
             $table->foreign('sort_id')->references('id')->on('sort')->onDelete('cascade');
         });
 
+
+
+        // Create reference table
+        Schema::create('reference', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title', 50)->unique();
+            $table->string('description', 500)->nullable();
+            $table->unsignedInteger('category_id');
+            $table->timestamps();
+
+            // Foreign key constraint
+            $table->foreign('category_id')->references('id')->on('reference_category')->onDelete('cascade');
+        });
+
+
         // Create reference_category table
         Schema::create('reference_category', function (Blueprint $table) {
             $table->increments('id');
@@ -94,18 +109,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Create reference table
-        Schema::create('reference', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('title', 50)->unique();
-            $table->string('description', 500)->nullable();
-            $table->string('file_crypt', 500)->nullable();
-            $table->unsignedInteger('typology_id');
-            $table->timestamps();
-
-            // Foreign key constraint
-            $table->foreign('typology_id')->references('id')->on('reference_category')->onDelete('cascade');
-        });
 
         // Create reference_ressource table
         Schema::create('reference_ressource', function (Blueprint $table) {

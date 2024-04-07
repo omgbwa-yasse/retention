@@ -37,6 +37,9 @@ Route::resource('activity', ActivityController::class);
 use App\Http\Controllers\ReferenceController;
 Route::resource('reference', ReferenceController::class);
 
+use App\Http\Controllers\ReferenceCategoryController;
+Route::resource('reference_category', ReferenceCategoryController::class);
+
 use App\Http\Controllers\TypologyController;
 Route::resource('typology', TypologyController::class);
 
@@ -62,6 +65,10 @@ Route::resource('user', UserController::class);
 use App\Http\Controllers\ValidationController;
 Route::resource('validation', ValidationController::class);
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
