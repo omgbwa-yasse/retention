@@ -87,9 +87,6 @@ return new class extends Migration
             $table->foreign('sort_id')->references('id')->on('sort')->onDelete('cascade');
         });
 
-
-
-        // Create reference table
         Schema::create('reference', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title', 50)->unique();
@@ -97,40 +94,37 @@ return new class extends Migration
             $table->unsignedInteger('category_id');
             $table->timestamps();
 
-            // Foreign key constraint
             $table->foreign('category_id')->references('id')->on('reference_category')->onDelete('cascade');
+            $table->index(['title', 'category_id']); // Index composite unique
         });
 
-
-        // Create reference_category table
         Schema::create('reference_category', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title', 50);
             $table->timestamps();
         });
 
-
-        // Create reference_ressource table
-        Schema::create('reference_ressource', function (Blueprint $table) {
-            $table->unsignedInteger('reference_id');
-            $table->unsignedInteger('ressource_id');
-            $table->primary(['reference_id', 'ressource_id']);
-            $table->timestamps();
-
-            // Foreign key constraints
-            $table->foreign('reference_id')->references('id')->on('reference')->onDelete('cascade');
-            $table->foreign('ressource_id')->references('id')->on('ressource')->onDelete('cascade');
-        });
-
-        // Create ressource table
-        Schema::create('ressource', function (Blueprint $table) {
+        Schema::create('reference_link', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title', 100);
-            $table->string('description', 500);
-            $table->string('link', 255);
-            $table->string('file_path', 255);
-            $table->string('file_crypt', 255)->nullable();
+            $table->string('link', 255)->nullable(); // Rendre non nullable si nécessaire
+            $table->unsignedInteger('reference_id');
             $table->timestamps();
+
+            $table->foreign('reference_id')->references('id')->on('reference')->onDelete('cascade');
+            $table->index('reference_id');
+        });
+
+        Schema::create('reference_file', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title', 100)->nullable(); // Rendre non nullable si nécessaire
+            $table->string('file_path', 255)->nullable(); // Rendre non nullable si nécessaire
+            $table->string('file_crypt', 255)->nullable();
+            $table->unsignedInteger('reference_id');
+            $table->timestamps();
+
+            $table->foreign('reference_id')->references('id')->on('reference')->onDelete('cascade');
+            $table->index('reference_id');
         });
 
 

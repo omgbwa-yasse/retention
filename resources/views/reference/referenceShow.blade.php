@@ -1,8 +1,46 @@
+<!-- resources/views/references/show.blade.php -->
+
 @extends('index')
 
 @section('content')
-    <h1>{{ $reference->title }}</h1>
-    <p>Description: {{ $reference->description }}</p>
-    <p>Category: {{ $reference->category->title }}</p>
-    <a href="{{ route('reference.index') }}" class="btn btn-primary">Back</a>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header">{{ $reference->title }}</div>
+
+                    <div class="card-body">
+                        <p><strong>Description:</strong> {{ $reference->description }}</p>
+                        <p><strong>Catégorie:</strong> {{ $reference->category_id }}</p>
+
+                        <hr>
+
+                        <h4>Fichiers associés :</h4>
+                        @if($reference->files->isEmpty())
+                            <p>Aucun fichier associé à cette référence.</p>
+                        @else
+                            <ul>
+                                @foreach($reference->files as $file)
+                                    <li><a href="{{ asset($file->file_path) }}">{{ $file->title }}</a></li>
+                                @endforeach
+                            </ul>
+                        @endif
+
+                        <hr>
+
+                        <h4>Liens associés :</h4>
+                        @if($reference->links->isEmpty())
+                            <p>Aucun lien associé à cette référence.</p>
+                        @else
+                            <ul>
+                                @foreach($reference->links as $link)
+                                    <li><a href="{{ $link->link }}">{{ $link->title }}</a></li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

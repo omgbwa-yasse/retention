@@ -5,10 +5,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\ReferenceCategory;
 
 class Reference extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'title',
         'description',
@@ -22,8 +23,13 @@ class Reference extends Model
         return $this->belongsTo(ReferenceCategory::class);
     }
 
-    public function ressource()
+    public function files()
     {
-        return $this->belongsToMany(Ressource::class, 'reference_ressource');
+        return $this->hasMany(ReferenceFile::class);
+    }
+
+    public function links()
+    {
+        return $this->hasMany(ReferenceLink::class);
     }
 }

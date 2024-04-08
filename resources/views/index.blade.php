@@ -9,10 +9,13 @@
 
     <!-- Votre CSS personnalisé -->
     <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
+
+    <!-- Votre JS jquery -->
+    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
 </head>
 <body id="app">
     <div class="container-fluid">@include('menuTop')
-    
+
         <div class="row">
             <div class="col-2">
                 @include('menuAside')

@@ -40,6 +40,9 @@ Route::resource('reference', ReferenceController::class);
 use App\Http\Controllers\ReferenceCategoryController;
 Route::resource('reference_category', ReferenceCategoryController::class);
 
+use App\Http\Controllers\RessourceController;
+Route::resource('ressource', RessourceController::class);
+
 use App\Http\Controllers\TypologyController;
 Route::resource('typology', TypologyController::class);
 
@@ -66,14 +69,24 @@ use App\Http\Controllers\ValidationController;
 Route::resource('validation', ValidationController::class);
 
 
-Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Dans le fichier routes/web.php
+Route::get('/references/{id}', 'ReferenceController@show')->name('reference.show');
 
-Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Auth::routes();
+
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    Auth::routes();
+
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    Auth::routes();
+
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
