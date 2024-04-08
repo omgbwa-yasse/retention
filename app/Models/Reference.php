@@ -16,6 +16,8 @@ class Reference extends Model
         'category_id',
     ];
 
+    protected $table = 'reference';
+
     public function category()
     {
         return $this->belongsTo(ReferenceCategory::class);
