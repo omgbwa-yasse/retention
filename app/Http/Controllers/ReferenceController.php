@@ -12,31 +12,40 @@ class ReferenceController extends Controller
 
     public function index()
     {
-        $category = ReferenceCategory::all();
-        $reference = Reference::with('category', 'ressource')->get();
-        return view('reference.referenceIndex', compact('category', 'reference'));
+        $categories = ReferenceCategory::all();
+        $references = Reference::with('category', 'ressources.category')->get();
+        return view('reference.referenceIndex', compact('categories', 'references'));
+
     }
+
+
+    public function show(Reference $reference)
+    {
+        $reference->load('category', 'ressources.category');
+        return view('reference.referenceShow', compact('reference'));
+    }
+
+
+
 
     public function create()
     {
-        $category = ReferenceCategory::all();
-        $ressource = Ressource::all();
-        return view('reference.referenceCreate', compact('category', 'ressource'));
+        $categories = ReferenceCategory::all();
+        $ressources = Ressource::all();
+        return view('reference.referenceCreate', compact('categories', 'ressources'));
     }
+
+
 
     public function store(Request $request)
     {
         $request->validate([
             'title' => 'required|max:50|unique:reference',
             'description' => 'nullable|max:500',
-            'category_id' => 'required|exists:reference_category,id',
-            'ressources' => 'required|array',
-            'ressources.*' => 'exists:ressource,id',
+            'category_id' => 'required|exists:reference_category,id'
         ]);
 
         $reference = Reference::create($request->only(['title', 'description', 'category_id']));
-        $reference->ressources()->attach($request->input('ressources'));
-
         return redirect()->route('reference.index')->with('success', 'Référence créée avec succès.');
     }
 

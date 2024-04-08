@@ -22,8 +22,9 @@ class Reference extends Model
         return $this->belongsTo(ReferenceCategory::class);
     }
 
-    public function ressource()
+    public function ressources()
     {
         return $this->belongsToMany(Ressource::class, 'reference_ressource');
     }
+
 }

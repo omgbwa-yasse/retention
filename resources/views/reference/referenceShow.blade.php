@@ -1,8 +1,19 @@
 @extends('index')
 
 @section('content')
+
     <h1>{{ $reference->title }}</h1>
-    <p>Description: {{ $reference->description }}</p>
+    <p>{{ $reference->description }}</p>
     <p>Category: {{ $reference->category->title }}</p>
-    <a href="{{ route('reference.index') }}" class="btn btn-primary">Back</a>
+    <h2>Ressources</h2>
+    <ul>
+        @foreach ($reference->ressources as $ressource)
+            <li>
+                <a href="{{ $ressource->link }}" target="_blank">{{ $ressource->file_path }}</a>
+                <p>{{ $ressource->description }}</p>
+                <p>Category: {{ $ressource->category->title }}</p>
+            </li>
+        @endforeach
+    </ul>
+    <a href="{{ route('ressource.edit', $reference->id) }}" class="btn btn-primary">Ajouter des ressources</a>
 @endsection
