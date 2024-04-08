@@ -1,19 +1,46 @@
+<!-- resources/views/references/show.blade.php -->
+
 @extends('index')
 
 @section('content')
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header">{{ $reference->title }}</div>
 
-    <h1>{{ $reference->title }}</h1>
-    <p>{{ $reference->description }}</p>
-    <p>Category: {{ $reference->category->title }}</p>
-    <h2>Ressources</h2>
-    <ul>
-        @foreach ($reference->ressources as $ressource)
-            <li>
-                <a href="{{ $ressource->link }}" target="_blank">{{ $ressource->file_path }}</a>
-                <p>{{ $ressource->description }}</p>
-                <p>Category: {{ $ressource->category->title }}</p>
-            </li>
-        @endforeach
-    </ul>
-    <a href="{{ route('ressource.edit', $reference->id) }}" class="btn btn-primary">Ajouter des ressources</a>
+                    <div class="card-body">
+                        <p><strong>Description:</strong> {{ $reference->description }}</p>
+                        <p><strong>Catégorie:</strong> {{ $reference->category_id }}</p>
+
+                        <hr>
+
+                        <h4>Fichiers associés :</h4>
+                        @if($reference->files->isEmpty())
+                            <p>Aucun fichier associé à cette référence.</p>
+                        @else
+                            <ul>
+                                @foreach($reference->files as $file)
+                                    <li><a href="{{ asset($file->file_path) }}">{{ $file->title }}</a></li>
+                                @endforeach
+                            </ul>
+                        @endif
+
+                        <hr>
+
+                        <h4>Liens associés :</h4>
+                        @if($reference->links->isEmpty())
+                            <p>Aucun lien associé à cette référence.</p>
+                        @else
+                            <ul>
+                                @foreach($reference->links as $link)
+                                    <li><a href="{{ $link->link }}">{{ $link->title }}</a></li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

@@ -69,7 +69,9 @@ use App\Http\Controllers\ValidationController;
 Route::resource('validation', ValidationController::class);
 
 
-Route::get('/reference/{referenceId}/ressource/create', [RessourceController::class, 'create'])->name('ressource.create');
+
+// Dans le fichier routes/web.php
+Route::get('/references/{id}', 'ReferenceController@show')->name('reference.show');
 
 
 
