@@ -101,7 +101,6 @@ return new class extends Migration
             $table->unsignedInteger('country_id');
             $table->unsignedInteger('reference_id');
             $table->primary(['country_id', 'reference_id']);
-
             // Foreign key constraints
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
             $table->foreign('reference_id')->references('id')->on('references')->onDelete('cascade');
