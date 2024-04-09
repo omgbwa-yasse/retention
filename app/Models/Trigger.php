@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Trigger extends Model
 {
     use HasFactory;
-    protected $table = 'trigger';
 
     protected $fillable = [
         'code',

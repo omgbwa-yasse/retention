@@ -9,8 +9,6 @@ class ReferenceCategory extends Model
 {
     use HasFactory;
 
-    protected $table = 'reference_category';
-
 
     public function reference()
     {

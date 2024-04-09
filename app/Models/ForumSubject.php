@@ -8,10 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class ForumSubject extends Model
 {
     use HasFactory;
-    protected $table = 'forum_subject';
 
     protected $fillable = [
-        'title',
+        'name',
         'description'
     ];
 }

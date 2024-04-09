@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class ForumReactionAmswer extends Model
 {
     use HasFactory;
-    protected $table = 'forum_reaction_amswer';
+
 }

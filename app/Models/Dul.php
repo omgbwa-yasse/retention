@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Dul extends Model
 {
     use HasFactory;
-    protected $table = 'dul';
 
     protected $fillable = [
         'duration',

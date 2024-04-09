@@ -9,8 +9,6 @@ class Dua extends Model
 {
     use HasFactory;
 
-    protected $table = 'dua';
-
     protected $fillable = [
         'duration',
         'description',

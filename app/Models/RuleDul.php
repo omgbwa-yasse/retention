@@ -8,10 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class RuleDul extends Model
 {
     use HasFactory;
-    protected $table = 'rule_dul';
 
     protected $fillable = [
-        'datetime',
         'description'
     ];
 }

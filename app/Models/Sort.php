@@ -8,10 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Sort extends Model
 {
     use HasFactory;
-    protected $table = 'sort';
 
     protected $fillable = [
-        'title',
+        'name',
         'description'
     ];
 }

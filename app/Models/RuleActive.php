@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class RuleActive extends Model
 {
     use HasFactory;
-    protected $table = 'rule_active';
 
     protected $fillable = [
         'description'

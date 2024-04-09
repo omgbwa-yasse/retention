@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class RuleClassification extends Model
 {
     use HasFactory;
-    protected $table = 'rule_classification';
 
     protected $fillable = [
         'date'

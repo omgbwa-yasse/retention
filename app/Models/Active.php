@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Active extends Model
 {
     use HasFactory;
-    protected $table = 'active';
+    protected $table = 'actives';
 
     protected $fillable = [
         'duration',

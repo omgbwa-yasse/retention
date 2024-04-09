@@ -8,10 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class TypologyCategory extends Model
 {
     use HasFactory;
-    protected $table = 'typology_category';
 
     protected $fillable = [
-        'title',
+        'name',
         'description',
         'category_parent_id'
     ];

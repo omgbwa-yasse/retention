@@ -9,11 +9,9 @@ class Communicability extends Model
 {
     use HasFactory;
 
-    protected $table = 'communicability';
-
     protected $fillable = [
         'code',
-        'title',
+        'name',
         'description'
     ];
 }

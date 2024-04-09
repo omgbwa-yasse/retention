@@ -11,12 +11,10 @@ class Reference extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title',
+        'name',
         'description',
         'category_id',
     ];
-
-    protected $table = 'reference';
 
     public function category()
     {
