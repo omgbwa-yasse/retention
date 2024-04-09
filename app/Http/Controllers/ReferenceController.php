@@ -52,13 +52,18 @@ class ReferenceController extends Controller
         'title' => 'required|max:50|unique:reference',
         'description' => 'nullable|max:500',
         'category_id' => 'required|exists:reference_category,id',
+
+        /*
         'files.*' => 'file|max:10240', // Taille maximale de 10 Mo par fichier
         'links.*.title' => 'required|string|max:255',
         'links.*.url' => 'required|url|max:255',
+        */
     ]);
+
 
     // Créer la référence
     $reference = Reference::create($validatedData);
+    $reference->save();
 
     // Enregistrer les fichiers associés à la référence
     $filesSaved = false;

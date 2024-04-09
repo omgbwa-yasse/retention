@@ -71,7 +71,7 @@ Route::resource('validation', ValidationController::class);
 
 
 // Dans le fichier routes/web.php
-Route::get('/references/{id}', 'ReferenceController@show')->name('reference.show');
+Route::get('/reference/{id}', 'ReferenceController@show')->name('reference.show');
 
 
 
