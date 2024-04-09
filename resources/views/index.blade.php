@@ -17,7 +17,7 @@
     <div class="container-fluid">@include('menuTop')
 
         <div class="row">
-            <div class="col-3">
+            <div class="col-2">
                 @include('menuAside')
             </div>
             <div class="col-9">

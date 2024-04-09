@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container">
-        <h1>List of Items</h1>
+        <h1>List of Mission</h1>
         <a href="{{ route('mission.create') }}" class="btn btn-primary mb-2">Create New Item</a>
         <table class="table">
             <thead>
@@ -17,21 +17,23 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($items as $item)
-                <tr>
-                    <th scope="row">{{ $item->id }}</th>
-                    <td>{{ $item->cote }}</td>
-                    <td>{{ $item->title }}</td>
-                    <td>
-                        <a href="{{ route('mission.show', $item->id) }}" class="btn btn-info btn-sm">View</a>
-                        <a href="{{ route('mission.edit', $item->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                        <form action="{{ route('mission.destroy', $item->id) }}" method="POST" style="display: inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
-                        </form>
-                    </td>
-                </tr>
+                @foreach ($items as $item)
+                    <tr>
+                        <th scope="row">{{ $item->id }}</th>
+                        <td>{{ $item->cote }}</td>
+                        <td>{{ $item->title }}</td>
+                        <td>
+                            <a href="{{ route('mission.show', $item->id) }}" class="btn btn-info btn-sm">View</a>
+                            <a href="{{ route('mission.edit', $item->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                            <form action="{{ route('mission.destroy', $item->id) }}" method="POST"
+                                style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Are you sure?')">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
