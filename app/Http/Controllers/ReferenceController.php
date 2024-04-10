@@ -36,10 +36,10 @@ class ReferenceController extends Controller
 
 
 
-    public function show($id)
+    public function show(Reference $reference)
     {
-        $reference = Reference::findOrFail($id);
-        return view('reference.referenceShow', compact('reference'));
+        $articles = $reference->articles;
+        return view('reference.referenceShow', compact('reference', 'articles'));
     }
 
 

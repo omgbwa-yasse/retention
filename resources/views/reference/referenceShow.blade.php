@@ -42,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <a href="#" class="btn btn-sm btn-success">ajouter un article</a>
+        <a href="{{ route('articles.create', $reference->id) }}" class="btn btn-sm btn-success">ajouter un article</a>
         <a href="#" class="btn btn-sm btn-success">ajouter une ressource</a>
         <a href="#" class="btn btn-sm btn-success">ajouter un lien</a>
     </div>

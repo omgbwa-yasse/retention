@@ -8,11 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Classification extends Model
 {
     use HasFactory;
-    protected $table = 'classifications';
 
     protected $fillable = [
         'cote',
         'name',
         'parent_id'
     ];
+
+    public function parent()
+    {
+        return $this->belongsTo(Classification::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Classification::class, 'parent_id');
+    }
 }

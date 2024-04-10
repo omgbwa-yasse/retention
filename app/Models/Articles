@@ -16,4 +16,9 @@ class Articles extends Model
         'reference_id'
     ];
 
+    public function reference()
+    {
+        return $this->belongsTo(Reference::class, 'reference_id');
+    }
+
 }

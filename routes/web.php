@@ -68,6 +68,11 @@ Route::resource('user', UserController::class);
 use App\Http\Controllers\ValidationController;
 Route::resource('validation', ValidationController::class);
 
+use App\Http\Controllers\ArticleController;
+Route::resource('articles', ArticleController::class)->only(['create', 'store', 'edit', 'update', 'destroy'])->parameters(['articles' => 'reference:id']);
+
+
+
 
 
 // Dans le fichier routes/web.php

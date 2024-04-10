@@ -24,15 +24,15 @@
 
                         <div class="form-group">
                             <label for="title">Titre</label>
-                            <input type="text" class="form-control" id="title" name="title" required>
+                            <input type="text" class="form-control" id="name" name="name" required>
                         </div>
 
                         <div class="form-group">
                         <select name="parent_id">
-                            @foreach ($items->groupBy('parent_id') as $parentId => $groupedItems)
+                            @foreach ($activities->groupBy('parent_id') as $parentId => $groupedActivities)
                                 <optgroup label="Parent ID: {{ $parentId }}">
-                                    @foreach ($groupedItems as $item)
-                                        <option value="{{ $item->id }}">{{ $item->title }}</option>
+                                    @foreach ($groupedActivities as $activity)
+                                        <option value="{{ $activity->id }}">{{ $activity->name }}</option>
                                     @endforeach
                                 </optgroup>
                             @endforeach
