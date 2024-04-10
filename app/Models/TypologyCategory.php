@@ -12,6 +12,6 @@ class TypologyCategory extends Model
     protected $fillable = [
         'name',
         'description',
-        'category_parent_id'
+        'parent_id'
     ];
 }

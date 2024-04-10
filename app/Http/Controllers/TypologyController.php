@@ -18,8 +18,8 @@ class TypologyController extends Controller
     // Index method to display all typology
     public function index()
     {
-        $typology = Typology::paginate(10);
-        return view('typology.typologyIndex', compact('typology'));
+        $typologies = Typology::paginate(10)->load('category');
+        return view('typology.typologyIndex', compact('typologies'));
     }
 
 
@@ -28,8 +28,8 @@ class TypologyController extends Controller
     // Create method to display the form for creating a new typology
     public function create()
     {
-        $category = TypologyCategory::all();
-        return view('typology.typologyCreate', compact('category'));
+        $categories = TypologyCategory::all();
+        return view('typology.typologyCreate', compact('categories'));
     }
 
 
@@ -39,9 +39,9 @@ class TypologyController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|max:50|unique:typology',
+            'name' => 'required|max:50|unique:typologies',
             'description' => 'nullable',
-            'typology_category_id' => 'required|exists:typology_category,id',
+            'category_id' => 'required|exists:typology_categories,id',
         ]);
 
         // dump($request->all()); // Si vous voulez vérifier les données envoyées
@@ -70,8 +70,8 @@ class TypologyController extends Controller
     // Edit method to display the form for editing a typology
     public function edit(Typology $typology)
     {
-        $category = TypologyCategory::all();
-        return view('typology.typologyEdit', compact('typology', 'category'));
+        $categories = TypologyCategory::all();
+        return view('typology.typologyEdit', compact('typology', 'categories'));
     }
 
 
@@ -82,9 +82,9 @@ class TypologyController extends Controller
     public function update(Request $request, Typology $typology)
     {
         $request->validate([
-            'title' => 'required|max:50|unique:typology,title,' . $typology->id,
+            'name' => 'required|max:50|unique:typologies,name,' . $typology->id,
             'description' => 'nullable',
-            'typology_category_id' => 'required|exists:typology_category,id',
+            'category_id' => 'required|exists:typology_categories,id',
         ]);
 
         $typology->update($request->all());

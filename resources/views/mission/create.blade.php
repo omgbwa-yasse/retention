@@ -23,8 +23,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="title">Titre</label>
-                            <input type="text" class="form-control" id="title" name="title" required>
+                            <label for="name">Titre</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Créer</button>

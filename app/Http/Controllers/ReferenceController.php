@@ -21,8 +21,9 @@ class ReferenceController extends Controller
             'references.name',
             'references.description',
             'references.category_id',
-            'countries.id AS country_id',
-            'reference_categories.id AS category_id'
+            'references.country_id',
+            'reference_categories.name AS category_name',
+            'countries.name AS country_name'
         )
         ->leftJoin('reference_categories', 'references.category_id', '=', 'reference_categories.id')
         ->leftJoin('countries', 'references.country_id', '=', 'countries.id')
@@ -51,32 +52,19 @@ class ReferenceController extends Controller
     }
 
 
-
-
-
-
     public function store(Request $request)
     {
-
-        // Validation des données du formulaire
         $validatedData = $request->validate([
-            'name' => 'required|max:50|unique:references',
-            'description' => 'nullable|max:500',
+            'name' => 'required|string|max:50|unique:references',
+            'description' => 'nullable|string|max:500',
             'category_id' => 'required|exists:reference_categories,id',
             'country_id' => 'required|exists:countries,id',
         ]);
 
-        $reference = Reference::create($validatedData);
+        Reference::create($validatedData);
 
-        $reference ->save();
-
-        dd($reference);
-
-        return redirect()->route('reference.index')->with('success');
+        return redirect()->route('reference.index')->with('success', 'Référence créée avec succès');
     }
-
-
-
 
 
 

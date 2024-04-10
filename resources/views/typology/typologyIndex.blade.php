@@ -13,15 +13,15 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($typology as $items)
+            @foreach ($typologies as $typology)
                 <tr>
-                    <td>{{ $items->title }}</td>
-                    <td>{{ $items->description }}</td>
-                    <td>{{ $items->category ? $items->category->title : 'N/A' }}</td>
+                    <td>{{ $typology->name }}</td>
+                    <td>{{ $typology->description }}</td>
+                    <td>{{ $typology->category ? $typology->category->name : 'N/A' }}</td>
                     <td>
-                        <a href="{{ route('typology.show', $items->id) }}" class="btn btn-sm btn-primary">Show</a>
-                        <a href="{{ route('typology.edit', $items->id) }}" class="btn btn-sm btn-secondary">Edit</a>
-                        <form action="{{ route('typology.destroy', $items->id) }}" method="POST" style="display: inline;">
+                        <a href="{{ route('typology.show', $typology->id) }}" class="btn btn-sm btn-primary">Show</a>
+                        <a href="{{ route('typology.edit', $typology->id) }}" class="btn btn-sm btn-secondary">Edit</a>
+                        <form action="{{ route('typology.destroy', $typology->id) }}" method="POST" style="display: inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-danger">Delete</button>
@@ -31,5 +31,4 @@
             @endforeach
         </tbody>
     </table>
-    {{ $typology->links() }}
 @endsection

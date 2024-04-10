@@ -21,10 +21,10 @@
                     <tbody>
                         @foreach ($references as $item)
                             <tr>
-                                <td>{{ $item->title }}</td>
+                                <td>{{ $item->name }}</td>
                                 <td>{{ $item->description }}</td>
-                                <td>{{ $item->category_id }}</td>
-                                <td>{{ $item->country_id }}</td>
+                                <td>{{ $item->category_name }}</td>
+                                <td>{{ $item->country_name }}</td>
                                 <td>
                                     <a href="{{ route('reference.edit', $item->id) }}"
                                         class="btn btn-sm btn-primary">Modifier</a>

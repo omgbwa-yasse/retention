@@ -21,7 +21,7 @@
                     <tr>
                         <th scope="row">{{ $item->id }}</th>
                         <td>{{ $item->cote }}</td>
-                        <td>{{ $item->title }}</td>
+                        <td>{{ $item->name }}</td>
                         <td>
                             <a href="{{ route('mission.show', $item->id) }}" class="btn btn-info btn-sm">View</a>
                             <a href="{{ route('mission.edit', $item->id) }}" class="btn btn-primary btn-sm">Edit</a>

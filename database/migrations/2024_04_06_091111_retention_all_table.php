@@ -159,7 +159,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('name', 50)->unique();
             $table->text('description')->nullable();
-            $table->unsignedInteger('category_parent_id')->nullable();
+            $table->unsignedInteger('parent_id')->nullable();
             $table->timestamps();
 
         });
@@ -172,10 +172,10 @@ return new class extends Migration
             $table->increments('id');
             $table->string('name', 50)->unique();
             $table->text('description')->nullable();
-            $table->unsignedInteger('typology_category_id');
+            $table->unsignedInteger('category_id');
             $table->timestamps();
             // Foreign key constraint
-            $table->foreign('typology_category_id')->references('id')->on('typology_categories')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('typology_categories')->onDelete('cascade');
         });
 
 

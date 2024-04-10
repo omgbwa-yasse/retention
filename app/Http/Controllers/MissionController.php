@@ -33,7 +33,7 @@ class MissionController extends Controller
     {
         $request->validate([
             'cote' => 'required',
-            'title' => 'required',
+            'name' => 'required',
             'parent_id' => 'nullable|exists:classification,id',
         ]);
 
@@ -73,12 +73,12 @@ class MissionController extends Controller
     {
         $request->validate([
             'cote' => 'required',
-            'title' => 'required'
+            'name' => 'required'
         ]);
 
         $item = Classification::findOrFail($id);
         $item->cote = $request->input('cote');
-        $item->title = $request->input('title');
+        $item->title = $request->input('name');
         $item->save();
 
         return redirect()->route('mission.index')->with('success', 'Item updated successfully.');

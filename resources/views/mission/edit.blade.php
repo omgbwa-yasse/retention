@@ -12,8 +12,8 @@
                 <input type="text" class="form-control" id="cote" name="cote" value="{{ $mission->cote }}" required>
             </div>
             <div class="form-group">
-                <label for="title">Title</label>
-                <input type="text" class="form-control" id="title" name="title" value="{{ $mission->title }}" required>
+                <label for="name">Title</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ $mission->title }}" required>
             </div>
             <button type="submit" class="btn btn-primary">Update</button>
         </form>

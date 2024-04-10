@@ -12,6 +12,11 @@ class Typology extends Model
     protected $fillable = [
         'name',
         'description',
-        'typology_category_id'
+        'category_id'
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(TypologyCategory::class);
+    }
 }
