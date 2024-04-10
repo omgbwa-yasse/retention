@@ -7,11 +7,10 @@
             <div class="collapse show" id="recherche">
                 <ul class="list-unstyled pl-3">
                     <li><a href="{{ route('activity.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Activités</a></li>
-                    <li><a href="{{ route('mission.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Missions</a></li>
+                    <li><a href="{{ route('mission.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Domaines</a></li>
                     <li><a href="{{ route('rule.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Règles</a></li>
                     <li><a href="{{ route('typology.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Typologies</a></li>
                     <li><a href="{{ route('reference.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Références</a></li>
-                    <li><a href="{{ route('basket.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Paniers</a></li>
                 </ul>
             </div>
         </li>
@@ -19,11 +18,11 @@
             <a class="nav-link bg-dark text-white" data-toggle="collapse" href="#ajouter" aria-expanded="true"><i class="bi bi-plus-circle"></i> Ajouter</a>
             <div class="collapse show" id="ajouter">
                 <ul class="list-unstyled pl-3">
-                    <li><a href="{{ route('activity.create') }}" class="text-dark"><i class="bi bi-plus-square"></i> Une classe</a></li>
-                    <li><a href="{{ route('mission.create') }}" class="text-dark"><i class="bi bi-plus-square"></i> Un domaine</a></li>
-                    <li><a href="{{ route('rule.create') }}" class="text-dark"><i class="bi bi-plus-square"></i> Un règle</a></li>
-                    <li><a href="{{ route('typology.create') }}" class="text-dark"><i class="bi bi-plus-square"></i> Une typologie</a></li>
-                    <li><a href="{{ route('reference.create') }}" class="text-dark"><i class="bi bi-plus-square"></i> Une référence</a></li>
+                    <li><a href="{{ route('activity.create') }}" class="text-dark"><i class="bi bi-plus-square"></i> Classe</a></li>
+                    <li><a href="{{ route('mission.create') }}" class="text-dark"><i class="bi bi-plus-square"></i> Domaine</a></li>
+                    <li><a href="{{ route('rule.create') }}" class="text-dark"><i class="bi bi-plus-square"></i> Règle</a></li>
+                    <li><a href="{{ route('typology.create') }}" class="text-dark"><i class="bi bi-plus-square"></i> Typologie</a></li>
+                    <li><a href="{{ route('reference.create') }}" class="text-dark"><i class="bi bi-plus-square"></i> Référence</a></li>
                 </ul>
             </div>
         </li>
