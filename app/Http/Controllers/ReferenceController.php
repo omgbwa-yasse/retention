@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Articles;
 use Illuminate\Http\Request;
 use App\Models\Reference;
+use App\Models\Country;
 use App\Models\ReferenceFile;
 use App\Models\ReferenceLink;
 use App\Models\ReferenceCategory;
@@ -14,30 +16,38 @@ class ReferenceController extends Controller
 
     public function index()
     {
-        $reference = Reference::select(
-            'reference.id',
-            'reference.title',
-            'reference.description',
-            'reference.category_id',
-            'reference_category.id AS category_id'
+        $references = Reference::select(
+            'references.id',
+            'references.name',
+            'references.description',
+            'references.category_id',
+            'countries.id AS country_id',
+            'reference_categories.id AS category_id'
         )
-        ->leftJoin('reference_category', 'reference.category_id', '=', 'reference_category.id')
-        ->leftJoin('reference_file', 'reference.id', '=', 'reference_file.reference_id')
-        ->leftJoin('reference_link', 'reference.id', '=', 'reference_link.reference_id')
+        ->leftJoin('reference_categories', 'references.category_id', '=', 'reference_categories.id')
+        ->leftJoin('countries', 'references.country_id', '=', 'countries.id')
+        ->leftJoin('reference_files', 'references.id', '=', 'reference_files.reference_id')
+        ->leftJoin('reference_links', 'references.id', '=', 'reference_links.reference_id')
         ->get();
 
-        return view('reference.referenceIndex', compact('reference'));
+        return view('reference.referenceIndex', compact('references'));
     }
 
 
 
+    public function show($id)
+    {
+        $reference = Reference::findOrFail($id);
+        return view('reference.referenceShow', compact('reference'));
+    }
 
 
 
     public function create()
     {
         $categories = ReferenceCategory::all();
-        return view('reference.referenceCreate', compact('categories'));
+        $countries = Country::all();
+        return view('reference.referenceCreate', compact('categories', 'countries'));
     }
 
 
@@ -46,62 +56,25 @@ class ReferenceController extends Controller
 
 
     public function store(Request $request)
-{
-    // Validation des données du formulaire
-    $validatedData = $request->validate([
-        'title' => 'required|max:50|unique:reference',
-        'description' => 'nullable|max:500',
-        'category_id' => 'required|exists:reference_category,id',
+    {
 
-        /*
-        'files.*' => 'file|max:10240', // Taille maximale de 10 Mo par fichier
-        'links.*.title' => 'required|string|max:255',
-        'links.*.url' => 'required|url|max:255',
-        */
-    ]);
+        // Validation des données du formulaire
+        $validatedData = $request->validate([
+            'name' => 'required|max:50|unique:references',
+            'description' => 'nullable|max:500',
+            'category_id' => 'required|exists:reference_categories,id',
+            'country_id' => 'required|exists:countries,id',
+        ]);
 
+        $reference = Reference::create($validatedData);
 
-    // Créer la référence
-    $reference = Reference::create($validatedData);
-    $reference->save();
+        $reference ->save();
 
-    // Enregistrer les fichiers associés à la référence
-    $filesSaved = false;
-    if ($request->hasFile('files')) {
-        foreach ($request->file('files') as $file) {
-            $filePath = $file->store('public/files'); // Enregistrer le fichier dans le stockage
-            ReferenceFile::create([
-                'title' => $file->getClientOriginalName(),
-                'file_path' => $filePath,
-                'reference_id' => $reference->id,
-            ]);
-        }
-        $filesSaved = true;
+        dd($reference);
+
+        return redirect()->route('reference.index')->with('success');
     }
 
-    // Enregistrer les liens associés à la référence
-    $linksSaved = false;
-    if ($request->has('links')) {
-        foreach ($request->links as $link) {
-            ReferenceLink::create([
-                'title' => $link['title'],
-                'link' => $link['url'],
-                'reference_id' => $reference->id,
-            ]);
-        }
-        $linksSaved = true;
-    }
-
-    $message = 'Référence enregistrée. ';
-    if ($filesSaved) {
-        $message .= 'Fichiers enregistrés. ';
-    }
-    if ($linksSaved) {
-        $message .= 'Liens enregistrés. ';
-    }
-
-    return redirect()->route('reference.index')->with('success', $message);
-}
 
 
 
@@ -110,9 +83,9 @@ class ReferenceController extends Controller
 
     public function edit($id)
     {
-        $reference = Reference::findOrFail($id);
+        $references = Reference::findOrFail($id);
         $categories = ReferenceCategory::all();
-        return view('reference.referenceEdit', compact('reference', 'categories'));
+        return view('reference.referenceEdit', compact('references', 'categories'));
     }
 
 
@@ -122,9 +95,11 @@ class ReferenceController extends Controller
 
     public function update(Request $request, $id)
     {
+
+
         // Validation des données du formulaire
         $validatedData = $request->validate([
-            'title' => 'required|max:50|unique:references,title,'.$id,
+            'name' => 'required|max:50|unique:references,name,'.$id,
             'description' => 'nullable|max:500',
             'category_id' => 'required|exists:reference_categories,id',
             'files.*' => 'file|max:10240', // Taille maximale de 10 Mo par fichier
@@ -143,7 +118,7 @@ class ReferenceController extends Controller
             foreach ($request->file('files') as $file) {
                 $file->store('public/files'); // Enregistrer le fichier dans le stockage
                 ReferenceFile::create([
-                    'title' => $file->getClientOriginalName(),
+                    'name' => $file->getClientOriginalName(),
                     'file_path' => $file->store('public/files'),
                     'reference_id' => $reference->id,
                 ]);
@@ -157,7 +132,7 @@ class ReferenceController extends Controller
         if ($request->has('links')) {
             foreach ($request->links as $link) {
                 ReferenceLink::create([
-                    'title' => $link['title'],
+                    'name' => $link['name'],
                     'link' => $link['url'],
                     'reference_id' => $reference->id,
                 ]);

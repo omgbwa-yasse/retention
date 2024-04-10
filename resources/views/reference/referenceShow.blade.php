@@ -42,5 +42,8 @@
                 </div>
             </div>
         </div>
+        <a href="#" class="btn btn-sm btn-success">ajouter un article</a>
+        <a href="#" class="btn btn-sm btn-success">ajouter un source</a>
+        <a href="#" class="btn btn-sm btn-success">ajouter un lien</a>
     </div>
 @endsection

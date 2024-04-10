@@ -77,15 +77,28 @@ return new class extends Migration
         });
 
 
+        Schema::create('articles', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('reference', 50)->unique();
+            $table->string('description', 500)->nullable();
+            $table->unsignedInteger('reference_id');
+            $table->timestamps();
+            // Foreign key constraints
+            $table->foreign('reference_id')->references('id')->on('references')->onDelete('cascade');
+        });
+
+
         Schema::create('references', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50)->unique();
             $table->string('description', 500)->nullable();
             $table->unsignedInteger('category_id');
+            $table->unsignedInteger('country_id');
             $table->timestamps();
 
             // Foreign key constraints
             $table->foreign('category_id')->references('id')->on('reference_categories')->onDelete('cascade');
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
             $table->index(['name', 'category_id']); // Index composite unique
         });
 

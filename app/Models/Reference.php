@@ -14,6 +14,7 @@ class Reference extends Model
         'name',
         'description',
         'category_id',
+        'country_id',
     ];
 
     public function category()
@@ -30,4 +31,10 @@ class Reference extends Model
     {
         return $this->hasMany(ReferenceLink::class);
     }
+
+    public function countries()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
 }

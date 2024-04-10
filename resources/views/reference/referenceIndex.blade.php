@@ -14,15 +14,17 @@
                             <th>Titre</th>
                             <th>Description</th>
                             <th>Catégorie</th>
+                            <th>Pays</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($reference as $item)
+                        @foreach ($references as $item)
                             <tr>
                                 <td>{{ $item->title }}</td>
                                 <td>{{ $item->description }}</td>
                                 <td>{{ $item->category_id }}</td>
+                                <td>{{ $item->country_id }}</td>
                                 <td>
                                     <a href="{{ route('reference.edit', $item->id) }}"
                                         class="btn btn-sm btn-primary">Modifier</a>
