@@ -24,13 +24,13 @@ class ArticleController extends Controller
 
 
 
-    public function show(Reference $reference_id, Articles $article)
+    public function show(Reference $reference, Articles $article)
     {
-        if ($article->reference_id !== $reference_id->id) {
-            return redirect()->route('reference.articles.index', $reference_id)->with('error', 'Article not found for this reference.');
+        if ($article->reference_id !== $reference->id) {
+            return redirect()->route('article.index', $reference)->with('error', 'Article not found for this reference.');
         }
 
-        return view('articles.articleShow', compact('article'));
+        return view('articles.articleShow', compact('article', 'reference'));
     }
 
 
@@ -81,9 +81,9 @@ class ArticleController extends Controller
 
 
 
-    public function destroy(Reference $reference_id, Articles $Articles)
+    public function destroy(Reference $reference, Articles $Article)
     {
-        $Articles->delete();
-        return redirect()->route('reference.articles.index', $reference_id)->with('success', 'Articles deleted successfully.');
+        $Article->delete();
+        return redirect()->route('article.index', $reference)->with('success', 'Articles deleted successfully.');
     }
 }

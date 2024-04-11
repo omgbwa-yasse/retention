@@ -5,11 +5,13 @@
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <div class="card">
-                    <div class="card-header">{{ $reference->title }}</div>
+                    <div class="card-header"><h1>{{ $reference->name }}</h1></div>
 
                     <div class="card-body">
                         <p><strong>Description:</strong> {{ $reference->description }}</p>
-                        <p><strong>Catégorie:</strong> {{ $reference->category_id }}</p>
+                        <p><strong>Catégorie:</strong>
+                            <a href="{{ route('reference-category.show', $reference->id) }}"> {{ $reference->category->name }} </a>
+                        </p>
 
                         <hr>
 
@@ -32,7 +34,19 @@
                         @else
                             <ul>
                                 @foreach($reference->links as $link)
-                                    <li><a href="{{ $link->link }}">{{ $link->title }}</a></li>
+                                    <li><a href="{{ $link->link }}">{{ $link->name }}</a></li>
+                                @endforeach
+                            </ul>
+                        @endif
+
+                        <hr>
+                        <h4>Articles associés :</h4>
+                        @if($reference->articles->isEmpty())
+                            <p>Aucun lien associé à cette référence.</p>
+                        @else
+                            <ul>
+                                @foreach($reference->articles as $article)
+                                    <li><a href="{{ route('article.show', [$reference, $article]) }}">{{ $article->reference }} - {{ $article->name }}</a></li>
                                 @endforeach
                             </ul>
                         @endif
@@ -44,5 +58,9 @@
         <a href="{{ route('article.create', $reference->id) }}" class="btn btn-sm btn-success">Ajouter un article</a>
         <a href="#" class="btn btn-sm btn-success">Ajouter une ressource</a>
         <a href="#" class="btn btn-sm btn-success">Ajouter un lien</a>
+        <form action="{{ route('reference.destroy', $reference) }}" method="POST">
+            @csrf
+            @method('DELETE')
+        <button type="submit" class="btn btn-danger">Delete</button>
     </div>
 @endsection

@@ -134,9 +134,10 @@ class ReferenceController extends Controller
 
 
 
-    public function destroy($id)
+    public function destroy(Reference $reference)
     {
-        $reference = Reference::findOrFail($id);
+        dd($reference); // Ajouter la suppression des articles avant ou le contrôle
+        $reference = Reference::findOrFail($reference->id);
         $reference->delete();
         return redirect()->route('reference.index')->with('success', 'La référence a été supprimée avec succès.');
     }

@@ -52,7 +52,7 @@ Route::get('references/{reference}/article', [ArticleController::class, 'index']
 
 
 use App\Http\Controllers\ReferenceCategoryController;
-Route::resource('reference_category', ReferenceCategoryController::class);
+Route::resource('reference-category', ReferenceCategoryController::class);
 
 use App\Http\Controllers\RessourceController;
 Route::resource('ressource', RessourceController::class);
