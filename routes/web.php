@@ -37,6 +37,20 @@ Route::resource('activity', ActivityController::class);
 use App\Http\Controllers\ReferenceController;
 Route::resource('reference', ReferenceController::class);
 
+
+use App\Http\Controllers\ArticleController;
+
+Route::get('reference/{reference}/article/create', [ArticleController::class, 'create'])->name('article.create');
+Route::post('reference/{reference}/article', [ArticleController::class, 'store'])->name('article.store');
+Route::get('reference/{reference}/article/{article}', [ArticleController::class, 'show'])->name('article.show');
+Route::get('reference/{reference}/article/{article}/edit', [ArticleController::class, 'edit'])->name('article.edit');
+Route::put('reference/{reference}/article/{article}', [ArticleController::class, 'update'])->name('article.update');
+Route::delete('reference/{reference}/article/{article}', [ArticleController::class, 'destroy'])->name('article.destroy');
+Route::get('references/{reference}/article', [ArticleController::class, 'index'])->name('article.index');
+
+
+
+
 use App\Http\Controllers\ReferenceCategoryController;
 Route::resource('reference_category', ReferenceCategoryController::class);
 
@@ -68,15 +82,12 @@ Route::resource('user', UserController::class);
 use App\Http\Controllers\ValidationController;
 Route::resource('validation', ValidationController::class);
 
-use App\Http\Controllers\ArticleController;
-Route::resource('articles', ArticleController::class)->only(['create', 'store', 'edit', 'update', 'destroy'])->parameters(['articles' => 'reference:id']);
 
 
 
 
-
-// Dans le fichier routes/web.php
-Route::get('/reference/{id}', 'ReferenceController@show')->name('reference.show');
+// Dans le fichier routes/web.php,,,,,,,,,,,,,,,,,,,'
+/*Route::get('/reference/{id}', 'ReferenceController@show')->name('reference.show');*/
 
 
 

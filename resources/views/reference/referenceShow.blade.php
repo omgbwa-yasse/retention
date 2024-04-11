@@ -1,5 +1,3 @@
-<!-- resources/views/references/show.blade.php -->
-
 @extends('index')
 
 @section('content')
@@ -42,8 +40,9 @@
                 </div>
             </div>
         </div>
-        <a href="{{ route('articles.create', $reference->id) }}" class="btn btn-sm btn-success">ajouter un article</a>
-        <a href="#" class="btn btn-sm btn-success">ajouter une ressource</a>
-        <a href="#" class="btn btn-sm btn-success">ajouter un lien</a>
+        <!-- Correctif: Utilisation de route() avec le nom de la route -->
+        <a href="{{ route('article.create', $reference->id) }}" class="btn btn-sm btn-success">Ajouter un article</a>
+        <a href="#" class="btn btn-sm btn-success">Ajouter une ressource</a>
+        <a href="#" class="btn btn-sm btn-success">Ajouter un lien</a>
     </div>
 @endsection

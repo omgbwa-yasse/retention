@@ -37,4 +37,9 @@ class Reference extends Model
         return $this->belongsTo(Country::class);
     }
 
+    public function articles()
+    {
+        return $this->hasMany(Articles::class);
+    }
+
 }

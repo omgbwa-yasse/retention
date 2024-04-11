@@ -12,6 +12,7 @@ class Articles extends Model
 
     protected $fillable = [
         'reference',
+        'name',
         'description',
         'reference_id'
     ];

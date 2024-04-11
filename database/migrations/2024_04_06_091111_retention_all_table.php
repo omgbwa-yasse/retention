@@ -80,6 +80,7 @@ return new class extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('reference', 50)->unique();
+            $table->string('name', 255)->nullable();
             $table->string('description', 500)->nullable();
             $table->unsignedInteger('reference_id');
             $table->timestamps();

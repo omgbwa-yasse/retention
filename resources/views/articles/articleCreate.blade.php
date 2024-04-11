@@ -1,13 +1,18 @@
 @extends('index')
 
 @section('content')
-    <h1>Create Article for Reference: {{ $reference->title }}</h1>
+    <h1>Create Article for Reference: {{ $reference->name }}</h1>
 
-    <form action="{{ route('reference.articles.store', $reference->id) }}" method="POST">
+    <form action="{{ route('article.store', $reference->id) }}" method="POST">
         @csrf
 
         <div class="form-group">
-            <label for="title">Title</label>
+            <label for="reference">Reference</label>
+            <input type="text" class="form-control" id="reference" name="reference" required>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Title</label>
             <input type="text" class="form-control" id="title" name="title" required>
         </div>
 
