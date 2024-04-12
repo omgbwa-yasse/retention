@@ -9,6 +9,11 @@ class ReferenceCategory extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'description'
+    ];
+
     public function reference()
     {
         return $this->hasMany(Reference::class);

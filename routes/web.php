@@ -49,8 +49,6 @@ Route::delete('reference/{reference}/article/{article}', [ArticleController::cla
 Route::get('references/{reference}/article', [ArticleController::class, 'index'])->name('article.index');
 
 
-
-
 use App\Http\Controllers\ReferenceCategoryController;
 Route::resource('reference-category', ReferenceCategoryController::class);
 
@@ -67,6 +65,13 @@ Route::resource('setting', SettingController::class);
 
 use App\Http\Controllers\RuleController;
 Route::resource('rule', RuleController::class);
+
+use App\Http\Controllers\activeController;
+Route::resource('active', ActiveController::class);
+
+
+
+
 
 use App\Http\Controllers\BasketController;
 Route::resource('basket', BasketController::class);

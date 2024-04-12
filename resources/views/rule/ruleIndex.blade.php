@@ -1,30 +1,30 @@
+<!-- index.blade.php -->
+
 @extends('index')
 
 @section('content')
     <div class="container">
-        <h1>List of Activity</h1>
-        <a href="{{ route('activity.create') }}" class="btn btn-primary mb-2">Create New Item</a>
+        <h1>List of Rule</h1>
+        <a href="{{ route('rule.create') }}" class="btn btn-primary mb-2">Create New Item</a>
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Cote</th>
                     <th scope="col">Title</th>
-                    <th scope="col">parent_id</th>
+                    <th scope="col">Description</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($activities as $activity)
+                @foreach ($rules as $rule)
                     <tr>
-                        <th scope="row">{{ $activity->id }}</th>
-                        <td>{{ $activity->cote }}</td>
-                        <td>{{ $activity->name }}</td>
-                        <td> @if ($activity->parent) {{ $activity->parent->name }} @endif </td>
+                        <th scope="row">{{ $rule->id }}</th>
+                        <td>{{ $rule->name }}</td>
+                        <td> {{ $rule->description }} </td>
                         <td>
-                            <a href="{{ route('activity.show', $activity->id) }}" class="btn btn-info btn-sm">View</a>
-                            <a href="{{ route('activity.edit', $activity->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                            <form action="{{ route('activity.destroy', $activity->id) }}" method="POST"
+                            <a href="{{ route('rule.show', $rule->id) }}" class="btn btn-info btn-sm">View</a>
+                            <a href="{{ route('rule.edit', $rule->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                            <form action="{{ route('rule.destroy', $rule->id) }}" method="POST"
                                 style="display: inline;">
                                 @csrf
                                 @method('DELETE')

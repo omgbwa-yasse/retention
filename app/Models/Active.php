@@ -14,6 +14,21 @@ class Active extends Model
         'duration',
         'description',
         'trigger_id',
+        'rule_id',
         'sort_id'
     ];
+
+    public function rule()
+    {
+        return $this->belongsTo(rule::class);
+    }
+    public function trigger()
+    {
+        return $this->belongsTo(Trigger::class);
+    }
+    public function sort()
+    {
+        return $this->belongsTo(sort::class);
+    }
+
 }

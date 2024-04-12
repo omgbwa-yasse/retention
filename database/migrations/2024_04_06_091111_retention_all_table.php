@@ -11,18 +11,10 @@ return new class extends Migration
      */
     public function up()
     {
-        // Create rule table
-        Schema::create('rules', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 100)->unique();
-            $table->text('description')->nullable();
-            $table->timestamps();
-        });
-
 
         // Create user_address table
         Schema::create('user_addresses', function (Blueprint $table) {
-            $table->increments('id');
+            $table->autoIncrement('id')->primary();
             $table->unsignedInteger('user_id');
             $table->string('email1', 100)->unique();
             $table->string('email2', 100)->nullable();
@@ -38,47 +30,8 @@ return new class extends Migration
         });
 
 
-
-        // Create trigger table
-        Schema::create('triggers', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('code', 5)->unique();
-            $table->text('description')->nullable();
-            $table->timestamps();
-        });
-
-
-
-
-        // Create sort table
-        Schema::create('sorts', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 50)->unique();
-            $table->string('description', 500)->nullable();
-            $table->timestamps();
-        });
-
-
-
-
-
-        // Create dul table
-        Schema::create('duls', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('duration', 50)->unique();
-            $table->text('description')->nullable();
-            $table->unsignedInteger('trigger_id');
-            $table->unsignedInteger('sort_id');
-            $table->timestamps();
-
-            // Foreign key constraints
-            $table->foreign('trigger_id')->references('id')->on('triggers')->onDelete('cascade');
-            $table->foreign('sort_id')->references('id')->on('sorts')->onDelete('cascade');
-        });
-
-
         Schema::create('articles', function (Blueprint $table) {
-            $table->increments('id');
+            $table->autoIncrement('id')->primary();
             $table->string('reference', 50)->unique();
             $table->string('name', 255)->nullable();
             $table->string('description', 500)->nullable();
@@ -90,7 +43,7 @@ return new class extends Migration
 
 
         Schema::create('references', function (Blueprint $table) {
-            $table->increments('id');
+            $table->autoIncrement('id')->primary();
             $table->string('name', 50)->unique();
             $table->string('description', 500)->nullable();
             $table->unsignedInteger('category_id');
@@ -105,8 +58,9 @@ return new class extends Migration
 
 
         Schema::create('reference_categories', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 50);
+            $table->autoIncrement('id')->primary();
+            $table->string('name', 50)->unique();
+            $table->text('description');
             $table->timestamps();
         });
 
@@ -122,14 +76,14 @@ return new class extends Migration
 
 
         Schema::create('countries', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 50);
+            $table->autoIncrement('id')->primary();
+            $table->string('name', 50)->unique();
             $table->timestamps();
         });
 
 
         Schema::create('reference_links', function (Blueprint $table) {
-            $table->increments('id');
+            $table->autoIncrement('id')->primary();
             $table->string('name', 100);
             $table->string('link', 255)->nullable(); // Rendre non nullable si nécessaire
             $table->unsignedInteger('reference_id');
@@ -141,7 +95,7 @@ return new class extends Migration
 
 
         Schema::create('reference_files', function (Blueprint $table) {
-            $table->increments('id');
+            $table->autoIncrement('id')->primary();
             $table->string('name', 100)->nullable(); // Rendre non nullable si nécessaire
             $table->string('file_path', 255)->nullable(); // Rendre non nullable si nécessaire
             $table->string('file_crypt', 255)->nullable();
@@ -157,7 +111,7 @@ return new class extends Migration
 
         // Create typology_categories table
         Schema::create('typology_categories', function (Blueprint $table) {
-            $table->increments('id');
+            $table->autoIncrement('id')->primary();
             $table->string('name', 50)->unique();
             $table->text('description')->nullable();
             $table->unsignedInteger('parent_id')->nullable();
@@ -170,7 +124,7 @@ return new class extends Migration
 
         // Create typologies table
         Schema::create('typologies', function (Blueprint $table) {
-            $table->increments('id');
+            $table->autoIncrement('id')->primary();
             $table->string('name', 50)->unique();
             $table->text('description')->nullable();
             $table->unsignedInteger('category_id');
@@ -184,7 +138,7 @@ return new class extends Migration
 
         // Create classifications table
         Schema::create('classifications', function (Blueprint $table) {
-            $table->increments('id');
+            $table->autoIncrement('id')->primary();
             $table->string('cote', 10);
             $table->string('name', 50)->unique();
             $table->unsignedInteger('parent_id')->nullable();
@@ -197,54 +151,12 @@ return new class extends Migration
 
         // Create communicabilities table
         Schema::create('communicabilities', function (Blueprint $table) {
-            $table->increments('id');
+            $table->autoIncrement('id')->primary();
             $table->string('code', 3)->unique();
             $table->string('name', 50)->unique();
             $table->text('description')->nullable();
             $table->timestamps();
         });
-
-
-
-
-        // Create state table
-        Schema::create('state', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 50)->nullable();
-            $table->timestamps();
-        });
-
-
-
-
-        // Create rule_dul table
-        Schema::create('rule_duls', function (Blueprint $table) {
-            $table->unsignedInteger('dul_id');
-            $table->unsignedInteger('rule_id');
-            $table->text('description')->nullable();
-            $table->primary(['dul_id', 'rule_id']);
-            $table->timestamps();
-            // Foreign key constraints
-            $table->foreign('dul_id')->references('id')->on('duls')->onDelete('cascade');
-            $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
-        });
-
-
-
-
-        // Create rule_classification table
-        Schema::create('rule_classification', function (Blueprint $table) {
-            $table->unsignedInteger('classe_id');
-            $table->unsignedInteger('rule_id');
-            $table->timestamps();
-            $table->primary(['classe_id', 'rule_id']);
-            // Foreign key constraints
-            $table->foreign('classe_id')->references('id')->on('classifications')->onDelete('cascade');
-            $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
-        });
-
-
-
 
         // Create classification_communicability table
         Schema::create('classification_communicability', function (Blueprint $table) {
@@ -254,6 +166,78 @@ return new class extends Migration
             // Foreign key constraints
             $table->foreign('classification_id')->references('id')->on('classifications')->onDelete('cascade');
             $table->foreign('communicability_id')->references('id')->on('communicabilities')->onDelete('cascade');
+        });
+
+
+
+        /*
+
+
+
+             Règles
+
+
+
+        */
+
+
+        // Create rule table
+        Schema::create('rules', function (Blueprint $table) {
+            $table->autoIncrement('id')->primary();
+            $table->string('name', 100)->unique();
+            $table->text('description')->nullable();
+            $table->unsignedInteger('state_id');
+            $table->timestamps();
+            // Foreign key constraints
+            $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade');
+        });
+
+
+        // Create active table
+        Schema::create('actives', function (Blueprint $table) {
+            $table->autoIncrement('id')->primary();
+            $table->string('duration', 50);
+            $table->text('description')->nullable();
+            $table->unsignedInteger('rule_id');
+            $table->unsignedInteger('trigger_id');
+            $table->unsignedInteger('sort_id');
+            $table->timestamps();
+            // Foreign key constraints
+            $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
+            $table->foreign('trigger_id')->references('id')->on('triggers')->onDelete('cascade');
+            $table->foreign('sort_id')->references('id')->on('sorts')->onDelete('cascade');
+        });
+
+
+        // Create dua table
+        Schema::create('duas', function (Blueprint $table) {
+            $table->autoIncrement('id')->primary();
+            $table->string('duration', 50);
+            $table->text('description')->nullable();
+            $table->unsignedInteger('rule_id');
+            $table->unsignedInteger('trigger_id');
+            $table->unsignedInteger('sort_id');
+            $table->timestamps();
+            // Foreign key constraints
+            $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
+            $table->foreign('trigger_id')->references('id')->on('triggers')->onDelete('cascade');
+            $table->foreign('sort_id')->references('id')->on('sorts')->onDelete('cascade');
+        });
+
+
+        // Create dul table
+        Schema::create('duls', function (Blueprint $table) {
+            $table->autoIncrement('id')->primary();
+            $table->string('duration', 50);
+            $table->text('description')->nullable();
+            $table->unsignedInteger('rule_id');
+            $table->unsignedInteger('trigger_id');
+            $table->unsignedInteger('sort_id');
+            $table->timestamps();
+            // Foreign key constraints
+            $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
+            $table->foreign('trigger_id')->references('id')->on('triggers')->onDelete('cascade');
+            $table->foreign('sort_id')->references('id')->on('sorts')->onDelete('cascade');
         });
 
 
@@ -269,85 +253,55 @@ return new class extends Migration
         });
 
 
-
-
-        // Create dua table
-        Schema::create('duas', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('duration', 50)->unique();
-            $table->text('description')->nullable();
-            $table->unsignedInteger('trigger_id');
-            $table->unsignedInteger('sort_id');
-            $table->timestamps();
-            // Foreign key constraints
-            $table->foreign('trigger_id')->references('id')->on('triggers')->onDelete('cascade');
-            $table->foreign('sort_id')->references('id')->on('sorts')->onDelete('cascade');
-        });
-
-
-
-
-        // Create rule_dua table
-        Schema::create('rule_duas', function (Blueprint $table) {
+        // Create rule_classification table
+        Schema::create('rule_classification', function (Blueprint $table) {
+            $table->unsignedInteger('classification_id');
             $table->unsignedInteger('rule_id');
-            $table->unsignedInteger('dua_id');
-            $table->text('description')->nullable();
-            $table->primary(['rule_id', 'dua_id']);
-            $table->timestamps();
+            $table->primary(['classification_id', 'rule_id']);
             // Foreign key constraints
-            $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
-            $table->foreign('dua_id')->references('id')->on('duas')->onDelete('cascade');
-        });
-
-
-
-        // Create active table
-        Schema::create('actives', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('duration', 50);
-            $table->text('description')->nullable();
-            $table->unsignedInteger('trigger_id');
-            $table->unsignedInteger('sort_id');
-            $table->timestamps();
-            // Foreign key constraints
-            $table->foreign('trigger_id')->references('id')->on('triggers')->onDelete('cascade');
-            $table->foreign('sort_id')->references('id')->on('sorts')->onDelete('cascade');
-        });
-
-
-
-        // Create rule_active table
-        Schema::create('rule_actives', function (Blueprint $table) {
-            $table->unsignedInteger('active_id');
-            $table->unsignedInteger('rule_id');
-            $table->datetime('datetime');
-            $table->text('description')->nullable();
-            $table->primary(['active_id', 'rule_id']);
-            // Foreign key constraints
-            $table->foreign('active_id')->references('id')->on('actives')->onDelete('cascade');
+            $table->foreign('classification_id')->references('id')->on('classifications')->onDelete('cascade');
             $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
         });
 
 
 
-
-        // Create rule_state table
-        Schema::create('rule_state', function (Blueprint $table) {
-            $table->unsignedInteger('state_id');
-            $table->unsignedInteger('rule_id');
-            $table->primary(['state_id', 'rule_id']);
+        // Create trigger table
+        Schema::create('triggers', function (Blueprint $table) {
+            $table->autoIncrement('id')->primary();
+            $table->string('code', 5)->unique();
+            $table->text('description')->nullable();
             $table->timestamps();
-            // Foreign key constraints
-            $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade');
-            $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
         });
+
+
+        // Create sort table
+        Schema::create('sorts', function (Blueprint $table) {
+            $table->autoIncrement('id')->primary();
+            $table->string('name', 50)->unique();
+            $table->string('description', 500)->nullable();
+            $table->timestamps();
+        });
+
+
+
+
+
+        /*
+
+
+
+             Forum
+
+
+
+        */
 
 
 
 
         // Create forum_subject table
         Schema::create('forum_subjects', function (Blueprint $table) {
-            $table->increments('id');
+            $table->autoIncrement('id')->primary();
             $table->string('name', 50)->unique();
             $table->text('description')->nullable();
             $table->timestamps();
@@ -356,7 +310,7 @@ return new class extends Migration
 
         // Create forum_amswer table
         Schema::create('forum_amswers', function (Blueprint $table) {
-            $table->increments('id');
+            $table->autoIncrement('id')->primary();
             $table->string('name', 50);
             $table->unsignedInteger('parent_id')->nullable();
             $table->unsignedInteger('subject_id');
@@ -370,7 +324,7 @@ return new class extends Migration
 
         // Create forum_reaction_type table
         Schema::create('forum_reaction_types', function (Blueprint $table) {
-            $table->increments('id');
+            $table->autoIncrement('id')->primary();
             $table->string('name', 50)->unique();
             $table->string('url', 255)->nullable();
             $table->timestamps();
@@ -403,8 +357,6 @@ return new class extends Migration
         });
 
 
-
-
         // Create user_amswer table
         Schema::create('user_amswer', function (Blueprint $table) {
             $table->unsignedInteger('user_id');
@@ -414,9 +366,6 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('amswer_id')->references('id')->on('forum_amswers')->onDelete('cascade');
         });
-
-
-
 
 
         // Create forum_reaction_amswers table
@@ -433,6 +382,19 @@ return new class extends Migration
         });
 
 
+
+
+
+
+        /*
+
+
+
+             classification
+
+
+
+        */
 
 
         // Create classification_typology table
@@ -459,7 +421,33 @@ return new class extends Migration
 
 
 
+
+        /*
+
+
+
+                Setting
+
+
+
+        */
+
+
+
+        // Create state table
+        Schema::create('states', function (Blueprint $table) {
+            $table->autoIncrement('id')->primary();
+            $table->string('name', 50);
+            $table->text('description')->nullable();
+            $table->timestamps();
+        });
+
+
+
+
     }
+
+
 
     /**
      * Reverse the migrations.
@@ -484,13 +472,12 @@ return new class extends Migration
         Schema::dropIfExists('classification_communicability');
         Schema::dropIfExists('rule_classification');
         Schema::dropIfExists('rule_duls');
-        Schema::dropIfExists('states');
         Schema::dropIfExists('communicabilities');
         Schema::dropIfExists('classifications');
         Schema::dropIfExists('forum_reaction_types');
         Schema::dropIfExists('forum_amswers');
         Schema::dropIfExists('forum_subjects');
-        Schema::dropIfExists('rule_state');
+        Schema::dropIfExists('states');
         Schema::dropIfExists('rule_actives');
         Schema::dropIfExists('actives');
         Schema::dropIfExists('rule_duas');

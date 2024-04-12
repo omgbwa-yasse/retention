@@ -10,7 +10,7 @@
                     <div class="card-body">
                         <p><strong>Description:</strong> {{ $reference->description }}</p>
                         <p><strong>Catégorie:</strong>
-                            <a href="{{ route('reference-category.show', $reference->id) }}"> {{ $reference->category->name }} </a>
+                            <a href="{{ route('reference-category.show', $reference->category->id) }}"> {{ $reference->category->name }} </a>
                         </p>
 
                         <hr>
