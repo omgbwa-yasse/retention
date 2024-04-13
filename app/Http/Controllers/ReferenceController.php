@@ -141,4 +141,7 @@ class ReferenceController extends Controller
         $reference->delete();
         return redirect()->route('reference.index')->with('success', 'La référence a été supprimée avec succès.');
     }
+
+
+
 }

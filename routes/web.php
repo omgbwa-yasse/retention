@@ -77,8 +77,9 @@ use App\Http\Controllers\DulController;
 Route::resource('rule.dul', DulController::class);
 
 
-use App\Http\Controllers\BasketController;
-Route::resource('basket', BasketController::class);
+use App\Http\Controllers\DulReferenceController;
+Route::resource('rule.dul.dulreference', DulReferenceController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
+
 
 
 use App\Http\Controllers\ForumController;

@@ -10,9 +10,10 @@ use App\Models\Sort;
 
 class DulController extends Controller
 {
-    public function index(rule $rule)
+    public function index($rule_id)
     {
-        $duls = Dul::where('rule_id', $rule->id)->get();
+        $duls = Dul::where('rule_id', $rule_id)->get();
+        $rule = rule ::findOrFail($rule_id);
         return view('dul.dulIndex', compact('duls', 'rule'));
     }
 
@@ -41,16 +42,16 @@ class DulController extends Controller
         return redirect()->route('rule.dul.index', $rule)->with('success', 'Dul créé avec succès.');
     }
 
-    public function show($id)
+    public function show($rule_id, $id)
     {
         $dul = Dul::findOrFail($id);
-        return view('dul.dulShow', compact('dul'));
+        $rule = Rule::findOrFail($rule_id);
+        return view('dul.dulShow', compact('rule', 'dul'));
     }
 
     public function edit($id)
     {
         $dul = Dul::findOrFail($id);
-        // Vous pouvez inclure ici la logique nécessaire pour récupérer les données liées
         return view('dul.dulEdit', compact('dul'));
     }
 
@@ -75,4 +76,5 @@ class DulController extends Controller
         $dul->delete();
         return redirect()->route('dul.index')->with('success', 'Dul supprimé avec succès.');
     }
+
 }

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h2>Liste des rule dul</h2>
+        <h2>Règle n° {{ $rule->id }} - {{ $rule->name }}</h2>
         <a href="{{ route('rule.dul.create', $rule) }}" class="btn btn-primary mb-3">Ajouter un Dul</a>
         <table class="table">
             <thead>
