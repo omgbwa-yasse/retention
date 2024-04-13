@@ -11,6 +11,7 @@ class Rule extends Model
     use HasFactory;
 
     protected $fillable = [
+        'code',
         'name',
         'description',
         'state_id'
@@ -34,6 +35,12 @@ class Rule extends Model
     public function state()
     {
         return $this->belongsTo(State::class);
+    }
+
+
+    public function articles()
+    {
+        return $this->belongsTo(Articles::class, 'rule_article', 'rule_id');
     }
 
     public function classifications()

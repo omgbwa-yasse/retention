@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container">
-        <h1>List of Rule</h1>
+        <h1>Règles de conservation </h1>
         <a href="{{ route('rule.create') }}" class="btn btn-primary mb-2">Create New Item</a>
         <table class="table">
             <thead>

@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1>List of Reference</h1>
+                <h1>Référentiels juridiques </h1>
                 <a href="{{ route('reference.create') }}" class="btn btn-primary mb-3">Ajouter une référence</a>
                 <table class="table">
                     <thead>

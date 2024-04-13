@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h1>List of Activity</h1>
+        <h1>Activités</h1>
         <a href="{{ route('activity.create') }}" class="btn btn-primary mb-2">Create New Item</a>
         <table class="table">
             <thead>

@@ -164,7 +164,7 @@ return new class extends Migration
         // Create classifications table
         Schema::create('classifications', function (Blueprint $table) {
             $table->autoIncrement('id')->primary();
-            $table->string('cote', 10);
+            $table->string('code', 10);
             $table->string('name', 50)->unique();
             $table->unsignedInteger('parent_id')->nullable();
             $table->timestamps();
@@ -271,6 +271,7 @@ return new class extends Migration
         // Create rule table
         Schema::create('rules', function (Blueprint $table) {
             $table->autoIncrement('id')->primary();
+            $table->string('code', 50)->unique();
             $table->string('name', 100)->unique();
             $table->text('description')->nullable();
             $table->unsignedInteger('state_id');

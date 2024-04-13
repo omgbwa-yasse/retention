@@ -1,7 +1,7 @@
 @extends('index')
 
 @section('content')
-    <h1>List of Typologies</h1>
+    <h1>Typologies documentaires</h1>
     <a href="{{ route('typology.create') }}" class="btn btn-primary">Create Typology</a>
     <table class="table">
         <thead>
