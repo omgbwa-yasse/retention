@@ -18,8 +18,8 @@
                     </form>
                     <hr>
                     <a href="{{ route('active.create', $rule->id) }}" class="btn btn-primary">Ajouter un durée active</a>
-                    <a href="{{ route('active.create', $rule->id) }}" class="btn btn-primary">Ajouter un durée semi-active</a>
-                    <a href="{{ route('active.create', $rule->id) }}" class="btn btn-primary">Ajouter un durée passive</a>
+                    <a href="{{ route('rule.dua.create', $rule->id) }}" class="btn btn-primary">Ajouter un durée semi-active</a>
+                    <a href="{{ route('rule.dul.create', $rule->id) }}" class="btn btn-primary">Ajouter un durée passive</a>
                 </div>
             </div>
         </div>

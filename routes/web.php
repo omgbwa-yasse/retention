@@ -69,8 +69,12 @@ Route::resource('rule', RuleController::class);
 use App\Http\Controllers\activeController;
 Route::resource('active', ActiveController::class);
 
+use App\Http\Controllers\DuaController;
+Route::resource('rule.dua', DuaController::class);
 
 
+use App\Http\Controllers\DulController;
+Route::resource('rule.dul', DulController::class);
 
 
 use App\Http\Controllers\BasketController;
