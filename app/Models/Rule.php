@@ -18,27 +18,27 @@ class Rule extends Model
 
     public function actives()
     {
-        return $this->hasMany(RuleActive::class);
+        return $this->hasMany(Active::class);
     }
 
     public function duas()
     {
-        return $this->hasMany(RuleDua::class);
+        return $this->hasMany(Dua::class);
     }
 
     public function duls()
     {
-        return $this->hasMany(RuleDul::class);
-    }
-
-    public function classifications()
-    {
-        return $this->hasMany(RuleClassification::class);
+        return $this->hasMany(Dul::class);
     }
 
     public function state()
     {
         return $this->belongsTo(State::class);
+    }
+
+    public function classifications()
+    {
+        return $this->belongsToMany(Classification::class, 'rule_classification', 'rule_id', 'classification_id');
     }
 }
 

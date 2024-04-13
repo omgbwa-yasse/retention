@@ -77,9 +77,11 @@ use App\Http\Controllers\DulController;
 Route::resource('rule.dul', DulController::class);
 
 
-use App\Http\Controllers\DulReferenceController;
-Route::resource('rule.dul.dulreference', DulReferenceController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
+use App\Http\Controllers\DulArticleController;
+Route::resource('rule.dul.dulreference', DulArticleController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
 
+use App\Http\Controllers\RuleClassificationController;
+Route::resource('rule.classification', RuleClassificationController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
 
 
 use App\Http\Controllers\ForumController;

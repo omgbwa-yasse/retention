@@ -9,7 +9,12 @@ class RuleClassification extends Model
 {
     use HasFactory;
 
+    protected $table = 'rule_classification';
+
+    public $timestamps = false;
+
     protected $fillable = [
-        'date'
+        'classification_id',
+        'rule_id'
     ];
 }

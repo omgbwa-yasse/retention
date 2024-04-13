@@ -24,4 +24,9 @@ class Classification extends Model
     {
         return $this->hasMany(Classification::class, 'parent_id');
     }
+
+    public function rules()
+    {
+        return $this->belongsToMany(Rule::class, 'rule_classification', 'classification_id', 'rule_id');
+    }
 }

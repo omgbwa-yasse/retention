@@ -60,7 +60,7 @@ class RuleController extends Controller
     // Affiche un élément spécifique
     public function show(Rule $rule)
     {
-        $rule->load('state');
+        $rule->load('state')->load('actives')->load('duls')->load('state');
         return view('rule.ruleShow', compact('rule'));
     }
 
