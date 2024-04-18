@@ -10,14 +10,14 @@ class ActivityController extends Controller
     // Affiche la liste des éléments
     public function index()
     {
-        $activities = Classification::whereNotNull('parent_id')->orderBy('cote')->get();
+        $activities = Classification::whereNotNull('parent_id')->orderBy('code')->get();
         return view('activity.activityIndex', compact('activities'));
     }
 
     // Affiche le formulaire de création d'un élément
     public function create()
     {
-        $activities = Classification::orderBy('cote')->get();
+        $activities = Classification::orderBy('code')->get();
         return view('activity.activityCreate', compact('activities'));
     }
 
@@ -26,7 +26,7 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'cote' => 'required',
+            'code' => 'required',
             'name' => 'required',
             'parent_id' => 'nullable|exists:classifications,id',
         ]);
@@ -47,7 +47,7 @@ class ActivityController extends Controller
     public function edit($id)
     {
         $activity = Classification::findOrFail($id);
-        $activities = Classification::orderBy('cote')->get();
+        $activities = Classification::orderBy('code')->get();
         return view('activity.activityEdit', compact('activity', 'activities'));
     }
 
@@ -55,13 +55,13 @@ class ActivityController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'cote' => 'required',
+            'code' => 'required',
             'name' => 'required',
             'parent_id' => 'nullable|exists:classifications,id'
         ]);
 
         $item = Classification::findOrFail($id);
-        $item->cote = $request->input('cote');
+        $item->code = $request->input('code');
         $item->name = $request->input('name');
         $item->parent_id = $request->input('parent_id');
         $item->save();
