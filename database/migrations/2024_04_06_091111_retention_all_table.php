@@ -31,7 +31,7 @@ return new class extends Migration
 
         // Create user_address table
         Schema::create('user_addresses', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->unsignedInteger('user_id');
             $table->string('email1', 100)->unique();
             $table->string('email2', 100)->nullable();
@@ -62,7 +62,7 @@ return new class extends Migration
 
 
         Schema::create('references', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('name', 50)->unique();
             $table->string('description', 500)->nullable();
             $table->unsignedInteger('category_id');
@@ -77,7 +77,7 @@ return new class extends Migration
 
 
         Schema::create('reference_categories', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('name', 50)->unique();
             $table->text('description');
             $table->timestamps();
@@ -95,7 +95,7 @@ return new class extends Migration
 
 
         Schema::create('reference_links', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('name', 100);
             $table->string('link', 255)->nullable();
             $table->unsignedInteger('reference_id');
@@ -107,7 +107,7 @@ return new class extends Migration
 
 
         Schema::create('reference_files', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('name', 100)->nullable();
             $table->string('file_path', 255)->nullable();
             $table->string('file_crypt', 255)->nullable();
@@ -123,7 +123,7 @@ return new class extends Migration
 
 
         Schema::create('articles', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('reference', 50)->unique();
             $table->string('name', 255)->nullable();
             $table->string('description', 500)->nullable();
@@ -163,7 +163,7 @@ return new class extends Migration
 
         // Create classifications table
         Schema::create('classifications', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('code', 10);
             $table->string('name', 50)->unique();
             $table->unsignedInteger('parent_id')->nullable();
@@ -174,7 +174,7 @@ return new class extends Migration
 
         // Create communicabilities table
         Schema::create('communicabilities', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('code', 3)->unique();
             $table->string('name', 50)->unique();
             $table->text('description')->nullable();
@@ -194,7 +194,7 @@ return new class extends Migration
 
         // Create communicabilities table
         Schema::create('classification_orders', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('description', 50);
             $table->unsignedInteger('order_id');
             $table->unsignedInteger('classification_id');
@@ -207,7 +207,7 @@ return new class extends Migration
 
         // Create communicabilities table
         Schema::create('orders', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('name', 50)->unique();
             $table->string('description', 50)->nullable();
             $table->timestamps();
@@ -231,7 +231,7 @@ return new class extends Migration
 
         // Create typology_categories table
         Schema::create('typology_categories', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('name', 50)->unique();
             $table->text('description')->nullable();
             $table->unsignedInteger('parent_id')->nullable();
@@ -244,7 +244,7 @@ return new class extends Migration
 
         // Create typologies table
         Schema::create('typologies', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('name', 50)->unique();
             $table->text('description')->nullable();
             $table->unsignedInteger('category_id');
@@ -270,7 +270,7 @@ return new class extends Migration
 
         // Create rule table
         Schema::create('rules', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('code', 50)->unique();
             $table->string('name', 100)->unique();
             $table->text('description')->nullable();
@@ -283,7 +283,7 @@ return new class extends Migration
 
         // Create active table
         Schema::create('actives', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('duration', 50);
             $table->text('description')->nullable();
             $table->unsignedInteger('rule_id');
@@ -299,7 +299,7 @@ return new class extends Migration
 
         // Create dua table
         Schema::create('duas', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('duration', 50);
             $table->text('description')->nullable();
             $table->unsignedInteger('rule_id');
@@ -315,7 +315,7 @@ return new class extends Migration
 
         // Create dul table
         Schema::create('duls', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('duration', 50);
             $table->text('description')->nullable();
             $table->unsignedInteger('country_id');
@@ -357,7 +357,7 @@ return new class extends Migration
 
         // Create trigger table
         Schema::create('triggers', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('code', 5)->unique();
             $table->text('description')->nullable();
             $table->timestamps();
@@ -366,7 +366,7 @@ return new class extends Migration
 
         // Create sort table
         Schema::create('sorts', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('name', 50)->unique();
             $table->string('description', 500)->nullable();
             $table->timestamps();
@@ -391,7 +391,7 @@ return new class extends Migration
 
         // Create forum_subject table
         Schema::create('forum_subjects', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('name', 50)->unique();
             $table->text('description')->nullable();
             $table->timestamps();
@@ -400,7 +400,7 @@ return new class extends Migration
 
         // Create forum_amswer table
         Schema::create('forum_amswers', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('name', 50);
             $table->unsignedInteger('parent_id')->nullable();
             $table->unsignedInteger('subject_id');
@@ -414,7 +414,7 @@ return new class extends Migration
 
         // Create forum_reaction_type table
         Schema::create('forum_reaction_types', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('name', 50)->unique();
             $table->string('url', 255)->nullable();
             $table->timestamps();
@@ -487,7 +487,7 @@ return new class extends Migration
 
         // Create state table
         Schema::create('states', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('name', 50);
             $table->text('description')->nullable();
             $table->timestamps();
@@ -495,7 +495,7 @@ return new class extends Migration
 
 
         Schema::create('countries', function (Blueprint $table) {
-            $table->autoIncrement('id')->primary();
+            $table->id();
             $table->string('name', 50)->unique();
             $table->timestamps();
         });
