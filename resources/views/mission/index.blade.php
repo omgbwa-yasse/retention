@@ -9,7 +9,6 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
                     <th scope="col">Cote</th>
                     <th scope="col">Title</th>
 
@@ -19,7 +18,6 @@
             <tbody>
                 @foreach ($items as $item)
                     <tr>
-                        <th scope="row">{{ $item->id }}</th>
                         <td>{{ $item->cote }}</td>
                         <td>{{ $item->name }}</td>
                         <td>

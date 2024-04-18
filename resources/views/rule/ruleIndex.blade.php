@@ -9,7 +9,7 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">code</th>
                     <th scope="col">Title</th>
                     <th scope="col">Description</th>
                     <th scope="col">Actions</th>
@@ -18,7 +18,7 @@
             <tbody>
                 @foreach ($rules as $rule)
                     <tr>
-                        <th scope="row">{{ $rule->id }}</th>
+                        <th scope="row">000000</th>
                         <td>{{ $rule->name }}</td>
                         <td> {{ $rule->description }} </td>
                         <td>
