@@ -10,7 +10,7 @@ class Classification extends Model
     use HasFactory;
 
     protected $fillable = [
-        'cote',
+        'code',
         'name',
         'parent_id'
     ];
