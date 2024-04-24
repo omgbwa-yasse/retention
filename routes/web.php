@@ -34,6 +34,9 @@ Route::resource('mission', MissionController::class);
 use App\Http\Controllers\ActivityController;
 Route::resource('activity', ActivityController::class);
 
+use App\Http\Controllers\ActivityTypologyController;
+Route::resource('activity.typology', ActivityTypologyController::class);
+
 use App\Http\Controllers\ReferenceController;
 Route::resource('reference', ReferenceController::class);
 

@@ -30,4 +30,16 @@ class Classification extends Model
     {
         return $this->belongsToMany(Rule::class, 'rule_classification', 'classification_id', 'rule_id');
     }
+
+    public function domaine()
+    {
+        return $this->hasOne(self::class, 'id', 'parent_id')
+            ->with('domaine')
+            ->whereNull('parent_id');
+    }
+
+    public function typologies()
+    {
+        return $this->belongsToMany(Typology::class, 'classification_typology', 'activity_id', 'typology_id');
+    }
 }

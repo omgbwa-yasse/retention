@@ -83,6 +83,7 @@ class MissionController extends Controller
         $item = Classification::findOrFail($id);
         $item->code = $request->input('code');
         $item->name = $request->input('name');
+        $item->description = $request->input('description');
         $item->save();
 
         return redirect()->route('mission.index')->with('success', 'Item updated successfully.');

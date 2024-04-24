@@ -19,4 +19,9 @@ class Typology extends Model
     {
         return $this->belongsTo(TypologyCategory::class);
     }
+
+    public function classifications()
+    {
+        return $this->hasMany(Classification::class);
+    }
 }

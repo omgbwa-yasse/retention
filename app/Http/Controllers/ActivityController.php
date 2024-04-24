@@ -12,8 +12,14 @@ class ActivityController extends Controller
     {
         $activities = Classification::whereNotNull('parent_id')->orderBy('code')->get();
         $activities->load('parent');
+        $activities->load('rules');
+        $activities->load('domaine'); // refuse d'afficher les éléments
+        $activities->load('typologies');
         return view('activity.activityIndex', compact('activities'));
     }
+
+
+
 
     // Affiche le formulaire de création d'un élément
     public function create()
@@ -21,6 +27,10 @@ class ActivityController extends Controller
         $activities = Classification::orderBy('code')->get();
         return view('activity.activityCreate', compact('activities'));
     }
+
+
+
+
 
 
     // Enregistre un nouvel élément
@@ -33,9 +43,22 @@ class ActivityController extends Controller
             'parent_id' => 'nullable|exists:classifications,id',
         ]);
 
-        Classification::create($request->all());
+        $parent = Classification::findOrFail($request->parent_id);
+        $code = $parent->code . $request->input('code');
+
+        Classification::create([
+            'code' => $code,
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'parent_id' => $parent->id,
+        ]);
+
         return redirect()->route('activity.index')->with('success', 'Item created successfully.');
     }
+
+
+
+
 
     // Affiche un élément spécifique
     public function show($id)
@@ -45,6 +68,10 @@ class ActivityController extends Controller
         return view('activity.activityShow', compact('activity', 'parentName'));
     }
 
+
+
+
+
     // Affiche le formulaire de modification d'un élément
     public function edit($id)
     {
@@ -52,6 +79,9 @@ class ActivityController extends Controller
         $activities = Classification::orderBy('code')->get();
         return view('activity.activityEdit', compact('activity', 'activities'));
     }
+
+
+
 
     // Met à jour un élément spécifique
     public function update(Request $request, $id)
@@ -72,11 +102,22 @@ class ActivityController extends Controller
         return redirect()->route('activity.index')->with('success', 'Item updated successfully.');
     }
 
-    // Supprime un élément spécifique
+
+
+
     public function destroy($id)
     {
-        $item = Classification::findOrFail($id);
-        $item->delete();
-        return redirect()->route('activity.index')->with('success', 'Item deleted successfully.');
+        $classification = Classification::findOrFail($id);
+
+        if ($classification->children->isNotEmpty()) {
+            return back()->with('error', 'Impossible de supprimer cette classification. Elle a des enfants. Veuillez supprimer les enfants d\'abord.');
+        }
+
+        $classification->delete();
+
+        return redirect()->route('activity.index')->with('success', 'Élément supprimé avec succès.');
     }
+
+
+
 }
