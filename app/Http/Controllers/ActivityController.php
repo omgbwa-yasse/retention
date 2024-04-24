@@ -11,6 +11,7 @@ class ActivityController extends Controller
     public function index()
     {
         $activities = Classification::whereNotNull('parent_id')->orderBy('code')->get();
+        $activities->load('parent');
         return view('activity.activityIndex', compact('activities'));
     }
 
@@ -28,6 +29,7 @@ class ActivityController extends Controller
         $request->validate([
             'code' => 'required',
             'name' => 'required',
+            'description' => 'nullable|string',
             'parent_id' => 'nullable|exists:classifications,id',
         ]);
 
@@ -57,6 +59,7 @@ class ActivityController extends Controller
         $request->validate([
             'code' => 'required',
             'name' => 'required',
+            'description' => 'nullable|string',
             'parent_id' => 'nullable|exists:classifications,id'
         ]);
 

@@ -18,8 +18,8 @@
                         @csrf
 
                         <div class="form-group">
-                            <label for="cote">Cote</label>
-                            <input type="text" class="form-control" id="cote" name="cote" required>
+                            <label for="code">Cote</label>
+                            <input type="text" class="form-control" id="code" name="code" required>
                         </div>
 
                         <div class="form-group">
@@ -28,11 +28,35 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description" name="description"></textarea>
+                            <small id="character-count"></small>
+                        </div>
+
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                var description = document.getElementById('description');
+                                var characterCount = document.getElementById('character-count');
+                                var maxLength = 500;
+
+                                description.addEventListener('input', function() {
+                                    var remainingChars = maxLength - this.value.length;
+                                    characterCount.textContent = remainingChars + ' characters remaining';
+                                    if (remainingChars <= 0) {
+                                        characterCount.style.color = 'red';
+                                    } else {
+                                        characterCount.style.color = '';
+                                    }
+                                });
+                            });
+                        </script>
+
+                        <div class="form-group">
                         <select name="parent_id">
                             @foreach ($activities->groupBy('parent_id') as $parentId => $groupedActivities)
                                 <optgroup label="Parent ID: {{ $parentId }}">
                                     @foreach ($groupedActivities as $activity)
-                                        <option value="{{ $activity->id }}">{{ $activity->name }}</option>
+                                        <option value="{{ $activity->id }}">{{ $activity->code }} - {{ $activity->name }}</option>
                                     @endforeach
                                 </optgroup>
                             @endforeach

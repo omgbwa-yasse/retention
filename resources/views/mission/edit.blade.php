@@ -8,12 +8,16 @@
             @csrf
             @method('PUT')
             <div class="form-group">
-                <label for="cote">Cote</label>
-                <input type="text" class="form-control" id="cote" name="cote" value="{{ $mission->cote }}" required>
+                <label for="code">Cote</label>
+                <input type="text" class="form-control" id="code" name="code" value="{{ $mission->code }}" required>
             </div>
             <div class="form-group">
                 <label for="name">Title</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ $mission->title }}" required>
+                <input type="text" class="form-control" id="name" name="name" value="{{ $mission->name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="name">Description</label>
+                <input type="text" class="form-control" id="description" name="description" value="{{ $mission->description }}" required>
             </div>
             <button type="submit" class="btn btn-primary">Update</button>
         </form>

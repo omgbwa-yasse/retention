@@ -9,16 +9,17 @@
                 <tr>
                     <th scope="col">Cote</th>
                     <th scope="col">Title</th>
-                    <th scope="col">parent_id</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Parent</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($activities as $activity)
                     <tr>
-                        <th scope="row">{{ $activity->id }}</th>
-                        <td>{{ $activity->cote }}</td>
+                        <td>{{ $activity->parent->code }}.{{ $activity->code }}</td>
                         <td>{{ $activity->name }}</td>
+                        <td>{{ $activity->description }}</td>
                         <td> @if ($activity->parent) {{ $activity->parent->name }} @endif </td>
                         <td>
                             <a href="{{ route('activity.show', $activity->id) }}" class="btn btn-info btn-sm">View</a>

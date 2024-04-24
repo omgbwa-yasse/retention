@@ -13,7 +13,8 @@ class MissionController extends Controller
     // Affiche la liste des éléments
     public function index()
     {
-        $items = Classification::all();
+        $items = Classification::whereNull('parent_id')->orderBy('code')->get();
+        $items->load('children');
         return view('mission.index', compact('items'));
     }
 
@@ -32,8 +33,9 @@ class MissionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'cote' => 'required',
+            'code' => 'required',
             'name' => 'required',
+            'description' => 'nullable|string',
             'parent_id' => 'nullable|exists:classification,id',
         ]);
 
@@ -72,13 +74,15 @@ class MissionController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'cote' => 'required',
-            'name' => 'required'
+            'code' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
         ]);
 
+
         $item = Classification::findOrFail($id);
-        $item->cote = $request->input('cote');
-        $item->title = $request->input('name');
+        $item->code = $request->input('code');
+        $item->name = $request->input('name');
         $item->save();
 
         return redirect()->route('mission.index')->with('success', 'Item updated successfully.');
@@ -91,8 +95,13 @@ class MissionController extends Controller
     public function destroy($id)
     {
         $item = Classification::findOrFail($id);
-        $item->delete();
-        return redirect()->route('mission.index')->with('success', 'Item deleted successfully.');
+        if ($item->children->isEmpty()) {
+            $item->delete();
+            return redirect()->route('mission.index')->with('success', 'Item deleted successfully.');
+        } else {
+            return redirect()->route('mission.index')->with('error', 'Cannot delete item with children.');
+        }
+
     }
 }
 

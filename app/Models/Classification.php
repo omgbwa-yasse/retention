@@ -12,6 +12,7 @@ class Classification extends Model
     protected $fillable = [
         'code',
         'name',
+        'description',
         'parent_id'
     ];
 

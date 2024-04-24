@@ -31,6 +31,8 @@ class ReferenceController extends Controller
         ->leftJoin('reference_links', 'references.id', '=', 'reference_links.reference_id')
         ->get();
 
+        $references->load('links', 'countries', 'articles', 'files');
+
         return view('reference.referenceIndex', compact('references'));
     }
 
@@ -61,7 +63,7 @@ class ReferenceController extends Controller
             'country_id' => 'required|exists:countries,id',
         ]);
 
-        Reference::create($validatedData);
+        Reference::create($validatedData)->save();
 
         return redirect()->route('reference.index')->with('success', 'Référence créée avec succès');
     }
@@ -136,11 +138,15 @@ class ReferenceController extends Controller
 
     public function destroy(Reference $reference)
     {
-        dd($reference); // Ajouter la suppression des articles avant ou le contrôle
-        $reference = Reference::findOrFail($reference->id);
+        if (!$reference->files->isEmpty() && !$reference->links->isEmpty() && !$reference->articles->isEmpty()) {
+            throw new \Exception('Cannot delete reference with associated records.');
+        }
+
         $reference->delete();
+
         return redirect()->route('reference.index')->with('success', 'La référence a été supprimée avec succès.');
     }
+
 
 
 

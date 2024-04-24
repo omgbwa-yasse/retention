@@ -8,8 +8,8 @@
     @method('PUT')
 
     <div class="form-group">
-        <label for="cote">Cote</label>
-        <input type="text" class="form-control" id="cote" name="cote" value="{{ $activity->cote }}" required>
+        <label for="code">Cote</label>
+        <input type="text" class="form-control" id="code" name="code" value="{{ $activity->code }}" required>
     </div>
 
     <div class="form-group">
@@ -18,11 +18,16 @@
     </div>
 
     <div class="form-group">
+        <label for="description">Description</label>
+        <textarea class="form-control" id="description" name="description" value="{{ $activity->description }}"></textarea>
+    </div>
+
+    <div class="form-group">
         <label for="parent_id">Parent Category</label>
         <select class="form-control" id="parent_id" name="parent_id">
             <option value="">Creer un nouveau domaine</option>
             @foreach ($activities as $parent)
-                <option value="{{ $parent->id }}" @selected($activity->parent_id == $parent->id)>{{$parent->cote }} - {{$parent->name }}</option>
+                <option value="{{ $parent->id }}" @selected($activity->parent_id == $parent->id)>{{$parent->code }} - {{$parent->name }}</option>
             @endforeach
         </select>
     </div>

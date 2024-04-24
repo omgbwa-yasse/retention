@@ -166,6 +166,7 @@ return new class extends Migration
             $table->id();
             $table->string('code', 10);
             $table->string('name', 50)->unique();
+            $table->text('description')->nullable();
             $table->unsignedInteger('parent_id')->nullable();
             $table->timestamps();
             // Foreign key constraint

@@ -6,20 +6,34 @@
     <div class="container">
         <h1>Domaine d'activité</h1>
         <a href="{{ route('mission.create') }}" class="btn btn-primary mb-2">Create New Item</a>
+
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">Cote</th>
                     <th scope="col">Title</th>
-
+                    <th scope="col">Decription</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($items as $item)
                     <tr>
-                        <td>{{ $item->cote }}</td>
-                        <td>{{ $item->name }}</td>
+                        <td>{{ $item->code }}</td>
+                        <td>{{ $item->name }} ({{ $item->children->count() }} enfants)</td>
+                        <td>{{ $item->description }}</td>
                         <td>
                             <a href="{{ route('mission.show', $item->id) }}" class="btn btn-info btn-sm">View</a>
                             <a href="{{ route('mission.edit', $item->id) }}" class="btn btn-primary btn-sm">Edit</a>
