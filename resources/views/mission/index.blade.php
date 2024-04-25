@@ -5,7 +5,7 @@
 @section('content')
     <div class="container">
         <h1>Domaine d'activité</h1>
-        <a href="{{ route('mission.create') }}" class="btn btn-primary mb-2">Create New Item</a>
+        <a href="{{ route('mission.create') }}" class="btn btn-primary mb-2">Ajouter un domaine</a>
 
         @if (session('success'))
             <div class="alert alert-success">
@@ -19,24 +19,20 @@
             </div>
         @endif
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Cote</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Decription</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($items as $item)
-                    <tr>
-                        <td>{{ $item->code }}</td>
-                        <td>{{ $item->name }}</td>
-                        <td>{{ $item->description }}</td>
-                    </tr>
-                    @include('mission.subclasses', ['subclasses' => $item->children])
-                @endforeach
-            </tbody>
-        </table>
+
+
+        <!-- Horizontal under breakpoint -->
+
+        <ul class="list-group list-group-vertical">
+
+            @foreach ($items as $item)
+                <li class="list-group-item">{{ $item->code }} : {{ $item->name }}
+                    <a href="{{ route('mission.show', $item) }}" class="btn btn-primary mb-2 left-1">Voir</a>
+                </li>
+                @include('mission.subclasses', ['subclasses' => $item->children])
+            @endforeach
+        </ul>
+
+
     </div>
 @endsection

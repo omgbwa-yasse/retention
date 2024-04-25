@@ -14,33 +14,17 @@
             {{ session('error') }}
         </div>
     @endif
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <ul class="list-group list-group-vertical-xxl">
             @foreach ($typologies as $typology)
-                <tr>
-                    <td>{{ $typology->name }}</td>
-                    <td>{{ $typology->description }}</td>
-                    <td>{{ $typology->category ? $typology->category->name : 'N/A' }}</td>
-                    <td>
-                        <a href="{{ route('typology.show', $typology->id) }}" class="btn btn-sm btn-primary">Show</a>
-                        <a href="{{ route('typology.edit', $typology->id) }}" class="btn btn-sm btn-secondary">Edit</a>
-                        <form action="{{ route('typology.destroy', $typology->id) }}" method="POST" style="display: inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                        </form>
-                    </td>
-                </tr>
+            <!-- Horizontal under breakpoint -->
+                <li class="list-group-item" style="margin-top:30px;">
+                   <h2>{{ $typology->name }}</h2>
+                    {{ $typology->description }}
+                    <br>
+                    Domaine : <b> {{ $typology->category ? $typology->category->name : 'N/A' }}</b>
+                    <br>
+                    <a href="{{ route('typology.show', $typology->id) }}" class="btn btn-sm btn-primary">Show</a>
+                </li>
             @endforeach
-        </tbody>
-    </table>
+        </ul>
 @endsection

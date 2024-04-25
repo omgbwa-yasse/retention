@@ -11,4 +11,6 @@
     <p><strong>Level:</strong> {{ $item->level }}</p>
     <p><strong>Parent ID:</strong> {{ $item->parent_id }}</p>
     <a href="{{ route('mission.index') }}" class="btn btn-secondary">Back</a>
+    <a href="{{ route('mission.edit', $item->id) }}" class="btn btn-primary">Edit</a>
+    <a href="{{ route('mission.destroy', $item->id) }}" class="btn btn-primary bg-danger">supprimer</a>
 @endsection
