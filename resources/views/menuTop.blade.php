@@ -39,6 +39,8 @@
             @endguest
         </ul>
     </nav>
+    <br>
+    <br>
 @else
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0c9172;">
         <div class="container-fluid">
