@@ -8,6 +8,8 @@
             <div class="col-md-12">
                 <h1>Référentiels juridiques </h1>
                 <a href="{{ route('reference.create') }}" class="btn btn-primary mb-3">Ajouter une référence</a>
+                <a href="#" class="btn btn-danger mb-3">Panier</a>
+                <a href="#" class="btn btn-danger mb-3">Imprimer</a>
                 @if (session('success'))
                     <div class="alert alert-success">
                         {{ session('success') }}
@@ -18,35 +20,31 @@
                         {{ session('error') }}
                     </div>
                 @endif
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Titre</th>
-                            <th>Description</th>
-                            <th>Catégorie</th>
-                            <th>Pays</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
                         @foreach ($references as $item)
-                            <tr>
-                                <td>{{ $item->name }}</td>
-                                <td>{{ $item->description }}
-                                    @unless(optional($item->articles)->isEmpty())
-                                        ({{ optional($item->articles)->count() }} article.s)
-                                    @endunless
-                                </td>
-                                <td> <a href="{{ route('reference-category.show', $item->category->id) }}"> {{ $item->category->name }} </a></td>
-                                <td><a href=""> {{ $item->country_name }} </a></td>
-                                <td>
-                                    <form action="{{ route('reference.destroy', $item->id) }}" method="POST" style="display: inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
-                                    <a href="{{ route('reference.show', $item->id) }}" class="btn btn-sm btn-success">Voir plus</a>
-                                </td>
-                            </tr>
+
+                        <div class="list-group">
+                            <label class="list-group-item">
+                                <input class="form-check-input me-1" type="checkbox" value="" />
+                                <h2>{{ $item->name }}</h2>
+                                {{ $item->description }} <br>
+                                @unless(optional($item->articles)->isEmpty())
+                                    ({{ optional($item->articles)->count() }} article.s)
+                                @endunless
+                                <br>
+                                    <a href="{{ route('reference-category.show', $item->category->id) }}"> {{ $item->category->name }} </a>
+                            <br>
+                                <a href=""> {{ $item->country_name }} </a>
+                            <br>
+                                <form action="{{ route('reference.destroy', $item->id) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                                <a href="{{ route('reference.show', $item->id) }}" class="btn btn-sm btn-success">Voir plus</a>
+
+
+
+                            </label>
+                        </div>
                         @endforeach
                     </tbody>
                 </table>

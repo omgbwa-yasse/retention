@@ -22,6 +22,8 @@
                             </ul>
                         </div>
                     </li>
+
+
                     <li class="nav-item">
                         <a class="nav-link bg-dark text-white" data-toggle="collapse" href="#ajouter"
                             aria-expanded="true"><i class="bi bi-plus-circle"></i> Ajouter</a>
@@ -40,6 +42,20 @@
                             </ul>
                         </div>
                     </li>
+
+
+                    <li class="nav-item">
+                        <a class="nav-link bg-dark text-white" data-toggle="collapse" href="#ajouter"
+                            aria-expanded="true"><i class="bi bi-plus-circle"></i> Paniers</a>
+                        <div class="collapse show" id="ajouter">
+                            <ul class="list-unstyled pl-3">
+                                <li><a href="#" class="text-dark"><i class="bi bi-plus-square"></i> Gérer</a></li>
+                                <li><a href="#" class="text-dark"><i class="bi bi-plus-square"></i> Ajouter</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+
                     <li class="nav-item">
                         <a class="nav-link bg-dark text-white" data-toggle="collapse" href="#controle"><i
                                 class="bi bi-shield-check"></i> Contrôle</a>
