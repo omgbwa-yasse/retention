@@ -39,7 +39,7 @@ return new class extends Migration
             $table->string('phone2', 20)->nullable();
             $table->string('country', 20);
             $table->string('town', 20);
-            $table->string('address', 50);
+            $table->string('address', 10);
             $table->timestamps();
 
             // Foreign key constraints
@@ -63,8 +63,8 @@ return new class extends Migration
 
         Schema::create('references', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50)->unique();
-            $table->string('description', 500)->nullable();
+            $table->string('name', 100)->unique();
+            $table->string('description', 100)->nullable();
             $table->unsignedInteger('category_id');
             $table->unsignedInteger('country_id');
             $table->timestamps();
@@ -78,7 +78,7 @@ return new class extends Migration
 
         Schema::create('reference_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50)->unique();
+            $table->string('name', 100)->unique();
             $table->text('description');
             $table->timestamps();
         });
@@ -124,9 +124,9 @@ return new class extends Migration
 
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
-            $table->string('reference', 50)->unique();
+            $table->string('reference', 10)->unique();
             $table->string('name', 255)->nullable();
-            $table->string('description', 500)->nullable();
+            $table->string('description', 100)->nullable();
             $table->unsignedInteger('reference_id');
             $table->timestamps();
             // Foreign key constraints
@@ -159,13 +159,11 @@ return new class extends Migration
         });
 
 
-
-
         // Create classifications table
         Schema::create('classifications', function (Blueprint $table) {
             $table->id();
             $table->string('code', 10);
-            $table->string('name', 50)->unique();
+            $table->string('name', 100)->unique();
             $table->text('description')->nullable();
             $table->unsignedInteger('parent_id')->nullable();
             $table->timestamps();
@@ -177,7 +175,7 @@ return new class extends Migration
         Schema::create('communicabilities', function (Blueprint $table) {
             $table->id();
             $table->string('code', 3)->unique();
-            $table->string('name', 50)->unique();
+            $table->string('name', 100)->unique();
             $table->text('description')->nullable();
             $table->timestamps();
         });
@@ -196,7 +194,7 @@ return new class extends Migration
         // Create communicabilities table
         Schema::create('classification_orders', function (Blueprint $table) {
             $table->id();
-            $table->string('description', 50);
+            $table->string('description', 10);
             $table->unsignedInteger('order_id');
             $table->unsignedInteger('classification_id');
             $table->timestamps();
@@ -209,8 +207,8 @@ return new class extends Migration
         // Create communicabilities table
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50)->unique();
-            $table->string('description', 50)->nullable();
+            $table->string('name', 100)->unique();
+            $table->string('description', 10)->nullable();
             $table->timestamps();
         });
 
@@ -233,7 +231,7 @@ return new class extends Migration
         // Create typology_categories table
         Schema::create('typology_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50)->unique();
+            $table->string('name', 100)->unique();
             $table->text('description')->nullable();
             $table->unsignedInteger('parent_id')->nullable();
             $table->timestamps();
@@ -246,7 +244,7 @@ return new class extends Migration
         // Create typologies table
         Schema::create('typologies', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50)->unique();
+            $table->string('name', 100)->unique();
             $table->text('description')->nullable();
             $table->unsignedInteger('category_id');
             $table->timestamps();
@@ -272,7 +270,7 @@ return new class extends Migration
         // Create rule table
         Schema::create('rules', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 50)->unique();
+            $table->string('code', 10)->unique();
             $table->string('name', 100)->unique();
             $table->text('description')->nullable();
             $table->unsignedInteger('state_id');
@@ -285,7 +283,7 @@ return new class extends Migration
         // Create active table
         Schema::create('actives', function (Blueprint $table) {
             $table->id();
-            $table->string('duration', 50);
+            $table->string('duration', 10);
             $table->text('description')->nullable();
             $table->unsignedInteger('rule_id');
             $table->unsignedInteger('trigger_id');
@@ -301,7 +299,7 @@ return new class extends Migration
         // Create dua table
         Schema::create('duas', function (Blueprint $table) {
             $table->id();
-            $table->string('duration', 50);
+            $table->string('duration', 10);
             $table->text('description')->nullable();
             $table->unsignedInteger('rule_id');
             $table->unsignedInteger('trigger_id');
@@ -317,7 +315,7 @@ return new class extends Migration
         // Create dul table
         Schema::create('duls', function (Blueprint $table) {
             $table->id();
-            $table->string('duration', 50);
+            $table->string('duration', 10);
             $table->text('description')->nullable();
             $table->unsignedInteger('country_id');
             $table->unsignedInteger('rule_id');
@@ -368,10 +366,84 @@ return new class extends Migration
         // Create sort table
         Schema::create('sorts', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50)->unique();
-            $table->string('description', 500)->nullable();
+            $table->string('name', 100)->unique();
+            $table->string('description', 100)->nullable();
             $table->timestamps();
         });
+
+
+
+        /*
+
+
+
+             Baskets
+
+
+        */
+
+
+        // Create baskets
+        Schema::create('baskets', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 100)->unique();
+            $table->text('description')->nullable();
+            $table->timestamps();
+        });
+
+
+        // Create baskets types
+        Schema::create('basket_types', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 100)->unique();
+            $table->timestamps();
+        });
+
+
+        // Create relation basket rule
+        Schema::create('basket_rule', function (Blueprint $table) {
+            $table->unsignedInteger('rule_id');
+            $table->unsignedInteger('basket_id');
+            $table->primary(['rule_id', 'basket_id']);
+            $table->foreign('basket_id')->references('id')->on('baskets')->onDelete('cascade');
+            $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
+        });
+
+
+
+        // Create relation basket classification
+        Schema::create('basket_classification', function (Blueprint $table) {
+            $table->unsignedInteger('classification_id');
+            $table->unsignedInteger('basket_id');
+            $table->primary(['classification_id', 'basket_id']);
+            $table->foreign('basket_id')->references('id')->on('baskets')->onDelete('cascade');
+            $table->foreign('classification_id')->references('id')->on('classifications')->onDelete('cascade');
+        });
+
+
+
+        // Create relation basket reference
+        Schema::create('basket_reference', function (Blueprint $table) {
+            $table->unsignedInteger('type_id');
+            $table->unsignedInteger('reference_id');
+            $table->primary(['reference_id', 'basket_id']);
+            $table->foreign('basket_id')->references('id')->on('baskets')->onDelete('cascade');
+            $table->foreign('reference_id')->references('id')->on('references')->onDelete('cascade');
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -393,7 +465,7 @@ return new class extends Migration
         // Create forum_subject table
         Schema::create('forum_subjects', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50)->unique();
+            $table->string('name', 100)->unique();
             $table->text('description')->nullable();
             $table->timestamps();
         });
@@ -402,7 +474,7 @@ return new class extends Migration
         // Create forum_amswer table
         Schema::create('forum_amswers', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50);
+            $table->string('name', 100);
             $table->unsignedInteger('parent_id')->nullable();
             $table->unsignedInteger('subject_id');
             $table->timestamps();
@@ -416,7 +488,7 @@ return new class extends Migration
         // Create forum_reaction_type table
         Schema::create('forum_reaction_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50)->unique();
+            $table->string('name', 100)->unique();
             $table->string('url', 255)->nullable();
             $table->timestamps();
         });
@@ -489,7 +561,7 @@ return new class extends Migration
         // Create state table
         Schema::create('states', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50);
+            $table->string('name', 100);
             $table->text('description')->nullable();
             $table->timestamps();
         });
@@ -497,7 +569,7 @@ return new class extends Migration
 
         Schema::create('countries', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50)->unique();
+            $table->string('name', 100)->unique();
             $table->timestamps();
         });
 
@@ -562,6 +634,24 @@ return new class extends Migration
         Schema::dropIfExists('actives');
         Schema::dropIfExists('triggers');
         Schema::dropIfExists('sorts');
+
+
+        /*
+
+        Basket
+
+        */
+
+
+        Schema::dropIfExists('basket_reference');
+        Schema::dropIfExists('basket_classification');
+        Schema::dropIfExists('basket_rule');
+        Schema::dropIfExists('basket_types');
+        Schema::dropIfExists('baskets');
+
+
+
+
 
 
         /*

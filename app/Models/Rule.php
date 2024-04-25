@@ -47,6 +47,11 @@ class Rule extends Model
     {
         return $this->belongsToMany(Classification::class, 'rule_classification', 'rule_id', 'classification_id');
     }
+
+    public function baskets()
+    {
+        return $this->belongsToMany(Basket::class, 'basket_rule', 'rule_id', 'basket_id');
+    }
 }
 
 

@@ -42,4 +42,9 @@ class Classification extends Model
     {
         return $this->belongsToMany(Typology::class, 'classification_typology', 'activity_id', 'typology_id');
     }
+
+    public function baskets()
+    {
+        return $this->belongsToMany(Basket::class, 'basket_classification', 'classification_id', 'basket_id');
+    }
 }

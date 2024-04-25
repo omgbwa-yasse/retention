@@ -42,4 +42,8 @@ class Reference extends Model
         return $this->hasMany(Articles::class);
     }
 
+    public function baskets()
+    {
+        return $this->belongsToMany(Basket::class, 'basket_reference', 'reference_id', 'basket_id');
+    }
 }
