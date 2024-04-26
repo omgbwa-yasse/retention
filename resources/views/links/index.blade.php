@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <h1>Links for Reference {{ $reference->name }}</h1>
-
+    <a href="{{ route('reference.show', $reference) }}" class="btn btn-primary mb-3">Retour </a>
     <a href="{{ route('reference.link.create', $reference->id) }}" class="btn btn-primary mb-3">Create Link</a>
 
     <table class="table">

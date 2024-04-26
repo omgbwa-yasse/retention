@@ -13,17 +13,17 @@
 
             <!-- Ajouter les fichiers -->
 
-
             <h4>Fichiers associés :</h4>
             @if($reference->files->isEmpty())
-                <p>Aucun fichier associé à cette référence.</p>
+            <p>Aucun fichier associé à cette référence.</p>
             @else
 
             @foreach($reference->files as $file)
                 <div class="list-group">
                     <label class="list-group-item">
-                        <a href="{{ route('reference.file.download', [$reference, $file->file_crypt]) }}" download>
-                            Télécharger {{ $file->name }}
+                    Source : {{ $file->name }}
+                        <a class="btn btn-sm bg-light" href="{{ route('reference.file.show', [$reference, $file]) }}">
+                            Consulter
                         </a>
                     </label>
                 </div>

@@ -37,8 +37,6 @@ class FileController extends Controller
             'file' => 'required|file|max:10240', // Max file size is 10 MB
         ]);
 
-        dd($request);
-
         $filePath = $request->file('file')->store('reference_files');
         $fileCrypt = $request->file('file')->hashName();
 

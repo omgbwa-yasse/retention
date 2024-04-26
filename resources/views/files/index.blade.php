@@ -5,7 +5,8 @@
     <div class="row">
         <div class="col-md-12">
             <h1>Files for {{ $reference->name }}</h1>
-            <a href="{{ route('reference.file.create', $reference) }}" class="btn btn-primary mb-3">Add File</a>
+            <a href="{{ route('reference.show', $reference) }}" class="btn btn-primary mb-3">Retour </a>
+            <a href="{{ route('reference.file.create', $reference) }}" class="btn btn-primary mb-3">Ajouter un fichier</a>
             <table class="table">
                 <thead>
                     <tr>
