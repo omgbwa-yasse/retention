@@ -87,26 +87,24 @@ class ReferenceController extends Controller
     {
 
 
-        // Validation des données du formulaire
+
         $validatedData = $request->validate([
             'name' => 'required|max:50|unique:references,name,'.$id,
             'description' => 'nullable|max:500',
             'category_id' => 'required|exists:reference_categories,id',
-            'files.*' => 'file|max:10240', // Taille maximale de 10 Mo par fichier
-            'links.*' => 'url|max:255', // Limite maximale de 255 caractères pour les liens
+            'files.*' => 'file|max:20240',
+            'links.*' => 'url|max:255',
         ]);
 
-        // Mettre à jour la référence
+
         $reference = Reference::findOrFail($id);
         $reference->update($validatedData);
 
-        // Supprimer les anciens fichiers associés
         $reference->files()->delete();
 
-        // Enregistrer les nouveaux fichiers associés à la référence
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
-                $file->store('public/files'); // Enregistrer le fichier dans le stockage
+                $file->store('public/files');
                 ReferenceFile::create([
                     'name' => $file->getClientOriginalName(),
                     'file_path' => $file->store('public/files'),
@@ -115,10 +113,8 @@ class ReferenceController extends Controller
             }
         }
 
-        // Supprimer les anciens liens associés
         $reference->links()->delete();
 
-        // Enregistrer les nouveaux liens associés à la référence
         if ($request->has('links')) {
             foreach ($request->links as $link) {
                 ReferenceLink::create([

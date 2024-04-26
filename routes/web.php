@@ -42,21 +42,25 @@ Route::resource('reference', ReferenceController::class);
 
 
 use App\Http\Controllers\ArticleController;
+Route::resource('reference.article', ArticleController::class);
 
-Route::get('reference/{reference}/article/create', [ArticleController::class, 'create'])->name('article.create');
-Route::post('reference/{reference}/article', [ArticleController::class, 'store'])->name('article.store');
-Route::get('reference/{reference}/article/{article}', [ArticleController::class, 'show'])->name('article.show');
-Route::get('reference/{reference}/article/{article}/edit', [ArticleController::class, 'edit'])->name('article.edit');
-Route::put('reference/{reference}/article/{article}', [ArticleController::class, 'update'])->name('article.update');
-Route::delete('reference/{reference}/article/{article}', [ArticleController::class, 'destroy'])->name('article.destroy');
-Route::get('references/{reference}/article', [ArticleController::class, 'index'])->name('article.index');
+use App\Http\Controllers\LinkController;
+Route::resource('reference.link', LinkController::class);
+
+use App\Http\Controllers\FileController;
+Route::resource('reference.file', FileController::class)->except(['download']);
+Route::get('reference/{reference}/file/{file}/download', 'FileController@download')->name('reference.file.download');
+
+
+/*
+    Route::get('reference/{reference}/file/{file}/download', 'FileController@download')->name('reference.file.download');
+*/
+
 
 
 use App\Http\Controllers\ReferenceCategoryController;
 Route::resource('reference-category', ReferenceCategoryController::class);
 
-use App\Http\Controllers\RessourceController;
-Route::resource('ressource', RessourceController::class);
 
 use App\Http\Controllers\TypologyController;
 Route::resource('typology', TypologyController::class);

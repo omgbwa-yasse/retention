@@ -10,6 +10,6 @@ class ReferenceLink extends Model
 
     public function reference()
     {
-        return $this->belongsTo('App\Models\Reference');
+        return $this->belongsTo(Reference::class);
     }
 }

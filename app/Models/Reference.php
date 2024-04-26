@@ -46,4 +46,5 @@ class Reference extends Model
     {
         return $this->belongsToMany(Basket::class, 'basket_reference', 'reference_id', 'basket_id');
     }
+
 }

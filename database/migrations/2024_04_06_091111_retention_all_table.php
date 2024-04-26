@@ -96,8 +96,8 @@ return new class extends Migration
 
         Schema::create('reference_links', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100);
-            $table->string('link', 255)->nullable();
+            $table->string('name', 100)->nullable();
+            $table->string('link', 255)->unique();
             $table->unsignedInteger('reference_id');
             $table->timestamps();
 

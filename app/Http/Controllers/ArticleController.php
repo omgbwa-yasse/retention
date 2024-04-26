@@ -45,22 +45,18 @@ class ArticleController extends Controller
             'reference_id' => $reference->id,
         ]);
 
-        return redirect()->route('article.index', $reference)->with('success', 'Article created successfully.');
+        return redirect()->route('reference.article.index', $reference)->with('success', 'Article created successfully.');
     }
 
 
 
 
-
-
-    public function edit(Reference $reference_id, Articles $Article_id_id)
+    public function edit(Reference $reference, Articles $article)
     {
-        $reference = Reference::where('id', $reference_id)->firstOrFail();
-        $article = Reference::where('id', $reference_id)->firstOrFail();
-        return view('articles.articleEdit', compact('Article', 'reference'));
+        $reference = Reference::where('id', $reference->id)->firstOrFail();
+        $article = Reference::where('id', $article->id)->firstOrFail();
+        return view('articles.articleEdit', compact('article', 'reference'));
     }
-
-
 
 
 
@@ -74,7 +70,7 @@ class ArticleController extends Controller
         $Articles->title = $request->input('title');
         $Articles->description = $request->input('description');
         $Articles->save();
-        return redirect()->route('reference.articles.index', $reference_id)->with('success', 'Articles updated successfully.');
+        return redirect()->route('reference.article.index', $reference_id)->with('success', 'Articles updated successfully.');
     }
 
 
@@ -84,6 +80,6 @@ class ArticleController extends Controller
     public function destroy(Reference $reference, Articles $Article)
     {
         $Article->delete();
-        return redirect()->route('article.index', $reference)->with('success', 'Articles deleted successfully.');
+        return redirect()->route('reference.article.index', $reference)->with('success', 'Articles deleted successfully.');
     }
 }

@@ -3,7 +3,7 @@
 @section('content')
     <h1>Create Article for Reference: {{ $reference->name }}</h1>
 
-    <form action="{{ route('article.store', $reference->id) }}" method="POST">
+    <form action="{{ route('reference.article.store', $reference->id) }}" method="POST">
         @csrf
 
         <div class="form-group">
