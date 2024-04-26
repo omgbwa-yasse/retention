@@ -18,11 +18,20 @@
             @if($reference->files->isEmpty())
                 <p>Aucun fichier associé à cette référence.</p>
             @else
-                <ul>
-                    @foreach($reference->files as $file)
-                        <li><a href="{{ asset($file->file_path) }}">{{ $file->title }}</a></li>
-                    @endforeach
-                </ul>
+
+            @foreach($reference->files as $file)
+                <div class="list-group">
+                    <label class="list-group-item">
+                        <a href="{{ route('reference.file.download', [$reference, $file->file_crypt]) }}" download>
+                            Télécharger {{ $file->name }}
+                        </a>
+                    </label>
+                </div>
+            @endforeach
+
+
+
+
             @endif
             <a href="{{ route('reference.file.create', $reference) }}" class="btn btn-primary btn-success">Ajouter un fichier</a>
             <hr>
@@ -35,17 +44,15 @@
                 <p>Aucun lien associé à cette référence.</p>
             @else
 
-                <ul>
-                    @foreach($reference->links as $link)
+            @foreach($reference->links as $link)
+                <div class="list-group">
+                    <label class="list-group-item">
+                        <a href="{{ $link->link }}">{{ $link->name }} </a> : Télécharger le fichier
+                        <p class="text-success">{{ $link->link }} <a name="" id="" class="btn btn-sm btn-secondary" href="{{ route('reference.link.show', [$reference, $link]) }}" role="button" >Voir</a></p>
+                    </label>
+                </div>
+            @endforeach
 
-                    <div class="list-group">
-                        <label class="list-group-item">
-                            <a href="{{ $link->link }}">{{ $link->name }} </a> : Télécharger le fichier
-                            <p class="text-success">{{ $link->link }} <a name="" id="" class="btn btn-sm btn-secondary" href="{{ route('reference.link.show', [$reference, $link]) }}" role="button" >Voir</a></p>
-                        </label>
-                    </div>
-                    @endforeach
-                </ul>
             @endif
             <a href="{{ route('reference.link.create', $reference)}}" class="btn btn-primary btn-success">Ajouter un lien</a>
             <hr>
@@ -59,18 +66,14 @@
                 <p>Aucun lien associé à cette référence.</p>
 
             @else
-
-                <ul>
-                    @foreach($reference->articles as $article)
-                    <div class="list-group">
-                        <label class="list-group-item">
-                            <a href="{{ route('reference.article.show', [$reference, $article]) }}">{{ $article->reference }} - {{ $article->name }}</a>
-                        </label>
+            @foreach($reference->articles as $article)
+                <div class="list-group">
+                    <label class="list-group-item">
+                        <a href="{{ route('reference.article.show', [$reference, $article]) }}">{{ $article->reference }} - {{ $article->name }}</a>
+                    </label>
                     </div>
-                    @endforeach
-                </ul>
+            @endforeach
             @endif
-
         </div>
 
 

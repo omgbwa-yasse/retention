@@ -1,10 +1,12 @@
 <?php
 
+
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Reference;
 use App\Models\ReferenceFile;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class FileController extends Controller
 {
@@ -35,7 +37,9 @@ class FileController extends Controller
             'file' => 'required|file|max:10240', // Max file size is 10 MB
         ]);
 
-        $filePath = $request->file('file')->store('reference-files');
+        dd($request);
+
+        $filePath = $request->file('file')->store('reference_files');
         $fileCrypt = $request->file('file')->hashName();
 
         ReferenceFile::create([
@@ -109,16 +113,27 @@ class FileController extends Controller
     }
 
 
-    public function download(Reference $reference, ReferenceFile $file)
+
+    public function download(Reference $reference, string $fileCrypt)
     {
-        $filePath = Storage::path($file->file_path);
-        if (!file_exists($filePath)) {
-            abort(404, 'File not found');
+
+        $referenceFile = ReferenceFile::where('reference_id', $reference->id)
+                                    ->where('file_crypt', $fileCrypt)
+                                    ->first();
+
+        if (!$referenceFile) {
+            abort(404, 'File not found.');
         }
-        return response()->download($filePath, $file->name);
+
+        $filePath = storage_path('app/' . $referenceFile->file_path);
+
+
+        if (!file_exists($filePath)) {
+            abort(404, 'File not found.');
+        }
+
+        return response()->download($filePath, $referenceFile->name);
     }
-
-
 
 }
 
