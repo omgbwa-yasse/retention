@@ -57,7 +57,7 @@ class ReferenceController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:50|unique:references',
+            'name' => 'required|string|max:500|unique:references',
             'description' => 'nullable|string|max:500',
             'category_id' => 'required|exists:reference_categories,id',
             'country_id' => 'required|exists:countries,id',
@@ -89,7 +89,7 @@ class ReferenceController extends Controller
 
 
         $validatedData = $request->validate([
-            'name' => 'required|max:50|unique:references,name,'.$id,
+            'name' => 'required|max:500|unique:references,name,'.$id,
             'description' => 'nullable|max:500',
             'category_id' => 'required|exists:reference_categories,id',
             'files.*' => 'file|max:20240',
