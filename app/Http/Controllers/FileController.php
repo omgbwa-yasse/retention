@@ -112,19 +112,17 @@ class FileController extends Controller
 
 
 
-    public function download(Reference $reference, string $fileCrypt)
+    public function download(Reference $reference, string $name)
     {
-
         $referenceFile = ReferenceFile::where('reference_id', $reference->id)
-                                    ->where('file_crypt', $fileCrypt)
-                                    ->first();
+                                        ->where('name', $name)
+                                        ->first();
 
         if (!$referenceFile) {
             abort(404, 'File not found.');
         }
 
         $filePath = storage_path('app/' . $referenceFile->file_path);
-
 
         if (!file_exists($filePath)) {
             abort(404, 'File not found.');
