@@ -25,10 +25,13 @@
                     <th scope="col">Typologies</th>
                     <th scope="col">Durée dans les bureaux</th>
                     <th scope="col">Déclencher</th>
+                    <th scope="col">Sort</th>
                     <th scope="col">Dureée la salle de préarchivage</th>
                     <th scope="col">Déclencheur</th>
+                    <th scope="col">Sort</th>
                     <th scope="col">Durée aux d'archives historiques (légale)</th>
                     <th scope="col">Référence juridique</th>
+                    <th scope="col">Sort final</th>
                 </tr>
             </thead>
             <tbody>
@@ -43,9 +46,15 @@
                     <td>R1C2</td>
                     <td>R1C3</td>
                     <td>R1C2</td>
+                    <td>R1C2</td>
+                    <td>R1C3</td>
+                    <td>R1C2</td>
                 </tr>
                 <tr class="">
                     <td scope="row">Item</td>
+                    <td>Item</td>
+                    <td>Item</td>
+                    <td>Item</td>
                     <td>Item</td>
                     <td>Item</td>
                     <td>Item</td>
