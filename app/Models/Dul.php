@@ -36,9 +36,9 @@ class Dul extends Model
         return $this->belongsTo(Sort::class, 'sort_id');
     }
 
-    public function country()
+    public function countries()
     {
-        return $this->belongsTo(Country::class, 'country_id');
+        return $this->belongsTo(country::class);
     }
 
     public function articles()

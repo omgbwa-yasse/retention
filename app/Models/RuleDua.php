@@ -12,4 +12,9 @@ class RuleDua extends Model
     protected $fillable = [
         'description'
     ];
+
+    public function countries()
+    {
+        return $this->belongsTo(country::class);
+    }
 }

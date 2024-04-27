@@ -70,6 +70,10 @@ use App\Http\Controllers\SettingController;
 Route::resource('setting', SettingController::class);
 
 
+use App\Http\Controllers\charterController;
+Route::resource('charter', charterController::class);
+
+
 use App\Http\Controllers\RuleController;
 Route::resource('rule', RuleController::class);
 

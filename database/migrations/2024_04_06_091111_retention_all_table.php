@@ -14,7 +14,6 @@ return new class extends Migration
 
 
 
-
         // Create user_rule table
         Schema::create('user_rule', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
@@ -25,6 +24,16 @@ return new class extends Migration
             $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
         });
 
+
+        // Create user_rule table
+        Schema::create('user_country', function (Blueprint $table) {
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('countries_id');
+            $table->primary(['user_id', 'country_id']);
+            // Foreign key constraints
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
+        });
 
 
 
@@ -41,7 +50,6 @@ return new class extends Migration
             $table->string('town', 20);
             $table->string('address', 10);
             $table->timestamps();
-
             // Foreign key constraints
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
@@ -68,7 +76,6 @@ return new class extends Migration
             $table->unsignedInteger('category_id');
             $table->unsignedInteger('country_id');
             $table->timestamps();
-
             // Foreign key constraints
             $table->foreign('category_id')->references('id')->on('reference_categories')->onDelete('cascade');
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
@@ -100,7 +107,6 @@ return new class extends Migration
             $table->string('link', 255)->unique();
             $table->unsignedInteger('reference_id');
             $table->timestamps();
-
             $table->foreign('reference_id')->references('id')->on('references')->onDelete('cascade');
             $table->index('reference_id');
         });
@@ -113,7 +119,6 @@ return new class extends Migration
             $table->string('file_crypt', 255)->nullable();
             $table->unsignedInteger('reference_id');
             $table->timestamps();
-
             // Foreign key constraint
             $table->foreign('reference_id')->references('id')->on('references')->onDelete('cascade');
             $table->index('reference_id');
@@ -133,9 +138,6 @@ return new class extends Migration
             $table->foreign('reference_id')->references('id')->on('references')->onDelete('cascade');
         });
 
-
-
-
         /*
 
 
@@ -145,8 +147,6 @@ return new class extends Migration
 
 
         */
-
-
 
         // Create classification_typology table
         Schema::create('classification_typology', function (Blueprint $table) {
@@ -166,9 +166,11 @@ return new class extends Migration
             $table->string('name', 100)->unique();
             $table->text('description')->nullable();
             $table->unsignedInteger('parent_id')->nullable();
+            $table->unsignedInteger('country_id');
             $table->timestamps();
             // Foreign key constraint
             $table->foreign('parent_id')->references('id')->on('classifications')->onDelete('cascade');
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
         });
 
         // Create communicabilities table
@@ -212,8 +214,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-
-
         /*
 
 
@@ -223,10 +223,6 @@ return new class extends Migration
 
 
         */
-
-
-
-
 
         // Create typology_categories table
         Schema::create('typology_categories', function (Blueprint $table) {
@@ -274,9 +270,11 @@ return new class extends Migration
             $table->string('name', 100)->unique();
             $table->text('description')->nullable();
             $table->unsignedInteger('state_id');
+            $table->unsignedInteger('country_id');
             $table->timestamps();
             // Foreign key constraints
             $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade');
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
         });
 
 
@@ -288,11 +286,13 @@ return new class extends Migration
             $table->unsignedInteger('rule_id');
             $table->unsignedInteger('trigger_id');
             $table->unsignedInteger('sort_id');
+            $table->unsignedInteger('country_id');
             $table->timestamps();
             // Foreign key constraints
             $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
             $table->foreign('trigger_id')->references('id')->on('triggers')->onDelete('cascade');
             $table->foreign('sort_id')->references('id')->on('sorts')->onDelete('cascade');
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
         });
 
 
@@ -304,11 +304,13 @@ return new class extends Migration
             $table->unsignedInteger('rule_id');
             $table->unsignedInteger('trigger_id');
             $table->unsignedInteger('sort_id');
+            $table->unsignedInteger('country_id');
             $table->timestamps();
             // Foreign key constraints
             $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
             $table->foreign('trigger_id')->references('id')->on('triggers')->onDelete('cascade');
             $table->foreign('sort_id')->references('id')->on('sorts')->onDelete('cascade');
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
         });
 
 
@@ -430,25 +432,6 @@ return new class extends Migration
             $table->foreign('basket_id')->references('id')->on('baskets')->onDelete('cascade');
             $table->foreign('reference_id')->references('id')->on('references')->onDelete('cascade');
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         /*
 
 
@@ -458,9 +441,6 @@ return new class extends Migration
 
 
         */
-
-
-
 
         // Create forum_subject table
         Schema::create('forum_subjects', function (Blueprint $table) {
@@ -584,30 +564,30 @@ return new class extends Migration
     public function down()
     {
 
+        Schema::dropIfExists('user_countries');
         Schema::dropIfExists('user_rule');
         Schema::dropIfExists('user_addresses');
-
-
         /*
+
 
         Références
 
+
+
         */
-
-
         Schema::dropIfExists('references');
         Schema::dropIfExists('reference_files');
         Schema::dropIfExists('reference_links');
         Schema::dropIfExists('reference_country');
         Schema::dropIfExists('reference_categories');
         Schema::dropIfExists('articles');
-
         /*
+
 
         classifications
 
-        */
 
+        */
         Schema::dropIfExists('classifications');
         Schema::dropIfExists('classification_typology');
         Schema::dropIfExists('typologies');
@@ -618,15 +598,13 @@ return new class extends Migration
         Schema::dropIfExists('communicabilities');
         Schema::dropIfExists('classification_orders');
         Schema::dropIfExists('orders');
-
-
         /*
+
 
         Rule
 
+
         */
-
-
         Schema::dropIfExists('rules');
         Schema::dropIfExists('rule_classification');
         Schema::dropIfExists('dul_article');
@@ -635,32 +613,27 @@ return new class extends Migration
         Schema::dropIfExists('actives');
         Schema::dropIfExists('triggers');
         Schema::dropIfExists('sorts');
-
-
         /*
+
 
         Basket
 
+
         */
-
-
         Schema::dropIfExists('basket_reference');
         Schema::dropIfExists('basket_classification');
         Schema::dropIfExists('basket_rule');
         Schema::dropIfExists('basket_types');
         Schema::dropIfExists('baskets');
-
-
-
-
-
-
         /*
+
+
 
         Forum
 
-        */
 
+
+        */
         Schema::dropIfExists('forum_reaction_amswers');
         Schema::dropIfExists('user_amswer');
         Schema::dropIfExists('user_subject');
@@ -668,15 +641,15 @@ return new class extends Migration
         Schema::dropIfExists('forum_reaction_types');
         Schema::dropIfExists('forum_amswers');
         Schema::dropIfExists('forum_subjects');
-
-
         /*
+
+
 
         Setting
 
+
+
         */
-
-
         Schema::dropIfExists('countries');
         Schema::dropIfExists('states');
 

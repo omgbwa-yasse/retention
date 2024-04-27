@@ -9,6 +9,8 @@
                             aria-expanded="true"><i class="bi bi-search"></i> Recherche</a>
                         <div class="collapse show" id="recherche">
                             <ul class="list-unstyled pl-3">
+                                <li><a href="{{ route('charter.index') }}" class="text-dark"><i
+                                    class="bi bi-list-check"></i> Tableau de gestion</a></li>
                                 <li><a href="{{ route('mission.index') }}" class="text-dark"><i
                                     class="bi bi-list-check"></i> Domaines</a></li>
                                 <li><a href="{{ route('activity.index') }}" class="text-dark"><i

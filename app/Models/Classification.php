@@ -47,4 +47,9 @@ class Classification extends Model
     {
         return $this->belongsToMany(Basket::class, 'basket_classification', 'classification_id', 'basket_id');
     }
+
+    public function countries()
+    {
+        return $this->belongsTo(country::class);
+    }
 }

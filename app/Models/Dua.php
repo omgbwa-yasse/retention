@@ -28,4 +28,9 @@ class Dua extends Model
     {
         return $this->belongsTo(Sort::class);
     }
+
+    public function countries()
+    {
+        return $this->belongsTo(country::class);
+    }
 }
