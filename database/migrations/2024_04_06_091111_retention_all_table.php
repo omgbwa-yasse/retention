@@ -28,7 +28,7 @@ return new class extends Migration
         // Create user_rule table
         Schema::create('user_country', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('countries_id');
+            $table->unsignedBigInteger('country_id');
             $table->primary(['user_id', 'country_id']);
             // Foreign key constraints
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
@@ -104,7 +104,7 @@ return new class extends Migration
         Schema::create('reference_links', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100)->nullable();
-            $table->string('link', 255)->unique();
+            $table->string('link', 255);
             $table->unsignedInteger('reference_id');
             $table->timestamps();
             $table->foreign('reference_id')->references('id')->on('references')->onDelete('cascade');
@@ -426,7 +426,7 @@ return new class extends Migration
 
         // Create relation basket reference
         Schema::create('basket_reference', function (Blueprint $table) {
-            $table->unsignedInteger('type_id');
+            $table->unsignedInteger('basket_id');
             $table->unsignedInteger('reference_id');
             $table->primary(['reference_id', 'basket_id']);
             $table->foreign('basket_id')->references('id')->on('baskets')->onDelete('cascade');
