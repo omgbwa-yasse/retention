@@ -4,10 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">Créer une nouvelle Mission</div>
-
-                <div class="card-body">
+                <h2>Ajouter une activité</h2>
                     @if (session('success'))
                         <div class="alert alert-success" role="alert">
                             {{ session('success') }}
@@ -66,8 +63,6 @@
 
                         <button type="submit" class="btn btn-primary">Créer</button>
                     </form>
-                </div>
-            </div>
         </div>
     </div>
 </div>

@@ -3,19 +3,15 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">Créer une nouvelle Mission</div>
-
-                <div class="card-body">
+        <div class="col-md-8">
+           <h2>Ajouter un domaine</h2>
                     @if (session('success'))
                         <div class="alert alert-success" role="alert">
                             {{ session('success') }}
                         </div>
                     @endif
-
                     <form action="{{ route('mission.store') }}" method="POST">
-                        @csrf
+                    @csrf
 
                         <div class="form-group">
                             <label for="code">Cote</label>
@@ -50,11 +46,8 @@
                                 });
                             });
                         </script>
-
                         <button type="submit" class="btn btn-primary">Créer</button>
-                    </form>
-                </div>
-            </div>
+                </form>
         </div>
     </div>
 </div>

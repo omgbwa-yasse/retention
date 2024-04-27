@@ -1,7 +1,7 @@
 @extends('index')
 
 @section('content')
-    <h1>Create Typology</h1>
+    <h2>Ajouter une typologie</h2>
     <form action="{{ route('typology.store') }}" method="POST">
         @csrf
         <div class="form-group">

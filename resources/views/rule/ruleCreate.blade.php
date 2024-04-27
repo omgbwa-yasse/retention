@@ -4,9 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h1>Créer une nouvelle règle</h1>
-            <div class="card">
-                <div class="card-body">
+            <h2>Créer une nouvelle règle</h2>
                     @if (session('success'))
                         <div class="alert alert-success" role="alert">
                             {{ session('success') }}
@@ -15,6 +13,15 @@
 
                     <form action="{{ route('rule.store') }}" method="POST">
                         @csrf
+                        <div class="form-group">
+                            <label for="code">code</label>
+                            <input type="text" class="form-control @error('code') is-invalid @enderror" id="code" name="code" value="{{ old('name') }}" required>
+                            @error('code')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
 
                         <div class="form-group">
                             <label for="name">Titre</label>
@@ -37,14 +44,14 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="state_id">Etat</label>
-                            <select class="form-control @error('state_id') is-invalid @enderror" id="state_id" name="state_id" required>
+                            <label for="country_id">Etat</label>
+                            <select class="form-control @error('country_id') is-invalid @enderror" id="country_id" name="country_id" required>
                                 <option value="">Sélectionnez un état</option>
-                                @foreach ($states as $state)
-                                    <option value="{{ $state->id }}" {{ old('state_id') == $state->id ? 'selected' : '' }}> {{ $state->name }} </option>
+                                @foreach ($countries as $country)
+                                    <option value="{{ $country->id }}" {{ old('country_id') == $country->id ? 'selected' : '' }}> {{ $country->name }} </option>
                                 @endforeach
                             </select>
-                            @error('state_id')
+                            @error('country_id')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -53,8 +60,6 @@
 
                         <button type="submit" class="btn btn-primary">Créer</button>
                     </form>
-                </div>
-            </div>
         </div>
     </div>
 </div>

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Dul;
 use App\Models\Rule;
 use App\Models\Trigger;
+use App\Models\Country;
+use App\Models\Articles;
 use App\Models\Sort;
 
 class DulController extends Controller
@@ -18,12 +20,14 @@ class DulController extends Controller
     }
 
 
-    public function create(INT $rule_id)
+    public function create(INT $rule_id, country $country)
     {
         $triggers = trigger::all()->sortBy('code');
         $sorts = sort::all()->sortBy('code');
         $rule = Rule::findOrFail($rule_id);
-        return view('dul.dulCreate', compact('rule', 'sorts', 'triggers'));
+        $articles = articles::get();
+        $countries = country::get()->where('name', '=', $country->name);
+        return view('dul.dulCreate', compact('rule', 'sorts', 'triggers','articles', 'country'));
     }
 
 
@@ -36,6 +40,7 @@ class DulController extends Controller
             'rule_id' => 'required|exists:rules,id',
             'trigger_id' => 'required|exists:triggers,id',
             'sort_id' => 'required|exists:sorts,id',
+            'country_id' => 'required|exists:countries,id',
         ]);
         $rule = rule::findOrfail($request->input('rule_id'));
         Dul::create($request->all());

@@ -5,6 +5,7 @@
         <h2>Ajouter un Dul pour la règle "{{ $rule->name }}"</h2>
         <form action="{{ route('rule.dul.store', $rule->id ) }}" method="POST">
             @csrf
+            <input type="hidden" name="country_id" value="{{ $country->id }}">
             <input type="hidden" name="rule_id" value="{{ $rule->id }}">
             <div class="form-group">
                 <label for="duration">Durée :</label>
@@ -30,6 +31,16 @@
                     <option value="">Sélectionner Sort</option>
                     @foreach ($sorts as $sort)
                         <option value="{{ $sort->id }}">{{ $sort->name }} - {{ $sort->description }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="sort_id">Articles :</label>
+                <select class="form-control" id="sort_id" name="sort_id" required>
+                    <option value="">Sélectionner l'article</option>
+                    @foreach ($articles as $article)
+                        <option value="{{ $article->id }}">{{ $article->reference }} - {{ $article->name }} </option>
                     @endforeach
                 </select>
             </div>

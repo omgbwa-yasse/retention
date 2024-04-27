@@ -46,4 +46,5 @@ class Dul extends Model
         return $this->belongsToMany(Articles::class, 'dul_articles');
     }
 
+
 }

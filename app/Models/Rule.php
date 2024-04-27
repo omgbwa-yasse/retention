@@ -14,7 +14,7 @@ class Rule extends Model
         'code',
         'name',
         'description',
-        'state_id'
+        'country_id'
     ];
 
     public function actives()
@@ -32,9 +32,9 @@ class Rule extends Model
         return $this->hasMany(Dul::class);
     }
 
-    public function state()
+    public function countries()
     {
-        return $this->belongsTo(State::class);
+        return $this->belongsTo(country::class);
     }
 
 
