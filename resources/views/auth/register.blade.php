@@ -26,6 +26,28 @@
                                 </div>
                             </div>
 
+
+                            <div class="row mb-3">
+                                <label for="country_id" class="col-md-4 col-form-label text-md-end">{{ __('Country') }}</label>
+
+                                <div class="col-md-6">
+                                    <select id="country_id" class="form-control @error('country_id') is-invalid @enderror" name="country_id" required autocomplete="country_id" autofocus>
+                                        <option value="">Select a country</option>
+                                        @foreach ($countries as $country)
+                                            <option value="{{ $country->country_id }}" {{ old('country_id') == $country->country_id ? 'selected' : '' }}>
+                                                {{ $country->country_name }} ({{ $country->country_addr }})
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    @error('country_id')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
                             <div class="row mb-3">
                                 <label for="email"
                                     class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
