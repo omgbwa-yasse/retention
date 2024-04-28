@@ -32,6 +32,8 @@
         </select>
     </div>
 
+    <input type="hidden" name="country_id" value="{{ $auth->country_id }}">
+
     <button type="submit" class="btn btn-primary">Save</button>
     <a href="{{ route('activity.index') }}" class="btn btn-secondary">Cancel</a>
 </form>

@@ -13,6 +13,7 @@
                     <form action="{{ route('mission.store') }}" method="POST">
                     @csrf
 
+                        <input type="hidden" name="country_id" value="{{ $auth->country_id }}">
                         <div class="form-group">
                             <label for="code">Cote</label>
                             <input type="text" class="form-control" id="code" name="code" required>

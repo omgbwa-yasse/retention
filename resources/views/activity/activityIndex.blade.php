@@ -26,6 +26,7 @@
                     <th scope="col">Description</th>
                     <th scope="col">Parent</th>
                     <th scope="col">Sous classes</th>
+                    <th scope="col">Pays</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
@@ -43,7 +44,11 @@
                         <td>
                             @if ($activity->children)
                                 {{ $activity->children->count() }}
-                            @endif </td>
+                            @endif
+                        </td>
+                        <td>
+                            {{ $activity->countries->name }}
+                        </td>
                         <td>
                             <a href="{{ route('activity.show', $activity->id) }}" class="btn btn-info btn-sm">View</a>
                             <a href="{{ route('activity.edit', $activity->id) }}" class="btn btn-primary btn-sm">Edit</a>

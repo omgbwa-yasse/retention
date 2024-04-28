@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Classification;
+use App\Models\Country;
 
 class ActivityController extends Controller
 {
@@ -15,6 +17,7 @@ class ActivityController extends Controller
         $activities->load('rules');
         $activities->load('domaine'); // refuse d'afficher les éléments
         $activities->load('typologies');
+        $activities->load('countries');
         return view('activity.activityIndex', compact('activities'));
     }
 
@@ -24,10 +27,10 @@ class ActivityController extends Controller
     // Affiche le formulaire de création d'un élément
     public function create()
     {
+        $auth = Auth::user();
         $activities = Classification::orderBy('code')->get();
-        return view('activity.activityCreate', compact('activities'));
+        return view('activity.activityCreate', compact('activities', 'auth'));
     }
-
 
 
 
@@ -41,6 +44,7 @@ class ActivityController extends Controller
             'name' => 'required',
             'description' => 'nullable|string',
             'parent_id' => 'nullable|exists:classifications,id',
+            'country_id' => 'required|exists:countries,id',
         ]);
 
         $parent = Classification::findOrFail($request->parent_id);
@@ -51,6 +55,7 @@ class ActivityController extends Controller
             'name' => $request->input('name'),
             'description' => $request->input('description'),
             'parent_id' => $parent->id,
+            'country_id' => $request->country_id,
         ]);
 
         return redirect()->route('activity.index')->with('success', 'Item created successfully.');
@@ -77,7 +82,8 @@ class ActivityController extends Controller
     {
         $activity = Classification::findOrFail($id);
         $activities = Classification::orderBy('code')->get();
-        return view('activity.activityEdit', compact('activity', 'activities'));
+        $countries = Country::all();
+        return view('activity.activityEdit', compact('activity', 'activities', 'countries'));
     }
 
 

@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Classification;
 use Illuminate\Http\Request;
 use App\Models\Mission;
-
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 
 class MissionController extends Controller
@@ -23,27 +24,34 @@ class MissionController extends Controller
     // Affiche le formulaire de création d'un élément
     public function create()
     {
-        return view('mission.create');
+        $auth = Auth::user();
+        return view('mission.create', compact('auth'));
     }
 
 
 
 
-    // Enregistre un nouvel élément
+
+// Enregistrement des missions
     public function store(Request $request)
     {
-        $request->validate([
-            'code' => 'required',
-            'name' => 'required',
-            'description' => 'nullable|string',
-            'parent_id' => 'nullable|exists:classification,id',
+        $validatedData = $request->validate([
+            'code' => 'required|max:10',
+            'name' => 'required|max:255',
+            'description' => 'required',
+            'country_id' => 'required|exists:countries,id',
         ]);
 
-        Classification::create($request->all());
+        Classification::create([
+            'code' => $validatedData['code'],
+            'name' => $validatedData['name'],
+            'description' => $validatedData['description'],
+            'country_id' => $validatedData['country_id'],
+            'user_id' => Auth::user()->getAuthIdentifier(),
+        ])->save();
 
-        return redirect()->route('mission.index')->with('success', 'Item created successfully.');
+        return redirect()->route('activity.index')->with('success', 'Activité enregistrée avec succès.');
     }
-
 
 
 
