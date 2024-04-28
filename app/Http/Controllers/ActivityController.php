@@ -12,7 +12,8 @@ class ActivityController extends Controller
     // Affiche la liste des éléments
     public function index()
     {
-        $activities = Classification::whereNotNull('parent_id')->orderBy('code')->get();
+        $countryId = Auth::user()->country_id;
+        $activities = Classification::whereNotNull('parent_id')->where('country_id', $countryId)->orderBy('code')->get();
         $activities->load('parent');
         $activities->load('rules');
         $activities->load('domaine'); // refuse d'afficher les éléments
@@ -28,7 +29,8 @@ class ActivityController extends Controller
     public function create()
     {
         $auth = Auth::user();
-        $activities = Classification::orderBy('code')->get();
+        $countryId = Auth::user()->country_id;
+        $activities = Classification::where('country_id', $countryId)->orderBy('code')->get();
         return view('activity.activityCreate', compact('activities', 'auth'));
     }
 
@@ -56,6 +58,7 @@ class ActivityController extends Controller
             'description' => $request->input('description'),
             'parent_id' => $parent->id,
             'country_id' => $request->country_id,
+            'user_id' => Auth::user()->id,
         ]);
 
         return redirect()->route('activity.index')->with('success', 'Item created successfully.');
@@ -82,8 +85,7 @@ class ActivityController extends Controller
     {
         $activity = Classification::findOrFail($id);
         $activities = Classification::orderBy('code')->get();
-        $countries = Country::all();
-        return view('activity.activityEdit', compact('activity', 'activities', 'countries'));
+        return view('activity.activityEdit', compact('activity', 'activities'));
     }
 
 

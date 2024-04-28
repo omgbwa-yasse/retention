@@ -52,12 +52,6 @@ Route::resource('reference.file', FileController::class)->except(['download']);
 Route::get('reference/{reference}/file/{file}/download', 'FileController@download')->name('reference.file.download');
 
 
-/*
-    Route::get('reference/{reference}/file/{file}/download', 'FileController@download')->name('reference.file.download');
-*/
-
-
-
 use App\Http\Controllers\ReferenceCategoryController;
 Route::resource('reference-category', ReferenceCategoryController::class);
 
@@ -108,24 +102,10 @@ Route::resource('validation', ValidationController::class);
 
 
 
+Auth::routes();
 
-// Dans le fichier routes/web.php,,,,,,,,,,,,,,,,,,,'
-/*Route::get('/reference/{id}', 'ReferenceController@show')->name('reference.show');*/
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-
-
-
-    Auth::routes();
-
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-    Auth::routes();
-
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-    Auth::routes();
-
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
 

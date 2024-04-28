@@ -14,7 +14,8 @@ class Classification extends Model
         'name',
         'description',
         'country_id',
-        'parent_id'
+        'parent_id',
+        'user_id'
     ];
 
     public function parent()
@@ -52,5 +53,10 @@ class Classification extends Model
     public function countries()
     {
         return $this->belongsTo(country::class, 'country_id');
+    }
+
+    public function users()
+    {
+        return $this->belongsTo(user::class, 'user_id');
     }
 }
