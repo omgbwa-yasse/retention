@@ -11,6 +11,6 @@ class Sort extends Model
 
     protected $fillable = [
         'name',
-        'description'
+        'description',
     ];
 }
