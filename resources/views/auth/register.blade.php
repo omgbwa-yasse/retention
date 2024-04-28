@@ -69,6 +69,23 @@
                                         name="password_confirmation" required autocomplete="new-password">
                                 </div>
                             </div>
+                            <div class="row mb-3">
+                                <label for="country" class="col-md-4 col-form-label text-md-end">{{ __('Country') }}</label>
+                                <div class="col-md-6">
+                                    <select id="country" class="form-control @error('country') is-invalid @enderror" name="country" required autocomplete="country">
+                                        <option value="">{{ __('Select a country') }}</option>
+                                        @foreach ($countries as $country)
+                                            <option value="{{ $country->id }}" {{ old('country') == $country->id ? 'selected' : '' }}>{{ $country->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('country')
+                                    <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+                                    @enderror
+                                </div>
+                            </div>
+
 
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
