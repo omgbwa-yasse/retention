@@ -66,14 +66,17 @@ class RegisterController extends Controller
     {
         return User::create([
             'name' => $data['name'],
+            'surname' => $data['surname'],
+            'gender' => $data['gender'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'country' =>$data['country'],
+            'country_id' =>$data['country_id'],
         ]);
     }
+
     public function showRegistrationForm()
-{
-    $countries = Country::all();
-    return view('auth.register', compact('countries'));
-}
+    {
+        $countries = Country::all();
+        return view('auth.register', compact('countries'));
+    }
 }

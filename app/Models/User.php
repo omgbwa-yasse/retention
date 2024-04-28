@@ -19,8 +19,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'surname',
         'email',
         'password',
+        'gender',
+        'email_verified_at',
+        'country_id',
     ];
 
     /**
@@ -48,7 +52,7 @@ class User extends Authenticatable
 
     public function country()
     {
-        return $this->hasMany(Country::class, 'user_country', 'user_id');
+        return $this->hasMany(Country::class, 'country_id');
     }
 
 

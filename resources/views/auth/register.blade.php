@@ -11,6 +11,24 @@
                             @csrf
 
                             <div class="row mb-3">
+                                <label for="surname" class="col-md-4 col-form-label text-md-end">{{ __('Prénom') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="surname" type="text"
+                                        class="form-control @error('surname') is-invalid @enderror" name="surname"
+                                        value="{{ old('surname') }}" required autocomplete="surname" autofocus>
+
+                                    @error('surname')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+
+
+                            <div class="row mb-3">
                                 <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
                                 <div class="col-md-6">
@@ -27,26 +45,6 @@
                             </div>
 
 
-                            <div class="row mb-3">
-                                <label for="country_id" class="col-md-4 col-form-label text-md-end">{{ __('Country') }}</label>
-
-                                <div class="col-md-6">
-                                    <select id="country_id" class="form-control @error('country_id') is-invalid @enderror" name="country_id" required autocomplete="country_id" autofocus>
-                                        <option value="">Select a country</option>
-                                        @foreach ($countries as $country)
-                                            <option value="{{ $country->country_id }}" {{ old('country_id') == $country->country_id ? 'selected' : '' }}>
-                                                {{ $country->country_name }} ({{ $country->country_addr }})
-                                            </option>
-                                        @endforeach
-                                    </select>
-
-                                    @error('country_id')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
 
                             <div class="row mb-3">
                                 <label for="email"
@@ -65,6 +63,8 @@
                                 </div>
                             </div>
 
+
+
                             <div class="row mb-3">
                                 <label for="password"
                                     class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
@@ -82,6 +82,8 @@
                                 </div>
                             </div>
 
+
+
                             <div class="row mb-3">
                                 <label for="password-confirm"
                                     class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
@@ -91,19 +93,36 @@
                                         name="password_confirmation" required autocomplete="new-password">
                                 </div>
                             </div>
+
                             <div class="row mb-3">
-                                <label for="country" class="col-md-4 col-form-label text-md-end">{{ __('Country') }}</label>
+                                <label for="country_id" class="col-md-4 col-form-label text-md-end">{{ __('Country') }}</label>
                                 <div class="col-md-6">
-                                    <select id="country" class="form-control @error('country') is-invalid @enderror" name="country" required autocomplete="country">
+                                    <select id="country_id" class="form-control @error('country_id') is-invalid @enderror" name="country_id" required autocomplete="country">
                                         <option value="">{{ __('Select a country') }}</option>
                                         @foreach ($countries as $country)
-                                            <option value="{{ $country->id }}" {{ old('country') == $country->id ? 'selected' : '' }}>{{ $country->name }}</option>
+                                            <option value="{{ $country->id }}" {{ old('country_id') == $country->id ? 'selected' : '' }}>{{ $country->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('country')
                                     <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="gender" class="col-md-4 col-form-label text-md-end">{{ __('Votre genre') }}</label>
+                                <div class="col-md-6">
+                                    <select id="gender" class="form-control @error('gender') is-invalid @enderror" name="gender" required autocomplete="gender">
+                                        <option value="">{{ __('Select a gender') }}</option>
+                                            <option value="M">Masculin</option>
+                                            <option value="F">Feminin</option>
+                                    </select>
+                                    @error('gender')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                                     @enderror
                                 </div>
                             </div>
