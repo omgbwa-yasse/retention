@@ -46,8 +46,9 @@ class User extends Authenticatable
         ];
     }
 
-    public function countries()
+    public function addresses()
     {
-        return $this->hasMany(Country::class, 'user_country', 'user_id');
+        return $this->hasMany(UserAddress::class,'user_id');
     }
+
 }

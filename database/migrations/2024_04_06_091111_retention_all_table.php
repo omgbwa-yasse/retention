@@ -14,44 +14,20 @@ return new class extends Migration
 
 
 
-        // Create user_rule table
-        Schema::create('user_rule', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('rule_id');
-            $table->primary(['user_id', 'rule_id']);
-            // Foreign key constraints
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
-        });
-
-
-        // Create user_rule table
-        Schema::create('user_country', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('country_id');
-            $table->primary(['user_id', 'country_id']);
-            // Foreign key constraints
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
-        });
-
-
-
-
         // Create user_address table
         Schema::create('user_addresses', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('user_id');
             $table->string('email1', 100)->unique();
             $table->string('email2', 100)->nullable();
             $table->string('phone1', 20);
             $table->string('phone2', 20)->nullable();
-            $table->string('country', 20);
             $table->string('town', 20);
             $table->string('address', 10);
+            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('country_id');
             $table->timestamps();
-            // Foreign key constraints
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
         });
 
 
@@ -75,10 +51,11 @@ return new class extends Migration
             $table->string('description', 100)->nullable();
             $table->unsignedInteger('category_id');
             $table->unsignedInteger('country_id');
+            $table->unsignedInteger('user_id');
             $table->timestamps();
-            // Foreign key constraints
             $table->foreign('category_id')->references('id')->on('reference_categories')->onDelete('cascade');
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->index(['name', 'category_id']);
         });
 
@@ -95,7 +72,6 @@ return new class extends Migration
             $table->unsignedInteger('country_id');
             $table->unsignedInteger('reference_id');
             $table->primary(['country_id', 'reference_id']);
-            // Foreign key constraints
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
             $table->foreign('reference_id')->references('id')->on('references')->onDelete('cascade');
         });
@@ -106,7 +82,9 @@ return new class extends Migration
             $table->string('name', 100)->nullable();
             $table->string('link', 255);
             $table->unsignedInteger('reference_id');
+            $table->unsignedInteger('user_id');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('reference_id')->references('id')->on('references')->onDelete('cascade');
             $table->index('reference_id');
         });
@@ -118,8 +96,9 @@ return new class extends Migration
             $table->string('file_path', 255)->nullable();
             $table->string('file_crypt', 255)->nullable();
             $table->unsignedInteger('reference_id');
+            $table->unsignedInteger('user_id');
             $table->timestamps();
-            // Foreign key constraint
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('reference_id')->references('id')->on('references')->onDelete('cascade');
             $table->index('reference_id');
         });
@@ -133,8 +112,9 @@ return new class extends Migration
             $table->string('name', 255)->nullable();
             $table->string('description', 100)->nullable();
             $table->unsignedInteger('reference_id');
+            $table->unsignedInteger('user_id');
             $table->timestamps();
-            // Foreign key constraints
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('reference_id')->references('id')->on('references')->onDelete('cascade');
         });
 
@@ -153,7 +133,6 @@ return new class extends Migration
             $table->unsignedInteger('activity_id');
             $table->unsignedInteger('typology_id');
             $table->primary(['activity_id', 'typology_id']);
-            // Foreign key constraints
             $table->foreign('activity_id')->references('id')->on('classifications')->onDelete('cascade');
             $table->foreign('typology_id')->references('id')->on('typologies')->onDelete('cascade');
         });
@@ -167,8 +146,9 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->unsignedInteger('parent_id')->nullable();
             $table->unsignedInteger('country_id');
+            $table->unsignedInteger('user_id');
             $table->timestamps();
-            // Foreign key constraint
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('parent_id')->references('id')->on('classifications')->onDelete('cascade');
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
         });
@@ -187,7 +167,6 @@ return new class extends Migration
             $table->unsignedInteger('classification_id');
             $table->unsignedInteger('communicability_id');
             $table->primary(['classification_id', 'communicability_id']);
-            // Foreign key constraints
             $table->foreign('classification_id')->references('id')->on('classifications')->onDelete('cascade');
             $table->foreign('communicability_id')->references('id')->on('communicabilities')->onDelete('cascade');
         });
@@ -199,8 +178,9 @@ return new class extends Migration
             $table->string('description', 10);
             $table->unsignedInteger('order_id');
             $table->unsignedInteger('classification_id');
+            $table->unsignedInteger('user_id');
             $table->timestamps();
-            // Foreign key constraints
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('classification_id')->references('id')->on('classifications')->onDelete('cascade');
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
         });
@@ -211,7 +191,9 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100)->unique();
             $table->string('description', 10)->nullable();
+            $table->unsignedInteger('user_id');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         /*
@@ -230,7 +212,9 @@ return new class extends Migration
             $table->string('name', 100)->unique();
             $table->text('description')->nullable();
             $table->unsignedInteger('parent_id')->nullable();
+            $table->unsignedInteger('user_id');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
         });
 
@@ -243,8 +227,9 @@ return new class extends Migration
             $table->string('name', 100)->unique();
             $table->text('description')->nullable();
             $table->unsignedInteger('category_id');
+            $table->unsignedInteger('user_id');
             $table->timestamps();
-            // Foreign key constraint
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('typology_categories')->onDelete('cascade');
         });
 
@@ -271,8 +256,9 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->unsignedInteger('state_id');
             $table->unsignedInteger('country_id');
+            $table->unsignedInteger('user_id');
             $table->timestamps();
-            // Foreign key constraints
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade');
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
         });
@@ -287,8 +273,9 @@ return new class extends Migration
             $table->unsignedInteger('trigger_id');
             $table->unsignedInteger('sort_id');
             $table->unsignedInteger('country_id');
+            $table->unsignedInteger('user_id');
             $table->timestamps();
-            // Foreign key constraints
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
             $table->foreign('trigger_id')->references('id')->on('triggers')->onDelete('cascade');
             $table->foreign('sort_id')->references('id')->on('sorts')->onDelete('cascade');
@@ -305,8 +292,9 @@ return new class extends Migration
             $table->unsignedInteger('trigger_id');
             $table->unsignedInteger('sort_id');
             $table->unsignedInteger('country_id');
+            $table->unsignedInteger('user_id');
             $table->timestamps();
-            // Foreign key constraints
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
             $table->foreign('trigger_id')->references('id')->on('triggers')->onDelete('cascade');
             $table->foreign('sort_id')->references('id')->on('sorts')->onDelete('cascade');
@@ -323,8 +311,9 @@ return new class extends Migration
             $table->unsignedInteger('rule_id');
             $table->unsignedInteger('trigger_id');
             $table->unsignedInteger('sort_id');
+            $table->unsignedInteger('user_id');
             $table->timestamps();
-            // Foreign key constraints
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
             $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
             $table->foreign('trigger_id')->references('id')->on('triggers')->onDelete('cascade');
@@ -338,7 +327,8 @@ return new class extends Migration
             $table->unsignedInteger('dul_id');
             $table->unsignedInteger('article_id');
             $table->primary(['dul_id', 'article_id']);
-            // Foreign key constraints
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('dul_id')->references('id')->on('duls')->onDelete('cascade');
             $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
         });
@@ -349,7 +339,6 @@ return new class extends Migration
             $table->unsignedInteger('classification_id');
             $table->unsignedInteger('rule_id');
             $table->primary(['classification_id', 'rule_id']);
-            // Foreign key constraints
             $table->foreign('classification_id')->references('id')->on('classifications')->onDelete('cascade');
             $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
         });
@@ -390,6 +379,8 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100)->unique();
             $table->text('description')->nullable();
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
 
@@ -407,6 +398,8 @@ return new class extends Migration
             $table->unsignedInteger('rule_id');
             $table->unsignedInteger('basket_id');
             $table->primary(['rule_id', 'basket_id']);
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('basket_id')->references('id')->on('baskets')->onDelete('cascade');
             $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
         });
@@ -417,6 +410,8 @@ return new class extends Migration
         Schema::create('basket_classification', function (Blueprint $table) {
             $table->unsignedInteger('classification_id');
             $table->unsignedInteger('basket_id');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->primary(['classification_id', 'basket_id']);
             $table->foreign('basket_id')->references('id')->on('baskets')->onDelete('cascade');
             $table->foreign('classification_id')->references('id')->on('classifications')->onDelete('cascade');
@@ -428,6 +423,8 @@ return new class extends Migration
         Schema::create('basket_reference', function (Blueprint $table) {
             $table->unsignedInteger('basket_id');
             $table->unsignedInteger('reference_id');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->primary(['reference_id', 'basket_id']);
             $table->foreign('basket_id')->references('id')->on('baskets')->onDelete('cascade');
             $table->foreign('reference_id')->references('id')->on('references')->onDelete('cascade');
@@ -447,6 +444,8 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100)->unique();
             $table->text('description')->nullable();
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
 
@@ -458,7 +457,8 @@ return new class extends Migration
             $table->unsignedInteger('parent_id')->nullable();
             $table->unsignedInteger('subject_id');
             $table->timestamps();
-            // Foreign key constraints
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('subject_id')->references('id')->on('forum_subjects')->onDelete('cascade');
         });
 
