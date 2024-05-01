@@ -47,8 +47,12 @@ class RuleController extends Controller
             'country_id' => 'required'
         ]);
 
+        $countryId = Auth::user()->country_id;
+        $country = Country ::find($countryId);
+        $code = $country->abbr . $request->input('code');
+
         $rule = Rule::create([
-            'code' => $request->input('code'),
+            'code' => $code,
             'name' => $request->input('name'),
             'description' => $request->input('description'),
             'country_id' => $request->input('country_id'),
