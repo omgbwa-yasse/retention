@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h1>Update Item</h1>
+        <h1>Modifier la mission | {{ $mission->name }} </h1>
 
         <form action="{{ route('mission.update', $mission->id) }}" method="POST">
             @csrf

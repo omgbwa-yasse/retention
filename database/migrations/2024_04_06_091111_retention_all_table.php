@@ -48,7 +48,7 @@ return new class extends Migration
         Schema::create('references', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100)->unique();
-            $table->string('description', 100)->nullable();
+            $table->text('description')->nullable();
             $table->unsignedInteger('category_id');
             $table->unsignedInteger('country_id');
             $table->unsignedInteger('user_id');
@@ -110,7 +110,7 @@ return new class extends Migration
             $table->id();
             $table->string('reference', 10)->unique();
             $table->string('name', 255)->nullable();
-            $table->string('description', 100)->nullable();
+            $table->text('description');
             $table->unsignedInteger('reference_id');
             $table->unsignedInteger('user_id');
             $table->timestamps();
@@ -358,7 +358,7 @@ return new class extends Migration
         Schema::create('sorts', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100)->unique();
-            $table->string('description', 100)->nullable();
+            $table->text('description');
             $table->timestamps();
         });
 

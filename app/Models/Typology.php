@@ -12,7 +12,8 @@ class Typology extends Model
     protected $fillable = [
         'name',
         'description',
-        'category_id'
+        'category_id',
+        'user_id'
     ];
 
     public function category()

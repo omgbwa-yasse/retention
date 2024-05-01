@@ -9,6 +9,7 @@ use App\Models\Country;
 use App\Models\ReferenceFile;
 use App\Models\ReferenceLink;
 use App\Models\ReferenceCategory;
+use Illuminate\Support\Facades\Auth;
 
 class ReferenceController extends Controller
 {
@@ -50,8 +51,8 @@ class ReferenceController extends Controller
             'country_id' => 'required|exists:countries,id',
         ]);
 
-        Reference::create($validatedData)->save();
-
+        $validatedData['user_id'] = Auth::user()->id;
+        $Reference = Reference::create($validatedData);
         return redirect()->route('reference.index')->with('success', 'Référence créée avec succès');
     }
 
@@ -122,7 +123,7 @@ class ReferenceController extends Controller
     {
         $error = '';
 
-        if (!$reference->files->isEmpty() || !$reference->links->isEmpty() || !$reference->articles->isEmpty() || !$reference->sources->isEmpty()) {
+        if (!$reference->files->isEmpty() && !$reference->links->isEmpty() && !$reference->articles->isEmpty() && !$reference->sources->isEmpty()) {
             if (!$reference->files->isNotEmpty()) {
                 $error .= 'Cannot delete reference with associated files. ';
             }

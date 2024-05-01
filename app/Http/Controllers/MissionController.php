@@ -18,7 +18,8 @@ class MissionController extends Controller
         $countryId = Auth::user()->country_id;
         $items = Classification::whereNull('parent_id')->where('country_id', $countryId)->orderBy('code')->get();
         $items->load('children');
-        return view('mission.index', compact('items'));
+        $country = Country ::find($countryId);
+        return view('mission.index', compact('items','country'));
     }
 
 
@@ -103,7 +104,7 @@ class MissionController extends Controller
         $item->description = $request->input('description');
         $item->save();
 
-        return redirect()->route('mission.index')->with('success', 'Item updated successfully.');
+        return redirect()->route('mission.index')->with('success', 'Mission modifiée avec succès.');
     }
 
 
@@ -115,9 +116,9 @@ class MissionController extends Controller
         $item = Classification::findOrFail($id);
         if ($item->children->isEmpty()) {
             $item->delete();
-            return redirect()->route('mission.index')->with('success', 'Item deleted successfully.');
+            return redirect()->route('mission.index')->with('success', 'Mission supprimée avec succès.');
         } else {
-            return redirect()->route('mission.index')->with('error', 'Cannot delete item with children.');
+            return redirect()->route('mission.index')->with('error', 'Cette mission ne peut-être supprimée car elle a des activités filles.');
         }
 
     }

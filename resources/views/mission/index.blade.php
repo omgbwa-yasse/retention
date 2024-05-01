@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container">
-        <h1>Domaine d'activité</h1>
+        <h1>Toutes les missions du {{ $country->name }} ({{ $country->abbr}})</h1>
         <a href="{{ route('mission.create') }}" class="btn btn-primary mb-2">Ajouter un domaine</a>
 
         @if (session('success'))

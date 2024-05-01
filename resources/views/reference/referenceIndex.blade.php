@@ -36,12 +36,6 @@
                         <br>
                         <a href="#"> {{ $reference->country_name }} </a>
                         <br>
-
-                        <form action="{{ route('reference.destroy', $reference->id) }}" method="POST" style="display: inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
-                        </form>
                         <a href="{{ route('reference.show', $reference->id) }}" class="btn btn-sm btn-success">Voir plus</a>
                     </label>
                 </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\TypologyCategory;
 use Illuminate\Http\Request;
 use App\Models\Typology;
+use Illuminate\Support\Facades\Auth;
 
 class TypologyController extends Controller
 {
@@ -44,7 +45,7 @@ class TypologyController extends Controller
             'category_id' => 'required|exists:typology_categories,id',
         ]);
 
-        // dump($request->all()); // Si vous voulez vérifier les données envoyées
+        $request['user_id'] = Auth::user()->id;
 
         Typology::create($request->all());
 

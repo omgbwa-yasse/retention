@@ -15,6 +15,7 @@ class Reference extends Model
         'description',
         'category_id',
         'country_id',
+        'user_id'
     ];
 
     public function category()
