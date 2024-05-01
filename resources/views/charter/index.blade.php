@@ -13,7 +13,7 @@
             <li class="list-group-item bg-dark-subtle">Partager sur le forum</li>
             <li class="list-group-item bg-dark-subtle">Commentaires (12)</li>
         </ul>
-        @include('charter.classes', ['subclasses' => $domaine->children])
+        @include('charter.classes', ['classes' => $domaine->children])
 
     @endforeach
 

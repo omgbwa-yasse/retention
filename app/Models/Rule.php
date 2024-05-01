@@ -14,7 +14,9 @@ class Rule extends Model
         'code',
         'name',
         'description',
-        'country_id'
+        'country_id',
+        'user_id',
+        'state_id'
     ];
 
     public function actives()

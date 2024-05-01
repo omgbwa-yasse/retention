@@ -26,6 +26,7 @@ use App\Http\Controllers\RuleClassificationController;
 use App\Http\Controllers\ValidationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForumController;
+use App\Http\Controllers\ActivityRuleController;
 
 
 // Route group for authentication
@@ -34,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('mission', MissionController::class);
 
     Route::resource('activity', ActivityController::class);
+    Route::resource('activity.rule', ActivityRuleController::class);
     Route::resource('activity.typology', ActivityTypologyController::class);
     Route::resource('reference', ReferenceController::class);
     Route::resource('reference.article', ArticleController::class);

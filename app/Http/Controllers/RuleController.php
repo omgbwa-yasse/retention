@@ -9,6 +9,7 @@ use App\Models\Articles;
 use App\Models\RuleActive;
 use App\Models\RuleDua;
 use App\Models\RuleDul;
+use Illuminate\Support\Facades\Auth;
 
 class RuleController extends Controller
 {
@@ -50,7 +51,9 @@ class RuleController extends Controller
             'code' => $request->input('code'),
             'name' => $request->input('name'),
             'description' => $request->input('description'),
-            'country_id' => $request->input('country_id')
+            'country_id' => $request->input('country_id'),
+            'user_id' => Auth::user()->id,
+            'state_id' => 1
         ]);
 
         return redirect()->route('rule.index')->with('success', 'Rule created successfully.');

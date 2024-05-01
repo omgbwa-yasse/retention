@@ -70,7 +70,7 @@
                             <li> Aucune règle </li>
                         @else
                             @foreach($rule->classifications as $classification)
-                                <li>{{ $classification->cote }} ans - {{ $classification->name }}</li>
+                                <li>{{ $classification->code }}  - {{ $classification->name }}</li>
                             @endforeach
                         @endif
                     </ul>

@@ -28,7 +28,7 @@
             <tbody>
                 @foreach ($rules as $rule)
                     <tr>
-                        <th scope="row">1111</th>
+                        <th scope="row">{{ $rule->code }}</th>
                         <td>{{ $rule->name }}</td>
                         <td> {{ $rule->description }} </td>
                         <td>
