@@ -14,7 +14,8 @@ class Articles extends Model
         'reference',
         'name',
         'description',
-        'reference_id'
+        'reference_id',
+        'user_id',
     ];
 
     public function reference()

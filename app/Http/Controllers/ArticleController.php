@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 use App\Models\Articles;
 use App\Models\Reference;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -29,7 +30,7 @@ class ArticleController extends Controller
         if ($article->reference_id !== $reference->id) {
             return redirect()->route('article.index', $reference)->with('error', 'Article not found for this reference.');
         }
-
+        $article->load('reference','reference.category');
         return view('articles.articleShow', compact('article', 'reference'));
     }
 
@@ -43,6 +44,7 @@ class ArticleController extends Controller
             'name' => $request->input('name'),
             'description' => $request->input('description'),
             'reference_id' => $reference->id,
+            'user_id' => Auth::user()->getAuthIdentifier()
         ]);
 
         return redirect()->route('reference.article.index', $reference)->with('success', 'Article created successfully.');
@@ -53,8 +55,9 @@ class ArticleController extends Controller
 
     public function edit(Reference $reference, Articles $article)
     {
-        $reference = Reference::where('id', $reference->id)->firstOrFail();
-        $article = Reference::where('id', $article->id)->firstOrFail();
+        if ($article->reference_id != $reference->id) {
+            abort(404);
+        }
         return view('articles.articleEdit', compact('article', 'reference'));
     }
 

@@ -38,7 +38,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('activity.rule', ActivityRuleController::class);
     Route::resource('activity.typology', ActivityTypologyController::class);
     Route::resource('reference', ReferenceController::class);
-    Route::resource('reference.article', ArticleController::class);
+    Route::resource('reference.article', ArticleController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::resource('reference.link', LinkController::class);
     Route::resource('reference.file', FileController::class)->except(['download']);
     Route::get('reference/{reference}/file/{file}/download', [FileController::class, 'download'])->name('reference.file.download');
