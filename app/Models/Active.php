@@ -15,7 +15,9 @@ class Active extends Model
         'description',
         'trigger_id',
         'rule_id',
-        'sort_id'
+        'sort_id',
+        'country_id',
+        'user_id'
     ];
 
     public function rule()

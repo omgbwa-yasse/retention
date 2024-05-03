@@ -2,7 +2,7 @@
 
 @section('content')
 
-<h1>Rules for Classification {{ $classification->name }}</h1>
+<h1>Rules for Classification {{ $activity->name }}</h1>
 
 <table>
     <thead>
@@ -13,12 +13,12 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($classifications->$rules as $rule)
+        @foreach ($activity->$rules as $rule)
             <tr>
                 <td>{{ $rule->name }}</td>
                 <td>{{ $rule->description }}</td>
                 <td>
-                    <form action="{{ route('activity.rule.destroy', [$classification, $rule]) }}" method="POST">
+                    <form action="{{ route('activity.rule.destroy', [$activity, $rule]) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit">Remove</button>
@@ -30,4 +30,4 @@
 </table>
 @endsection
 
-<a href="{{ route('rule-classifications.create', $classification) }}">Add Rule</a>
+<a href="{{ route('rule-classifications.create', $activity) }}">Add Rule</a>

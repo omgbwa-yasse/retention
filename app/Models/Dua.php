@@ -9,7 +9,7 @@ class Dua extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['duration', 'description', 'rule_id', 'trigger_id', 'sort_id'];
+    protected $fillable = ['duration', 'description', 'rule_id', 'trigger_id', 'sort_id', 'country_id', 'user_id'];
 
 
     public function rule()

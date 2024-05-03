@@ -348,7 +348,8 @@ return new class extends Migration
         // Create trigger table
         Schema::create('triggers', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 5)->unique();
+            $table->string('code', 10)->unique();
+            $table->string('name', 100)->unique();
             $table->text('description')->nullable();
             $table->timestamps();
         });
@@ -357,6 +358,7 @@ return new class extends Migration
         // Create sort table
         Schema::create('sorts', function (Blueprint $table) {
             $table->id();
+            $table->string('code', 10)->unique();
             $table->string('name', 100)->unique();
             $table->text('description');
             $table->timestamps();

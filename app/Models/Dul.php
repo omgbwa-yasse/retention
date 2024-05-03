@@ -15,7 +15,8 @@ class Dul extends Model
         'country_id',
         'rule_id',
         'trigger_id',
-        'sort_id'
+        'sort_id',
+        'user_id'
         ];
 
 
