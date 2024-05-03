@@ -133,8 +133,10 @@ class RuleController extends Controller
     // Affiche le formulaire de modification d'un élément
     public function edit(Rule $rule)
     {
-        $countrys = Country::orderBy('name')->get();
-        return view('rule.ruleEdit', compact('rule', 'country'));
+        $countries = Country::orderBy('name')->get();
+        $triggers = Trigger::orderBy('name')->get();
+        $sorts = Sort::orderBy('name')->get();
+        return view('rule.ruleEdit', compact('rule', 'countries', 'triggers', 'sorts'));
     }
 
 
@@ -142,21 +144,72 @@ class RuleController extends Controller
 
 
 
-
     // Met à jour un élément spécifique
-    public function update(Request $request, Rule $rule)
+    public function update(Request $request, $id)
     {
         $request->validate([
+            'code' => 'required',
             'name' => 'required',
             'description' => 'nullable',
-            'country_id' => 'required'
+            'active_duration' => 'required',
+            'active_trigger' => 'required',
+            'active_sort' => 'required',
+            'dua_duration' => 'required',
+            'dua_trigger' => 'required',
+            'dua_sort' => 'required',
+            'dul_duration' => 'required',
+            'dul_trigger' => 'required',
+            'dul_sort' => 'required'
         ]);
 
+        $countryId = Auth::user()->country_id;
+        $country = Country::find($countryId);
+        $code = $country->abbr . $request->input('code');
+
+        $rule = Rule::find($id);
+
+        if (!$rule) {
+            return redirect()->route('rule.index')->with('error', 'Rule not found.');
+        }
+
         $rule->update([
+            'code' => $code,
             'name' => $request->input('name'),
             'description' => $request->input('description'),
-            'country_id' => $request->input('country_id')
+            'country_id' => $countryId,
+            'user_id' => Auth::user()->id,
+            'state_id' => 1
         ]);
+
+        Active::where('rule_id', $id)
+              ->update([
+                  'duration' => $request->input('active_duration'),
+                  'description' => $request->input('active_description'),
+                  'trigger_id' => $request->input('active_trigger'),
+                  'sort_id' => $request->input('active_sort'),
+                  'country_id' => $countryId,
+                  'user_id' => Auth::user()->id
+              ]);
+
+        Dua::where('rule_id', $id)
+           ->update([
+               'duration' => $request->input('dua_duration'),
+               'description' => $request->input('dua_description'),
+               'trigger_id' => $request->input('dua_trigger'),
+               'sort_id' => $request->input('dua_sort'),
+               'country_id' => $countryId,
+               'user_id' => Auth::user()->id
+           ]);
+
+        Dul::where('rule_id', $id)
+           ->update([
+               'duration' => $request->input('dul_duration'),
+               'description' => $request->input('dul_description'),
+               'trigger_id' => $request->input('dul_trigger'),
+               'sort_id' => $request->input('dul_sort'),
+               'country_id' => $countryId,
+               'user_id' => Auth::user()->id
+           ]);
 
         return redirect()->route('rule.index')->with('success', 'Rule updated successfully.');
     }
