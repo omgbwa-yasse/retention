@@ -31,15 +31,14 @@ class ArticleController extends Controller
             return redirect()->route('article.index', $reference)->with('error', 'Article not found for this reference.');
         }
         $article->load('reference','reference.category');
-        return view('articles.articleShow', compact('article', 'reference'));
+        return view('reference.articles.articleShow', compact('article', 'reference'));
     }
 
 
 
     public function store(Request $request, Reference $reference)
     {
-
-        Articles::create([
+         Articles::create([
             'reference' => $request->input('reference'),
             'name' => $request->input('name'),
             'description' => $request->input('description'),
@@ -58,7 +57,7 @@ class ArticleController extends Controller
         if ($article->reference_id != $reference->id) {
             abort(404);
         }
-        return view('articles.articleEdit', compact('article', 'reference'));
+        return view('reference.articles.articleEdit', compact('article', 'reference'));
     }
 
 
@@ -66,14 +65,16 @@ class ArticleController extends Controller
     public function update(Request $request, Reference $reference_id, Articles $Articles)
     {
         $request->validate([
-            'title' => 'required',
-            'description' => 'required',
+            'reference' => 'required',
+            'name' => 'required',
+            'description' => 'required'
         ]);
-
-        $Articles->title = $request->input('title');
+        $Articles->name = $request->input('reference');
+        $Articles->name = $request->input('name');
         $Articles->description = $request->input('description');
         $Articles->save();
-        return redirect()->route('reference.article.index', $reference_id)->with('success', 'Articles updated successfully.');
+        $reference = articles::findOrFail('$reference_id');
+        return redirect()->route('reference.article.index', $reference)->with('success', 'Articles updated successfully.');
     }
 
 

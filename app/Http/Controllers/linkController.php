@@ -13,7 +13,7 @@ class LinkController extends Controller
     public function index(Reference $reference)
     {
         $links = $reference->links()->get();
-        return view('links.index', compact('reference', 'links'));
+        return view('reference.links.index', compact('reference', 'links'));
     }
 
 
@@ -21,14 +21,14 @@ class LinkController extends Controller
 
     public function create(Reference $reference)
     {
-        return view('links.create', compact('reference'));
+        return view('reference.links.create', compact('reference'));
     }
 
 
 
     public function show(Reference $reference, ReferenceLink $link)
     {
-        return view('links.show', compact('reference', 'link'));
+        return view('reference.links.show', compact('reference', 'link'));
     }
 
 
@@ -50,7 +50,7 @@ class LinkController extends Controller
 
     public function edit(Reference $reference, ReferenceLink $link)
     {
-        return view('links.edit', compact('reference', 'link'));
+        return view('reference.links.edit', compact('reference', 'link'));
     }
 
 

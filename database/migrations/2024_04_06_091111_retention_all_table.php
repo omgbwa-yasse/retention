@@ -254,7 +254,7 @@ return new class extends Migration
             $table->string('code', 10)->unique();
             $table->string('name', 100)->unique();
             $table->text('description')->nullable();
-            $table->unsignedInteger('state_id');
+            $table->unsignedInteger('state_id')->default(1);
             $table->unsignedInteger('country_id');
             $table->unsignedInteger('user_id');
             $table->timestamps();

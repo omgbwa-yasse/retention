@@ -16,8 +16,7 @@ class RuleController extends Controller
     // Affiche la liste des éléments
     public function index()
     {
-        $rules = Rule::all();
-        $rules->load('countries');
+        $rules = Rule::with(['actives', 'duas', 'duls', 'countries', 'articles', 'classifications', 'baskets'])->get();
         return view('rule.ruleIndex', compact('rules'));
     }
 

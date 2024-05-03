@@ -7,6 +7,7 @@ use App\Models\Reference;
 use App\Models\ReferenceFile;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Illuminate\Support\Facades\Auth;
 
 class FileController extends Controller
 {
@@ -16,7 +17,7 @@ class FileController extends Controller
     {
         $files = $reference->files()->get();
 
-        return view('files.index', compact('reference', 'files'));
+        return view('reference.files.index', compact('reference', 'files'));
     }
 
 
@@ -24,7 +25,7 @@ class FileController extends Controller
 
     public function create(Reference $reference)
     {
-        return view('files.create', compact('reference'));
+        return view('reference.files.create', compact('reference'));
     }
 
 
@@ -37,7 +38,7 @@ class FileController extends Controller
             'file' => 'required|file|max:10240', // Max file size is 10 MB
         ]);
 
-        $filePath = $request->file('file')->store('reference_files');
+        $filePath = $request->file('file')->storePublicly('files');
         $fileCrypt = $request->file('file')->hashName();
 
         ReferenceFile::create([
@@ -45,6 +46,7 @@ class FileController extends Controller
             'file_path' => $filePath,
             'file_crypt' => $fileCrypt,
             'reference_id' => $reference->id,
+            'user_id' => Auth::user()->getAuthIdentifier()
         ]);
 
         return redirect()->route('reference.file.index', $reference)->with('success', 'File uploaded successfully.');
@@ -54,9 +56,10 @@ class FileController extends Controller
 
 
 
+
     public function show(Reference $reference, ReferenceFile $file)
     {
-        return view('files.show', compact('reference', 'file'));
+        return view('reference.files.show', compact('reference', 'file'));
     }
 
 
@@ -66,7 +69,7 @@ class FileController extends Controller
 
     public function edit(Reference $reference, ReferenceFile $file)
     {
-        return view('files.edit', compact('reference', 'file'));
+        return view('reference.files.edit', compact('reference', 'file'));
     }
 
 
@@ -122,7 +125,7 @@ class FileController extends Controller
             abort(404, 'File not found.');
         }
 
-        $filePath = storage_path('app/' . $referenceFile->file_path);
+        $filePath = public_path('files/' . $referenceFile->file_path);
 
         if (!file_exists($filePath)) {
             abort(404, 'File not found.');
@@ -131,6 +134,6 @@ class FileController extends Controller
         return response()->download($filePath, $referenceFile->name);
     }
 
+
+
 }
-
-

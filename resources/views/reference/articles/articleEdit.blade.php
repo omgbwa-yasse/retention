@@ -5,6 +5,10 @@
 
     <form action="{{ route('reference.article.update', [$reference->id, $article->id]) }}" method="PUT">
         @csrf
+        <div class="form-group">
+            <label for="reference">Cote </label>
+            <input type="text" class="form-control" id="reference" name="reference" value="{{ $article->reference }}" required>
+        </div>
 
         <div class="form-group">
             <label for="name">Title</label>
