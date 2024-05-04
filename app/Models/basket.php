@@ -11,7 +11,9 @@ class basket extends Model
 
     protected $fillable = [
         'name',
-        'description'
+        'description',
+        'user_id',
+        'type_id'
     ];
 
     public function rules()
@@ -19,7 +21,7 @@ class basket extends Model
         return $this->belongsToMany(Rule::class, 'basket_rule', 'basket_id', 'rule_id');
     }
 
-    public function classifications()
+    public function classes()
     {
         return $this->belongsToMany(Classification::class, 'basket_classification', 'basket_id', 'classification_id');
     }
@@ -27,6 +29,10 @@ class basket extends Model
     public function references()
     {
         return $this->belongsToMany(Reference::class, 'basket_reference', 'basket_id', 'reference_id');
+    }
+    public function type()
+    {
+        return $this->belongsTo(basketType::class,'type_id');
     }
 
 }

@@ -51,8 +51,8 @@
                             aria-expanded="true"><i class="bi bi-plus-circle"></i> Paniers</a>
                         <div class="collapse show" id="ajouter">
                             <ul class="list-unstyled pl-3">
-                                <li><a href="#" class="text-dark"><i class="bi bi-plus-square"></i> Gérer</a></li>
-                                <li><a href="#" class="text-dark"><i class="bi bi-plus-square"></i> Ajouter</a></li>
+                                <li><a href="{{ route('basket.index') }}" class="text-dark"><i class="bi bi-plus-square"></i> Gérer</a></li>
+                                <li><a href="{{ route('basket.create') }}" class="text-dark"><i class="bi bi-plus-square"></i> Ajouter</a></li>
                             </ul>
                         </div>
                     </li>

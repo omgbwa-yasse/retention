@@ -382,7 +382,9 @@ return new class extends Migration
             $table->string('name', 100)->unique();
             $table->text('description')->nullable();
             $table->unsignedInteger('user_id');
+            $table->unsignedInteger('type_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('type_id')->references('id')->on('basket_types')->onDelete('cascade');
             $table->timestamps();
         });
 

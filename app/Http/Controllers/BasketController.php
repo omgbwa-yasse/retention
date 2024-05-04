@@ -7,13 +7,29 @@ use App\Models\Classification;
 use App\Models\Reference;
 use App\Models\Rule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BasketController extends Controller
 {
     public function index()
     {
-        $baskets = Basket::with(['rules', 'classifications', 'references'])->get();
-        return view('baskets.index', compact('baskets'));
+
+        $basketRules = Basket::with('type')
+            ->whereHas('type', function ($query) { $query->where('name', 'rule');  })
+            ->where('user_id', '=', Auth::user()->getAuthIdentifier())
+            ->get();
+
+        $basketActivities = Basket::with('type')
+            ->whereHas('type', function ($query) { $query->where('name', 'activity'); })
+            ->where('user_id', '=', Auth::user()->getAuthIdentifier())
+            ->get();
+
+        $basketReference = Basket::with('type')
+            ->whereHas('type', function ($query) { $query->where('name', 'reference'); })
+            ->where('user_id', '=', Auth::user()->getAuthIdentifier())
+            ->get();
+
+        return view('basket.index', compact('basketReference','basketActivities','basketRules'));
     }
 
 
@@ -25,7 +41,7 @@ class BasketController extends Controller
         $classifications = Classification::all();
         $references = Reference::all();
         $rules = Rule::all();
-        return view('baskets.create', compact('basketTypes', 'classifications', 'references', 'rules'));
+        return view('basket.create', compact('basketTypes', 'classifications', 'references', 'rules'));
     }
 
 
@@ -35,34 +51,18 @@ class BasketController extends Controller
         $request->validate([
             'name' => 'required|string|max:100|unique:baskets',
             'description' => 'nullable|string',
-            'basket_type_id' => 'nullable|exists:basket_types,id',
-            'classification_ids' => 'nullable|array|exists:classifications,id',
-            'reference_ids' => 'nullable|array|exists:references,id',
-            'rule_ids' => 'nullable|array|exists:rules,id',
+            'type_id' => 'nullable|exists:basket_types,id'
         ]);
 
         $basket = Basket::create([
             'name' => $request->name,
             'description' => $request->description,
+            'type_id' => $request->type_id,
+            'user_id' => Auth::user()->getAuthIdentifier()
         ]);
 
-        if ($request->has('basket_type_id')) {
-            // TODO: Implement basket type association
-        }
 
-        if ($request->has('classification_ids')) {
-            $basket->classifications()->sync($request->classification_ids);
-        }
-
-        if ($request->has('reference_ids')) {
-            $basket->references()->sync($request->reference_ids);
-        }
-
-        if ($request->has('rule_ids')) {
-            $basket->rules()->sync($request->rule_ids);
-        }
-
-        return redirect()->route('baskets.index')->with('success', 'Basket created successfully.');
+        return redirect()->route('basket.index')->with('success', 'Basket created successfully.');
     }
 
 
@@ -70,7 +70,8 @@ class BasketController extends Controller
 
     public function show(Basket $basket)
     {
-        return view('baskets.show', compact('basket'));
+        $basket->load('type');
+        return view('basket.show', compact('basket'));
     }
 
 
@@ -79,14 +80,15 @@ class BasketController extends Controller
 
     public function edit(Basket $basket)
     {
-        $basketTypes = BasketType::all();
+        $basketTypes = null;
+        if ($basket->doesntHave('classes') && $basket->doesntHave('rules') && $basket->doesntHave('references')) {
+            $basketTypes = BasketType::all();
+        }
         $classifications = Classification::all();
         $references = Reference::all();
         $rules = Rule::all();
-        return view('baskets.edit', compact('basket', 'basketTypes', 'classifications', 'references', 'rules'));
+        return view('basket.edit', compact('basket', 'basketTypes', 'classifications', 'references', 'rules'));
     }
-
-
 
 
     public function update(Request $request, Basket $basket)
@@ -121,20 +123,19 @@ class BasketController extends Controller
             $basket->rules()->sync($request->rule_ids);
         }
 
-        return redirect()->route('baskets.index')->with('success', 'Basket updated successfully.');
+        return redirect()->route('basket.index')->with('success', 'Basket updated successfully.');
     }
 
 
     public function destroy(Basket $basket)
     {
-        if ($basket->classifications()->whereHas('baskets')->count() > 0 &&
-            $basket->rules()->whereHas('baskets')->count() > 0 &&
-            $basket->references()->whereHas('baskets')->count() > 0){
-            return redirect()->route('baskets.index')->with('error', 'Cannot delete basket because it has related classifications, rules and references.');
+        if ($basket->whereHas('classes')->count() > 0 &&
+            $basket->whereHas('rules')->count() > 0 &&
+            $basket->whereHas('references')->count() > 0){
+            return redirect()->route('basket.index')->with('error', 'Cannot delete basket because it has related classifications, rules and references.');
         }
-
         $basket->delete();
-        return redirect()->route('baskets.index')->with('success', 'Basket deleted successfully.');
+        return redirect()->route('basket.index')->with('success', 'Basket deleted successfully.');
     }
 
 

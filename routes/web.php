@@ -26,6 +26,7 @@ use App\Http\Controllers\RuleClassificationController;
 use App\Http\Controllers\ValidationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForumController;
+use App\Http\Controllers\BasketController;
 use App\Http\Controllers\ActivityRuleController;
 
 
@@ -33,7 +34,7 @@ use App\Http\Controllers\ActivityRuleController;
 Route::middleware(['auth'])->group(function () {
     // Controllers
     Route::resource('mission', MissionController::class);
-
+    Route::resource('basket', basketController::class);
     Route::resource('activity', ActivityController::class);
     Route::resource('activity.rule', ActivityRuleController::class);
     Route::resource('activity.typology', ActivityTypologyController::class);
