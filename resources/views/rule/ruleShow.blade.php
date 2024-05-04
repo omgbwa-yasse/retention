@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="row">
         <div class="col-md-8">
             <h2>{{ $rule->name }}</h2>
             <h6 class="card-subtitle mb-2 text-muted">{{ $rule->code }}</h6>
@@ -19,46 +19,70 @@
                 </form>
             </div>
 
-            <h3> Durée active : Bureau </h3>
-            <div>
-                <ul>
-                    @if($rule->duas->isEmpty())
-                        <li> Aucun délai actif </li>
-                    @else
-                        @foreach($rule->actives as $active)
-                            <li>{{ $active->duration }} ans - {{ $active->description }}</a></li>
-                        @endforeach
-                    @endif
-                </ul>
-            </div>
+            <h5>Cycle de vie</h5>
+            <div class="table-responsive mb-12">
+                <table class="table table-bordered align-middle">
+                    <tbody>
+                        <tr class="">
+                            <td colspan="3">Active</td>
+                            <td colspan="3">Semi-active</td>
+                            <td colspan="3">Définitive</td>
+                            <td colspan="3">Références</td>
+                        </tr>
+                        <tr class="">
+                            <td>Durée</td>
+                            <td>Déclencheur</td>
+                            <td>Sort</td>
+                            <td>Durée</td>
+                            <td>Déclencheur</td>
+                            <td>Sort</td>
+                            <td>Durée</td>
+                            <td>Déclencheur</td>
+                            <td>Sort</td>
+                            <td colspan="3"  rowspan="2">10 articles</td>
+                        </tr>
+                        <tr class="">
+
+                        @if($rule->duas->isEmpty())
+                            <td> N/A </td>
+                            <td> N/A </td>
+                            <td> N/A </td>
+                        @else
+                            @foreach($rule->actives as $active)
+                                <td>{{ $active->duration }} ans </td>
+                                <td>{{ $active->trigger->code }}</td>
+                                <td>{{ $active->sort->code }}</td>
+                            @endforeach
+                        @endif
+
+                        @if($rule->duas->isEmpty())
+                        <td> N/A </td>
+                        <td> N/A </td>
+                        <td> N/A </td>
+                        @else
+                            @foreach($rule->duas as $dua)
+                                <td>{{ $dua->duration }} ans </td>
+                                <td>{{ $dua->trigger->code }}</td>
+                                <td>{{ $dua->sort->code }}</td>
+                            @endforeach
+                        @endif
 
 
-            <h3> Durée semi-active : Préarchivage </h3>
-            <div>
-                <ul>
-                    @if($rule->duas->isEmpty())
-                        <li> Aucun délai semi-actif </li>
-                    @else
-                        @foreach($rule->duas as $dua)
-                            <li>{{ $dua->duration }} ans - {{ $dua->description }}</li>
-                        @endforeach
-                    @endif
-                </ul>
-            </div>
+                        @if($rule->duls->isEmpty())
+                            <td> N/A </td>
+                            <td> N/A </td>
+                            <td> N/A </td>
+                        @else
+                            @foreach($rule->duls as $dul)
+                                <td>{{ $dul->duration }} ans </td>
+                                <td>{{ $dul->trigger->code }}</td>
+                                <td>{{ $dul->sort->code }}</td>
+                            @endforeach
+                        @endif
 
-
-
-            <h3> Durée passive : Archives historiques </h3>
-            <div>
-                <ul>
-                    @if($rule->duls->isEmpty())
-                        <li> Aucune règle </li>
-                    @else
-                        @foreach($rule->duls as $dul)
-                            <li>{{ $dul->duration }} ans - {{ $dul->description }}</li>
-                        @endforeach
-                    @endif
-                </ul>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
 

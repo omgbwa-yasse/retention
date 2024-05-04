@@ -19,19 +19,22 @@
             </div>
         @endif
 
-
-
         <!-- Horizontal under breakpoint -->
 
         <ul class="list-group list-group-vertical">
 
             @foreach ($items as $item)
-                <li class="list-group-item">{{ $item->code }} : {{ $item->name }}
-                    <a href="{{ route('mission.show', $item) }}" class="btn btn-primary mb-2 left-1">Voir</a>
+                <li class="list-group-item" >{{ $item->code }} : {{ $item->name }}
+                    <a href="{{ route('mission.show', $item) }}" class="btn btn-primary mb-2 float-end">Voir</a>
                 </li>
                 @include('mission.subclasses', ['subclasses' => $item->children])
             @endforeach
         </ul>
+
+
+
+
+
 
 
     </div>
