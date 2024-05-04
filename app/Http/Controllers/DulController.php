@@ -47,7 +47,7 @@ class DulController extends Controller
         return redirect()->route('rule.dul.index', $rule)->with('success', 'Dul créé avec succès.');
     }
 
-    public function show($rule_id, $id)
+    public function show(INT $rule_id, INT $id)
     {
         $dul = Dul::findOrFail($id);
         $rule = Rule::findOrFail($rule_id);
