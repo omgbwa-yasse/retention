@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Rule;
 use App\Models\Country;
 use App\Models\Articles;
-use App\Models\state;
+use App\Models\status;
 use App\Models\Active;
 use App\Models\Dua;
 use App\Models\Dul;
@@ -34,7 +34,7 @@ class RuleController extends Controller
     // Affiche le formulaire de création d'un élément
     public function create()
     {
-        $states = state::all();
+        $states = status::all();
         $triggers = trigger::all();
         $sorts = Sort::all();
         $actives = Active::all();

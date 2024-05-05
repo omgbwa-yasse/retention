@@ -16,7 +16,9 @@ class Rule extends Model
         'description',
         'country_id',
         'user_id',
-        'state_id'
+        'status_id',
+        'validated_at',
+        'validated_by'
     ];
 
     public function actives()
@@ -53,6 +55,11 @@ class Rule extends Model
     public function baskets()
     {
         return $this->belongsToMany(Basket::class, 'basket_rule', 'rule_id', 'basket_id');
+    }
+
+    public function statuses()
+    {
+        return $this->belongsTo(Status::class, 'status_id');
     }
 }
 

@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Rule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ValidationController extends Controller
 {
@@ -11,54 +12,33 @@ class ValidationController extends Controller
      */
     public function index()
     {
-        //
+        $rules = Rule::where('country_id', '=', Auth::user()->country_id)->get();
+        return view('validation.index', compact('rules'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function updateStatus(Request $request, int $id)
     {
-        //
+        $rule = Rule::findOrFail($id);
+
+        if ($id == 2 && $rule->id == 1) {
+            $rule->update([
+                'status_id' => $request->input('status_id'),
+                'validated_at' => now(),
+                'validated_by' => Auth::id()
+            ]);
+        } elseif ($id == 3 && $rule->id == 2) {
+            $rule->update([
+                'status_id' => $request->input('status_id'),
+                'validated_at' => now(),
+                'validated_by' => Auth::id()
+            ]);
+        } else {
+            abort(404);
+        }
+
+        return redirect()->route('validation.index')->with('success', 'Activité mise à jour avec succès.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

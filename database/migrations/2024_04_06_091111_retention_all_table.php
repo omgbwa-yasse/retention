@@ -254,13 +254,16 @@ return new class extends Migration
             $table->string('code', 10)->unique();
             $table->string('name', 100)->unique();
             $table->text('description')->nullable();
-            $table->unsignedInteger('state_id')->default(1);
+            $table->unsignedInteger('status_id')->default(1);
             $table->unsignedInteger('country_id');
             $table->unsignedInteger('user_id');
+            $table->dateTime('validated_at')->nullable();
+            $table->unsignedInteger('validated_by')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade');
+            $table->foreign('status_id')->references('id')->on('statuses')->onDelete('cascade');
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
+            $table->foreign('validate_by')->references('id')->on('users')->nullable()->onDelete('set null');
         });
 
 
@@ -543,7 +546,7 @@ return new class extends Migration
 
 
         // Create state table
-        Schema::create('states', function (Blueprint $table) {
+        Schema::create('statuses', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
             $table->text('description')->nullable();
@@ -655,7 +658,7 @@ return new class extends Migration
 
         */
         Schema::dropIfExists('countries');
-        Schema::dropIfExists('states');
+        Schema::dropIfExists('statuses');
 
     }
 };
