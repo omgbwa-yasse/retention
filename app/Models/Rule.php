@@ -38,7 +38,7 @@ class Rule extends Model
 
     public function countries()
     {
-        return $this->belongsTo(country::class);
+        return $this->belongsTo(country::class, 'country_id');
     }
 
 
@@ -57,9 +57,13 @@ class Rule extends Model
         return $this->belongsToMany(Basket::class, 'basket_rule', 'rule_id', 'basket_id');
     }
 
-    public function statuses()
+    public function status()
     {
         return $this->belongsTo(Status::class, 'status_id');
+    }
+    public function validator()
+    {
+        return $this->belongsTo(User::class, 'validated_by');
     }
 }
 

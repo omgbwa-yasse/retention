@@ -23,12 +23,11 @@ use App\Http\Controllers\DuaController;
 use App\Http\Controllers\DulController;
 use App\Http\Controllers\DulArticleController;
 use App\Http\Controllers\RuleClassificationController;
-use App\Http\Controllers\ValidationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\ActivityRuleController;
-
+use App\Http\Controllers\ValidationController;
 
 // Route group for authentication
 Route::middleware(['auth'])->group(function () {
@@ -55,8 +54,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('rule.classification', RuleClassificationController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::resource('forum', ForumController::class);
     Route::resource('user', UserController::class);
-    Route::resource('validation', ValidationController::class);
+    Route::resource('validation', ValidationController::class)->only(['create','updateStatus','index', 'store', 'show', 'edit', 'update', 'destroy','updateStatus']);
 });
+
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

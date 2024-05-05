@@ -45,8 +45,6 @@ class RuleController extends Controller
 
 
 
-
-
     // Enregistre un nouvel élément
     public function store(Request $request)
     {
@@ -122,7 +120,7 @@ class RuleController extends Controller
     // Affiche un élément spécifique
     public function show(Rule $rule)
     {
-        $rule->load('countries')->load('actives')->load('duls')->load('classifications');
+        $rule->load('countries')->load('actives')->load('duls')->load('classifications')->load('status');
         return view('rule.ruleShow', compact('rule'));
     }
 

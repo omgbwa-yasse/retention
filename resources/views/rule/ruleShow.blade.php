@@ -9,14 +9,6 @@
                 <h6 class="card-subtitle mb-2 text-muted">--- Pays non vaide ---</h6>
                 <p class="card-text">{{ $rule->description }}</p>
 
-                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                <a href="{{ route('rule.edit', $rule->id) }}" class="btn btn-primary me-md-2 mb-2 mb-md-0">Modifier</a>
-
-                <form action="{{ route('rule.destroy', $rule->id) }}" method="POST" class="d-inline">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Supprimer</button>
-                </form>
             </div>
 
             <h5>Cycle de vie</h5>
@@ -25,24 +17,14 @@
                     <tbody>
                         <tr class="">
                             <td colspan="3">Active</td>
-                            <td colspan="3">Semi-active</td>
-                            <td colspan="3">Définitive</td>
-                            <td colspan="3">Références</td>
                         </tr>
                         <tr class="">
                             <td>Durée</td>
                             <td>Déclencheur</td>
+                            <td>Description</td>
                             <td>Sort</td>
-                            <td>Durée</td>
-                            <td>Déclencheur</td>
-                            <td>Sort</td>
-                            <td>Durée</td>
-                            <td>Déclencheur</td>
-                            <td>Sort</td>
-                            <td colspan="3"  rowspan="2">10 articles</td>
                         </tr>
                         <tr class="">
-
                         @if($rule->duas->isEmpty())
                             <td> N/A </td>
                             <td> N/A </td>
@@ -50,41 +32,84 @@
                         @else
                             @foreach($rule->actives as $active)
                                 <td>{{ $active->duration }} ans </td>
-                                <td>{{ $active->trigger->code }}</td>
+                                <td>{{ $active->trigger->code }} - {{ $active->trigger->name }} </td>
+                                <td>{{ $active->description }} </td>
                                 <td>{{ $active->sort->code }}</td>
                             @endforeach
                         @endif
-
-                        @if($rule->duas->isEmpty())
-                        <td> N/A </td>
-                        <td> N/A </td>
-                        <td> N/A </td>
-                        @else
-                            @foreach($rule->duas as $dua)
-                                <td>{{ $dua->duration }} ans </td>
-                                <td>{{ $dua->trigger->code }}</td>
-                                <td>{{ $dua->sort->code }}</td>
-                            @endforeach
-                        @endif
-
-
-                        @if($rule->duls->isEmpty())
-                            <td> N/A </td>
-                            <td> N/A </td>
-                            <td> N/A </td>
-                        @else
-                            @foreach($rule->duls as $dul)
-                                <td>{{ $dul->duration }} ans </td>
-                                <td>{{ $dul->trigger->code }}</td>
-                                <td>{{ $dul->sort->code }}</td>
-                            @endforeach
-                        @endif
-
                         </tr>
                     </tbody>
                 </table>
+
+
+                <div class="table-responsive mb-12">
+                    <table class="table table-bordered align-middle">
+                        <tbody>
+                            <tr class="">
+                                <td colspan="3">Semi-active</td>
+                            </tr>
+                            <tr class="">
+                                <td>Durée</td>
+                                <td>Déclencheur</td>
+                                <td>Description</td>
+                                <td>Sort</td>
+
+                            </tr>
+                            <tr class="">
+
+                            @if($rule->duas->isEmpty())
+                            <td> N/A </td>
+                            <td> N/A </td>
+                            <td> N/A </td>
+                            @else
+                                @foreach($rule->duas as $dua)
+                                    <td>{{ $dua->duration }} ans </td>
+                                    <td>{{ $dua->trigger->code }} - {{ $dua->trigger->name }} </td>
+                                    <td>{{ $dua->description }} </td>
+                                    <td>{{ $dua->sort->code }}</td>
+                                @endforeach
+                            @endif
+                            </tr>
+                        </tbody>
+                    </table>
             </div>
 
+
+
+
+                    <div class="table-responsive mb-12">
+                        <table class="table table-bordered align-middle">
+                            <tbody>
+                                <tr class="">
+                                    <td colspan="3">Définitive</td>
+                                </tr>
+                                <tr class="">
+                                    <td>Durée</td>
+                                    <td>Déclencheur</td>
+                                    <td>Description</td>
+                                    <td>Sort</td>
+                                </tr>
+                                <tr class="">
+                                @if($rule->duls->isEmpty())
+                                    <td> N/A </td>
+                                    <td> N/A </td>
+                                    <td> N/A </td>
+                                @else
+                                    @foreach($rule->duls as $dul)
+                                        <td>{{ $dul->duration }} ans </td>
+                                        <td>{{ $dul->trigger->code }} - {{ $dul->trigger->name }} </td>
+                                        <td>{{ $dul->description }} </td>
+                                        <td>{{ $dul->sort->code }}</td>
+                                    @endforeach
+                                @endif
+                                </tr>
+                            </tbody>
+                        </table>
+                </div>
+
+            Status : <a href="{{ route('validation.show', $rule->id) }}">
+                <span class="badge badge-danger">{{ $rule->status->name }}</span></a><br>
+            Articles : <a href="{{ route('validation.show', $rule->id) }}"> 10 articles </a>
 
             <h3> Activités </h3>
 
@@ -108,6 +133,15 @@
                     <a href="{{ route('rule.classification.create', $rule->id) }}" class="btn btn-primary btn-sm">Aux activités</a>
                 </div>
 
+                <hr>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                    <a href="{{ route('rule.edit', $rule->id) }}" class="btn btn-primary me-md-2 mb-2 mb-md-0">Modifier</a>
+
+                <form action="{{ route('rule.destroy', $rule->id) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                </form>
         </div>
     </div>
 </div>
