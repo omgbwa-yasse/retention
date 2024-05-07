@@ -22,14 +22,9 @@ class RuleController extends Controller
     // Affiche la liste des éléments
     public function index()
     {
-        $rules = Rule::with(['actives', 'duas', 'duls', 'countries', 'articles', 'classifications', 'baskets'])->get();
+        $rules = Rule::with(['actives', 'duas', 'duls', 'countries', 'articles', 'classifications', 'baskets', 'status'])->get();
         return view('rule.ruleIndex', compact('rules'));
     }
-
-
-
-
-
 
     // Affiche le formulaire de création d'un élément
     public function create()
@@ -73,7 +68,7 @@ class RuleController extends Controller
             'description' => $request->input('description'),
             'country_id' => $countryId,
             'user_id' => Auth::user()->id,
-            'state_id' => 1
+            'status_id' => 1
         ]);
 
 
@@ -134,6 +129,7 @@ class RuleController extends Controller
         $countries = Country::orderBy('name')->get();
         $triggers = Trigger::orderBy('name')->get();
         $sorts = Sort::orderBy('name')->get();
+        $rule->load('Actives','duas','duls');
         return view('rule.ruleEdit', compact('rule', 'countries', 'triggers', 'sorts'));
     }
 
@@ -157,7 +153,7 @@ class RuleController extends Controller
             'dua_sort' => 'required',
             'dul_duration' => 'required',
             'dul_trigger' => 'required',
-            'dul_sort' => 'required'
+            'dul_sort' => 'required',
         ]);
 
         $countryId = Auth::user()->country_id;
@@ -176,7 +172,7 @@ class RuleController extends Controller
             'description' => $request->input('description'),
             'country_id' => $countryId,
             'user_id' => Auth::user()->id,
-            'state_id' => 1
+            'status_id' => 1
         ]);
 
         Active::where('rule_id', $id)

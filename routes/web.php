@@ -27,7 +27,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\ActivityRuleController;
-use App\Http\Controllers\ValidationController;
+use App\Http\Controllers\CommitteeController;
 
 // Route group for authentication
 Route::middleware(['auth'])->group(function () {
@@ -54,7 +54,15 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('rule.classification', RuleClassificationController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::resource('forum', ForumController::class);
     Route::resource('user', UserController::class);
-    Route::resource('validation', ValidationController::class)->only(['create','updateStatus','index', 'store', 'show', 'edit', 'update', 'destroy','updateStatus']);
+
+
+
+    Route::prefix('committee')->group(function(){
+        Route::get('/project', [CommitteeController::class, 'project'])->name('committee.project');
+        Route::get('/examining', [CommitteeController::class, 'examining'])->name('committee.examining');
+        Route::get('/approved', [CommitteeController::class, 'approved'])->name('committee.approved');
+    });
+
 });
 
 

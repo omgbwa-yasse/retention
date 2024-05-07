@@ -107,9 +107,9 @@
                         </table>
                 </div>
 
-            Status : <a href="{{ route('validation.show', $rule->id) }}">
+            Status : <a href="{{ route('rule.show', $rule->id) }}">
                 <span class="badge badge-danger">{{ $rule->status->name }}</span></a><br>
-            Articles : <a href="{{ route('validation.show', $rule->id) }}"> 10 articles </a>
+            Articles : <a href="{{ route('rule.show', $rule->id) }}"> 10 articles </a>
 
             <h3> Activités </h3>
 
