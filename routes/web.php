@@ -29,6 +29,7 @@ use App\Http\Controllers\BasketController;
 use App\Http\Controllers\ActivityRuleController;
 use App\Http\Controllers\CommitteeController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\AmswerController;
 
 // Route group for authentication
 Route::middleware(['auth'])->group(function () {
@@ -53,7 +54,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('rule.dul', DulController::class);
     Route::resource('rule.dul.dulreference', DulArticleController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::resource('rule.classification', RuleClassificationController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
-    Route::resource('forum', ForumController::class);
+
     Route::resource('user', UserController::class);
 
 
@@ -76,6 +77,8 @@ Route::middleware(['auth'])->group(function () {
             'update' => 'subject.update',
             'destroy' => 'subject.destroy',
         ]);
+
+        Route::resource('amswer', AmswerController::class);
 
         Route::get('subject/basket', [SubjectController::class, 'basket'])->name('subject.basket');
         Route::get('subject/online', [SubjectController::class, 'online'])->name('subject.online');

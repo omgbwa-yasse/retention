@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use App\Models\Amswer;
@@ -24,13 +25,14 @@ class Subject extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function answers(): HasMany
+    public function amswers(): HasMany
     {
-        return $this->hasMany(Answer::class);
+        return $this->hasMany(Amswer::class);
     }
 
-    public function classifications(): MorphToMany
+    public function classes()
     {
-        return $this->morphToMany(Classification::class, 'classifiable');
+        return $this->belongsToMany(Classification::class, 'forum_subject_classification', 'subject_id', 'classification_id');
     }
+
 }

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Answer extends Model
+class Amswer extends Model
 {
     use HasFactory;
 
@@ -35,12 +35,12 @@ class Answer extends Model
         return $this->belongsTo(Subject::class);
     }
 
-    public function parent(): MorphTo
+    public function parent()
     {
-        return $this->morphTo();
+        return $this->belongsTo(self::class, 'parent_id');
     }
 
-    public function children(): HasMany
+    public function children()
     {
         return $this->hasMany(self::class, 'parent_id');
     }
