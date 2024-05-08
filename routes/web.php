@@ -28,6 +28,7 @@ use App\Http\Controllers\ForumController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\ActivityRuleController;
 use App\Http\Controllers\CommitteeController;
+use App\Http\Controllers\SubjectController;
 
 // Route group for authentication
 Route::middleware(['auth'])->group(function () {
@@ -61,6 +62,23 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/project', [CommitteeController::class, 'project'])->name('committee.project');
         Route::get('/examining', [CommitteeController::class, 'examining'])->name('committee.examining');
         Route::get('/approved', [CommitteeController::class, 'approved'])->name('committee.approved');
+    });
+
+    Route::prefix('forum')->name('forum.')->group(function () {
+        Route::resource('subject', SubjectController::class)->only([
+            'index', 'create', 'store', 'show', 'edit', 'update', 'destroy'
+        ])->names([
+            'index' => 'subject.index',
+            'create' => 'subject.create',
+            'store' => 'subject.store',
+            'show' => 'subject.show',
+            'edit' => 'subject.edit',
+            'update' => 'subject.update',
+            'destroy' => 'subject.destroy',
+        ]);
+
+        Route::get('subject/basket', [SubjectController::class, 'basket'])->name('subject.basket');
+        Route::get('subject/online', [SubjectController::class, 'online'])->name('subject.online');
     });
 
 });

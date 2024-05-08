@@ -451,26 +451,23 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100)->unique();
             $table->text('description')->nullable();
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
 
-
-        // Create forum_amswer table
-        Schema::create('forum_amswers', function (Blueprint $table) {
+        // Create forum_answer table
+        Schema::create('forum_answers', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
-            $table->unsignedInteger('parent_id')->nullable();
-            $table->unsignedInteger('subject_id');
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->unsignedBigInteger('subject_id');
             $table->timestamps();
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('subject_id')->references('id')->on('forum_subjects')->onDelete('cascade');
+            $table->foreign('parent_id')->references('id')->on('forum_answers')->onDelete('cascade');
         });
-
-
-
 
         // Create forum_reaction_type table
         Schema::create('forum_reaction_types', function (Blueprint $table) {
@@ -480,25 +477,20 @@ return new class extends Migration
             $table->timestamps();
         });
 
-
-
         // Create forum_subject_classification table
         Schema::create('forum_subject_classification', function (Blueprint $table) {
-            $table->unsignedInteger('subjet_id');
-            $table->unsignedInteger('classification_id');
-            $table->primary(['subjet_id', 'classification_id']);
+            $table->unsignedBigInteger('subject_id');
+            $table->unsignedBigInteger('classification_id');
+            $table->primary(['subject_id', 'classification_id']);
             // Foreign key constraints
-            $table->foreign('subjet_id')->references('id')->on('forum_subjects')->onDelete('cascade');
+            $table->foreign('subject_id')->references('id')->on('forum_subjects')->onDelete('cascade');
             $table->foreign('classification_id')->references('id')->on('classifications')->onDelete('cascade');
         });
 
-
-
-
         // Create user_subject table
         Schema::create('user_subject', function (Blueprint $table) {
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('subject_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('subject_id');
             $table->primary(['user_id', 'subject_id']);
             $table->timestamps();
             // Foreign key constraints
@@ -506,31 +498,28 @@ return new class extends Migration
             $table->foreign('subject_id')->references('id')->on('forum_subjects')->onDelete('cascade');
         });
 
-
-        // Create user_amswer table
-        Schema::create('user_amswer', function (Blueprint $table) {
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('amswer_id');
-            $table->primary(['user_id', 'amswer_id']);
+        // Create user_answer table
+        Schema::create('user_answer', function (Blueprint $table) {
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('answer_id');
+            $table->primary(['user_id', 'answer_id']);
             // Foreign key constraints
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('amswer_id')->references('id')->on('forum_amswers')->onDelete('cascade');
+            $table->foreign('answer_id')->references('id')->on('forum_answers')->onDelete('cascade');
         });
 
-
-        // Create forum_reaction_amswers table
-        Schema::create('forum_reaction_amswers', function (Blueprint $table) {
-            $table->unsignedInteger('reaction_type_id');
-            $table->unsignedInteger('amswer_id');
-            $table->unsignedInteger('user_id');
-            $table->primary(['reaction_type_id', 'amswer_id']);
+        // Create forum_reaction_answers table
+        Schema::create('forum_reaction_answers', function (Blueprint $table) {
+            $table->unsignedBigInteger('reaction_type_id');
+            $table->unsignedBigInteger('answer_id');
+            $table->unsignedBigInteger('user_id');
+            $table->primary(['reaction_type_id', 'answer_id']);
             $table->timestamps();
             // Foreign key constraints
             $table->foreign('reaction_type_id')->references('id')->on('forum_reaction_types')->onDelete('cascade');
-            $table->foreign('amswer_id')->references('id')->on('forum_amswers')->onDelete('cascade');
+            $table->foreign('answer_id')->references('id')->on('forum_answers')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
-
 
 
         /*
