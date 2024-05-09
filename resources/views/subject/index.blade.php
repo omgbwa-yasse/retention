@@ -4,7 +4,7 @@
 <h1>Discusion</h1>
 <hr>
 <p class="lead">    </p>
-    <a name="" id="" class="btn btn-primary" href="{{ route('forum.subject.create')}}" role="button" >Ajouter un sujet</a>
+    <a name="" id="" class="btn btn-primary" href="{{ route('subject.create')}}" role="button" >Ajouter un sujet</a>
     <ul class="list-group">
         @foreach($subjects as $subject)
             <li class="list-group-item">
@@ -14,7 +14,7 @@
                 @endforeach
 
                 <button  type="button" class="btn btn-primary">
-                    <a href="{{ route('forum.subject.show', $subject) }}" class="btn btn-primary">Participer</a>
+                    <a href="{{ route('subject.show', $subject) }}" class="btn btn-primary">Participer</a>
                 </button>
             </li>
         @endforeach

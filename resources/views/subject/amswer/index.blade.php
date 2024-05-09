@@ -21,9 +21,9 @@
                     <td>{{ $answer->subject->name }}</td>
                     <td>{{ $answer->created_at }}</td>
                     <td>
-                        <a href="{{ route('answers.show', $answer->id) }}" class="btn btn-sm btn-primary">View</a>
-                        <a href="{{ route('answers.edit', $answer->id) }}" class="btn btn-sm btn-secondary">Edit</a>
-                        <form action="{{ route('answers.destroy', $answer->id) }}" method="POST" style="display: inline;">
+                        <a href="{{ route('subject.answer.show', $answer->id) }}" class="btn btn-sm btn-primary">View</a>
+                        <a href="{{ route('subject.answer.edit', $answer->id) }}" class="btn btn-sm btn-secondary">Edit</a>
+                        <form action="{{ route('subject.answer.destroy', $answer->id) }}" method="POST" style="display: inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-danger">Delete</button>

@@ -1,7 +1,7 @@
 @extends('index')
 @section('content')
 <h1>Ajouter un sujet</h1>
-        <form action="{{ route('forum.subject.store') }}" method="POST">
+        <form action="{{ route('subject.store') }}" method="POST">
             @csrf
             <div class="form-group">
                 <label for="name">Name:</label>

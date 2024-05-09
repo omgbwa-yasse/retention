@@ -73,9 +73,9 @@
                                 class="bi bi-chat-dots"></i> Forum</a>
                         <div class="collapse" id="forum">
                             <ul class="list-unstyled pl-3">
-                                <li><a href="{{ route('forum.subject.index') }}" class="text-dark"><i class="bi bi-chat-square-dots"></i> Nouveautés</a></li>
-                                <li><a href="{{ route('forum.subject.basket') }}" class="text-dark"><i class="bi bi-chat-square-dots"></i> Sujets épinglés</a></li>
-                                <li><a href="{{ route('forum.subject.online') }}" class="text-dark"><i class="bi bi-chat-square-dots"></i> En ligne</a></li>
+                                <li><a href="{{ route('subject.index') }}" class="text-dark"><i class="bi bi-chat-square-dots"></i> Nouveautés</a></li>
+                                <li><a href="" class="text-dark"><i class="bi bi-chat-square-dots"></i> Sujets épinglés</a></li>
+                                <li><a href="{{ route('chat.index') }}" class="text-dark"><i class="bi bi-chat-square-dots"></i> En ligne</a></li>
                             </ul>
                         </div>
                     </li>

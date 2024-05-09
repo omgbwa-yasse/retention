@@ -2,11 +2,14 @@
 
 @section('content')
 <div class="container">
-    <h1>Create Answer</h1>
-    <form action="{{ route('forum.amswer.store', $subject) }}" method="POST">
+    <h1>Avis</h1>
+    <h2>Question : {{ $subject->name }}</h2>
+    <p class="lead"> Par : {{ $subject->user->name }} </p>
+
+    <form action="{{ route('subject.amswer.store', $subject) }}" method="POST">
         @csrf
         <div class="form-group">
-            <label for="name">Name</label>
+            <label for="name">Commentaire</label>
             <input type="text" class="form-control" name="name" required>
         </div>
         <button type="submit" class="btn btn-primary">Create</button>

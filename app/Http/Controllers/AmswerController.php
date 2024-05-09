@@ -10,34 +10,34 @@ class AmswerController extends Controller
 {
     public function index()
     {
+
         $amswer = Amswer::with('user')->latest()->get();
-        return view('forum.amswer.index', compact('amswer'));
+        dd($amswer);
+        return view('subject.amswer.index', compact('amswer'));
     }
 
-    public function create(Subject $subject)
+    public function create($id)
     {
-        return view('forum.amswer.create', compact('subject'));
+        $subject = Subject::find($id);
+        return view('subject.amswer.create', compact('subject'));
     }
 
 
 
 
-    public function store(Request $request, $id)
+    public function store(Request $request, subject $subject)
     {
         $request->validate([
             'name' => 'required|max:100',
             'parent_id' => 'nullable|integer',
         ]);
-
-            $subject = subject::findOrFail($id);
             $answer = new Amswer;
             $answer->name = $request->input('name');
             $answer->subject_id = $subject->id;
             if( $request->input('parent_id')){ $answer->parent_id = $request->input('parent_id'); }
             $answer->user_id = auth()->id();
             $answer->save();
-
-            return redirect()->route('subjects.show', $subject->id)->with('success', 'Answer created successfully.');
+            return redirect()->route('subject.show', $subject)->with('success', 'Answer created successfully.');
         }
 
 
@@ -45,7 +45,7 @@ class AmswerController extends Controller
 
     public function show(Amswer $Amswer)
     {
-        return view('forum.amswer.show', compact('Amswer'));
+        return view('subject.amswer.show', compact('Amswer'));
     }
 
 
@@ -53,7 +53,7 @@ class AmswerController extends Controller
 
     public function edit(Amswer $Amswer)
     {
-        return view('forum.amswer.edit', compact('Amswer'));
+        return view('subject.amswer.edit', compact('Amswer'));
     }
 
 
@@ -70,7 +70,7 @@ class AmswerController extends Controller
             'name' => $request->name,
         ]);
 
-        return redirect()->route('subjects.show', $Amswer->subject_id)->with('success', 'Amswer updated successfully.');
+        return redirect()->route('subject.show', $Amswer->subject_id)->with('success', 'Amswer updated successfully.');
     }
 
 
@@ -80,7 +80,7 @@ class AmswerController extends Controller
     public function destroy(Amswer $Amswer)
     {
         $Amswer->delete();
-        return redirect()->route('subjects.show', $Amswer->subject_id)->with('success', 'Amswer deleted successfully.');
+        return redirect()->route('subject.show', $Amswer->subject_id)->with('success', 'Amswer deleted successfully.');
     }
 }
 

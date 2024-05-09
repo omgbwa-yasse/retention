@@ -1,7 +1,7 @@
 @extends('index')
 @section('content')
 <h1>Mettre à jour un sujet</h1>
-        <form action="{{ route('forum.subject.update', $subject) }}" method="POST">
+        <form action="{{ route('subject.update', $subject) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="form-group">

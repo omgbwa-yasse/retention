@@ -13,15 +13,20 @@ class SubjectController extends Controller
     {
         $subjects = Subject::with('user')->latest()->get();
         $subjects->load('classes');
-        return view('forum.subject.index', compact('subjects'));
+        return view('subject.index', compact('subjects'));
     }
 
+
+    public function basket()
+    {
+        return view('subject.index', compact('subjects'));
+    }
 
 
     public function create()
     {
         $classes = Classification::all()->where('country_id','=',Auth()->user()->getAuthIdentifier());
-        return view('forum.subject.create', compact('classes'));
+        return view('subject.create', compact('classes'));
     }
 
 
@@ -47,7 +52,7 @@ class SubjectController extends Controller
             ['create_at' => now(), 'update_at' => now()]
         );
 
-        return redirect()->route('forum.subject.index')->with('success', 'Subject created successfully.');
+        return redirect()->route('subject.index')->with('success', 'Subject created successfully.');
     }
 
 
@@ -56,7 +61,7 @@ class SubjectController extends Controller
 
     public function show(Subject $subject)
     {
-        return view('forum.subject.show', compact('subject'));
+        return view('subject.show', compact('subject'));
     }
 
 
@@ -67,7 +72,7 @@ class SubjectController extends Controller
     {
         $subject->load('classes');
         $classes = classification::all();
-        return view('forum.Subject.edit', compact('subject','classes'));
+        return view('Subject.edit', compact('subject','classes'));
     }
 
 
@@ -93,7 +98,7 @@ class SubjectController extends Controller
             ['create_at' => now(), 'update_at' => now()]
         );
 
-        return redirect()->route('forum.subject.index')->with('success', 'Subject updated successfully.');
+        return redirect()->route('subject.index')->with('success', 'Subject updated successfully.');
     }
 
 
@@ -103,6 +108,6 @@ class SubjectController extends Controller
     public function destroy(Subject $subject)
     {
         $subject->delete();
-        return redirect()->route('forum.subject.index')->with('success', 'Subject deleted successfully.');
+        return redirect()->route('subject.index')->with('success', 'Subject deleted successfully.');
     }
 }
