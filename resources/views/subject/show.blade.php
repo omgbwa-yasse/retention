@@ -25,12 +25,12 @@
     </div>
 </div>
 <div class="col-md-12">
-    <a href="{{ route('subject.amswer.create', $subject) }}" class="btn btn-secondary">Ajouter commentaire</a>
+    <a href="{{ route('subject.post.create', $subject) }}" class="btn btn-secondary">Ajouter commentaire</a>
 </div>
 <div class="col-md-12">
     <div class="list-group">
-    @if($subject->amswers)
-        @foreach($subject->amswers as $amswer)
+    @if($subject->posts)
+        @foreach($subject->posts as $post)
 
                 <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" aria-current="true" >
                     <div class="d-flex w-100 justify-content-between">

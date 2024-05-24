@@ -249,22 +249,23 @@ return new class extends Migration
 
 
         // Create rule table
-        Schema::create('rules', function (Blueprint $table) {
-            $table->id();
-            $table->string('code', 10)->unique();
-            $table->string('name', 100)->unique();
-            $table->text('description')->nullable();
-            $table->unsignedInteger('status_id')->default(1);
-            $table->unsignedInteger('country_id');
-            $table->unsignedInteger('user_id');
-            $table->dateTime('validated_at')->nullable();
-            $table->unsignedInteger('validated_by')->nullable();
-            $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('status_id')->references('id')->on('statuses')->onDelete('cascade');
-            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
-            $table->foreign('validate_by')->references('id')->on('users')->nullable()->onDelete('set null');
-        });
+
+    Schema::create('rules', function (Blueprint $table) {
+        $table->id();
+        $table->string('code', 10)->unique();
+        $table->string('name', 100)->unique();
+        $table->text('description')->nullable();
+        $table->unsignedInteger('status_id')->default(1);
+        $table->unsignedInteger('country_id');
+        $table->unsignedInteger('user_id');
+        $table->unsignedInteger('validated_by')->nullable();
+        $table->dateTime('validated_at')->nullable();
+        $table->timestamps();
+        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        $table->foreign('status_id')->references('id')->on('statuses')->onDelete('cascade');
+        $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
+        $table->foreign('validated_by')->references('id')->on('users')->onDelete('set null');
+    });
 
 
         // Create active table
@@ -436,6 +437,7 @@ return new class extends Migration
             $table->foreign('basket_id')->references('id')->on('baskets')->onDelete('cascade');
             $table->foreign('reference_id')->references('id')->on('references')->onDelete('cascade');
         });
+
         /*
 
 
@@ -456,8 +458,8 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Create forum_answer table
-        Schema::create('forum_answers', function (Blueprint $table) {
+        // Create forum_post table
+        Schema::create('forum_posts', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
             $table->unsignedBigInteger('parent_id')->nullable();
@@ -466,7 +468,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('subject_id')->references('id')->on('forum_subjects')->onDelete('cascade');
-            $table->foreign('parent_id')->references('id')->on('forum_answers')->onDelete('cascade');
+            $table->foreign('parent_id')->references('id')->on('forum_posts')->onDelete('cascade');
         });
 
         // Create forum_reaction_type table
@@ -498,28 +500,76 @@ return new class extends Migration
             $table->foreign('subject_id')->references('id')->on('forum_subjects')->onDelete('cascade');
         });
 
-        // Create user_answer table
-        Schema::create('user_answer', function (Blueprint $table) {
+        // Create user_post table
+        Schema::create('user_post', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('answer_id');
-            $table->primary(['user_id', 'answer_id']);
+            $table->unsignedBigInteger('post_id');
+            $table->primary(['user_id', 'post_id']);
             // Foreign key constraints
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('answer_id')->references('id')->on('forum_answers')->onDelete('cascade');
+            $table->foreign('post_id')->references('id')->on('forum_posts')->onDelete('cascade');
         });
 
-        // Create forum_reaction_answers table
-        Schema::create('forum_reaction_answers', function (Blueprint $table) {
+        // Create forum_reaction_posts table
+        Schema::create('forum_reaction_posts', function (Blueprint $table) {
             $table->unsignedBigInteger('reaction_type_id');
-            $table->unsignedBigInteger('answer_id');
+            $table->unsignedBigInteger('post_id');
             $table->unsignedBigInteger('user_id');
-            $table->primary(['reaction_type_id', 'answer_id']);
+            $table->primary(['reaction_type_id', 'post_id']);
             $table->timestamps();
             // Foreign key constraints
             $table->foreign('reaction_type_id')->references('id')->on('forum_reaction_types')->onDelete('cascade');
-            $table->foreign('answer_id')->references('id')->on('forum_answers')->onDelete('cascade');
+            $table->foreign('post_id')->references('id')->on('forum_posts')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
+
+
+
+
+
+        /*
+
+
+
+
+
+            CHAT
+
+
+
+
+
+
+        */
+
+
+
+        Schema::create('chat_types', function (Blueprint $table) {
+            $table->id();
+            $table->enum('type', ['individual', 'group'])->default('individual'); // Type de conversation
+            $table->timestamps();
+        });
+
+
+        Schema::create('chat_participants', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Suppression en cascade si l'utilisateur est supprimé
+            $table->foreignId('conversation_id')->constrained()->onDelete('cascade');
+            $table->timestamp('last_read')->nullable();
+            $table->timestamps();
+        });
+
+
+        Schema::create('chat_messages', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('conversation_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->text('content');
+            $table->enum('type', ['text', 'image', 'video', 'audio'])->default('text'); // Type de message
+            $table->boolean('read')->default(false); // Statut de lecture
+            $table->timestamps();
+        });
+
 
 
         /*
@@ -630,13 +680,29 @@ return new class extends Migration
 
 
         */
-        Schema::dropIfExists('forum_reaction_amswers');
-        Schema::dropIfExists('user_amswer');
+        Schema::dropIfExists('forum_reaction_posts');
+        Schema::dropIfExists('user_post');
         Schema::dropIfExists('user_subject');
         Schema::dropIfExists('forum_subject_classification');
         Schema::dropIfExists('forum_reaction_types');
-        Schema::dropIfExists('forum_amswers');
+        Schema::dropIfExists('forum_posts');
         Schema::dropIfExists('forum_subjects');
+
+
+        /*
+
+
+
+        CHAT
+
+
+        */
+
+        Schema::dropIfExists('chat_types');
+        Schema::dropIfExists('chat_messages');
+        Schema::dropIfExists('chat_participants');
+
+
         /*
 
 

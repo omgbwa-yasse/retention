@@ -6,7 +6,7 @@
     <h2>Question : {{ $subject->name }}</h2>
     <p class="lead"> Par : {{ $subject->user->name }} </p>
 
-    <form action="{{ route('subject.amswer.store', $subject) }}" method="POST">
+    <form action="{{ route('subject.post.store', $subject) }}" method="POST">
         @csrf
         <div class="form-group">
             <label for="name">Commentaire</label>

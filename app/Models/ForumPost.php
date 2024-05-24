@@ -9,11 +9,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Amswer extends Model
+class ForumPost extends Model
 {
     use HasFactory;
 
-    protected $table = 'forum_amswers';
+    protected $table = 'forum_posts';
     protected $fillable = [
         'name',
         'parent_id',
@@ -32,7 +32,7 @@ class Amswer extends Model
 
     public function subject(): BelongsTo
     {
-        return $this->belongsTo(Subject::class);
+        return $this->belongsTo(ForumSubject::class);
     }
 
     public function parent()
@@ -44,4 +44,5 @@ class Amswer extends Model
     {
         return $this->hasMany(self::class, 'parent_id');
     }
+
 }

@@ -24,12 +24,12 @@ use App\Http\Controllers\DulController;
 use App\Http\Controllers\DulArticleController;
 use App\Http\Controllers\RuleClassificationController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ForumController;
+use App\Http\Controllers\ForumPostController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\ActivityRuleController;
 use App\Http\Controllers\CommitteeController;
-use App\Http\Controllers\SubjectController;
-use App\Http\Controllers\AmswerController;
+use App\Http\Controllers\ForumSubjectController;
+use App\Http\Controllers\ForumChatController;
 use App\Http\Controllers\ChatController;
 
 // Route group for authentication
@@ -66,10 +66,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/approved', [CommitteeController::class, 'approved'])->name('committee.approved');
     });
 
-    Route::resource('subject', SubjectController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
-    Route::resource('subject.amswer', AmswerController::class);
-    Route::resource('chat', ChatController::class);
-
+    Route::resource('subject', ForumSubjectController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
+    Route::resource('subject.post', ForumPostController::class);
+    Route::resource('chat', ForumChatController::class);
 
 
 

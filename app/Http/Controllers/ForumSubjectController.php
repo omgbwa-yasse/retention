@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classification;
-use App\Models\SubjectClassification;
-use App\Models\Subject;
+use App\Models\ForumSubjectClassification;
+use App\Models\ForumSubject;
 use Illuminate\Http\Request;
 
-class SubjectController extends Controller
+class ForumSubjectController extends Controller
 {
     public function index()
     {
-        $subjects = Subject::with('user')->latest()->get();
+        $subjects = ForumSubject::with('user')->latest()->get();
         $subjects->load('classes');
         return view('subject.index', compact('subjects'));
     }
@@ -31,8 +31,6 @@ class SubjectController extends Controller
 
 
 
-
-
     public function store(Request $request)
     {
         $request->validate([
@@ -40,17 +38,14 @@ class SubjectController extends Controller
             'description' => 'nullable',
         ]);
 
-        $subject = Subject::create([
+        $subject = ForumSubject::create([
             'name' => $request->name,
             'description' => $request->description,
             'user_id' => auth()->user()->id,
         ]);
 
 
-        $classification = SubjectClassification::firstOrCreate(
-            ['classification_id' => $request->class_id, 'subject_id' => $subject->id],
-            ['create_at' => now(), 'update_at' => now()]
-        );
+        $classification = ForumSubjectClassification::firstOrCreate(['classification_id' => $request->class_id, 'subject_id' => $subject->id]);
 
         return redirect()->route('subject.index')->with('success', 'Subject created successfully.');
     }
@@ -59,7 +54,7 @@ class SubjectController extends Controller
 
 
 
-    public function show(Subject $subject)
+    public function show(ForumSubject $subject)
     {
         return view('subject.show', compact('subject'));
     }
@@ -68,7 +63,7 @@ class SubjectController extends Controller
 
 
 
-    public function edit(Subject $subject)
+    public function edit(ForumSubject $subject)
     {
         $subject->load('classes');
         $classes = classification::all();
@@ -80,7 +75,7 @@ class SubjectController extends Controller
 
     public function update(Request $request, $id)
     {
-        $subject = Subject::findOrFail($id);
+        $subject = ForumSubject::findOrFail($id);
 
         $request->validate([
             'name' => 'required|max:100|unique:forum_subjects,name,' . $subject->id,
@@ -93,7 +88,7 @@ class SubjectController extends Controller
             'user_id' => auth()->user()->id,
         ]);
 
-        $classification = SubjectClassification::firstOrCreate(
+        $classification = ForumSubjectClassification::firstOrCreate(
             ['classification_id' => $request->class_id, 'subject_id' => $subject->id],
             ['create_at' => now(), 'update_at' => now()]
         );
@@ -105,7 +100,7 @@ class SubjectController extends Controller
 
 
 
-    public function destroy(Subject $subject)
+    public function destroy(ForumSubject $subject)
     {
         $subject->delete();
         return redirect()->route('subject.index')->with('success', 'Subject deleted successfully.');
