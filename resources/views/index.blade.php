@@ -30,6 +30,7 @@
                 @include('menuAside')
             </div>
             <div class="col-9">
+                <br>
                 @yield('content')
 
             </div>
