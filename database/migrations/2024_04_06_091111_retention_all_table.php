@@ -400,6 +400,43 @@ return new class extends Migration
             $table->timestamps();
         });
 
+         // Create relation basket rule
+         Schema::create('basket_rule', function (Blueprint $table) {
+            $table->unsignedInteger('rule_id');
+            $table->unsignedInteger('basket_id');
+            $table->primary(['rule_id', 'basket_id']);
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('basket_id')->references('id')->on('baskets')->onDelete('cascade');
+            $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
+        });
+
+
+
+        // Create relation basket classification
+        Schema::create('basket_classification', function (Blueprint $table) {
+            $table->unsignedInteger('classification_id');
+            $table->unsignedInteger('basket_id');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->primary(['classification_id', 'basket_id']);
+            $table->foreign('basket_id')->references('id')->on('baskets')->onDelete('cascade');
+            $table->foreign('classification_id')->references('id')->on('classifications')->onDelete('cascade');
+        });
+
+
+
+        // Create relation basket reference
+        Schema::create('basket_reference', function (Blueprint $table) {
+            $table->unsignedInteger('basket_id');
+            $table->unsignedInteger('reference_id');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->primary(['reference_id', 'basket_id']);
+            $table->foreign('basket_id')->references('id')->on('baskets')->onDelete('cascade');
+            $table->foreign('reference_id')->references('id')->on('references')->onDelete('cascade');
+        });
+
 
 
         /*
