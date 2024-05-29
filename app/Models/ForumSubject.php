@@ -28,8 +28,15 @@ class ForumSubject extends Model
     {
         return $this->hasMany(ForumPost::class);
     }
-
+    public function posts()
+    {
+        return $this->hasMany(ForumPost::class, 'subject_id', 'id');
+    }
     public function classes()
+    {
+        return $this->belongsToMany(Classification::class, 'forum_subject_classification', 'subject_id', 'classification_id');
+    }
+    public function classifications()
     {
         return $this->belongsToMany(Classification::class, 'forum_subject_classification', 'subject_id', 'classification_id');
     }
