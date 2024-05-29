@@ -2,16 +2,16 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content">
+        <div class="row justify-content-center">
             <div class="col-md-8">
                 <h1>Create New Post</h1>
                 <form action="{{ route('forum.storePost', $subject) }}" method="POST">
                     @csrf
                     <div class="form-group">
                         <label for="content">Name</label>
-                        <input class="form-control" id="name" name="name" required>
+                        <input class="form-control" id="content" name="name" required>
                         <label for="content">Content</label>
-                        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                        <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
                     </div>
                     <div class="form-group">
                         <label for="parent_id">Reply to a post</label>
