@@ -21,46 +21,43 @@
         @endif
         <table class="table">
             <thead>
-            <tr>
-                <th scope="col">code</th>
-                <th scope="col">Title</th>
-                <th scope="col">Description</th>
-                <th scope="col">Statut</th>
-                <th scope="col">Actions</th>
-            </tr>
+                <tr>
+                    <th scope="col">code</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Statut</th>
+                    <th scope="col">Actions</th>
+                </tr>
             </thead>
             <tbody>
-            @foreach ($rules as $rule)
-                <tr>
-                    <th scope="row">{{ $rule->code }}</th>
-                    <td>{{ $rule->name }}</td>
-                    <td> {{ $rule->description }} </td>
-                    <td>
-                        @php
-                            $statusClass = '';
-                            if ($rule->status->name == 'En examen') {
-                                $statusClass = 'badge-success';
-                            } elseif ($rule->status->name == 'Projet') {
-                                $statusClass = 'badge-primary';
-                            } elseif ($rule->status->name == 'Acceptée') {
-                                $statusClass = 'badge-info'; // You can change 'badge-info' to any color you prefer
-                            }
-                        @endphp
-                        <span class="badge {{ $statusClass }}">{{ $rule->status->name }}</span>
-                    </td>
-                    <td>
-                        <a href="{{ route('rule.show', $rule->id) }}" class="btn btn-info btn-sm">View</a>
-                        <a href="{{ route('rule.edit', $rule->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                        <form action="{{ route('rule.destroy', $rule->id) }}" method="POST"
-                              style="display: inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm"
+                @foreach ($rules as $rule)
+                    <tr>
+                        <th scope="row">{{ $rule->code }}</th>
+                        <td>{{ $rule->name }}</td>
+                        <td> {{ $rule->description }} </td>
+                        <td>
+                        @if( $rule->status->name == 'En examen')
+                            <span class="badge badge-success">
+                        @elseif($rule->status->name == 'Projet')
+                            <span class="badge badge-primary">
+                        @elseif($rule->status->name == 'Acceptée')
+                            <span class="badge badge-primary">
+                        @endif
+
+                        {{ $rule->status->name }} </span></td>
+                        <td>
+                            <a href="{{ route('rule.show', $rule->id) }}" class="btn btn-info btn-sm">View</a>
+                            <a href="{{ route('rule.edit', $rule->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                            <form action="{{ route('rule.destroy', $rule->id) }}" method="POST"
+                                style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm"
                                     onclick="return confirm('Are you sure?')">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>

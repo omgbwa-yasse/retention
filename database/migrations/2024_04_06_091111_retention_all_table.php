@@ -426,7 +426,6 @@ return new class extends Migration
         Schema::create('forum_posts', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
-            $table->text('content'); // description que j'ajpute
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->unsignedBigInteger('subject_id');
             $table->timestamps();
@@ -435,7 +434,6 @@ return new class extends Migration
             $table->foreign('subject_id')->references('id')->on('forum_subjects')->onDelete('cascade');
             $table->foreign('parent_id')->references('id')->on('forum_posts')->onDelete('cascade');
         });
-
 
         // Create forum_reaction_type table
         Schema::create('forum_reaction_types', function (Blueprint $table) {

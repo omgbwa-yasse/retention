@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ForumController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -70,17 +69,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('subject', ForumSubjectController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::resource('subject.post', ForumPostController::class);
     Route::resource('chat', ForumChatController::class);
-    //forum
-    Route::get('/forum', [ForumController::class, 'index'])->name('forum.index');
-    Route::get('/forum/subjects/{subject}', [ForumController::class, 'subject'])->name('forum.subject');
-    Route::post('/forum/subjects/{subject}/store-post', [ForumController::class, 'storePost'])->name('forum.storePost');
-    Route::get('/forum/create-subject', [ForumController::class, 'createSubject'])->name('forum.createSubject');
-    Route::post('/forum/store-subject', [ForumController::class, 'storeSubject'])->name('forum.storeSubject');
-    Route::post('/forum/subjects/{subject}/posts/{post}/add-reaction', [ForumController::class, 'addReaction'])->name('forum.addReaction');
-    Route::get('/forum/subjects/{subject}/create-post', [ForumController::class, 'createPost'])->name('forum.createPost');
-    Route::get('/forum/posts/{post}', [ForumController::class, 'showPost'])->name('forum.showPost');
-
-
 
 
 

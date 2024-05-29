@@ -2,50 +2,47 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class ForumPost extends Model
 {
     use HasFactory;
 
     protected $table = 'forum_posts';
-
     protected $fillable = [
         'name',
-        'content',
-        'subject_id',
         'parent_id',
-        'user_id'
+        'subject_id',
+        'user_id',
     ];
 
-    public function subject()
+    protected $casts = [
+        'parent_id' => 'nullable|integer',
+    ];
+
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(ForumSubject::class, 'subject_id', 'id');
+        return $this->belongsTo(User::class);
     }
 
-    public function user()
+    public function subject(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(ForumSubject::class);
     }
 
     public function parent()
     {
-        return $this->belongsTo(ForumPost::class, 'parent_id', 'id');
+        return $this->belongsTo(self::class, 'parent_id');
     }
 
     public function children()
     {
-        return $this->hasMany(ForumPost::class, 'parent_id', 'id');
-    }
-
-    public function reactions()
-    {
-        return $this->hasMany(ForumReactionPost::class, 'post_id', 'id');
-    }
-    public function replies()
-    {
-        return $this->hasMany(ForumPost::class, 'parent_id');
+        return $this->hasMany(self::class, 'parent_id');
     }
 
 }
