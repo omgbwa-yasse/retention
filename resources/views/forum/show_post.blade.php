@@ -11,8 +11,11 @@
                         <p class="text-muted">Created at: {{ $post->created_at }}</p>
                         <p>{!! $post->content !!}</p>
                         @if(auth()->check())
-                            <a href="{{ route('forum.createPost', $post->id) }}" class="btn btn-primary mb-3">Create New Reply</a>
 
+
+                            <a class="btn btn-primary mb-3" href="{{ route('forum.createPost', $post->subject_id,  $post->id) }}">
+                                Create Reply
+                            </a>
 
                         @endif
                         @foreach($replies as $reply)

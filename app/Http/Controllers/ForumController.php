@@ -30,6 +30,18 @@ class ForumController extends Controller
     {
         return view('forum.create_post', compact('subject'));
     }
+//    public function createPost(Request $request)
+//    {
+//        $subject_id = $request->query('subject_id');
+//        $post_id = $request->query('post_id');
+//
+//        $subject = ForumSubject::findOrFail($subject_id);
+//        $post = null;
+//        if ($post_id) {
+//            $post = ForumPost::findOrFail($post_id);
+//        }
+//        return view('forum.create_post', compact('subject', 'post'));
+//    }
     public function showPost(ForumPost $post)
     {
         $replies = $post->replies()->paginate(10);
@@ -58,12 +70,14 @@ class ForumController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'content' => 'required|string',
+            'description' => 'required|string',
         ]);
+
+
 
         $post = $subject->posts()->create([
             'name' => $request->name,
-            'content' => $request->content,
+            'content' => $request->description,
             'user_id' => auth()->id(),
         ]);
 
@@ -76,6 +90,7 @@ class ForumController extends Controller
 
         return redirect()->route('forum.subject', $subject)->with('success', 'Post created successfully!');
     }
+
 
 
     public function addReaction(Request $request, ForumPost $post)
