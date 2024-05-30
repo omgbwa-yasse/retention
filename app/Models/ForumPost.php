@@ -22,7 +22,7 @@ class ForumPost extends Model
     ];
 
     protected $casts = [
-        'parent_id' => 'nullable|integer',
+        'parent_id' => 'integer',
     ];
 
     public function user(): BelongsTo
@@ -30,9 +30,8 @@ class ForumPost extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function subject(): BelongsTo
-    {
-        return $this->belongsTo(ForumSubject::class);
+    public function subject() {
+        return $this->belongsTo(ForumSubject::class, 'subject_id');
     }
 
     public function parent()
@@ -44,5 +43,22 @@ class ForumPost extends Model
     {
         return $this->hasMany(self::class, 'parent_id');
     }
+//    public function reactions()
+//    {
+//        return $this->hasMany(ForumReactionPost::class);
+//    }
 
+
+
+    public function latestPost()
+    {
+        return $this->hasOne(ForumPost::class)->latestOfMany();
+    }
+    public function latestReply() {
+        return $this->hasOne(ForumPost::class, 'parent_id')->latestOfMany();
+    }
+    public function forumReactionPosts()
+    {
+        return $this->hasMany(ForumReactionPost::class, 'post_id');
+    }
 }

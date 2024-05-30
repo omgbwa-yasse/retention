@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ForumReactionType extends Model
 {
@@ -11,6 +11,11 @@ class ForumReactionType extends Model
 
     protected $fillable = [
         'name',
-        'url'
+        'url',
     ];
+
+    public function reactionPosts()
+    {
+        return $this->hasMany(ForumReactionPost::class);
+    }
 }

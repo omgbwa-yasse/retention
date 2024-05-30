@@ -5,10 +5,10 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Create Post') }}</div>
+                    <div class="card-header">{{ __('Create Reply') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('subject.post.store', $subject->id) }}">
+                        <form method="POST" action="{{ route('forum.storeReply', [$subject->id, $post->id]) }}">
                             @csrf
 
                             <div class="form-group row">

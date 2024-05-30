@@ -11,8 +11,10 @@ class ForumPostController extends Controller
 {
     public function index()
     {
-        $posts = ForumPost::with(['user', 'subject', 'parent'])->latest()->get(); // Trier par date de création (du plus récent au plus ancien)
-        return view('subject.post.index', compact('posts'));
+        $subjects = ForumSubject::with('latestPost')->get(); // Eager load latestPost
+        return view('subject.post.index', ['subjects' => $subjects]);
+//        $posts = ForumPost::with(['user', 'subject', 'parent'])->latest()->get(); // Trier par date de création (du plus récent au plus ancien)
+//        return view('subject.post.index', compact('posts'));
     }
 
 
@@ -82,4 +84,5 @@ class ForumPostController extends Controller
         $post->delete();
         return redirect()->route('subjects.show', $subject)->with('success', 'Post deleted successfully.'); // Rediriger vers la page du sujet après la suppression
     }
+
 }
