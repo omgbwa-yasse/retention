@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ForumReactionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -69,6 +70,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('subject', ForumSubjectController::class);
     Route::resource('subject.post', ForumPostController::class);
     Route::resource('chat', ForumChatController::class);
+    Route::post('/reaction/{post}', [ForumReactionController::class, 'add'])->name('reaction.add');
+    Route::post('/subject/{subject}/post/{post}/reply', [ForumPostController::class, 'reply'])->name('subject.post.reply');
 
 
 

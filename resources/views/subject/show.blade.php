@@ -5,20 +5,23 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Subject') }}: {{ $subject->name }}</div>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        {{ __('Subject') }}: {{ $subject->name }}
+
+                        @if (auth()->check() && auth()->user()->id === $subject->user_id)
+                            <div class="btn-group">
+                                <a href="{{ route('subject.edit', $subject) }}" class="btn btn-sm btn-warning">Edit</a>
+                                <form action="{{ route('subject.destroy', $subject) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                </form>
+                            </div>
+                        @endif
+                    </div>
 
                     <div class="card-body">
                         <p>{{ $subject->description }}</p>
-
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-
-                        @if(auth()->check())
-                            <a href="{{ route('subject.post.create', $subject->id) }}" class="btn btn-primary mb-3">Create New Post</a>
-                        @endif
 
                         {{-- Display Linked Classifications --}}
                         <div class="mb-3">
@@ -33,29 +36,114 @@
                                 @endforeach
                             </ul>
                         </div>
+                        <hr>
 
                         @foreach ($posts as $post)
-                            <div class="media">
-                                <div class="media-body">
-                                    <h5 class="mt-0"><a href="{{ route('subject.post.show', [$subject->id, $post->id]) }}">{{ $post->title }}</a></h5>
-                                    <p class="text-muted">Created by: {{ $post->user->name }}</p>
-                                    <p class="text-muted">Content: {{ Str::limit($post->content, 100) }}</p>
+                            <div class="post-container mb-4">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h5 class="mt-0">
+                                                <a href="{{ route('subject.post.show', [$subject->id, $post->id]) }}">
+                                                    {{ $post->name }}
+                                                </a>
+                                            </h5>
+                                            @if (auth()->check() && auth()->user()->id === $post->user_id)
+                                                <div class="btn-group">
+                                                    <a href="{{ route('subject.post.edit', [$subject, $post]) }}" class="btn btn-sm btn-warning">Edit</a>
+                                                    <form action="{{ route('subject.post.destroy', [$subject, $post]) }}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this post?')">Delete</button>
+                                                    </form>
+                                                </div>
+                                            @endif
+                                        </div>
 
-                                    <p class="text-muted">Last reply:
-                                        @if($post->latestReply)
-                                            {{ $post->latestReply->created_at->diffForHumans() }}
-                                        @else
-                                            No replies yet
+                                        <p class="text-muted">Created by: {{ $post->user->name }} | {{ $post->created_at->diffForHumans() }}</p>
+                                        <p>{{ $post->content }}</p>
+
+
+
+
+
+                                {{-- Reactions --}}
+                                        <div class="d-flex align-items-center">
+                                            @if(auth()->check())
+                                                <form action="{{ route('reaction.add', ['post' => $post->id]) }}" method="POST" class="me-2">
+                                                    @csrf
+                                                    <input type="hidden" name="reaction_type_id" value="1">
+                                                    <button type="submit" class="btn btn-sm btn-outline-primary">
+                                                        Like ({{ $post->forumReactionPosts->where('reaction_type_id', 1)->count() }})
+                                                    </button>
+                                                </form>
+                                                <form action="{{ route('reaction.add', ['post' => $post->id]) }}" method="POST" class="me-2">
+                                                    @csrf
+                                                    <input type="hidden" name="reaction_type_id" value="2">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                        Dislike ({{ $post->forumReactionPosts->where('reaction_type_id', 2)->count() }})
+                                                    </button>
+                                                </form>
+
+                                                {{-- Reply Button --}}
+
+                                                <button class="btn btn-sm btn-secondary me-2" type="button" data-bs-toggle="collapse" data-bs-target="#replies-{{ $post->id }}">
+                                                    Replies ({{ $post->children->count() }})
+                                                </button>
+                                                <a href="#" class="btn btn-sm btn-secondary" onclick="toggleReplyForm({{ $post->id }})">Reply</a>
+                                            @endif
+                                        </div>
+
+                                        {{-- Replies --}}
+                                        <div class="collapse mt-2" id="replies-{{ $post->id }}">
+                                            @foreach ($post->children as $reply)
+                                                <div class="card card-body mt-2">
+                                                    <h6 class="mb-0">{{ $reply->user->name }}</h6>
+                                                    <p class="text-muted">{{ $reply->created_at->diffForHumans() }}</p>
+                                                    <p>{{ $reply->content }}</p>
+                                                </div>
+                                            @endforeach
+                                        </div>
+
+                                        {{-- Reply Form --}}
+                                        @if(auth()->check())
+                                            <div id="replyForm-{{ $post->id }}" class="mt-2" style="display:none;">
+                                                <form action="{{ route('subject.post.reply', [$subject->id, $post->id]) }}" method="POST">
+                                                    @csrf
+                                                    <input id="name" type="text" class="form-control mb-2 @error('name') is-invalid @enderror" name="name" placeholder="Title">
+                                                    <textarea name="content" class="form-control mb-2" placeholder="Your reply..."></textarea>
+                                                    <button type="submit" class="btn btn-sm btn-primary">Submit Reply</button>
+                                                </form>
+                                            </div>
                                         @endif
-                                    </p>
-
+                                    </div>
                                 </div>
                             </div>
-                            <hr>
                         @endforeach
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+    <script>
+        function toggleReplyForm(postId) {
+            var replyForm = document.getElementById("replyForm-" + postId);
+            if (replyForm.style.display === "none" || replyForm.style.display === "") {
+                replyForm.style.display = "block";
+            } else {
+                replyForm.style.display = "none";
+            }
+        }
+        function toggleReplyForm1(postId) {
+            var replyForm = document.getElementById("replyForm-" + postId);
+            if (replyForm.style.display === "none" || replyForm.style.display === "") {
+                replyForm.style.display = "block";
+            } else {
+                replyForm.style.display = "none";
+            }
+        }
+    </script>
+
 @endsection

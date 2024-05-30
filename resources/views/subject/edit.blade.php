@@ -22,10 +22,11 @@
                         </select>
                     </div>
                 </select>
+            <button type="submit" class="btn btn-primary">Valider</button>
+            <button type="reset" class="btn btn-primary">Annuler</button>
             </div>
 
-            <button type="submit" class="btn btn-primary">Update</button>
-            <button type="reset" class="btn btn-primary">Annuler</button>
+
         </form>
 
 

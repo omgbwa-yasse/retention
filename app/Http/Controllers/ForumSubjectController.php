@@ -61,7 +61,8 @@ class ForumSubjectController extends Controller
 
     public function edit(ForumSubject $subject)
     {
-        return view('subject.edit', compact('subject'));
+        $classes = Classification::all()->where('country_id','=',Auth()->user()->getAuthIdentifier());
+        return view('subject.edit', compact('subject'),compact('classes'));
     }
 
     public function update(Request $request, ForumSubject $subject)

@@ -77,7 +77,25 @@ class ForumPostController extends Controller
         return redirect()->route('subjects.show', $post->subject)->with('success', 'Post updated successfully.'); // Rediriger vers la page du sujet après la mise à jour
     }
 
+    public function reply(Request $request, ForumSubject $subject, ForumPost $post)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'content' => 'required|string',
+        ]);
 
+        $reply = new ForumPost([
+            'name' => $validatedData['name'],
+            'content' => $validatedData['content'],
+            'user_id' => auth()->id(),
+            'subject_id' => $subject->id,
+            'parent_id' => $post->id, // Set the parent post ID
+        ]);
+
+        $reply->save();
+
+        return redirect()->route('subject.show', $subject)->with('success', 'Reply created successfully!');
+    }
 
     public function destroy(ForumPost $post, ForumSubject $subject)
     {
