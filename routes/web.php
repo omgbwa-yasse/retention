@@ -72,6 +72,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('chat', ForumChatController::class);
     Route::post('/reaction/{post}', [ForumReactionController::class, 'add'])->name('reaction.add');
     Route::post('/subject/{subject}/post/{post}/reply', [ForumPostController::class, 'reply'])->name('subject.post.reply');
+    Route::get('/subject/{subject}/post/{post}', [ForumPostController::class, 'show'])->name('subject.post.show');
+   
+    Route::get('/subject/{subject}/post/{post}/edit', [ForumPostController::class, 'edit'])->name('subject.post.edit');
 
 
 

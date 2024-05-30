@@ -97,6 +97,8 @@ class ForumPostController extends Controller
         return redirect()->route('subject.show', $subject)->with('success', 'Reply created successfully!');
     }
 
+
+
     public function destroy(ForumPost $post, ForumSubject $subject)
     {
         $post->delete();
