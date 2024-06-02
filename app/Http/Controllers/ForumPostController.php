@@ -37,7 +37,6 @@ class ForumPostController extends Controller
 
     public function store(Request $request, ForumSubject $subject)
     {
-        dd($request);
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'content' => 'required|string',
@@ -53,7 +52,7 @@ class ForumPostController extends Controller
 
         $post->save();
 
-        return redirect()->route('subjects.show', $subject)->with('success', 'Post created successfully.'); // Rediriger vers la page du sujet après la création
+        return redirect()->route('subject.show', $subject)->with('success', 'Post created successfully.'); // Rediriger vers la page du sujet après la création
     }
 
 
@@ -74,7 +73,7 @@ class ForumPostController extends Controller
 
         $post->update($validatedData);
 
-        return redirect()->route('subjects.show', $post->subject)->with('success', 'Post updated successfully.'); // Rediriger vers la page du sujet après la mise à jour
+        return redirect()->route('subject.show', $post->subject)->with('success', 'Post updated successfully.'); // Rediriger vers la page du sujet après la mise à jour
     }
 
     public function reply(Request $request, ForumSubject $subject, ForumPost $post)

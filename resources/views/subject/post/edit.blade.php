@@ -3,19 +3,24 @@
 @section('content')
 <div class="container">
     <h1>Edit Answer</h1>
-    <form action="{{ route('subject.amswer.update', $answer->id) }}" method="POST">
+    <form action="{{ route('subject.post.updatePost', [$subject->id, $post->id]) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" class="form-control" name="name" value="{{ $answer->name }}" required>
+            <input type="text" class="form-control" name="name" value="{{ $post->name }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="content">Content</label>
+            <textarea name="content" id="content" class="form-control">{{ $post->content }}</textarea>
         </div>
         <div class="form-group">
             <label for="parent_id">Parent Answer</label>
             <select class="form-control" name="parent_id">
                 <option value="0">None</option>
-                @foreach ($subject->answers as $answer)
-                    <option value="{{ $answer->id }}" @if($answer->id == $answer->parent_id) selected @endif>{{ $answer->name }}</option>
+                @foreach ($subject->posts as $post)
+                    <option value="{{ $post->id }}" @if($post->id == $post->parent_id) selected @endif>{{ $post->name }}</option>
                 @endforeach
             </select>
         </div>

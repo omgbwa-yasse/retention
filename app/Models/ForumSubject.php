@@ -37,9 +37,9 @@ class ForumSubject extends Model
         return $this->belongsToMany(Classification::class, 'forum_subject_classification', 'subject_id', 'classification_id');
     }
     // ForumPost model
-    public function reactions()
-    {
-        return $this->hasMany(Reaction::class);
-    }
+//    public function reactions()
+//    {
+//        return $this->hasMany(Reaction::class);
+//    }
 
 }

@@ -3,12 +3,12 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         {{ __('Subject') }}: {{ $subject->name }}
 
-                        @if (auth()->check() && auth()->user()->id === $subject->user_id)
+                        @if (auth()->check() && auth()->user()->id === $subject->user_id && $subject->created_at->diffInMinutes(now()) <= 30)
                             <div class="btn-group">
                                 <a href="{{ route('subject.edit', $subject) }}" class="btn btn-sm btn-warning">Edit</a>
                                 <form action="{{ route('subject.destroy', $subject) }}" method="POST" class="d-inline">
@@ -37,21 +37,25 @@
                             </ul>
                         </div>
                         <hr>
+                        @if(auth()->check())
+                            <a href="{{ route('subject.post.create', [$subject->id]) }}" class="btn btn-primary mb-3">Create New Post</a>
+                        @endif
 
                         @foreach ($posts as $post)
                             <div class="post-container mb-4">
                                 <div class="media">
                                     <div class="media-body">
+
                                         <div class="d-flex justify-content-between align-items-center">
                                             <h5 class="mt-0">
-                                                <a href="{{ route('subject.post.show', [$subject->id, $post->id]) }}">
-                                                    {{ $post->name }}
-                                                </a>
+                                                {{--                                                <a href="{{ route('subject.post.showPost', [$subject->id, $post->id]) }}">--}}
+                                                <b>   {{ $post->name }}</b>
+                                                {{--                                                </a>--}}
                                             </h5>
-                                            @if (auth()->check() && auth()->user()->id === $post->user_id)
+                                            @if (auth()->check() && auth()->user()->id === $post->user_id && $post->created_at->diffInMinutes(now()) <= 30)
                                                 <div class="btn-group">
-                                                    <a href="{{ route('subject.post.edit', [$subject, $post]) }}" class="btn btn-sm btn-warning">Edit</a>
-                                                    <form action="{{ route('subject.post.destroy', [$subject, $post]) }}" method="POST" class="d-inline">
+                                                    <a href="{{ route('subject.post.editPost', [$subject, $post]) }}" class="btn btn-sm btn-warning">Edit</a>
+                                                    <form action="{{ route('subject.post.destroyPost', [$subject, $post]) }}" method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this post?')">Delete</button>
@@ -59,15 +63,10 @@
                                                 </div>
                                             @endif
                                         </div>
-
-                                        <p class="text-muted">Created by: {{ $post->user->name }} | {{ $post->created_at->diffForHumans() }}</p>
                                         <p>{{ $post->content }}</p>
+                                        <p class="text-muted">Created by: {{ $post->user->name }} | {{ $post->created_at->diffForHumans() }}</p>
 
-
-
-
-
-                                {{-- Reactions --}}
+                                        {{-- Reactions --}}
                                         <div class="d-flex align-items-center">
                                             @if(auth()->check())
                                                 <form action="{{ route('reaction.add', ['post' => $post->id]) }}" method="POST" class="me-2">
@@ -98,14 +97,19 @@
                                         <div class="collapse mt-2" id="replies-{{ $post->id }}">
                                             @foreach ($post->children as $reply)
                                                 <div class="card card-body mt-2">
-                                                    <h6 class="mb-0">{{ $reply->user->name }}</h6>
-                                                    <p class="text-muted">{{ $reply->created_at->diffForHumans() }}</p>
-                                                    <p>{{ $reply->content }}</p>
+                                                    <h5 class="mb-0">Titre :{{ $reply->name }}</h5>
+                                                    <hr>
+
+                                                    <p> {{ $reply->content }}</p>
+                                                    <p class="text-muted"> {{ $reply->created_at->diffForHumans() }}</p>
+                                                    <h6 class="mb-0">Ecrit par {{ $reply->user->name }}</h6>
+
                                                 </div>
                                             @endforeach
                                         </div>
 
                                         {{-- Reply Form --}}
+
                                         @if(auth()->check())
                                             <div id="replyForm-{{ $post->id }}" class="mt-2" style="display:none;">
                                                 <form action="{{ route('subject.post.reply', [$subject->id, $post->id]) }}" method="POST">
@@ -125,7 +129,6 @@
             </div>
         </div>
     </div>
-
 
     <script>
         function toggleReplyForm(postId) {
@@ -147,3 +150,4 @@
     </script>
 
 @endsection
+

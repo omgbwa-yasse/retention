@@ -17,6 +17,7 @@ class ForumPost extends Model
     protected $fillable = [
         'name',
         'parent_id',
+        'content',
         'subject_id',
         'user_id',
     ];
@@ -47,6 +48,11 @@ class ForumPost extends Model
 //    {
 //        return $this->hasMany(ForumReactionPost::class);
 //    }
+    public function replies()
+
+    {
+        return $this->hasMany(ForumPost::class, 'parent_id');
+    }
 
 
 
