@@ -57,7 +57,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('rule.dul.dulreference', DulArticleController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::resource('rule.classification', RuleClassificationController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
 
+
     Route::resource('user', UserController::class);
+    Route::get('user/{id}', [UserController::class, 'show'])->name('user.show');
 
 
 

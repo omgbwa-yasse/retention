@@ -63,7 +63,12 @@
                                 class="bi bi-gear"></i> Paramètre</a>
                         <div class="collapse" id="parametre">
                             <ul class="list-unstyled pl-3">
-                                <li><a href="{{ route('setting.index') }}" class="text-dark"><i class="bi bi-person-circle"></i> Mon compte</a></li>
+                                <li>
+                                    <a href="{{ route('user.show', Auth::user()->id) }}" class="text-dark">
+                                        <i class="bi bi-person-circle"></i> Mon compte
+                                    </a>
+                                </li>
+
                                 <li><a href="{{ route('setting.index') }}" class="text-dark"><i class="bi bi-sliders"></i> Généraux</a></li>
                             </ul>
                         </div>
