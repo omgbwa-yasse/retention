@@ -6,7 +6,7 @@
             <div class="col-md">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        {{ __('Subject') }}: {{ $subject->name }}
+                       <H1> {{ __('Subject') }}:  {{ $subject->name }}</H1>
 
                         @if (auth()->check() && auth()->user()->id === $subject->user_id && $subject->created_at->diffInMinutes(now()) <= 30)
                             <div class="btn-group">
