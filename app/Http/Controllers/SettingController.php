@@ -11,9 +11,8 @@ class SettingController extends Controller
      */
     public function index()
     {
-        return view('setting.settingIndex');
+        return view('setting.index');
     }
-
     /**
      * Show the form for creating a new resource.
      */

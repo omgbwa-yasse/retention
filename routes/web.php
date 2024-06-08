@@ -83,9 +83,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/subjects/{subject}/posts/{post}/edit', [ForumSubjectController::class, 'editPost'])->name('subject.post.editPost');
     Route::put('/subjects/{subject}/posts/{post}', [ForumSubjectController::class, 'updatePost'])->name('subject.post.updatePost');
     Route::get('/subject/{subject}/post/{post}', [ForumSubjectController::class, 'showPost'])->name('subject.post.showPost');
-    Route::resource('settings/reference-categories', ReferenceCategoryController::class);
-    Route::resource('settings/typology-categories', TypologyCategoryController::class);
-    Route::resource('settings/countries', CountryController::class);
+    Route::resource('setting/reference-categories', ReferenceCategoryController::class);
+    Route::resource('setting/typology-categories', TypologyCategoryController::class);
+    Route::resource('setting/countries', CountryController::class);
+    Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
+
 
 
 
