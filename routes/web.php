@@ -1,12 +1,14 @@
 <?php
 
-use App\Http\Controllers\ForumReactionController;
-use Illuminate\Support\Facades\Route;
+
 
 Route::get('/', function () {
     return view('auth.login');
 });
-
+use App\Http\Controllers\ForumReactionController;
+use App\Http\Controllers\Settings\CountryController;
+use App\Http\Controllers\Settings\TypologyCategoryController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ActivityTypologyController;
@@ -14,7 +16,7 @@ use App\Http\Controllers\ReferenceController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\FileController;
-use App\Http\Controllers\ReferenceCategoryController;
+use App\Http\Controllers\Settings\ReferenceCategoryController;
 use App\Http\Controllers\TypologyController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CharterController;
@@ -81,7 +83,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/subjects/{subject}/posts/{post}/edit', [ForumSubjectController::class, 'editPost'])->name('subject.post.editPost');
     Route::put('/subjects/{subject}/posts/{post}', [ForumSubjectController::class, 'updatePost'])->name('subject.post.updatePost');
     Route::get('/subject/{subject}/post/{post}', [ForumSubjectController::class, 'showPost'])->name('subject.post.showPost');
-
+    Route::resource('settings/reference-categories', ReferenceCategoryController::class);
+    Route::resource('settings/typology-categories', TypologyCategoryController::class);
+    Route::resource('settings/countries', CountryController::class);
 
 
 
