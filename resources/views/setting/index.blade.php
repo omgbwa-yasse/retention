@@ -9,11 +9,11 @@
 
                     <div class="card-body">
                         @if(auth()->check())
-                            <a href="{{ route('reference_categories.index') }}" class="btn btn-block btn-secondary mb-3">{{ __('Reference Categories') }}</a>
-                            <a href="{{ route('typology_categories.index') }}" class="btn btn-block btn-secondary mb-3">{{ __('Typology Categories') }}</a>
-                            <a href="{{ route('countries.index') }}" class="btn btn-block btn-secondary mb-3">{{ __('Countries') }}</a>
+                            <a href="{{ route('referenceCategory.index') }}" class="btn btn-block btn-secondary mb-3">{{ __('Reference Categories') }}</a>
+                            <a href="{{ route('typologyCategory.index') }}" class="btn btn-block btn-secondary mb-3">{{ __('Typology Categories') }}</a>
+                            <a href="{{ route('country.index') }}" class="btn btn-block btn-secondary mb-3">{{ __('Countries') }}</a>
                         @else
-                            <p class="text-muted">{{ __('Please log in to access the settings.') }}</p>
+                            <p class="text-muted">{{ __('Please slog in to access the settings.') }}</p>
                         @endif
                     </div>
                 </div>

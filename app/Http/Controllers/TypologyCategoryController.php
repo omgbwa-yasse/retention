@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Settings;
+namespace App\Http\Controllers\setting;
 
 use App\Http\Controllers\Controller;
 use App\Models\TypologyCategory;
@@ -11,44 +11,44 @@ class TypologyCategoryController extends Controller
     public function create()
     {
         $typologyCategories = TypologyCategory::all();
-        return view('settings.typology_categories.create', compact('typologyCategories'));
+        return view('setting.typologyCategory.create', compact('typologyCategories'));
     }
 
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:100|unique:typology_categories',
+            'name' => 'required|string|max:100|unique:typologyCategory',
             'description' => 'nullable|string',
-            'parent_id' => 'nullable|exists:typology_categories,id',
+            'parent_id' => 'nullable|exists:typologyCategory,id',
         ]);
 
         TypologyCategory::create($validatedData);
 
-        return redirect()->route('typology_categories.index')->with('status', 'Typology category created successfully.');
+        return redirect()->route('typologyCategory.index')->with('status', 'Typology category created successfully.');
     }
 
     public function edit(TypologyCategory $typologyCategory)
     {
         $typologyCategories = TypologyCategory::all();
-        return view('settings.typology_categories.edit', compact('typologyCategory', 'typologyCategories'));
+        return view('setting.typologyCategory.edit', compact('typologyCategory', 'typologyCategories'));
     }
 
     public function update(Request $request, TypologyCategory $typologyCategory)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:100|unique:typology_categories,name,' . $typologyCategory->id,
+            'name' => 'required|string|max:100|unique:typologyCategory,name,' . $typologyCategory->id,
             'description' => 'nullable|string',
-            'parent_id' => 'nullable|exists:typology_categories,id',
+            'parent_id' => 'nullable|exists:typologyCategory,id',
         ]);
 
         $typologyCategory->update($validatedData);
 
-        return redirect()->route('typology_categories.index')->with('status', 'Typology category updated successfully.');
+        return redirect()->route('typologyCategory.index')->with('status', 'Typology category updated successfully.');
     }
 
     public function index()
     {
         $typologyCategories = TypologyCategory::with('parent')->get();
-        return view('settings.typology_categories.index', compact('typologyCategories'));
+        return view('setting.typologyCategory.index', compact('typologyCategories'));
     }
 }

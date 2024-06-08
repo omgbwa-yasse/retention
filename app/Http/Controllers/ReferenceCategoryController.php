@@ -11,12 +11,39 @@ class ReferenceCategoryController extends Controller
 
 
 
-    public function index()
+    public function create()
     {
-        $categories = ReferenceCategory::all();
-        return view('category.categoryIndex', compact('category'));
+        return view('setting.referenceCategory.create');
     }
 
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:100|unique:referenceCategory',
+            'description' => 'required|string',
+        ]);
+
+        ReferenceCategory::create($validatedData);
+
+        return redirect()->route('referenceCategory.index')->with('status', 'Reference category created successfully.');
+    }
+
+    public function edit(ReferenceCategory $referenceCategory)
+    {
+        return view('setting.referenceCategory.edit', compact('referenceCategory'));
+    }
+
+    public function update(Request $request, ReferenceCategory $referenceCategory)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:100|unique:referenceCategory,name,' . $referenceCategory->id,
+            'description' => 'required|string',
+        ]);
+
+        $referenceCategory->update($validatedData);
+
+        return redirect()->route('referenceCategory.index')->with('status', 'Reference category updated successfully.');
+    }
 
 
 
@@ -28,77 +55,6 @@ class ReferenceCategoryController extends Controller
         $category = ReferenceCategory::findOrFail($id);
         return view('category.categoryShow', compact('category'));
     }
-
-
-
-
-
-
-    public function create()
-    {
-        return view('category.categorycreate');
-    }
-
-
-
-
-
-
-
-
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|max:50',
-        ]);
-
-        ReferenceCategory::create($request->all());
-        return redirect()->route('reference-category.index')->with('success', 'Category created successfully.');
-    }
-
-
-
-
-
-
-
-
-
-    public function edit(INT $id)
-    {
-        $category = ReferenceCategory::findOrFail($id);
-        return view('category.categoryEdit', compact('category'));
-    }
-
-
-
-
-
-
-
-
-
-    public function update(Request $request, ReferenceCategory $category)
-    {
-        dd($request);
-        $request->validate([
-            'name' => 'required|max:50',
-            'description' => 'required'
-        ]);
-
-        $category->update($request->all());
-
-        return redirect()->route('category.categoryIndex')->with('success', 'Category updated successfully.');
-    }
-
-
-
-
-
-
-
-
 
     public function destroy(ReferenceCategory $category)
     {
