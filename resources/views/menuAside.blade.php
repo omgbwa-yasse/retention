@@ -69,7 +69,7 @@
                                     </a>
                                 </li>
 
-                                <li><a href="{{ route('setting.index') }}" class="text-dark"><i class="bi bi-sliders"></i> Généraux</a></li>
+                                <li><a href="{{ route('country.index') }}" class="text-dark"><i class="bi bi-sliders"></i> Généraux</a></li>
                             </ul>
                         </div>
                     </li>

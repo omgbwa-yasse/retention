@@ -3,48 +3,82 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Country;
+use App\Models\country;
 use Illuminate\Http\Request;
 
 class CountryController extends Controller
 {
+
+    public function index()
+    {
+        $Countries = country::all();
+        return view('country.index', compact('Countries'));
+    }
+
+
+
+
+
+
     public function create()
     {
-        return view('setting.country.create');
+        $countries = country::all();
+        return view('country.create', compact('countries'));
     }
+
 
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'abbr' => 'required|string|max:10|unique:country',
-            'name' => 'required|string|max:100|unique:country',
+            'name' => 'required|string|max:500|unique:Countries',
+            'description' => 'nullable|string|max:500',
+            'category_id' => 'required|exists:country_categories,id',
+            'country_id' => 'required|exists:countries,id',
         ]);
 
-        Country::create($validatedData);
-
-        return redirect()->route('country.index')->with('status', 'Country created successfully.');
+        $validatedData['user_id'] = Auth::user()->id;
+        $country = country::create($validatedData);
+        return redirect()->route('country.index')->with('success', 'Référence créée avec succès');
     }
 
-    public function edit(Country $country)
+
+
+
+    public function edit($id)
     {
-        return view('setting.country.edit', compact('country'));
+        $Countries = country::findOrFail($id);
+        return view('country.edit', compact('Countries'));
     }
 
-    public function update(Request $request, Country $country)
+
+
+
+
+
+    public function update(Request $request, $id)
     {
+
+
+
         $validatedData = $request->validate([
-            'abbr' => 'required|string|max:10|unique:country,abbr,' . $country->id,
-            'name' => 'required|string|max:100|unique:country,name,' . $country->id,
+            'name' => 'required|max:500|unique:Countries,name,'.$id,
+            'abbr' => 'nullable|max:500',
         ]);
-
+        $country = country::findOrFail($id);
         $country->update($validatedData);
-
-        return redirect()->route('country.index')->with('status', 'Country updated successfully.');
+        return redirect()->route('country.index')->with('success', 'La référence a été mise à jour avec succès.');
     }
 
-    public function index()
+
+
+
+    public function destroy(country $country)
     {
-        $country = Country::all();
-        return view('setting.country.index', compact('country'));
+        $error = '';
+
+        $country->delete();
+
+        return redirect()->route('country.index')->with('success', 'La référence a été supprimée avec succès.');
     }
+
 }

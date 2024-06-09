@@ -9,6 +9,7 @@ Route::get('/', function () {
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\ForumReactionController;
 use App\Http\Controllers\ReferenceCategoryController;
+use App\Http\Controllers\TypologyCategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\ActivityController;
@@ -45,6 +46,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('activity.rule', ActivityRuleController::class);
     Route::resource('activity.typology', ActivityTypologyController::class);
     Route::resource('reference', ReferenceController::class);
+
     Route::resource('reference.article', ArticleController::class);
     Route::resource('reference.link', LinkController::class);
     Route::resource('reference.file', FileController::class)->except(['download']);
@@ -84,8 +86,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/subjects/{subject}/posts/{post}/edit', [ForumSubjectController::class, 'editPost'])->name('subject.post.editPost');
     Route::put('/subjects/{subject}/posts/{post}', [ForumSubjectController::class, 'updatePost'])->name('subject.post.updatePost');
     Route::get('/subject/{subject}/post/{post}', [ForumSubjectController::class, 'showPost'])->name('subject.post.showPost');
+// setting
 
-
+    Route::resource('country', CountryController::class);
+    Route::resource('reference_categories', ReferenceCategoryController::class);
+    Route::resource('typology_categories', TypologyCategoryController::class);
 });
 
 
