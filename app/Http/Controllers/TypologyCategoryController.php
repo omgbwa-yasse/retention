@@ -32,7 +32,7 @@ class TypologyCategoryController extends Controller
         $validatedData['user_id'] = Auth::id();
         $typologyCategory = TypologyCategory::create($validatedData);
 
-      
+
 
         return redirect()->route('typology_categories.index')->with('status', 'Typology category created successfully.');
     }
