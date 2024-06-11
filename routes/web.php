@@ -89,6 +89,8 @@ Route::middleware(['auth'])->group(function () {
 // setting
 
     Route::resource('country', CountryController::class);
+    Route::post('typology_categories', [TypologyCategoryController::class, 'store'])->name('typology_categories.store');
+
     Route::resource('reference_categories', ReferenceCategoryController::class);
     Route::resource('typology_categories', TypologyCategoryController::class);
 });
