@@ -13,14 +13,39 @@ use Illuminate\Support\Facades\Auth;
 class MissionController extends Controller
 {
     // Affiche la liste des éléments
-    public function index()
+//    public function index()
+//    {
+//        $countryId = Auth::user()->country_id;
+//        $items = Classification::whereNull('parent_id')->where('country_id', $countryId)->orderBy('code')->get();
+//        $items->load('children');
+//        $country = Country ::find($countryId);
+//        return view('mission.index', compact('items','country'));
+//    }
+
+    public function index(Request $request)
     {
         $countryId = Auth::user()->country_id;
-        $items = Classification::whereNull('parent_id')->where('country_id', $countryId)->orderBy('code')->get();
+
+        $search = $request->input('search');
+
+        $items = Classification::whereNull('parent_id')->where('country_id', $countryId);
+
+        if ($search) {
+            $items = $items->where(function($query) use ($search) {
+                $query->where('code', 'like', "%{$search}%")
+                    ->orWhere('name', 'like', "%{$search}%");
+            });
+        }
+
+        $items = $items->orderBy('code')->get();
+
         $items->load('children');
-        $country = Country ::find($countryId);
-        return view('mission.index', compact('items','country'));
+
+        $country = Country::find($countryId);
+
+        return view('mission.index', compact('items', 'country'));
     }
+
 
 
 

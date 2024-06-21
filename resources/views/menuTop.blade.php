@@ -61,11 +61,11 @@
                         <a class="nav-link" href="#">Blog</a>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="règle, Classe, Durée"
-                        aria-label="Search">
+                <form class="form-inline my-2 my-lg-0" action="{{ route('search') }}" method="GET">
+                    <input class="form-control mr-sm-2" type="search" name="query" placeholder="règle, Classe, Durée" aria-label="Search">
                     <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Recherche</button>
                 </form>
+
             </div>
         </div>
         <ul class="navbar-nav ms-auto">

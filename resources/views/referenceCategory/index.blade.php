@@ -6,6 +6,14 @@
             <div class="col-md">
                 <div class="card">
                     <div class="card-header">{{ __('Reference Categories') }}</div>
+                    <form action="{{ route('reference_categories.index') }}" method="GET" class="mb-3">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control" placeholder="Search..." value="{{ request('search') }}">
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="submit">Search</button>
+                            </div>
+                        </div>
+                    </form>
 
                     <div class="card-body">
                         @if (session('status'))

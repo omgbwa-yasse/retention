@@ -17,9 +17,22 @@ class TypologyController extends Controller
 
 
     // Index method to display all typology
-    public function index()
+//    public function index()
+//    {
+//        $typologies = Typology::paginate(10)->load('category');
+//        return view('typology.typologyIndex', compact('typologies'));
+//    }
+    public function index(Request $request)
     {
-        $typologies = Typology::paginate(10)->load('category');
+        $search = $request->input('search');
+
+        $typologies = Typology::query()
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            })
+            ->paginate(10);
+
         return view('typology.typologyIndex', compact('typologies'));
     }
 

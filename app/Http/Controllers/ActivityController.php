@@ -10,18 +10,31 @@ use App\Models\Country;
 class ActivityController extends Controller
 {
     // Affiche la liste des éléments
-    public function index()
+//    public function index()
+//    {
+//        $countryId = Auth::user()->country_id;
+//        $activities = Classification::whereNotNull('parent_id')->where('country_id', $countryId)->orderBy('code')->get();
+//        $activities->load('parent');
+//        $activities->load('rules');
+//        $activities->load('domaine'); // refuse d'afficher les éléments
+//        $activities->load('typologies');
+//        $activities->load('countries');
+//        return view('activity.activityIndex', compact('activities'));
+//    }
+
+    public function index(Request $request)
     {
-        $countryId = Auth::user()->country_id;
-        $activities = Classification::whereNotNull('parent_id')->where('country_id', $countryId)->orderBy('code')->get();
-        $activities->load('parent');
-        $activities->load('rules');
-        $activities->load('domaine'); // refuse d'afficher les éléments
-        $activities->load('typologies');
-        $activities->load('countries');
+        $search = $request->input('search');
+
+        $activities = Classification::query()
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            })
+            ->paginate(10);
+
         return view('activity.activityIndex', compact('activities'));
     }
-
 
 
 

@@ -20,9 +20,22 @@ use Illuminate\Support\Facades\Auth;
 class RuleController extends Controller
 {
     // Affiche la liste des éléments
-    public function index()
+//    public function index()
+//    {
+//        $rules = Rule::with(['actives', 'duas', 'duls', 'countries', 'articles', 'classifications', 'baskets', 'status'])->get();
+//        return view('rule.ruleIndex', compact('rules'));
+//    }
+    public function index(Request $request)
     {
-        $rules = Rule::with(['actives', 'duas', 'duls', 'countries', 'articles', 'classifications', 'baskets', 'status'])->get();
+        $search = $request->input('search');
+
+        $rules = Rule::query()
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            })
+            ->paginate(10);
+
         return view('rule.ruleIndex', compact('rules'));
     }
 
@@ -207,7 +220,6 @@ class RuleController extends Controller
 
         return redirect()->route('rule.index')->with('success', 'Rule updated successfully.');
     }
-
 
 
 

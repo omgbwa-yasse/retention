@@ -15,11 +15,23 @@ class ReferenceController extends Controller
 {
 
 
-    public function index()
+//    public function index()
+//    {
+//        $references = Reference::all();
+//
+//        $references->load('links', 'countries', 'articles', 'files');
+//
+//        return view('reference.referenceIndex', compact('references'));
+//    }
+    public function index(Request $request)
     {
-        $references = Reference::all();
+        $search = $request->input('search');
 
-        $references->load('links', 'countries', 'articles', 'files');
+        $references = Reference::query()
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            })->paginate(150);;
 
         return view('reference.referenceIndex', compact('references'));
     }

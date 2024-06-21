@@ -9,6 +9,7 @@ Route::get('/', function () {
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\ForumReactionController;
 use App\Http\Controllers\ReferenceCategoryController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TypologyCategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MissionController;
@@ -93,6 +94,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('reference_categories', ReferenceCategoryController::class);
     Route::resource('typology_categories', TypologyCategoryController::class);
+
+
+    Route::resource('SearchController', SearchController::class);
+    //research
+    Route::get('/search/index', [SearchController::class, 'search'])->name('search');
+
 });
 
 
