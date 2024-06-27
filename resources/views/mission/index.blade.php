@@ -32,44 +32,41 @@
         <ul class="list-group list-group-vertical">
 
             @foreach ($items as $item)
-                <li class="list-group-item">
+                <li class="list-group-item list-unstyled pl-3">
+                    @if ($item->children->isNotEmpty())
+                        <a class="toggle-subclass collapsed" data-toggle="collapse" href="#{{ $item->code }}"
+                           aria-expanded="false" aria-controls="{{ $item->code }}" id="toggle-icon">
+                            <i class="bi bi-plus-circle" id="plus-icon"></i>
+                            <i class="bi bi-dash-circle" id="dash-icon" style="display: none;"></i>
+                        </a>
+
+                    @endif
                     {{ $item->code }} : {{ $item->name }}
                     <a href="{{ route('mission.show', $item) }}" class="btn btn-primary mb-2 float-end">Voir</a>
-                    @if ($item->children->isNotEmpty())
-                        <button class="btn btn-secondary toggle-subclass" data-target="#subclass-{{ $item->id }}">
-                            {{ __('Toggle Subclasses') }}
-                        </button>
-                    @endif
-                </li>
+
+                    <div class="collapse show" id="{{ $item->code }}">
                 @include('mission.subclasses', ['subclasses' => $item->children])
+                    </div>
+                </li>
             @endforeach
         </ul>
+
+
 
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var toggleButtons = document.querySelectorAll('.toggle-subclass');
-            for (var i = 0; i < toggleButtons.length; i++) {
-                toggleButtons[i].addEventListener('click', function() {
-                    console.log('Le bouton a été cliqué'); // Ajoute cette ligne pour vérifier si la fonction est appelée
-                    var parent = document.querySelector(this.getAttribute('data-target'));
-                    var children = parent.querySelectorAll('li[data-parent="#' + parent.getAttribute('id') + '"]');
-                    for (var j = 0; j < children.length; j++) {
-                        if (children[j].style.display === 'none') {
-                            children[j].style.display = 'block';
-                        } else {
-                            children[j].style.display = 'none';
-                        }
-                    }
-                });
-            }
+            var toggleIcon = document.querySelector('#toggle-icon');
+            var plusIcon = document.querySelector('#plus-icon');
+            var dashIcon = document.querySelector('#dash-icon');
+
+            toggleIcon.addEventListener('click', function() {
+                plusIcon.style.display = (plusIcon.style.display === 'none') ? 'inline' : 'none';
+                dashIcon.style.display = (dashIcon.style.display === 'none') ? 'inline' : 'none';
+            });
         });
     </script>
-
-
-
-
 
 
 @endsection
