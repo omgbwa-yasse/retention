@@ -12,7 +12,7 @@
                 <input type="text" class="form-control" id="code" name="code" value="{{ $mission->code }}" required>
             </div>
             <div class="form-group">
-                <label for="name">Title</label>
+                <label for="name">Titre</label>
                 <input type="text" class="form-control" id="name" name="name" value="{{ $mission->name }}" required>
             </div>
             <div class="form-group">

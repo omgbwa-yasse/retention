@@ -4,7 +4,7 @@
         <form action="{{ route('subject.store') }}" method="POST">
             @csrf
             <div class="form-group">
-                <label for="name">Name:</label>
+                <label for="name">Nom:</label>
                 <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}">
             </div>
 
@@ -14,7 +14,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="" class="form-label">Classes</label>
+                <label for="" class="form-label">Classification</label>
                 <select class="form-select form-select-lg" name="class_id" id="" >
                     @foreach($classes as $classe)
                         <option value="{{ $classe->id }}">{{ $classe->code }} - {{ $classe->name }}</option>
@@ -23,7 +23,7 @@
             </div>
 
 
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-primary">Creer</button>
             <button type="reset" class="btn btn-primary">Annuler</button>
         </form>
 

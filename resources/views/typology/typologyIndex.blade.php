@@ -2,14 +2,14 @@
 
 @section('content')
     <h1>Typologies documentaires</h1>
-    <a href="{{ route('typology.create') }}" class="btn btn-primary">Create Typology</a>
+    <a href="{{ route('typology.create') }}" class="btn btn-primary">Creer une Typologie</a>
 
     <!-- Ajouter un formulaire de recherche -->
     <form action="{{ route('typology.index') }}" method="GET" class="mb-3">
         <div class="input-group">
             <input type="text" name="search" class="form-control" placeholder="Search...">
             <div class="input-group-append">
-                <button class="btn btn-secondary" type="submit">Search</button>
+                <button class="btn btn-secondary" type="submit">Recherche</button>
             </div>
         </div>
     </form>
@@ -33,7 +33,7 @@
                 <br>
                 Domaine : <b> {{ $typology->category ? $typology->category->name : 'N/A' }}</b>
                 <br>
-                <a href="{{ route('typology.show', $typology->id) }}" class="btn btn-sm btn-primary">Show</a>
+                <a href="{{ route('typology.show', $typology->id) }}" class="btn btn-sm btn-primary">Voir</a>
             </li>
         @endforeach
     </ul>

@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Create Typology Category') }}</div>
+                    <div class="card-header">{{ __('Créer une catégorie de typologie') }}</div>
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
@@ -21,7 +21,7 @@
                             @csrf
 
                             <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Nom') }}</label>
 
                                 <div class="col-md-6">
                                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -49,11 +49,11 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="parent_id" class="col-md-4 col-form-label text-md-right">{{ __('Parent Category') }}</label>
+                                <label for="parent_id" class="col-md-4 col-form-label text-md-right">{{ __('Catégorie parente') }}</label>
 
                                 <div class="col-md-6">
                                     <select id="parent_id" class="form-control @error('parent_id') is-invalid @enderror" name="parent_id" autocomplete="parent_id">
-                                        <option value="">{{ __('No parent category') }}</option>
+                                        <option value="">{{ __('Aucune catégorie parente') }}</option>
                                         @foreach ($typologyCategories as $category)
                                             <option value="{{ $category->id }}" @if(old('parent_id') == $category->id) selected @endif>{{ $category->name }}</option>
                                         @endforeach
@@ -70,10 +70,10 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
-                                        {{ __('Create') }}
+                                        {{ __('Créer') }}
                                     </button>
                                     <a href="{{ route('typology_categories.index') }}" class="btn btn-secondary">
-                                        {{ __('Cancel') }}
+                                        {{ __('Annuler') }}
                                     </a>
                                 </div>
                             </div>

@@ -5,7 +5,7 @@
             @csrf
             @method('PUT')
             <div class="form-group">
-                <label for="name">Name:</label>
+                <label for="name">Nom:</label>
                 <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $subject->name) }}">
             </div>
 
@@ -14,7 +14,7 @@
                 <textarea name="description" id="description" class="form-control">{{ old('description', $subject->description) }}</textarea>
             </div>
             <div class="mb-3">
-                <label for="" class="form-label">Classes</label>
+                <label for="" class="form-label">Classification</label>
                 <select class="form-select form-select-lg" name="class_id" id="" >
                             @foreach ($classes as $class)
                                 <option value="{{ $class->id }}" {{ $class->id ==  $class->id ? 'selected' : '' }}>{{ $class->code }} - {{ $class->name }}</option>

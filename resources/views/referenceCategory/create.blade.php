@@ -42,10 +42,10 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
-                                        {{ __('Create') }}
+                                        {{ __('Creer') }}
                                     </button>
                                     <a href="{{ route('reference_categories.index') }}" class="btn btn-secondary">
-                                        {{ __('Cancel') }}
+                                        {{ __('Annuller') }}
                                     </a>
                                 </div>
                             </div>

@@ -31,8 +31,8 @@
         <table class="table">
             <thead>
             <tr>
-                <th scope="col">code</th>
-                <th scope="col">Title</th>
+                <th scope="col">Code</th>
+                <th scope="col">Titre</th>
                 <th scope="col">Description</th>
                 <th scope="col">Statut</th>
                 <th scope="col">Actions</th>
@@ -55,14 +55,14 @@
 
                                                 {{ $rule->status->name }} </span></td>
                     <td>
-                        <a href="{{ route('rule.show', $rule->id) }}" class="btn btn-info btn-sm">View</a>
-                        <a href="{{ route('rule.edit', $rule->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="{{ route('rule.show', $rule->id) }}" class="btn btn-info btn-sm">Voir</a>
+                        <a href="{{ route('rule.edit', $rule->id) }}" class="btn btn-primary btn-sm">Modifier</a>
                         <form action="{{ route('rule.destroy', $rule->id) }}" method="POST"
                               style="display: inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Are you sure?')">Delete</button>
+                                    onclick="return confirm('Êtes-vous sûr ?')">Supprimer</button>
                         </form>
                     </td>
                 </tr>

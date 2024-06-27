@@ -5,14 +5,14 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Create Post') }}</div>
+                    <div class="card-header">{{ __('Créer un post') }}</div>
 
                     <div class="card-body">
                         <form method="POST" action="{{ route('subject.post.store', $subject->id) }}">
                             @csrf
 
                             <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('name') }}</label>
+                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Nom') }}</label>
 
                                 <div class="col-md-6">
                                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -26,7 +26,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="content" class="col-md-4 col-form-label text-md-right">{{ __('Content') }}</label>
+                                <label for="content" class="col-md-4 col-form-label text-md-right">{{ __('Contenu') }}</label>
 
                                 <div class="col-md-6">
                                     <textarea id="content" class="form-control @error('content') is-invalid @enderror" name="content" required autocomplete="content">{{ old('content') }}</textarea>
@@ -42,7 +42,7 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
-                                        {{ __('Create') }}
+                                        {{ __('Créer') }}
                                     </button>
                                 </div>
                             </div>

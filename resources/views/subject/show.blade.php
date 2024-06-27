@@ -6,15 +6,15 @@
             <div class="col-md">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                       <H1><b>{{ __('Subject') }}:  {{ $subject->name }}</b></H1>
+                        <H1><b>{{ __('Sujet') }}:  {{ $subject->name }}</b></H1>
 
                         @if (auth()->check() && auth()->user()->id === $subject->user_id && $subject->created_at->diffInMinutes(now()) <= 30)
                             <div class="btn-group">
-                                <a href="{{ route('subject.edit', $subject) }}" class="btn btn-sm btn-warning">Edit</a>
+                                <a href="{{ route('subject.edit', $subject) }}" class="btn btn-sm btn-warning">Modifier</a>
                                 <form action="{{ route('subject.destroy', $subject) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr ?')">Supprimer</button>
                                 </form>
                             </div>
                         @endif
@@ -23,14 +23,14 @@
                     <div class="card-body">
                         <p>{{ $subject->description }}</p>
 
-                        {{-- Display Linked Classifications --}}
+                        {{-- Afficher les Classifications liées --}}
                         <div class="mb-3">
                             <h5>Classifications:</h5>
                             <ul class="list-unstyled">
                                 @foreach($subject->classes as $class)
                                     <li>
                                         <a href="{{ route('activity.show', $class) }}">
-                                            {{ $class->name }} (Rating: {{ $class->rating ?? 'N/A' }})
+                                            {{ $class->name }} (Note : {{ $class->rating ?? 'N/A' }})
                                         </a>
                                     </li>
                                 @endforeach
@@ -38,7 +38,7 @@
                         </div>
                         <hr>
                         @if(auth()->check())
-                            <a href="{{ route('subject.post.create', [$subject->id]) }}" class="btn btn-primary mb-3">Create New Post</a>
+                            <a href="{{ route('subject.post.create', [$subject->id]) }}" class="btn btn-primary mb-3">Créer un nouveau message</a>
                         @endif
 
                         @foreach ($posts as $post)
@@ -54,46 +54,46 @@
                                             </h5>
                                             @if (auth()->check() && auth()->user()->id === $post->user_id && $post->created_at->diffInMinutes(now()) <= 30)
                                                 <div class="btn-group">
-                                                    <a href="{{ route('subject.post.editPost', [$subject, $post]) }}" class="btn btn-sm btn-warning">Edit</a>
+                                                    <a href="{{ route('subject.post.editPost', [$subject, $post]) }}" class="btn btn-sm btn-warning">Modifier</a>
                                                     <form action="{{ route('subject.post.destroyPost', [$subject, $post]) }}" method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this post?')">Delete</button>
+                                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce message ?')">Supprimer</button>
                                                     </form>
                                                 </div>
                                             @endif
                                         </div>
                                         <p>{{ $post->content }}</p>
-                                        <p class="text-muted">Created by: {{ $post->user->name }} | {{ $post->created_at->diffForHumans() }}</p>
+                                        <p class="text-muted">Créé par : {{ $post->user->name }} | {{ $post->created_at->diffForHumans() }}</p>
 
-                                        {{-- Reactions --}}
+                                        {{-- Réactions --}}
                                         <div class="d-flex align-items-center">
                                             @if(auth()->check())
                                                 <form action="{{ route('reaction.add', ['post' => $post->id]) }}" method="POST" class="me-2">
                                                     @csrf
                                                     <input type="hidden" name="reaction_type_id" value="1">
                                                     <button type="submit" class="btn btn-sm btn-outline-primary">
-                                                        Like ({{ $post->forumReactionPosts->where('reaction_type_id', 1)->count() }})
+                                                        J'aime ({{ $post->forumReactionPosts->where('reaction_type_id', 1)->count() }})
                                                     </button>
                                                 </form>
                                                 <form action="{{ route('reaction.add', ['post' => $post->id]) }}" method="POST" class="me-2">
                                                     @csrf
                                                     <input type="hidden" name="reaction_type_id" value="2">
                                                     <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                        Dislike ({{ $post->forumReactionPosts->where('reaction_type_id', 2)->count() }})
+                                                        Je n'aime pas ({{ $post->forumReactionPosts->where('reaction_type_id', 2)->count() }})
                                                     </button>
                                                 </form>
 
-                                                {{-- Reply Button --}}
+                                                {{-- Bouton Répondre --}}
 
                                                 <button class="btn btn-sm btn-secondary me-2" type="button" data-bs-toggle="collapse" data-bs-target="#replies-{{ $post->id }}">
-                                                    Replies ({{ $post->children->count() }})
+                                                    Réponses ({{ $post->children->count() }})
                                                 </button>
-                                                <a href="#" class="btn btn-sm btn-secondary" onclick="toggleReplyForm({{ $post->id }})">Reply</a>
+                                                <a href="#" class="btn btn-sm btn-secondary" onclick="toggleReplyForm({{ $post->id }})">Répondre</a>
                                             @endif
                                         </div>
 
-                                        {{-- Replies --}}
+                                        {{-- Réponses --}}
                                         <div class="collapse mt-2" id="replies-{{ $post->id }}">
                                             @foreach ($post->children as $reply)
                                                 <div class="card card-body mt-2">
@@ -108,15 +108,15 @@
                                             @endforeach
                                         </div>
 
-                                        {{-- Reply Form --}}
+                                        {{-- Formulaire de Réponse --}}
 
                                         @if(auth()->check())
                                             <div id="replyForm-{{ $post->id }}" class="mt-2" style="display:none;">
                                                 <form action="{{ route('subject.post.reply', [$subject->id, $post->id]) }}" method="POST">
                                                     @csrf
-                                                    <input id="name" type="text" class="form-control mb-2 @error('name') is-invalid @enderror" name="name" placeholder="Title">
-                                                    <textarea name="content" class="form-control mb-2" placeholder="Your reply..."></textarea>
-                                                    <button type="submit" class="btn btn-sm btn-primary">Submit Reply</button>
+                                                    <input id="name" type="text" class="form-control mb-2 @error('name') is-invalid @enderror" name="name" placeholder="Titre">
+                                                    <textarea name="content" class="form-control mb-2" placeholder="Votre réponse..."></textarea>
+                                                    <button type="submit" class="btn btn-sm btn-primary">Envoyer la réponse</button>
                                                 </form>
                                             </div>
                                         @endif
@@ -150,4 +150,3 @@
     </script>
 
 @endsection
-

@@ -11,21 +11,21 @@
     </div>
 
     <div class="form-group">
-        <label for="title">Title</label>
+        <label for="title">Titre</label>
         <input type="text" class="form-control" id="title" name="title" required>
     </div>
 
     <div class="form-group">
-        <label for="level">Level</label>
+        <label for="level">Niveau</label>
         <input type="text" class="form-control" id="level" name="level" required>
     </div>
 
     <div class="form-group">
-        <label for="parent_id">Parent ID</label>
+        <label for="parent_id"> ID Parent</label>
         <input type="number" class="form-control" id="parent_id" name="parent_id">
     </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="submit" class="btn btn-primary">Sauvegarder</button>
 </form>
 
 @endsection

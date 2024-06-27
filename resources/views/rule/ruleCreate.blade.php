@@ -110,8 +110,8 @@
 
 
       <div class="d-flex justify-content-between">
-        <button type="submit" class="btn btn-success">Submit</button>
-        <button type="reset" class="btn btn-danger">Cancel</button>
+        <button type="submit" class="btn btn-success">Enregistrer</button>
+        <button type="reset" class="btn btn-danger">Annuler</button>
       </div>
     </form>
   </div>

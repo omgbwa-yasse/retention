@@ -9,11 +9,11 @@
                 <thead>
                 <tr>
                     <th scope="col">Code</th>
-                    <th scope="col">Name</th>
+                    <th scope="col">Nom</th>
                     <th scope="col">Description</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Country</th>
-                    <th scope="col">Action</th>
+                    <th scope="col">Categorie</th>
+                    <th scope="col">Pays</th>
+                    <th scope="col">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -24,6 +24,7 @@
                         <td>{{ $reference->description }}</td>
                         <td><a href="{{ route('reference_categories.show', $reference->category->id) }}">{{ $reference->category->name }}</a></td>
 {{--                        <td>{{ $reference->country->name }}</td>--}}
+                        "pays "
                         <td>
                             <a href="{{ route('reference.show', $reference->id) }}" class="btn btn-primary btn-sm">View</a>
                         </td>
@@ -39,11 +40,11 @@
                 <thead>
                 <tr>
                     <th scope="col">Code</th>
-                    <th scope="col">Name</th>
+                    <th scope="col">Nom</th>
                     <th scope="col">Description</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Country</th>
-                    <th scope="col">Action</th>
+                    <th scope="col">Pays</th>
+                    <th scope="col">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -54,6 +55,7 @@
                         <td>{{ $rule->description }}</td>
                         <td>{{ $rule->status->name }}</td>
 {{--                        <td>{{ $rule->country->name }}</td>--}}
+                        "pays"
                         <td>
                             <a href="{{ route('rule.show', $rule->id) }}" class="btn btn-primary btn-sm">View</a>
                         </td>
@@ -109,8 +111,14 @@
                         <td>{{ $classification->code }}</td>
                         <td>{{ $classification->name }}</td>
                         <td>{{ $classification->description }}</td>
-{{--                        <td>{{ $classification->parent->name }}</td>--}}
-{{--                        <td>{{ $classification->country->name }}</td>--}}
+                        <td>
+{{--                            {{ $classification->parent->name }}--}}
+                            "Classification Parente"
+                        </td>
+                        <td>
+{{--                            {{ $classification->country->name }}--}}
+                            "Pays "
+                        </td>
                         <td>
                             <a href="{{ route('activity.show', $classification->id) }}" class="btn btn-primary btn-sm">View</a>
                         </td>

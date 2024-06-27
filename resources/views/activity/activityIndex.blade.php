@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <h1>Activités</h1>
-        <a href="{{ route('activity.create') }}" class="btn btn-primary mb-2">Create New Item</a>
+        <a href="{{ route('activity.create') }}" class="btn btn-primary mb-2">Créer un nouvel élément</a>
 
         <form action="{{ route('activity.index') }}" method="GET" class="mb-4">
             <div class="input-group">
@@ -30,10 +30,10 @@
             <thead>
             <tr>
                 <th scope="col">Cote</th>
-                <th scope="col">Title</th>
+                <th scope="col">Titre</th>
                 <th scope="col">Description</th>
                 <th scope="col">Parent</th>
-                <th scope="col">Sous classes</th>
+                <th scope="col">Sous-classes</th>
                 <th scope="col">Pays</th>
                 <th scope="col">Actions</th>
             </tr>
@@ -47,8 +47,8 @@
                     </td>
                     <td>{{ $activity->description }}</td>
                     <td>
-{{--                  a revoir      {{ $activity->parent->name }}--}}
-
+                        {{-- à revoir      {{ $activity->parent->name }} --}}
+                        "a revoir ( nom parent )"
                     </td>
                     <td>
                         @if ($activity->children)
@@ -59,14 +59,14 @@
                         {{ $activity->countries->name }}
                     </td>
                     <td>
-                        <a href="{{ route('activity.show', $activity->id) }}" class="btn btn-info btn-sm">View</a>
-                        <a href="{{ route('activity.edit', $activity->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="{{ route('activity.show', $activity->id) }}" class="btn btn-info btn-sm">Voir</a>
+                        <a href="{{ route('activity.edit', $activity->id) }}" class="btn btn-primary btn-sm">Editer</a>
                         <form action="{{ route('activity.destroy', $activity->id) }}" method="POST"
                               style="display: inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Are you sure?')">Delete</button>
+                                    onclick="return confirm('Êtes-vous sûr ?')">Supprimer</button>
                         </form>
                     </td>
                 </tr>

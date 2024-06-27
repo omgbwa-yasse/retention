@@ -22,14 +22,14 @@
                             <div class="media">
                                 <div class="media-body">
                                     <h5 class="mt-0"><a href="{{ route('subject.show', $subject->id) }}">{{ $subject->name }}</a></h5>
-                                    <p class="text-muted">Created by: {{ $subject->user->name }}</p>
+                                    <p class="text-muted">Creer Par: {{ $subject->user->name }}</p>
                                     <p class="text-muted">Description: {{ $subject->description }}</p>
 
-                                    <p class="text-muted">Last post:
+                                    <p class="text-muted">Derniere Publication:
                                         @if($subject->latestPost)
                                             {{ $subject->latestPost->created_at->diffForHumans() }}
                                         @else
-                                            No posts yet
+                                            Pas encore de Publication !
                                         @endif
                                     </p>
 
