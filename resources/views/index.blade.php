@@ -15,10 +15,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <!-- Votre CSS personnalisé -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
+{{--    <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">--}}
 
     <!-- Votre JS jquery -->
-    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
+{{--    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>--}}
 </head>
 @extends('layouts.app')
 

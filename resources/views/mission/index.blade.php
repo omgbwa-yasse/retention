@@ -32,13 +32,44 @@
         <ul class="list-group list-group-vertical">
 
             @foreach ($items as $item)
-                <li class="list-group-item" >{{ $item->code }} : {{ $item->name }}
+                <li class="list-group-item">
+                    {{ $item->code }} : {{ $item->name }}
                     <a href="{{ route('mission.show', $item) }}" class="btn btn-primary mb-2 float-end">Voir</a>
+                    @if ($item->children->isNotEmpty())
+                        <button class="btn btn-secondary toggle-subclass" data-target="#subclass-{{ $item->id }}">
+                            {{ __('Toggle Subclasses') }}
+                        </button>
+                    @endif
                 </li>
                 @include('mission.subclasses', ['subclasses' => $item->children])
             @endforeach
         </ul>
 
     </div>
-@endsection
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var toggleButtons = document.querySelectorAll('.toggle-subclass');
+            for (var i = 0; i < toggleButtons.length; i++) {
+                toggleButtons[i].addEventListener('click', function() {
+                    console.log('Le bouton a été cliqué'); // Ajoute cette ligne pour vérifier si la fonction est appelée
+                    var parent = document.querySelector(this.getAttribute('data-target'));
+                    var children = parent.querySelectorAll('li[data-parent="#' + parent.getAttribute('id') + '"]');
+                    for (var j = 0; j < children.length; j++) {
+                        if (children[j].style.display === 'none') {
+                            children[j].style.display = 'block';
+                        } else {
+                            children[j].style.display = 'none';
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
+
+
+
+
+
+@endsection
