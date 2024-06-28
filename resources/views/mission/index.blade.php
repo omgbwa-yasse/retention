@@ -35,9 +35,9 @@
                 <li class="list-group-item list-unstyled pl-3">
                     @if ($item->children->isNotEmpty())
                         <a class="toggle-subclass collapsed" data-toggle="collapse" href="#{{ $item->code }}"
-                           aria-expanded="false" aria-controls="{{ $item->code }}" id="toggle-icon">
-                            <i class="bi bi-plus-circle" id="plus-icon"></i>
-                            <i class="bi bi-dash-circle" id="dash-icon" style="display: none;"></i>
+                           aria-expanded="false" aria-controls="{{ $item->code }}" id="toggle-icon{{ $item->code }}">
+                            <i class="bi bi-plus-circle" id="plus-icon{{ $item->code }}"></i>
+                            <i class="bi bi-dash-circle" id="dash-icon{{ $item->code }}" style="display: none;"></i>
                         </a>
 
                     @endif
@@ -57,9 +57,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var toggleIcon = document.querySelector('#toggle-icon');
-            var plusIcon = document.querySelector('#plus-icon');
-            var dashIcon = document.querySelector('#dash-icon');
+            var toggleIcon = document.querySelector('#toggle-icon{{ $item->code }}');
+            var plusIcon = document.querySelector('#plus-icon{{ $item->code }}');
+            var dashIcon = document.querySelector('#dash-icon{{ $item->code }}');
 
             toggleIcon.addEventListener('click', function() {
                 plusIcon.style.display = (plusIcon.style.display === 'none') ? 'inline' : 'none';
