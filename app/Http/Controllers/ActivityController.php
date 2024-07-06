@@ -101,7 +101,8 @@ class ActivityController extends Controller
     {
         $activity = Classification::findOrFail($id);
         $parentName = $activity->parent ? $activity->parent->name : 'No parent';
-        return view('activity.activityShow', compact('activity', 'parentName'));
+//        return view('activity.activityShow', compact('activity', 'parentName'));
+        return Excel::download(new ActivitiesExport, 'activities.pdf');
     }
 
 
@@ -168,11 +169,8 @@ class ActivityController extends Controller
 
 
 
-    public function exportPdf(Request $request)
+    public function export()
     {
-
-        $ch="shdjksd";
-        dd($request);
-        return Excel::download(new ActivitiesExport, 'activities.pdf');
+        return Excel::download(new ActivitiesExport, 'activities.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
     }
 }

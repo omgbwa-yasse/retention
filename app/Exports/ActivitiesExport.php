@@ -12,7 +12,7 @@ class ActivitiesExport implements FromView
     {
         $activities = Classification::all();
 
-        return view('pdf', compact('activities'));
+        return view('activity.pdf', compact('activities'));
     }
 }
 

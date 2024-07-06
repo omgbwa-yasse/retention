@@ -1,7 +1,6 @@
 <?php
 
 
-
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -38,6 +37,8 @@ use App\Http\Controllers\CommitteeController;
 use App\Http\Controllers\ForumSubjectController;
 use App\Http\Controllers\ForumChatController;
 use App\Http\Controllers\ChatController;
+Route::get('/activity/export', [ActivityController::class, 'export'])->name('activity.export');
+Route::get('/activity/pdf', [ActivityController::class, 'pdf'])->name('activity.pdf');
 
 // Route group for authentication
 Route::middleware(['auth'])->group(function () {
@@ -101,9 +102,10 @@ Route::middleware(['auth'])->group(function () {
 
     //research
     Route::get('/search/index', [SearchController::class, 'search'])->name('search');
-    Route::get('/activity/exportPdf', [ActivityController::class, 'exportPdf'])->name('activity.exportPdf');
-});
+//    Route::get('/activity/exportPdf', [ActivityController::class, 'exportPdf'])->name('activity.exportPdf');
 
+
+});
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
