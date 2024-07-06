@@ -4,6 +4,7 @@
     <div class="container">
         <h1>Activités</h1>
         <a href="{{ route('activity.create') }}" class="btn btn-primary mb-2">Créer un nouvel élément</a>
+        <a href="{{ route('activity.exportPdf') }}" class="btn btn-success mb-2">Exporter en PDF</a>
 
         <form action="{{ route('activity.index') }}" method="GET" class="mb-4">
             <div class="input-group">

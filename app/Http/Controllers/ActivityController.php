@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Exports\ActivitiesExport;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Classification;
 use App\Models\Country;
+use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf;
 
 class ActivityController extends Controller
 {
@@ -35,7 +38,19 @@ class ActivityController extends Controller
 
         return view('activity.activityIndex', compact('activities'));
     }
+    public function pdf(Request $request)
+    {
+        $search = $request->input('search');
 
+        $activities = Classification::query()
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            })
+            ->paginate(10);
+
+        return view('activity.pdf', compact('activities'));
+    }
 
 
     // Affiche le formulaire de création d'un élément
@@ -139,6 +154,25 @@ class ActivityController extends Controller
         return redirect()->route('activity.index')->with('success', 'Élément supprimé avec succès.');
     }
 
+    public function map($activity): array
+    {
+        return [
+            $activity->code,
+            $activity->name,
+            $activity->description,
+            $activity->parent ? $activity->parent->name : '',
+            $activity->children ? $activity->children->count() : '',
+            $activity->countries->name,
+        ];
+    }
 
 
+
+    public function exportPdf(Request $request)
+    {
+
+        $ch="shdjksd";
+        dd($request);
+        return Excel::download(new ActivitiesExport, 'activities.pdf');
+    }
 }

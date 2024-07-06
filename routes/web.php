@@ -11,6 +11,7 @@ use App\Http\Controllers\ForumReactionController;
 use App\Http\Controllers\ReferenceCategoryController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TypologyCategoryController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\ActivityController;
@@ -97,9 +98,10 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::resource('SearchController', SearchController::class);
+
     //research
     Route::get('/search/index', [SearchController::class, 'search'])->name('search');
-
+    Route::get('/activity/exportPdf', [ActivityController::class, 'exportPdf'])->name('activity.exportPdf');
 });
 
 
