@@ -43,11 +43,11 @@
                     @endif
                     {{ $item->code }} : {{ $item->name }}
                     <a href="{{ route('mission.show', $item) }}" class="btn btn-primary mb-2 float-end">Voir</a>
-
+                </li>
                     <div class="collapse show" id="{{ $item->code }}">
                 @include('mission.subclasses', ['subclasses' => $item->children])
                     </div>
-                </li>
+
             @endforeach
         </ul>
 
