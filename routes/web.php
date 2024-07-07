@@ -39,6 +39,9 @@ use App\Http\Controllers\ForumChatController;
 use App\Http\Controllers\ChatController;
 Route::get('/activity/export', [ActivityController::class, 'export'])->name('activity.export');
 Route::get('/activity/pdf', [ActivityController::class, 'pdf'])->name('activity.pdf');
+Route::get('/rules/export', [RuleController::class, 'export'])->name('rule.export');
+Route::get('/mission/export', [MissionController::class, 'export'])->name('mission.export');
+Route::get('/typologies/export', [TypologyController::class, 'export'])->name('typology.export');
 
 // Route group for authentication
 Route::middleware(['auth'])->group(function () {

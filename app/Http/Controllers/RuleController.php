@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\Rule;
 use App\Models\Country;
@@ -246,5 +247,15 @@ class RuleController extends Controller
 
         return redirect()->route('rule.index')->with('success', 'Rule deleted successfully.');
     }
+    public function export()
+    {
+        $rules = Rule::with('status')->get();
+
+        $pdf = PDF::loadView('rule.pdf', compact('rules'));
+
+        return $pdf->download('regles_de_conservation.pdf');
+    }
+
+
 
 }

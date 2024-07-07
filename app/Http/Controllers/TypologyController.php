@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\TypologyCategory;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\Typology;
 use Illuminate\Support\Facades\Auth;
@@ -115,6 +116,16 @@ class TypologyController extends Controller
     {
         $typology->delete();
         return redirect()->route('typology.index')->with('success', 'Typology deleted successfully.');
+    }
+
+
+    public function export()
+    {
+        $typologies = Typology::with('category')->get();
+
+        $pdf = PDF::loadView('typology.pdf', compact('typologies'));
+
+        return $pdf->download('typologies_documentaires.pdf');
     }
 }
 

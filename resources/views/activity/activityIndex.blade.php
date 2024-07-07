@@ -1,7 +1,7 @@
 @extends('index')
 
 @section('content')
-    <div class="container">
+
         <h1>Activités</h1>
         <a href="{{ route('activity.create') }}" class="btn btn-primary mb-2">Créer un nouvel élément</a>
         <a href="{{ route('activity.export') }}" class="btn btn-success mb-2">Exporter en PDF</a>
@@ -74,5 +74,5 @@
             @endforeach
             </tbody>
         </table>
-    </div>
+
 @endsection

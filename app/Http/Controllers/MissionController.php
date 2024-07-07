@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classification;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\Mission;
 use App\Models\country;
@@ -146,6 +147,21 @@ class MissionController extends Controller
             return redirect()->route('mission.index')->with('error', 'Cette mission ne peut-être supprimée car elle a des activités filles.');
         }
 
+    }
+
+    public function export()
+    {
+        $country = Auth::user()->country;
+
+        $countryId = Auth::user()->country_id;
+        $items = Classification::where('country_id', $countryId)
+            ->whereNull('parent_id')
+            ->with('children.children.children')
+            ->get();
+
+        $pdf = PDF::loadView('mission.pdf', compact('items', 'country'));
+
+        return $pdf->download('missions_' . $country->abbr . '.pdf');
     }
 }
 

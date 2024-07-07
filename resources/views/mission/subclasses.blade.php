@@ -1,20 +1,27 @@
-<ul class="list-group list-group-vertical" id="subclass-{{ $item->id }}" style="margin-left: 40px">
-    @foreach ($subclasses as $subclass)
-        <li class="list-group-item">
-            {{ $subclass->code }} : {{ $subclass->name }}
-            <a href="{{ route('activity.show', $subclass) }}" class="btn btn-primary mb-2 float-end">Voir</a>
-            @if ($subclass->children->isNotEmpty())
-                <a class="toggle-subclass collapsed" data-toggle="collapse" href="#subclass-{{ $subclass->id }}"
-                   aria-expanded="false" aria-controls="subclass-{{ $subclass->id }}" id="toggle-icon-{{ $subclass->id }}">
-                    <i class="bi bi-plus-circle" id="plus-icon-{{ $subclass->id }}"></i>
-                    <i class="bi bi-dash-circle" id="dash-icon-{{ $subclass->id }}" style="display: none;"></i>
-                </a>
-            @endif
-        </li>
-        @if ($subclass->children->isNotEmpty())
-            <div class="collapse" id="subclass-{{ $subclass->id }}">
-                @include('mission.subclasses', ['subclasses' => $subclass->children])
-            </div>
-        @endif
-    @endforeach
+<ul class="list-group list-group-flush ms-4">
+    @if (isset($subclasses))
+        @foreach ($subclasses as $subclass)
+            <li class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        @if ($subclass->children->isNotEmpty())
+                            <a class="toggle-subclass collapsed me-2" data-bs-toggle="collapse" href="#subclass-{{ $subclass->id }}" role="button" aria-expanded="false" aria-controls="subclass-{{ $subclass->id }}">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        @endif
+                        <span class="fw-bold">{{ $subclass->code ?? '' }}</span>: {{ $subclass->name ?? '' }}
+                    </div>
+                    @if (isset($subclass->id))
+                        <a href="{{ route('activity.show', $subclass) }}" class="btn btn-sm btn-outline-primary">Voir</a>
+                    @endif
+                </div>
+
+                @if ($subclass->children->isNotEmpty())
+                    <div class="collapse mt-2" id="subclass-{{ $subclass->id ?? '' }}">
+                        @include('mission.subclasses', ['subclasses' => $subclass->children ?? []])
+                    </div>
+                @endif
+            </li>
+        @endforeach
+    @endif
 </ul>

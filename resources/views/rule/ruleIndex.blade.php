@@ -5,7 +5,7 @@
         <h1>Règles de conservation </h1>
         <a href="{{ route('rule.create') }}" class="btn btn-success mb-2">Ajouter</a>
         <a href="" class="btn btn-grey mb-2">Imprimer</a>
-        <a href="" class="btn btn-grey mb-2">Exporter</a>
+        <a href="{{ route('rule.export') }}" class="btn btn-grey mb-2">Exporter (PDF)</a>
         <a href="" class="btn btn-grey mb-2">Panier</a>
 
         <!-- Ajouter le formulaire de recherche -->
