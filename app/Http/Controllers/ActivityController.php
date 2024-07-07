@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\Classification;
 use App\Models\Country;
 use Maatwebsite\Excel\Facades\Excel;
-use PhpOffice\PhpSpreadsheet\Writer\Pdf;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class ActivityController extends Controller
 {
@@ -171,6 +172,10 @@ class ActivityController extends Controller
 
     public function export()
     {
-        return Excel::download(new ActivitiesExport, 'activities.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+        $activities = Classification::all();
+
+        $pdf = PDF::loadView('activity.pdf', compact('activities'));
+
+        return $pdf->download('activities.pdf');
     }
 }
