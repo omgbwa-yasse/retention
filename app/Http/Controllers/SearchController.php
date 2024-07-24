@@ -22,4 +22,34 @@ class SearchController extends Controller
         return view('search.index', compact('references', 'rules', 'typologies', 'classifications'));
     }
 
+    public function advancedSearch(Request $request)
+    {
+        $type = $request->input('type');
+        $query = $request->input('query');
+        $results = [];
+
+        switch ($type) {
+            case 'activity':
+                $results = Classification::where('name', 'like', "%{$query}%")->get();
+                break;
+            case 'basket':
+                $results = Basket::where('name', 'like', "%{$query}%")->get();
+                break;
+            case 'mission':
+                $results = Mission::where('name', 'like', "%{$query}%")->get();
+                break;
+            case 'reference':
+                $results = Reference::where('name', 'like', "%{$query}%")->get();
+                break;
+            case 'rule':
+                $results = Rule::where('name', 'like', "%{$query}%")->get();
+                break;
+            case 'typology':
+                $results = Typology::where('name', 'like', "%{$query}%")->get();
+                break;
+        }
+
+        return view('search.advanced', compact('results', 'type'));
+    }
+
 }

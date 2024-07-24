@@ -105,6 +105,7 @@ Route::middleware(['auth'])->group(function () {
 
     //research
     Route::get('/search/index', [SearchController::class, 'search'])->name('search');
+    Route::get('/search/advanced', [SearchController::class, 'advancedSearch'])->name('search.advanced');
 //    Route::get('/activity/exportPdf', [ActivityController::class, 'exportPdf'])->name('activity.exportPdf');
 
 
