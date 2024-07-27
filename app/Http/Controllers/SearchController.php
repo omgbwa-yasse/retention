@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Active;
+use App\Models\Articles;
 use App\Models\Classification;
+use App\Models\Country;
 use App\Models\Reference;
 use App\Models\Rule;
+use App\Models\Sort;
+use App\Models\Status;
+use App\Models\Trigger;
 use App\Models\Typology;
+use App\Models\TypologyCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SearchController extends Controller
 {
@@ -19,13 +27,24 @@ class SearchController extends Controller
         $typologies = Typology::where('name', 'like', "%{$query}%")->get();
         $classifications = Classification::where('name', 'like', "%{$query}%")->get();
 
+
+
         return view('search.index', compact('references', 'rules', 'typologies', 'classifications'));
     }
 
     public function advancedSearch(Request $request)
     {
         $type = $request->input('type');
+        $categories = TypologyCategory::all();
+        $states = Status::all();
+        $triggers = Trigger::all();
+        $sorts = Sort::all();
+        $actives = Active::all();
+        $articles = Articles::all()->where('country_id', '=', Auth::user()->country_id);
+        $countries = Country::orderBy('name')->get();
+        $activities = Classification::all();
         $query = $request->input('query');
+
         $results = [];
 
         switch ($type) {
@@ -36,7 +55,7 @@ class SearchController extends Controller
                 $results = Basket::where('name', 'like', "%{$query}%")->get();
                 break;
             case 'mission':
-                $results = Mission::where('name', 'like', "%{$query}%")->get();
+                $results = Classification::where('name', 'like', "%{$query}%")->get();
                 break;
             case 'reference':
                 $results = Reference::where('name', 'like', "%{$query}%")->get();
@@ -49,7 +68,20 @@ class SearchController extends Controller
                 break;
         }
 
-        return view('search.advanced', compact('results', 'type'));
+        return view('search.advanced', compact(
+            'results',
+            'type',
+            'categories',
+            'states',
+            'triggers',
+            'sorts',
+            'actives',
+            'articles',
+            'countries',
+            'activities',
+            'query'
+        ));
     }
+
 
 }

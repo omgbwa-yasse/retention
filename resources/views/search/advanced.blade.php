@@ -2,136 +2,227 @@
 
 @section('content')
     <div class="container my-5">
-        <h1 class="mb-4">Recherche Avancée</h1>
+        <h1 class="mb-4 text-primary fw-bold">Recherche Avancée</h1>
         <form action="{{ route('search.advanced') }}" method="GET" id="advancedSearchForm">
-            <div class="mb-3">
-                <label for="type" class="form-label">Type de recherche</label>
-                <select class="form-select" id="type" name="type">
-                    <option value="">Sélectionnez un type</option>
-                    <option value="classification">Classification</option>
-                    <option value="reference">Référence</option>
-                    <option value="rule">Règle</option>
-                    <option value="typology">Typologie</option>
-                    <option value="basket">Panier</option>
-                </select>
-            </div>
-
-            <div class="collapse" id="commonFields">
-                <div class="card card-body mb-3">
-                    <h3>Champs communs</h3>
-                    <label for="name" class="form-label">Nom</label>
-                    <input type="text" class="form-control" id="name" name="name">
-
-                    <label for="description" class="form-label">Description</label>
-                    <input type="text" class="form-control" id="description" name="description">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h3 class="card-title text-secondary mb-3">Type de recherche</h3>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <select class="form-select form-select-lg shadow-sm" id="type" name="type">
+                                <option value="">Sélectionnez un type</option>
+                                <option value="activity">Classification</option>
+                                <option value="reference">Référence</option>
+                                <option value="rule">Règle</option>
+                                <option value="typology">Typologie</option>
+                                <option value="basket">Panier</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="collapse" id="classificationFields">
-                <div class="card card-body mb-3">
-                    <h3>Champs de Classification</h3>
-                    <label for="code" class="form-label">Code</label>
-                    <input type="text" class="form-control" id="code" name="code">
-
-                    <label for="parent_id" class="form-label">Parent ID (pour les missions)</label>
-                    <input type="number" class="form-control" id="parent_id" name="parent_id">
-
-                    <label for="country_id" class="form-label">Pays</label>
-                    <select class="form-select" id="country_id" name="country_id">
-                        <!-- Populate with countries -->
-                    </select>
+            <div id="commonFields" class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h3 class="card-title text-secondary mb-3">Champs communs</h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label">Nom</label>
+                            <input type="text" class="form-control form-control-lg" id="name" name="name">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <input type="text" class="form-control form-control-lg" id="description" name="description">
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="collapse" id="referenceFields">
-                <div class="card card-body mb-3">
-                    <h3>Champs de Référence</h3>
-                    <label for="category_id" class="form-label">Catégorie</label>
-                    <select class="form-select" id="category_id" name="category_id">
-                        <!-- Populate with reference categories -->
-                    </select>
+            <div class="accordion mb-4" id="searchAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#classificationFields">
+                            Classification
+                        </button>
+                    </h2>
+                    <div id="classificationFields" class="accordion-collapse collapse" data-bs-parent="#searchAccordion">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="code" class="form-label">Code</label>
+                                    <input type="text" class="form-control form-control-lg" id="code" name="code">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="parent_id" class="form-label">Parent</label>
+                                    <select class="form-select form-select-lg" name="parent_id">
+                                        <option value="">N/A</option>
+                                        @foreach ($activities->groupBy('parent_id') as $parentId => $groupedActivities)
+                                            <optgroup label="Parent ID: {{ $parentId }}">
+                                                @foreach ($groupedActivities as $activity)
+                                                    <option value="{{ $activity->id }}">{{ $activity->code }} - {{ $activity->name }}</option>
+                                                @endforeach
+                                            </optgroup>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="country_id" class="form-label">Pays</label>
+                                    <select class="form-select form-select-lg" id="country_id" name="country_id">
+                                        <!-- Populate with countries -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <div class="accordion mb-4" id="searchAccordion">
+                    <!-- Classification section (already provided) -->
+
+                    <!-- Reference section -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#referenceFields">
+                                Référence
+                            </button>
+                        </h2>
+                        <div id="referenceFields" class="accordion-collapse collapse" data-bs-parent="#searchAccordion">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="ref_code" class="form-label">Code de référence</label>
+                                        <input type="text" class="form-control form-control-lg" id="ref_code" name="ref_code">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="ref_type" class="form-label">Type de référence</label>
+                                        <select class="form-select form-select-lg" id="ref_type" name="ref_type">
+                                            <option value="">Sélectionnez un type</option>
+                                            <!-- Add reference types here -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rule section -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ruleFields">
+                                Règle
+                            </button>
+                        </h2>
+                        <div id="ruleFields" class="accordion-collapse collapse" data-bs-parent="#searchAccordion">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="rule_code" class="form-label">Code de règle</label>
+                                        <input type="text" class="form-control form-control-lg" id="rule_code" name="rule_code">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="rule_category" class="form-label">Catégorie de règle</label>
+                                        <select class="form-select form-select-lg" id="rule_category" name="rule_category">
+                                            <option value="">Sélectionnez une catégorie</option>
+                                            <!-- Add rule categories here -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Typology section -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#typologyFields">
+                                Typologie
+                            </button>
+                        </h2>
+                        <div id="typologyFields" class="accordion-collapse collapse" data-bs-parent="#searchAccordion">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="typology_code" class="form-label">Code de typologie</label>
+                                        <input type="text" class="form-control form-control-lg" id="typology_code" name="typology_code">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="typology_category" class="form-label">Catégorie de typologie</label>
+                                        <select class="form-select form-select-lg" id="typology_category" name="typology_category">
+                                            <option value="">Sélectionnez une catégorie</option>
+                                            <!-- Add typology categories here -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Basket section -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#basketFields">
+                                Panier
+                            </button>
+                        </h2>
+                        <div id="basketFields" class="accordion-collapse collapse" data-bs-parent="#searchAccordion">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="basket_code" class="form-label">Code de panier</label>
+                                        <input type="text" class="form-control form-control-lg" id="basket_code" name="basket_code">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="basket_type" class="form-label">Type de panier</label>
+                                        <select class="form-select form-select-lg" id="basket_type" name="basket_type">
+                                            <option value="">Sélectionnez un type</option>
+                                            <!-- Add basket types here -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="collapse" id="ruleFields">
-                <div class="card card-body mb-3">
-                    <h3>Champs de Règle</h3>
-                    <label for="rule_code" class="form-label">Code</label>
-                    <input type="text" class="form-control" id="rule_code" name="rule_code">
-
-                    <label for="status_id" class="form-label">Statut</label>
-                    <select class="form-select" id="status_id" name="status_id">
-                        <!-- Populate with statuses -->
-                    </select>
-                </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg px-5 shadow">Rechercher</button>
             </div>
-
-            <div class="collapse" id="typologyFields">
-                <div class="card card-body mb-3">
-                    <h3>Champs de Typologie</h3>
-                    <label for="typology_category_id" class="form-label">Catégorie</label>
-                    <select class="form-select" id="typology_category_id" name="typology_category_id">
-                        <!-- Populate with typology categories -->
-                    </select>
-                </div>
-            </div>
-
-            <div class="collapse" id="basketFields">
-                <div class="card card-body mb-3">
-                    <h3>Champs de Panier</h3>
-                    <label for="basket_type_id" class="form-label">Type de panier</label>
-                    <select class="form-select" id="basket_type_id" name="basket_type_id">
-                        <!-- Populate with basket types -->
-                    </select>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Rechercher</button>
         </form>
 
         @if(isset($results))
             <div class="mt-5">
-                <h2>Résultats de recherche pour : {{ ucfirst($type) }}</h2>
+                <h2 class="mb-4 text-primary fw-bold">Résultats de recherche pour : {{ ucfirst($type) }}</h2>
                 @if(count($results) == 0)
-                    <p>Aucun résultat trouvé.</p>
+                    <div class="alert alert-info shadow-sm">Aucun résultat trouvé.</div>
                 @else
-                    <ul class="list-group">
+                    <div class="list-group shadow-sm">
                         @foreach($results as $result)
-                            <li class="list-group-item">
-                                <h5>{{ $result->name }}</h5>
-                                <p>{{ $result->description }}</p>
+                            <div class="list-group-item list-group-item-action">
+                                <h5 class="mb-1 fw-bold">{{ $result->name }}</h5>
+                                <p class="mb-1 text-muted">{{ $result->description }}</p>
                                 <!-- Add more fields as needed -->
-                            </li>
+                            </div>
                         @endforeach
-                    </ul>
+                    </div>
                 @endif
             </div>
         @endif
     </div>
 @endsection
 
-@push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var typeSelect = document.getElementById('type');
-            var allFields = document.querySelectorAll('.collapse');
-            var commonFields = document.getElementById('commonFields');
-
-            typeSelect.addEventListener('change', function() {
-                // Hide all fields
-                allFields.forEach(function(field) {
-                    bootstrap.Collapse.getOrCreateInstance(field).hide();
-                });
-
-                // Show common fields and specific fields based on selection
-                if (this.value) {
-                    bootstrap.Collapse.getOrCreateInstance(commonFields).show();
-                    var specificFields = document.getElementById(this.value + 'Fields');
-                    if (specificFields) {
-                        bootstrap.Collapse.getOrCreateInstance(specificFields).show();
-                    }
-                }
-            });
-        });
-    </script>
+@push('styles')
+    <style>
+        .form-label {
+            font-weight: 600;
+        }
+        .accordion-button:not(.collapsed) {
+            background-color: #f8f9fa;
+            color: #0d6efd;
+        }
+        .list-group-item:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
 @endpush

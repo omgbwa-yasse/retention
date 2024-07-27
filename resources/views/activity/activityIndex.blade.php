@@ -3,7 +3,7 @@
 @section('content')
     <div class="container my-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="mb-0"><i class="fas fa-tasks me-2"></i>Activités</h1>
+            <h1 class="mb-0 text-primary"><i class="fas fa-tasks me-2"></i>Activités</h1>
             <div>
                 <a href="{{ route('activity.create') }}" class="btn btn-primary me-2">
                     <i class="fas fa-plus-circle me-2"></i>Nouvelle activité
@@ -18,8 +18,8 @@
             <div class="card-body">
                 <form action="{{ route('activity.index') }}" method="GET">
                     <div class="input-group">
-                        <input type="text" name="search" class="form-control" placeholder="Rechercher une activité..." value="{{ request('search') }}">
-                        <button class="btn btn-outline-secondary" type="submit">
+                        <input type="text" name="search" class="form-control form-control-lg" placeholder="Rechercher une activité..." value="{{ request('search') }}">
+                        <button class="btn btn-outline-primary" type="submit">
                             <i class="fas fa-search me-2"></i>Rechercher
                         </button>
                     </div>
@@ -28,14 +28,14 @@
         </div>
 
         @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
                 <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
 
         @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
                 <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
@@ -47,23 +47,23 @@
                     <table class="table table-hover">
                         <thead class="table-light">
                         <tr>
-                            <th scope="col">Cote</th>
-                            <th scope="col">Titre</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Parent</th>
-                            <th scope="col">Sous-classes</th>
-                            <th scope="col">Pays</th>
-                            <th scope="col">Actions</th>
+                            <th scope="col" class="text-primary">Cote</th>
+                            <th scope="col" class="text-primary">Titre</th>
+                            <th scope="col" class="text-primary">Description</th>
+                            <th scope="col" class="text-primary">Parent</th>
+                            <th scope="col" class="text-primary">Sous-classes</th>
+                            <th scope="col" class="text-primary">Pays</th>
+                            <th scope="col" class="text-primary">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         @forelse ($activities as $activity)
                             <tr>
-                                <td>{{ $activity->code }}</td>
+                                <td class="fw-bold">{{ $activity->code }}</td>
                                 <td>{{ $activity->name }}</td>
                                 <td>{{ Str::limit($activity->description, 50) }}</td>
                                 <td>{{ $activity->parent ? $activity->parent->name : 'N/A' }}</td>
-                                <td>{{ $activity->children ? $activity->children->count() : '0' }}</td>
+                                <td><span class="badge bg-info">{{ $activity->children ? $activity->children->count() : '0' }}</span></td>
                                 <td>{{ $activity->countries->name ?? 'N/A' }}</td>
                                 <td>
                                     <div class="btn-group" role="group">
@@ -85,7 +85,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center">Aucune activité trouvée</td>
+                                <td colspan="7" class="text-center text-muted">Aucune activité trouvée</td>
                             </tr>
                         @endforelse
                         </tbody>
@@ -94,8 +94,22 @@
             </div>
         </div>
 
-        <div class="mt-4">
+        <div class="mt-4 d-flex justify-content-center">
             {{ $activities->links() }}
         </div>
     </div>
 @endsection
+
+@push('styles')
+    <style>
+        .table th {
+            font-weight: 600;
+        }
+        .table td {
+            vertical-align: middle;
+        }
+        .btn-group .btn {
+            padding: .25rem .5rem;
+        }
+    </style>
+@endpush

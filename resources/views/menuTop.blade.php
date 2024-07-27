@@ -65,6 +65,7 @@
                     <input class="form-control me-2 w-150" type="search" name="query" placeholder="règle, Classe, Durée" aria-label="Search">
                     <button class="btn btn-outline-light" type="submit">Recherche</button>
                 </form>
+                <a  class="btn btn-outline-light" href="{{ route('search.advanced') }}">Avancer</a>
                 <ul class="navbar-nav ms-auto">
                     @guest
                         @if (Route::has('login'))

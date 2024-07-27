@@ -1,149 +1,104 @@
 @extends('index')
 
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-                <h2>{{ $rule->name }}</h2>
-                <h6 class="card-subtitle mb-2 text-muted">{{ $rule->code }}</h6>
-                <h6 class="card-subtitle mb-2 text-muted">--- Pays non vide ---</h6>
-                <p class="card-text">{{ $rule->description }}</p>
-
+    <div class="container my-5">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h1 class="mb-0">{{ $rule->name }}</h1>
+                <h6 class="mb-0">{{ $rule->code }} - Pays non vide</h6>
             </div>
-
-            <h5>Cycle de vie</h5>
-            <div class="table-responsive mb-12">
-                <table class="table table-bordered align-middle">
-                    <tbody>
-                    <tr class="">
-                        <td colspan="3">Active</td>
-                    </tr>
-                    <tr class="">
-                        <td>Durée</td>
-                        <td>Déclencheur</td>
-                        <td>Description</td>
-                        <td>Sort</td>
-                    </tr>
-                    <tr class="">
-                        @if($rule->duas->isEmpty())
-                            <td> N/A </td>
-                            <td> N/A </td>
-                            <td> N/A </td>
-                        @else
-                            @foreach($rule->actives as $active)
-                                <td>{{ $active->duration }} ans </td>
-                                <td>{{ $active->trigger->code }} - {{ $active->trigger->name }} </td>
-                                <td>{{ $active->description }} </td>
-                                <td>{{ $active->sort->code }}</td>
-                            @endforeach
-                        @endif
-                    </tr>
-                    </tbody>
-                </table>
-
-
-                <div class="table-responsive mb-12">
-                    <table class="table table-bordered align-middle">
-                        <tbody>
-                        <tr class="">
-                            <td colspan="3">Semi-active</td>
-                        </tr>
-                        <tr class="">
-                            <td>Durée</td>
-                            <td>Déclencheur</td>
-                            <td>Description</td>
-                            <td>Sort</td>
-
-                        </tr>
-                        <tr class="">
-
-                            @if($rule->duas->isEmpty())
-                                <td> N/A </td>
-                                <td> N/A </td>
-                                <td> N/A </td>
-                            @else
-                                @foreach($rule->duas as $dua)
-                                    <td>{{ $dua->duration }} ans </td>
-                                    <td>{{ $dua->trigger->code }} - {{ $dua->trigger->name }} </td>
-                                    <td>{{ $dua->description }} </td>
-                                    <td>{{ $dua->sort->code }}</td>
-                                @endforeach
-                            @endif
-                        </tr>
-                        </tbody>
-                    </table>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5 class="card-title">Description</h5>
+                        <p class="card-text">{{ $rule->description }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-light mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Informations</h5>
+                                <p class="mb-1"><strong>Statut :</strong>
+                                    <a href="{{ route('rule.show', $rule->id) }}" class="badge bg-danger text-decoration-none">
+                                        {{ $rule->status->name }}
+                                    </a>
+                                </p>
+                                <p class="mb-0"><strong>Articles :</strong>
+                                    <a href="{{ route('rule.show', $rule->id) }}">10 articles</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
+                <h3 class="mt-4">Cycle de vie</h3>
+                @foreach(['Active', 'Semi-active', 'Définitive'] as $phase)
+                    <div class="card mb-4">
+                        <div class="card-header bg-secondary text-white">
+                            <h5 class="mb-0">{{ $phase }}</h5>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered mb-0">
+                                <thead>
+                                <tr>
+                                    <th>Durée</th>
+                                    <th>Déclencheur</th>
+                                    <th>Description</th>
+                                    <th>Sort</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @php
+                                    $items = $phase === 'Active' ? $rule->actives : ($phase === 'Semi-active' ? $rule->duas : $rule->duls);
+                                @endphp
+                                @forelse($items as $item)
+                                    <tr>
+                                        <td>{{ $item->duration }} ans</td>
+                                        <td>{{ $item->trigger->code }} - {{ $item->trigger->name }}</td>
+                                        <td>{{ $item->description }}</td>
+                                        <td>{{ $item->sort->code }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center">N/A</td>
+                                    </tr>
+                                @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                @endforeach
 
+                <h3 class="mt-4">Activités</h3>
+                <ul class="list-group mb-4">
+                    @forelse($rule->classifications as $classification)
+                        <li class="list-group-item">{{ $classification->code }} - {{ $classification->name }}</li>
+                    @empty
+                        <li class="list-group-item">Aucune règle</li>
+                    @endforelse
+                </ul>
 
-
-                <div class="table-responsive mb-12">
-                    <table class="table table-bordered align-middle">
-                        <tbody>
-                        <tr class="">
-                            <td colspan="3">Définitive</td>
-                        </tr>
-                        <tr class="">
-                            <td>Durée</td>
-                            <td>Déclencheur</td>
-                            <td>Description</td>
-                            <td>Sort</td>
-                        </tr>
-                        <tr class="">
-                            @if($rule->duls->isEmpty())
-                                <td> N/A </td>
-                                <td> N/A </td>
-                                <td> N/A </td>
-                            @else
-                                @foreach($rule->duls as $dul)
-                                    <td>{{ $dul->duration }} ans </td>
-                                    <td>{{ $dul->trigger->code }} - {{ $dul->trigger->name }} </td>
-                                    <td>{{ $dul->description }} </td>
-                                    <td>{{ $dul->sort->code }}</td>
-                                @endforeach
-                            @endif
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                Statut : <a href="{{ route('rule.show', $rule->id) }}">
-                    <span class="badge badge-danger">{{ $rule->status->name }}</span></a><br>
-                Articles : <a href="{{ route('rule.show', $rule->id) }}"> 10 articles </a>
-
-                <h3> Activités </h3>
-
-                <div>
-                    <ul>
-                        @if($rule->classifications->isEmpty())
-                            <li> Aucune règle </li>
-                        @else
-                            @foreach($rule->classifications as $classification)
-                                <li>{{ $classification->code }}  - {{ $classification->name }}</li>
-                            @endforeach
-                        @endif
-                    </ul>
-                </div>
-
-
-                <div class="d-grid gap-2 d-md-flex">
-                    <a href="{{ route('active.create', $rule->id) }}" class="btn btn-primary btn-sm me-md-2">Durée active</a>
-                    <a href="{{ route('rule.dua.create', $rule->id) }}" class="btn btn-primary btn-sm me-md-2">Durée semi-active</a>
-                    <a href="{{ route('rule.dul.create', $rule->id) }}" class="btn btn-primary btn-sm me-md-2">Durée passive</a>
-                    <a href="{{ route('rule.classification.create', $rule->id) }}" class="btn btn-primary btn-sm">Aux activités</a>
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <a href="{{ route('active.create', $rule->id) }}" class="btn btn-outline-primary btn-sm">Durée active</a>
+                    <a href="{{ route('rule.dua.create', $rule->id) }}" class="btn btn-outline-primary btn-sm">Durée semi-active</a>
+                    <a href="{{ route('rule.dul.create', $rule->id) }}" class="btn btn-outline-primary btn-sm">Durée passive</a>
+                    <a href="{{ route('rule.classification.create', $rule->id) }}" class="btn btn-outline-primary btn-sm">Aux activités</a>
                 </div>
 
                 <hr>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                    <a href="{{ route('rule.edit', $rule->id) }}" class="btn btn-primary me-md-2 mb-2 mb-md-0">Modifier</a>
 
+                <div class="d-flex gap-2">
+                    <a href="{{ route('rule.edit', $rule->id) }}" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Modifier
+                    </a>
                     <form action="{{ route('rule.destroy', $rule->id) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette règle ?')">
+                            <i class="fas fa-trash"></i> Supprimer
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
-
+    </div>
 @endsection
