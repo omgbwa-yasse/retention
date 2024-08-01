@@ -1,146 +1,216 @@
 @extends('index')
 
 @section('content')
-    <div class="container mt-4">
-        <h2 class="mb-4">Ajouter une règle de conservation</h2>
-        <form action="{{ route('rule.store') }}" method="POST">
-            @csrf
-            <div class="card mb-4">
-                <div class="card-header">
-                    Informations de base
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-2">
-                            <label for="code" class="form-label">Référence</label>
-                            <input type="text" class="form-control" id="code" name="code" required>
-                        </div>
-                        <div class="col-md-10">
-                            <label for="name" class="form-label">Intitulé</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                        </div>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="mb-0"><i class="fas fa-file-alt me-2"></i>Ajouter une règle de conservation</h2>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea class="form-control" id="description" rows="3" name="description" required></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    <div class="card-body">
+                        <form action="{{ route('rule.store') }}" method="POST">
+                            @csrf
 
-            <div class="card mb-4">
-                <div class="card-header">
-                    Active (Bureau)
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <label for="active_duration" class="form-label">Durée</label>
-                            <input type="number" class="form-control" id="active_duration" name="active_duration" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="active_trigger" class="form-label">Conserver</label>
-                            <select class="form-select" id="active_trigger" name="active_trigger" required>
-                                @foreach($triggers as $trigger)
-                                    <option value="{{ $trigger->id }}">{{ $trigger->code }} - {{ $trigger->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="active_sort" class="form-label">Sort</label>
-                            <select class="form-select" id="active_sort" name="active_sort" required>
-                                @foreach($sorts as $sort)
-                                    <option value="{{ $sort->id }}">{{ $sort->code }} - {{ $sort->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="active_description" class="form-label">Description</label>
-                            <textarea class="form-control" id="active_description" rows="3" name="active_description" required></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            <div class="card mb-4">
+                                <div class="card-header bg-light">
+                                    <h4 class="mb-0"><i class="fas fa-info-circle me-2"></i>Informations de base</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-2">
+                                            <label for="code" class="form-label">Référence</label>
+                                            <input type="text" class="form-control @error('code') is-invalid @enderror" id="code" name="code" value="{{ old('code') }}" required>
+                                            @error('code')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-10">
+                                            <label for="name" class="form-label">Intitulé</label>
+                                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required>
+                                            @error('name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label">Description</label>
+                                        <textarea class="form-control @error('description') is-invalid @enderror" id="description" rows="3" name="description" required>{{ old('description') }}</textarea>
+                                        @error('description')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
 
-            <div class="card mb-4">
-                <div class="card-header">
-                    Semi-active (Salle de préarchivage)
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <label for="dua_duration" class="form-label">Durée</label>
-                            <input type="number" class="form-control" id="dua_duration" name="dua_duration" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="dua_trigger" class="form-label">Conserver</label>
-                            <select class="form-select" id="dua_trigger" name="dua_trigger" required>
-                                @foreach($triggers as $trigger)
-                                    <option value="{{ $trigger->id }}">{{ $trigger->code }} - {{ $trigger->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="dua_sort" class="form-label">Sort</label>
-                            <select class="form-select" id="dua_sort" name="dua_sort" required>
-                                @foreach($sorts as $sort)
-                                    <option value="{{ $sort->id }}">{{ $sort->code }} - {{ $sort->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="dua_description" class="form-label">Description</label>
-                            <textarea class="form-control" id="dua_description" rows="3" name="dua_description" required></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            <div class="card mb-4">
+                                <div class="card-header bg-light">
+                                    <h4 class="mb-0"><i class="fas fa-building me-2"></i>Active (Bureau)</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="active_duration" class="form-label">Durée</label>
+                                            <input type="number" class="form-control @error('active_duration') is-invalid @enderror" id="active_duration" name="active_duration" value="{{ old('active_duration') }}" required>
+                                            @error('active_duration')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="active_trigger" class="form-label">Conserver</label>
+                                            <select class="form-select @error('active_trigger') is-invalid @enderror" id="active_trigger" name="active_trigger" required>
+                                                <option value="">Sélectionnez une option</option>
+                                                @foreach($triggers as $trigger)
+                                                    <option value="{{ $trigger->id }}" {{ old('active_trigger') == $trigger->id ? 'selected' : '' }}>
+                                                        {{ $trigger->code }} - {{ $trigger->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('active_trigger')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="active_sort" class="form-label">Sort</label>
+                                            <select class="form-select @error('active_sort') is-invalid @enderror" id="active_sort" name="active_sort" required>
+                                                <option value="">Sélectionnez une option</option>
+                                                @foreach($sorts as $sort)
+                                                    <option value="{{ $sort->id }}" {{ old('active_sort') == $sort->id ? 'selected' : '' }}>
+                                                        {{ $sort->code }} - {{ $sort->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('active_sort')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="active_description" class="form-label">Description</label>
+                                        <textarea class="form-control @error('active_description') is-invalid @enderror" id="active_description" rows="3" name="active_description" required>{{ old('active_description') }}</textarea>
+                                        @error('active_description')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
 
-            <div class="card mb-4">
-                <div class="card-header">
-                    Historique (Archives historiques)
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <label for="dul_duration" class="form-label">Durée</label>
-                            <input type="number" class="form-control" id="dul_duration" name="dul_duration" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="dul_trigger" class="form-label">Conserver</label>
-                            <select class="form-select" id="dul_trigger" name="dul_trigger" required>
-                                @foreach($triggers as $trigger)
-                                    <option value="{{ $trigger->id }}">{{ $trigger->code }} - {{ $trigger->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="dul_sort" class="form-label">Sort</label>
-                            <select class="form-select" id="dul_sort" name="dul_sort" required>
-                                @foreach($sorts as $sort)
-                                    <option value="{{ $sort->id }}">{{ $sort->code }} - {{ $sort->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="dul_description" class="form-label">Description</label>
-                            <textarea class="form-control" id="dul_description" rows="3" name="dul_description" required></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            <div class="card mb-4">
+                                <div class="card-header bg-light">
+                                    <h4 class="mb-0"><i class="fas fa-archive me-2"></i>Semi-active (Salle de préarchivage)</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="dua_duration" class="form-label">Durée</label>
+                                            <input type="number" class="form-control @error('dua_duration') is-invalid @enderror" id="dua_duration" name="dua_duration" value="{{ old('dua_duration') }}" required>
+                                            @error('dua_duration')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="dua_trigger" class="form-label">Conserver</label>
+                                            <select class="form-select @error('dua_trigger') is-invalid @enderror" id="dua_trigger" name="dua_trigger" required>
+                                                <option value="">Sélectionnez une option</option>
+                                                @foreach($triggers as $trigger)
+                                                    <option value="{{ $trigger->id }}" {{ old('dua_trigger') == $trigger->id ? 'selected' : '' }}>
+                                                        {{ $trigger->code }} - {{ $trigger->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('dua_trigger')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="dua_sort" class="form-label">Sort</label>
+                                            <select class="form-select @error('dua_sort') is-invalid @enderror" id="dua_sort" name="dua_sort" required>
+                                                <option value="">Sélectionnez une option</option>
+                                                @foreach($sorts as $sort)
+                                                    <option value="{{ $sort->id }}" {{ old('dua_sort') == $sort->id ? 'selected' : '' }}>
+                                                        {{ $sort->code }} - {{ $sort->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('dua_sort')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="dua_description" class="form-label">Description</label>
+                                        <textarea class="form-control @error('dua_description') is-invalid @enderror" id="dua_description" rows="3" name="dua_description" required>{{ old('dua_description') }}</textarea>
+                                        @error('dua_description')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
 
-            <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-success">Enregistrer</button>
-                <button type="reset" class="btn btn-danger">Annuler</button>
+                            <div class="card mb-4">
+                                <div class="card-header bg-light">
+                                    <h4 class="mb-0"><i class="fas fa-history me-2"></i>Historique (Archives historiques)</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="dul_duration" class="form-label">Durée</label>
+                                            <input type="number" class="form-control @error('dul_duration') is-invalid @enderror" id="dul_duration" name="dul_duration" value="{{ old('dul_duration') }}" required>
+                                            @error('dul_duration')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="dul_trigger" class="form-label">Conserver</label>
+                                            <select class="form-select @error('dul_trigger') is-invalid @enderror" id="dul_trigger" name="dul_trigger" required>
+                                                <option value="">Sélectionnez une option</option>
+                                                @foreach($triggers as $trigger)
+                                                    <option value="{{ $trigger->id }}" {{ old('dul_trigger') == $trigger->id ? 'selected' : '' }}>
+                                                        {{ $trigger->code }} - {{ $trigger->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('dul_trigger')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="dul_sort" class="form-label">Sort</label>
+                                            <select class="form-select @error('dul_sort') is-invalid @enderror" id="dul_sort" name="dul_sort" required>
+                                                <option value="">Sélectionnez une option</option>
+                                                @foreach($sorts as $sort)
+                                                    <option value="{{ $sort->id }}" {{ old('dul_sort') == $sort->id ? 'selected' : '' }}>
+                                                        {{ $sort->code }} - {{ $sort->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('dul_sort')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="dul_description" class="form-label">Description</label>
+                                        <textarea class="form-control @error('dul_description') is-invalid @enderror" id="dul_description" rows="3" name="dul_description" required>{{ old('dul_description') }}</textarea>
+                                        @error('dul_description')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>Enregistrer
+                                </button>
+                                <button type="reset" class="btn btn-secondary">
+                                    <i class="fas fa-undo me-2"></i>Réinitialiser
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
 @endsection

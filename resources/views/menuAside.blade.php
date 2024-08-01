@@ -1,8 +1,6 @@
 @guest
 @else
-    <div id="container">
-        <div id="content">
-            <aside id="sous-menu" class="bg-light" style="min-height: 100vh;">
+            <aside id="sous-menu" class="bg-light d-none d-md-block" style="min-height: 100vh;">
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link active bg-dark text-white" data-toggle="collapse" href="#recherche"
@@ -86,6 +84,4 @@
                     </li>
                 </ul>
             </aside>
-        </div>
-    </div>
 @endguest

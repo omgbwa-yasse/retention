@@ -95,7 +95,8 @@
         </div>
 
         <div class="mt-4 d-flex justify-content-center">
-            {{ $rules->links() }}
+{{--            {{ $rules->links() }}--}}
+            links
         </div>
     </div>
 @endsection
