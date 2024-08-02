@@ -39,6 +39,10 @@ class Classification extends Model
             ->with('domaine')
             ->whereNull('parent_id');
     }
+    public function childrenRecursive()
+    {
+        return $this->children()->with('childrenRecursive');
+    }
 
     public function typologies()
     {
@@ -59,4 +63,7 @@ class Classification extends Model
     {
         return $this->belongsTo(user::class, 'user_id');
     }
+
+
+
 }

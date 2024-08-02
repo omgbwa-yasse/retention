@@ -25,14 +25,14 @@
             <tr>
                 <td class="fw-bold">{{ $class->code }}</td>
                 <td>{{ $class->name }}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>articles</td>
+                <td>TYPOLOGIE</td>
+                <td>ACTIVES</td>
+                <td>TRIGGER</td>
+                <td>DUAS</td>
+                <td>DUASname</td>
+                <td>DUL</td>
+                <td>DUL NAme</td>
+                <td>ARTICLEs</td>
             </tr>
             @if ($class->children->isNotEmpty())
                 @include('mission.subclasses', ['subclasses' => $class->children])

@@ -65,6 +65,10 @@ class Rule extends Model
     {
         return $this->belongsTo(User::class, 'validated_by');
     }
+
+
+
+
 }
 
 

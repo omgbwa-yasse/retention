@@ -6,6 +6,7 @@ use App\Models\Rule;
 use App\Models\Trigger;
 use App\Models\Sort;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ActiveController extends Controller
 {
@@ -35,7 +36,14 @@ class ActiveController extends Controller
             'sort_id' => 'required|exists:sorts,id',
         ]);
 
-        Active::create($request->all());
+        $countryId = Auth::user()->country_id;
+        $userId = Auth::user()->id;
+
+        $data = $request->all();
+        $data['country_id'] = $countryId;
+        $data['user_id'] = $userId;
+
+        Active::create($data);
 
         return redirect()->route('active.index')->with('success', 'Active created successfully.');
     }

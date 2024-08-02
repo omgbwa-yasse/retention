@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Reference;
 use App\Models\ReferenceLink;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LinkController extends Controller
 {
@@ -39,8 +40,14 @@ class LinkController extends Controller
             'name' => 'required|string|max:100',
             'link' => 'nullable|string|max:255',
         ]);
+        $countryId = Auth::user()->country_id;
+        $userId = Auth::user()->id;
 
-        $reference->links()->create($validatedData);
+        $data = $validatedData;
+        $data['country_id'] = $countryId;
+        $data['user_id'] = $userId;
+
+        $reference->links()->create($data);
 
         return redirect()->route('reference.link.index', $reference)->with('success', 'Link created successfully.');
     }

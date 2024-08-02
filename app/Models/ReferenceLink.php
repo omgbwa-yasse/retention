@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ReferenceLink extends Model
 {
-    protected $fillable = ['name', 'link', 'reference_id'];
+    protected $fillable = ['user_id','name', 'link', 'reference_id'];
 
     public function reference()
     {
