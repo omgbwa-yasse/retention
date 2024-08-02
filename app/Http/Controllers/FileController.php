@@ -121,17 +121,9 @@ class FileController extends Controller
                                         ->where('name', $name)
                                         ->first();
 
-        if (!$referenceFile) {
-            abort(404, 'File not found.');
-        }
+        $filePath=Storage::path( $referenceFile->file_path);
 
-        $filePath = public_path('files/' . $referenceFile->file_path);
-
-        if (!file_exists($filePath)) {
-            abort(404, 'File not found.');
-        }
-
-        return response()->download($filePath, $referenceFile->name);
+        return response()->download($filePath);
     }
 
 

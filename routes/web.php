@@ -42,7 +42,7 @@ Route::get('/activity/pdf', [ActivityController::class, 'pdf'])->name('activity.
 Route::get('/rules/export', [RuleController::class, 'export'])->name('rule.export');
 Route::get('/mission/export', [MissionController::class, 'export'])->name('mission.export');
 Route::get('/typologies/export', [TypologyController::class, 'export'])->name('typology.export');
-Route::get('reference/{reference}/file/{file}/download', [FileController::class, 'download'])->name('reference.file.download');
+Route::get('reference/{reference}/file/{name}/download', [FileController::class, 'download'])->name('reference.file.download');
 
 
 // Route group for authentication
