@@ -87,6 +87,8 @@
                 <hr>
 
                 <div class="d-flex gap-2">
+                    <a href="{{ route('rule.classification.index', ['rule_id' => $rule->id]) }}" class="btn btn-secondary mt-3">Liste des activités avec les Classifications associées</a>
+
                     <a href="{{ route('rule.edit', $rule->id) }}" class="btn btn-warning">
                         <i class="fas fa-edit"></i> Modifier
                     </a>

@@ -23,6 +23,10 @@
                 <td>{{ $typology->description }}</td>
                 <td>{{ $typology->category->name }}</td>
                 <td>
+
+                    <a href="{{ route('activity.show', $activity->id) }}" class="btn btn-outline-info btn-sm" title="Voir">
+                        Retour
+                    </a>
                     <a href="{{ route('activity.typology.edit', [$activity, $typology]) }}" class="btn btn-primary">Edit</a>
                     <form action="{{ route('activity.typology.destroy', [$activity, $typology]) }}" method="POST" style="display: inline;">
                         @csrf

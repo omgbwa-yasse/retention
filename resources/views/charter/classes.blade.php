@@ -1,4 +1,4 @@
-<!-- resources/views/classifications/subclasses.blade.php -->
+<!-- resources/views/charter/classes.blade.php -->
 <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover shadow-sm">
         <thead class="table-light">
@@ -25,17 +25,93 @@
             <tr>
                 <td class="fw-bold">{{ $class->code }}</td>
                 <td>{{ $class->name }}</td>
-                <td>TYPOLOGIE</td>
-                <td>ACTIVES</td>
-                <td>TRIGGER</td>
-                <td>DUAS</td>
-                <td>DUASname</td>
-                <td>DUL</td>
-                <td>DUL NAme</td>
-                <td>ARTICLEs</td>
+                <td>
+                    @if ($class->typologies)
+                        @foreach ($class->typologies as $typology)
+                            {{ $typology->name }}<br>
+                        @endforeach
+                    @endif
+                </td>
+                <td>
+                    @if ($class->rules)
+                        @foreach ($class->rules as $rule)
+                            @if ($rule->actives)
+                                @foreach ($rule->actives as $active)
+                                    {{ $active->duration }}<br>
+                                @endforeach
+                            @endif
+                        @endforeach
+                    @endif
+                </td>
+                <td>
+                    @if ($class->rules)
+                        @foreach ($class->rules as $rule)
+                            @if ($rule->actives)
+                                @foreach ($rule->actives as $active)
+                                    {{ $active->trigger->name }}<br>
+                                @endforeach
+                            @endif
+                        @endforeach
+                    @endif
+                </td>
+                <td>
+                    @if ($class->rules)
+                        @foreach ($class->rules as $rule)
+                            @if ($rule->duas)
+                                @foreach ($rule->duas as $dua)
+                                    {{ $dua->duration }}<br>
+                                @endforeach
+                            @endif
+                        @endforeach
+                    @endif
+                </td>
+                <td>
+                    @if ($class->rules)
+                        @foreach ($class->rules as $rule)
+                            @if ($rule->duas)
+                                @foreach ($rule->duas as $dua)
+                                    {{ $dua->trigger->name }}<br>
+                                @endforeach
+                            @endif
+                        @endforeach
+                    @endif
+                </td>
+                <td>
+                    @if ($class->rules)
+                        @foreach ($class->rules as $rule)
+                            @if ($rule->duls)
+                                @foreach ($rule->duls as $dul)
+                                    {{ $dul->duration }}<br>
+                                @endforeach
+                            @endif
+                        @endforeach
+                    @endif
+                </td>
+                <td>
+                    @if ($class->rules)
+                        @foreach ($class->rules as $rule)
+                            @if ($rule->duls)
+                                @foreach ($rule->duls as $dul)
+                                    {{ $dul->trigger->name }}<br>
+                                @endforeach
+                            @endif
+                        @endforeach
+                    @endif
+                </td>
+                <td>
+                    @if ($class->rules)
+                        @foreach ($class->rules as $rule)
+                            @if ($rule->articles)
+                                @foreach ($rule->articles as $article)
+                                    {{ $article->name }}<br>
+                                @endforeach
+                            @endif
+                        @endforeach
+                    @endif
+                </td>
             </tr>
             @if ($class->children->isNotEmpty())
-                @include('mission.subclasses', ['subclasses' => $class->children])
+                @include('charter.classes', ['classes' => $class->children])
             @endif
         @endforeach
         </tbody>

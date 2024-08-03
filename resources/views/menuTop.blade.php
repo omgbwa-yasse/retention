@@ -23,7 +23,7 @@
 
 
 
-            <form class="d-flex me-2" action="{{ route('search') }}" method="GET">
+            <form class="d-flex me-2 w-50" action="{{ route('search') }}" method="GET">
                 <div class="input-group">
                     <input class="form-control" type="search" name="query" placeholder="Règle, Classe, Durée" aria-label="Search">
                     <button class="btn btn-outline-light" type="submit"><i class="fas fa-search"></i></button>

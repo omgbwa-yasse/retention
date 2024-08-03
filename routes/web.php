@@ -52,6 +52,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('basket', basketController::class);
     Route::resource('activity', ActivityController::class);
     Route::resource('activity.rule', ActivityRuleController::class);
+    Route::get('/activities/{id}/rules', [ActivityRuleController::class, 'show'])->name('activity.rules.show');
     Route::resource('activity.typology', ActivityTypologyController::class);
     Route::resource('reference', ReferenceController::class);
 
@@ -68,7 +69,11 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('rule.dul', DulController::class);
     Route::resource('rule.dul.dulreference', DulArticleController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::resource('rule.classification', RuleClassificationController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
-
+    Route::resource('rule.classification', RuleClassificationController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
+    Route::get('/rule-classification', [RuleClassificationController::class, 'index'])->name('rule.classification.ruleClassificationIndex');
+    Route::get('/rule/{rule_id}/classification', [RuleClassificationController::class, 'index'])->name('rule.classification.index');
+    Route::get('/rule/{rule}/classification/{classification}/edit', [RuleClassificationController::class, 'edit'])->name('rule.classification.edit');
+    Route::delete('/rule/{rule}/classification/{classification}', [RuleClassificationController::class, 'destroy'])->name('rule.classification.destroy');
 
     Route::resource('user', UserController::class);
     Route::get('user/{id}', [UserController::class, 'show'])->name('user.show');

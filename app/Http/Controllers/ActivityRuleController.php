@@ -13,6 +13,7 @@ class ActivityRuleController extends Controller
     public function index(Classification $activity)
     {
         $activity->load('rules');
+//        dd($activity);
         return view('activity.rule.index', compact('activity'));
     }
 
