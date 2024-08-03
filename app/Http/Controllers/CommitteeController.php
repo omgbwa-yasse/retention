@@ -43,14 +43,14 @@ class CommitteeController extends Controller
         return view('validation.index', compact('rules'));
     }
 
-    public function show(INT $id)
+    public function show(Rule $rule)
     {
-        $rule = rule::find($id);
-        $rule->load('countries')->load('validator');
+        $rule->load('countries')->load('actives')->load('duls')->load('classifications')->load('status');
+
         return view('validation.show', compact('rule'));
     }
 
-    public function update(Request $request,INT $id)
+    public function update(Request $request, $id)
     {
         $rule = Rule::findOrFail($id);
         if ($rule->status_id == 1 && ($request->status_id == 2 || $request->status_id == 3)) {

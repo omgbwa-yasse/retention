@@ -12,7 +12,7 @@
                     <p class="card-text">
                         <strong>ID:</strong> {{ $rule->id }}<br>
                         <strong>Description :</strong> {{ $rule->description }}<br>
-                        <strong>Pays:</strong> {{ $rule->countries->name }}<br>
+{{--                        <strong>Pays:</strong> {{ $rule->countries->name }}<br>--}}
                         <strong>Statut:</strong>
                         @if ($rule->status_id == 1)
                             <span class="badge badge-primary">En attente</span>
@@ -29,9 +29,9 @@
             </div>
         </div>
         <div class="col-md-12">
-            <a name=""  id="" class="btn btn-primary" href="{{ route('rule.show', $rule->id ) }}" role="button" >Afficher la règles</a>
+{{--            <a name=""  id="" class="btn btn-primary" href="{{ route('rule.show', $rule ) }}" role="button" >Afficher la règles</a>--}}
             <a name=""  id="" class="btn btn-primary" href="{{ route('rule.index')}}" role="button" >Retour vers les règles</a>
-            <a name=""  id="" class="btn btn-primary" href="{{ route('validation.index') }}" role="button" >Retour vers les status</a>
+{{--            <a name=""  id="" class="btn btn-primary" href="{{ route('validation.index') }}" role="button" >Retour vers les status</a>--}}
         </div>
     </div>
 </div>

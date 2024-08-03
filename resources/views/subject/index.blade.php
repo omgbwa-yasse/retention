@@ -4,10 +4,18 @@
     <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-lg-10">
+                <!-- Forum Card -->
                 <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
+                    <!-- Card Header -->
+                    <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
                         <h2 class="mb-0">{{ __('Forum') }}</h2>
+                        @if(auth()->check())
+                            <a href="{{ route('subject.create') }}" class="btn btn-light text-primary">
+                                <i class="fas fa-plus-circle me-2"></i>Nouveau Sujet
+                            </a>
+                        @endif
                     </div>
+                    <!-- Card Body -->
                     <div class="card-body">
                         @if (session('status'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -16,17 +24,12 @@
                             </div>
                         @endif
 
-                        @if(auth()->check())
-                            <a href="{{ route('subject.create') }}" class="btn btn-primary mb-4">
-                                <i class="fas fa-plus-circle me-2"></i>Nouveau Sujet
-                            </a>
-                        @endif
-
-                        @foreach ($subjects as $subject)
-                            <div class="card mb-3">
+                        <!-- Subjects List -->
+                        @forelse ($subjects as $subject)
+                            <div class="card mb-3 border-0">
                                 <div class="card-body">
                                     <h3 class="card-title">
-                                        <a href="{{ route('subject.show', $subject->id) }}" class="text-decoration-none">{{ $subject->name }}</a>
+                                        <a href="{{ route('subject.show', $subject->id) }}" class="text-decoration-none text-primary">{{ $subject->name }}</a>
                                     </h3>
                                     <p class="card-text text-muted mb-2">
                                         <small>
@@ -46,10 +49,13 @@
                                     </p>
                                 </div>
                             </div>
-                        @endforeach
+                        @empty
+                            <p class="text-center text-muted">Aucun sujet disponible.</p>
+                        @endforelse
 
+                        <!-- Pagination -->
                         <div class="d-flex justify-content-center mt-4">
-{{--                            {{ $subjects->links() }}--}}
+                            {{-- {{ $subjects->links() }} --}}
                             links
                         </div>
                     </div>

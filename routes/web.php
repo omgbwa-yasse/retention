@@ -81,6 +81,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/approved', [CommitteeController::class, 'approved'])->name('committee.approved');
     });
 
+    Route::resource('committee', CommitteeController::class);
     Route::resource('subject', ForumSubjectController::class);
     Route::resource('subject.post', ForumPostController::class);
     Route::resource('chat', ForumChatController::class);
