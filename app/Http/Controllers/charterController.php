@@ -1,6 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ClassesExport;
 use App\Models\Classification;
 use App\Models\Country;
 use Illuminate\Http\Request;
@@ -21,5 +24,34 @@ class charterController extends Controller
             ->get();
 
         return view('charter.index', compact('country', 'domaines'));
+    }
+
+    public function exportExcel($domaineId)
+    {
+        $domaine = Classification::with('childrenRecursive',
+            'rules.actives.trigger',
+            'rules.duas.trigger',
+            'rules.duls.trigger',
+            'rules.articles',
+            'typologies')
+            ->find($domaineId);
+
+        return Excel::download(new ClassesExport($domaine), 'domaine.xlsx');
+    }
+
+
+
+    public function printPdf($domaineId)
+    {
+        $domaine = Classification::with('childrenRecursive',
+            'rules.actives.trigger',
+            'rules.duas.trigger',
+            'rules.duls.trigger',
+            'rules.articles',
+            'typologies')
+            ->find($domaineId);
+
+        $pdf = PDF::loadView('charter.pdf', compact('domaine'));
+        return $pdf->download('domaine.pdf');
     }
 }

@@ -75,6 +75,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/rule/{rule}/classification/{classification}/edit', [RuleClassificationController::class, 'edit'])->name('rule.classification.edit');
     Route::delete('/rule/{rule}/classification/{classification}', [RuleClassificationController::class, 'destroy'])->name('rule.classification.destroy');
 
+
+
+    Route::get('/charter', [charterController::class, 'index'])->name('charter.index');
+    Route::get('/charter/print/{domaineId}', [charterController::class, 'printPdf'])->name('charter.print');
+    Route::get('/charter/export/{domaineId}', [charterController::class, 'exportExcel'])->name('charter.export');
+
+
+
     Route::resource('user', UserController::class);
     Route::get('user/{id}', [UserController::class, 'show'])->name('user.show');
 

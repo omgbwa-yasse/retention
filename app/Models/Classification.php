@@ -64,6 +64,9 @@ class Classification extends Model
         return $this->belongsTo(user::class, 'user_id');
     }
 
-
+    public function subjects()
+    {
+        return $this->belongsToMany(ForumSubject::class, 'forum_subject_classification', 'classification_id', 'subject_id');
+    }
 
 }

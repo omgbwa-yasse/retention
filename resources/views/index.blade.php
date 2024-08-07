@@ -27,11 +27,14 @@
     <div class="container-fluid">@include('menuTop')
 
         <div class="row">
+            @guest
+            @else
             <div class="col-2">
                 @include('menuAside')
             </div>
+
             <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <br>
+                <br>@endguest
                 @yield('content')
 
             </div>

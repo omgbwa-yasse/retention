@@ -1,3 +1,1 @@
-<footer>
-    <p>Ceci est le footer de votre application Laravel.</p>
-</footer>
+<footer style="background-color: #f8f9fa; padding: 20px; text-align: center; font-family: Arial, sans-serif;"> <p style="font-size: 14px; color: #333; margin: 0;"> This is the footer of your Laravel application. </p> <p style="font-size: 12px; color: #666; margin-top: 10px;"> &copy; 2022 Your Company. All rights reserved. </p> </footer>
