@@ -14,21 +14,14 @@ class BasketController extends Controller
     public function index()
     {
 
-        $basketRules = Basket::with('type')
-            ->whereHas('type', function ($query) { $query->where('name', 'rule');  })
-            ->where('user_id', '=', Auth::user()->getAuthIdentifier())
+        $basketRules = Basket::all();
+
+        $basketActivities = Basket::whereHas('type', function ($query) { $query->where('name', 'activity'); })
             ->get();
 
-        $basketActivities = Basket::with('type')
-            ->whereHas('type', function ($query) { $query->where('name', 'activity'); })
-            ->where('user_id', '=', Auth::user()->getAuthIdentifier())
+        $basketReference = Basket::whereHas('type', function ($query) { $query->where('name', 'reference'); })
             ->get();
-
-        $basketReference = Basket::with('type')
-            ->whereHas('type', function ($query) { $query->where('name', 'reference'); })
-            ->where('user_id', '=', Auth::user()->getAuthIdentifier())
-            ->get();
-
+        //dd($basketRules, $basketActivities, $basketReference);
         return view('basket.index', compact('basketReference','basketActivities','basketRules'));
     }
 
