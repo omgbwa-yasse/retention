@@ -84,15 +84,18 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::resource('user', UserController::class);
+    Route::get('/committee/project', [CommitteeController::class, 'project'])->name('committee.project');
+    Route::get('/committee/examining', [CommitteeController::class, 'examining'])->name('committee.examining');
+    Route::get('/committee/approved', [CommitteeController::class, 'approved'])->name('committee.approved');
     Route::get('user/{id}', [UserController::class, 'show'])->name('user.show');
 
 
-
-    Route::prefix('committee')->group(function(){
-        Route::get('/project', [CommitteeController::class, 'project'])->name('committee.project');
-        Route::get('/examining', [CommitteeController::class, 'examining'])->name('committee.examining');
-        Route::get('/approved', [CommitteeController::class, 'approved'])->name('committee.approved');
-    });
+//
+//    Route::prefix('committee')->group(function(){
+//        Route::get('/project', [CommitteeController::class, 'index'])->name('committee.index');
+//        Route::get('/examining', [CommitteeController::class, 'examining'])->name('committee.examining');
+//        Route::get('/approved', [CommitteeController::class, 'approved'])->name('committee.approved');
+//    });
 
     Route::resource('committee', CommitteeController::class);
     Route::resource('subject', ForumSubjectController::class);

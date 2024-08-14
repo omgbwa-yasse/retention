@@ -13,16 +13,11 @@ class BasketController extends Controller
 {
     public function index()
     {
+        // Récupérer tous les paniers avec leurs références, règles et classifications associées
+        $baskets = Basket::with('references', 'rules', 'classes')->get();
 
-        $basketRules = Basket::all();
-
-        $basketActivities = Basket::whereHas('type', function ($query) { $query->where('name', 'activity'); })
-            ->get();
-
-        $basketReference = Basket::whereHas('type', function ($query) { $query->where('name', 'reference'); })
-            ->get();
-        //dd($basketRules, $basketActivities, $basketReference);
-        return view('basket.index', compact('basketReference','basketActivities','basketRules'));
+        // Passer les données à la vue
+        return view('basket.index', compact('baskets'));
     }
 
 

@@ -88,7 +88,7 @@
                                         class="bi bi-shield-check" ></i> Contrôle</a>
                                 <div class="collapse" id="controle">
                                     <ul class="list-unstyled pl-3">
-                                        <li><a href="{{ route('committee.project') }}" class="text-dark"><i class="bi bi-check-circle"></i> Projet de règles</a></li>
+                                        <li><a href="{{ route('committee.index') }}" class="text-dark"><i class="bi bi-check-circle"></i> Projet de règles</a></li>
                                         <li><a href="{{ route('committee.examining') }}" class="text-dark"><i class="bi bi-check-circle"></i> Règles en examen</a></li>
                                         <li><a href="{{ route('committee.approved') }}" class="text-dark"><i class="bi bi-hourglass-split"></i> Règles approuvées</a></li>
                                     </ul>
