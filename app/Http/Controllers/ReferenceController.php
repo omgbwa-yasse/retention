@@ -42,21 +42,26 @@ class ReferenceController extends Controller
 
     public function addToBasket(Request $request)
     {
-//        dd($request->all());
+        // Obtenez l'ID de l'utilisateur actuellement connecté
+        $userId = auth()->user()->id;
+
+        // Obtenez les autres paramètres de la requête
         $referenceId = $request->input('reference_id');
         $basketId = $request->input('basket_id');
+
+        // Trouvez la référence et le panier
         $reference = Reference::findOrFail($referenceId);
         $basket = Basket::findOrFail($basketId);
 
         // Vérifiez si l'élément existe déjà dans le panier
         if (!$basket->references()->where('reference_id', $reference->id)->exists()) {
-
-            $basket->references()->attach($reference->id);
+            // Attachez la référence au panier avec l'ID de l'utilisateur
+            $basket->references()->attach($reference->id, ['user_id' => $userId]);
         }
 
-        return redirect()->route('reference.referenceIndex')->with('success', 'Référence ajoutée au panier avec succès.');
+        // Redirigez avec un message de succès
+        return redirect()->route('reference.index')->with('success', 'Référence ajoutée au panier avec succès.');
     }
-
 
     public function show(Reference $reference)
     {
@@ -85,7 +90,7 @@ class ReferenceController extends Controller
 
         $validatedData['user_id'] = Auth::user()->id;
         $Reference = Reference::create($validatedData);
-        return redirect()->route('reference.referenceIndex')->with('success', 'Référence créée avec succès');
+        return redirect()->route('reference.index')->with('success', 'Référence créée avec succès');
     }
 
 

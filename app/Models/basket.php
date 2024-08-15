@@ -28,7 +28,7 @@ class basket extends Model
 
     public function references()
     {
-        return $this->belongsToMany(Reference::class, 'basket_reference', 'basket_id', 'reference_id');
+        return $this->belongsToMany(Reference::class, 'basket_reference', 'basket_id', 'reference_id', 'user_id');
     }
     public function type()
     {

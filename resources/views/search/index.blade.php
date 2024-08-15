@@ -53,7 +53,7 @@
                         <td>{{ $rule->code }}</td>
                         <td>{{ $rule->name }}</td>
                         <td>{{ $rule->description }}</td>
-                        <td>{{ $rule->status->name }}</td>
+{{--                        <td>{{ $rule->status->name }}</td>--}}
 {{--                        <td>{{ $rule->country->name }}</td>--}}
                         "pays"
                         <td>

@@ -1,5 +1,30 @@
 @extends('index')
-
+<style>
+    .table th {
+        font-weight: 600;
+    }
+    .table td {
+        vertical-align: middle;
+    }
+    .btn-group .btn {
+        padding: .25rem .5rem;
+    }
+    .card {
+        border-radius: 10px;
+    }
+    .card-body {
+        padding: 1.5rem;
+    }
+    .input-group .form-control {
+        border-radius: 5px;
+    }
+    .input-group .btn {
+        border-radius: 5px;
+    }
+    .alert {
+        border-radius: 10px;
+    }
+</style>
 @section('content')
     <div class="container my-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -101,30 +126,5 @@
 @endsection
 
 @push('styles')
-    <style>
-        .table th {
-            font-weight: 600;
-        }
-        .table td {
-            vertical-align: middle;
-        }
-        .btn-group .btn {
-            padding: .25rem .5rem;
-        }
-        .card {
-            border-radius: 10px;
-        }
-        .card-body {
-            padding: 1.5rem;
-        }
-        .input-group .form-control {
-            border-radius: 5px;
-        }
-        .input-group .btn {
-            border-radius: 5px;
-        }
-        .alert {
-            border-radius: 10px;
-        }
-    </style>
+
 @endpush
