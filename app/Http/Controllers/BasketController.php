@@ -19,7 +19,24 @@ class BasketController extends Controller
         // Passer les données à la vue
         return view('basket.index', compact('baskets'));
     }
+    public function addToBasket(Request $request, Reference $reference)
+    {
+        $basketId = $request->input('basket_id');
+        $basket = Basket::findOrFail($basketId);
 
+        // Vérifiez si l'élément existe déjà dans le panier
+        if (!$basket->references()->where('reference_id', $reference->id)->exists()) {
+            $basket->references()->attach($reference->id);
+        }
+
+        return redirect()->route('reference.index')->with('success', 'Référence ajoutée au panier avec succès.');
+    }
+
+    public function showBasket(Basket $basket)
+    {
+        $references = $basket->references;
+        return view('basket.show', compact('basket', 'references'));
+    }
 
 
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Articles;
+use App\Models\basket;
 use Illuminate\Http\Request;
 use App\Models\Reference;
 use App\Models\Country;
@@ -23,6 +24,7 @@ class ReferenceController extends Controller
 //
 //        return view('reference.referenceIndex', compact('references'));
 //    }
+
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -31,11 +33,29 @@ class ReferenceController extends Controller
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
-            })->paginate(150);;
+            })->paginate(150);
 
-        return view('reference.referenceIndex', compact('references'));
+        $baskets = Basket::all();
+
+        return view('reference.referenceIndex', compact('references', 'baskets'));
     }
 
+    public function addToBasket(Request $request)
+    {
+//        dd($request->all());
+        $referenceId = $request->input('reference_id');
+        $basketId = $request->input('basket_id');
+        $reference = Reference::findOrFail($referenceId);
+        $basket = Basket::findOrFail($basketId);
+
+        // Vérifiez si l'élément existe déjà dans le panier
+        if (!$basket->references()->where('reference_id', $reference->id)->exists()) {
+
+            $basket->references()->attach($reference->id);
+        }
+
+        return redirect()->route('reference.referenceIndex')->with('success', 'Référence ajoutée au panier avec succès.');
+    }
 
 
     public function show(Reference $reference)
@@ -65,7 +85,7 @@ class ReferenceController extends Controller
 
         $validatedData['user_id'] = Auth::user()->id;
         $Reference = Reference::create($validatedData);
-        return redirect()->route('reference.index')->with('success', 'Référence créée avec succès');
+        return redirect()->route('reference.referenceIndex')->with('success', 'Référence créée avec succès');
     }
 
 
@@ -125,7 +145,7 @@ class ReferenceController extends Controller
             }
         }
 
-        return redirect()->route('reference.index')->with('success', 'La référence a été mise à jour avec succès.');
+        return redirect()->route('reference.referenceIndex')->with('success', 'La référence a été mise à jour avec succès.');
     }
 
 
@@ -149,12 +169,12 @@ class ReferenceController extends Controller
             $error = rtrim($error, '. ');
             $error .= '.';
 
-            return redirect()->route('reference.index')->with('error', $error);
+            return redirect()->route('reference.referenceIndex')->with('error', $error);
         }
 
         $reference->delete();
 
-        return redirect()->route('reference.index')->with('success', 'La référence a été supprimée avec succès.');
+        return redirect()->route('reference.referenceIndex')->with('success', 'La référence a été supprimée avec succès.');
     }
 
 

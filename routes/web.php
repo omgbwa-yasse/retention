@@ -111,6 +111,8 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/subjects/{subject}/posts/{post}', [ForumSubjectController::class, 'updatePost'])->name('subject.post.updatePost');
     Route::get('/subject/{subject}/post/{post}', [ForumSubjectController::class, 'showPost'])->name('subject.post.showPost');
 // setting
+    Route::get('/basket/{basket}', [ReferenceController::class, 'showBasket'])->name('basket.show');
+    Route::post('/reference/{reference}/add-to-basket', [ReferenceController::class, 'addToBasket'])->name('reference.addToBasket');
 
     Route::resource('country', CountryController::class);
     Route::post('typology_categories', [TypologyCategoryController::class, 'store'])->name('typology_categories.store');

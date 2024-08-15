@@ -11,9 +11,9 @@
                         <a href="{{ route('reference.create') }}" class="btn btn-primary me-2">
                             <i class="fas fa-plus"></i> Ajouter une référence
                         </a>
-                        <a href="#" class="btn btn-danger me-2">
+                        <button type="button" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#viewBasketModal">
                             <i class="fas fa-shopping-cart"></i> Panier
-                        </a>
+                        </button>
                         <a href="#" class="btn btn-secondary">
                             <i class="fas fa-print"></i> Imprimer
                         </a>
@@ -48,12 +48,17 @@
                         <div class="list-group-item list-group-item-action">
                             <div class="d-flex w-100 justify-content-between align-items-center">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="reference-{{ $reference->id }}">
+                                    <input class="form-check-input" type="checkbox" value="{{ $reference->id }}" id="reference-{{ $reference->id }}">
                                     <label class="form-check-label" for="reference-{{ $reference->id }}">
                                         <h5 class="mb-1 fw-bold">{{ $reference->name }}</h5>
                                     </label>
                                 </div>
-                                <a href="{{ route('reference.show', $reference->id) }}" class="btn btn-sm btn-outline-primary">Voir plus</a>
+                                <div>
+                                    <a href="{{ route('reference.show', $reference->id) }}" class="btn btn-sm btn-outline-primary me-2">Voir plus</a>
+                                    <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addToBasketModal" data-reference-id="{{ $reference->id }}">
+                                        Ajouter au panier
+                                    </button>
+                                </div>
                             </div>
                             <p class="mb-1">{{ $reference->description }}</p>
                             <small class="text-muted">
@@ -77,6 +82,65 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal pour ajouter au panier -->
+    <div class="modal fade" id="addToBasketModal" tabindex="-1" aria-labelledby="addToBasketModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addToBasketModalLabel">Ajouter au panier</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('reference.addToBasket' , $reference->id) }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <input  name="reference_id" id="reference_id" value={{$reference->id}} >
+                        <div class="mb-3">
+                            <label for="basket_id" class="form-label">Sélectionner un panier</label>
+                            <select class="form-select" name="basket_id" id="basket_id" required>
+                                @foreach ($baskets as $basket)
+                                    <option value="{{ $basket->id }}">{{ $basket->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pour consulter le panier -->
+    <div class="modal fade" id="viewBasketModal" tabindex="-1" aria-labelledby="viewBasketModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewBasketModalLabel">Consulter le panier</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group">
+                        @foreach ($baskets as $basket)
+                            <li class="list-group-item">
+                                <h5>{{ $basket->name }}</h5>
+                                <ul>
+                                    @foreach ($basket->references as $reference)
+                                        <li>{{ $reference->name }}</li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('styles')
@@ -89,4 +153,18 @@
             color: #6c757d;
         }
     </style>
+@endpush
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var addToBasketModal = document.getElementById('addToBasketModal');
+            addToBasketModal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var referenceId = button.getAttribute('data-reference-id');
+                var modalBodyInput = addToBasketModal.querySelector('#reference_id');
+                modalBodyInput.value = referenceId;
+            });
+        });
+    </script>
 @endpush
