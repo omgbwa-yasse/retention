@@ -31,15 +31,15 @@ class CommitteeController extends Controller
     {
         $rules = Rule::with(['actives', 'duas', 'duls', 'countries', 'articles', 'classifications', 'baskets', 'status'])
             ->where('status_id', '=', 2)
-            ->get();
+            ->paginate(10); // Use paginate instead of get
+
         return view('rule.ruleIndex', compact('rules'));
     }
-
     public function approved()
     {
         $rules = Rule::with(['actives', 'duas', 'duls', 'countries', 'articles', 'classifications', 'baskets', 'status'])
             ->where('status_id', '=', 3)
-            ->get();
+            ->paginate(10); // Use paginate instead of get
         return view('rule.ruleIndex', compact('rules'));
     }
 

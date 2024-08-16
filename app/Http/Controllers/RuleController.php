@@ -39,7 +39,6 @@ class RuleController extends Controller
 
         return view('rule.ruleIndex', compact('rules'));
     }
-
     // Affiche le formulaire de création d'un élément
     public function create()
     {
