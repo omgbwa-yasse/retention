@@ -64,7 +64,7 @@ class ArchiveSeeder extends Seeder
 
         // Country (Central African countries)
         DB::table('countries')->insert([
-            ['abbr' => 'CAM', 'name' => 'Cameroun'],
+            ['abbr' => 'CMR', 'name' => 'Cameroun'],
             ['abbr' => 'RCA', 'name' => 'République centrafricaine'],
             ['abbr' => 'TCH', 'name' => 'Tchad'],
             ['abbr' => 'CON', 'name' => 'Congo'],
