@@ -10,6 +10,7 @@
     .card {
         border: none;
         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        transition: transform 1s;
         border-radius: 0.5rem;
     }
     .card-header {
@@ -19,6 +20,9 @@
     }
     .card-body {
         padding: 1.5rem;
+    }
+    .card:hover {
+        transform: translateY(-5px); /* Effet de survol */
     }
     .table th {
         font-weight: 600;
@@ -55,16 +59,34 @@
         color: #0056b3;
     }
 </style>
+<script>
+    function toggleDescription(activityId) {
+        var descriptionElement = document.getElementById('description-' + activityId);
+        var fullDescriptionElement = document.getElementById('full-description-' + activityId);
+        var seeMoreElement = document.getElementById('see-more-' + activityId);
+        var seeLessElement = document.getElementById('see-less-' + activityId);
+
+        if (fullDescriptionElement.style.display === 'none') {
+            fullDescriptionElement.style.display = 'inline';
+            seeMoreElement.style.display = 'none';
+            seeLessElement.style.display = 'inline';
+        } else {
+            fullDescriptionElement.style.display = 'none';
+            seeMoreElement.style.display = 'inline';
+            seeLessElement.style.display = 'none';
+        }
+    }
+</script>
 
 @section('content')
     <div class="container my-5">
         <div class="row mb-4">
             <div class="col">
-                <h1 class="display-4 text-primary"><i class="fas fa-tasks me-3"></i>Regle </h1>
+                <h1 class="display-4 text-primary"><i class="fas fa-tasks me-3"></i>Règles</h1>
             </div>
             <div class="col-auto">
                 <a href="{{ route('rule.create') }}" class="btn btn-primary btn-lg me-2">
-                    <i class="fas fa-plus-circle me-2"></i>Nouvelle activité
+                    <i class="fas fa-plus-circle me-2"></i>Nouvelle règle
                 </a>
                 <a href="{{ route('rule.export') }}" class="btn btn-success btn-lg">
                     <i class="fas fa-file-export me-2"></i>Exporter en PDF
@@ -76,7 +98,7 @@
             <div class="card-body">
                 <form action="{{ route('rule.index') }}" method="GET">
                     <div class="input-group input-group-lg">
-                        <input type="text" name="search" class="form-control" placeholder="Rechercher une activité..." value="{{ request('search') }}">
+                        <input type="text" name="search" class="form-control" placeholder="Rechercher une règle..." value="{{ request('search') }}">
                         <button class="btn btn-outline-primary" type="submit">
                             <i class="fas fa-search me-2"></i>Rechercher
                         </button>
@@ -99,60 +121,52 @@
             </div>
         @endif
 
-        <div class="card shadow">
-            <div class="card-header">
-                <h3 class="card-title mb-0">Liste des activités</h3>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th scope="col">Cote</th>
-                            <th scope="col">Titre</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Parent</th>
-                            <th scope="col">Sous-classes</th>
-                            <th scope="col">Pays</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @forelse ($rules as $rule)
-                            <tr>
-                                <td class="fw-bold">{{ $rule->code }}</td>
-                                <td>{{ $rule->name }}</td>
-                                <td>{{ Str::limit($rule->description, 50) }}</td>
-                                <td>{{ $rule->parent ? $rule->parent->name : 'N/A' }}</td>
-                                <td><span class="badge bg-info rounded-pill">{{ $rule->children ? $rule->children->count() : '0' }}</span></td>
-                                <td>{{ $rule->countries->name ?? 'N/A' }}</td>
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <a href="{{ route('rule.show', $rule->id) }}" class="btn btn-outline-info" title="Voir">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                        <a href="{{ route('rule.edit', $rule->id) }}" class="btn btn-outline-primary" title="Editer">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <form action="{{ route('rule.destroy', $rule->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-outline-danger" title="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette activité ?')">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="text-center text-muted">Aucune activité trouvée</td>
-                            </tr>
-                        @endforelse
-                        </tbody>
-                    </table>
+        <div class="row">
+            @forelse ($rules as $rule)
+                <div class=" mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title "><b>{{ $rule->code }}</b>- {{ $rule->name }}</h5>
+                            <p class="card-text" id="description-{{ $rule->id }}">
+                                @if (strlen($rule->description) > 200)
+                                    {{ substr($rule->description, 0, 200) }}
+                                    <a href="#" class="text-primary" id="see-more-{{ $rule->id }}" onclick="toggleDescription({{ $rule->id }}); return false;">Voir plus</a>
+                                    <span id="full-description-{{ $rule->id }}" style="display: none;">{{ substr($rule->description, 200) }}
+                                        <a href="#" class="text-primary" id="see-less-{{ $rule->id }}" onclick="toggleDescription({{ $rule->id }}); return false;">Voir moins</a>
+                                    </span>
+                                @else
+                                    {{ $rule->description }}
+                                @endif
+                            </p>
+                            <p class="card-text"><strong>Pays:</strong> {{ $rule->country->name ?? 'N/A' }}
+                      <strong>DULs:</strong> <span class="badge bg-primary rounded-pill">{{ $rule->duls->count() }}</span>
+                                <strong>DUAs:</strong> <span class="badge bg-primary rounded-pill">{{ $rule->duas->count() }}</span>
+                                <strong>Actives:</strong> <span class="badge bg-primary rounded-pill">{{ $rule->actives->count() }}</span></p>
+                            <div class="btn" role="group">
+                                <a href="{{ route('rule.show', $rule->id) }}" class="btn btn-outline-info" title="Voir">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{{ route('rule.edit', $rule->id) }}" class="btn btn-outline-primary" title="Editer">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{{ route('rule.destroy', $rule->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-outline-danger" title="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette règle ?')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            @empty
+                <div class="col-12">
+                    <div class="alert alert-info" role="alert">
+                        Aucune règle trouvée.
+                    </div>
+                </div>
+            @endforelse
         </div>
 
         <div class="mt-4">

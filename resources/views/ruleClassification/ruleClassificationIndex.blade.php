@@ -31,14 +31,13 @@
                             </td>
                             <td>
                                 @foreach($rule->classifications as $classification)
-{{--                                    <a href="{{ route('rule.classification.edit', ['rule' => $rule->id, 'classification' => $classification->id]) }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Editer</a>--}}
-
-                                @endforeach
+                                    {{-- <a href="{{ route('rule.classification.edit', ['rule' => $rule->id, 'classification' => $classification->id]) }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Editer</a> --}}
                                     <form action="{{ route('rule.classification.destroy', ['rule' => $rule->id, 'classification' => $classification->id]) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Supprimer</button>
-                                </form>
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Supprimer</button>
+                                    </form>
+                                @endforeach
                             </td>
                         </tr>
                     @endforeach

@@ -1,17 +1,18 @@
 <?php
-
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\ForumPost;
 
 class ForumSubject extends Model
 {
     use HasFactory;
+
     protected $table = 'forum_subjects';
     protected $fillable = [
         'name',
@@ -24,22 +25,18 @@ class ForumSubject extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function amswers(): HasMany
+    public function posts(): HasMany
     {
-        return $this->hasMany(ForumPost::class);
+        return $this->hasMany(ForumPost::class, 'subject_id');
     }
-    public function posts()
-    {
-        return $this->hasMany(ForumPost::class , 'subject_id');
-    }
-    public function classes()
+
+    public function classes(): BelongsToMany
     {
         return $this->belongsToMany(Classification::class, 'forum_subject_classification', 'subject_id', 'classification_id');
     }
-    // ForumPost model
-//    public function reactions()
-//    {
-//        return $this->hasMany(Reaction::class);
-//    }
 
+    public function latestPost(): HasOne
+    {
+        return $this->hasOne(ForumPost::class, 'subject_id')->latest();
+    }
 }

@@ -11,12 +11,11 @@ class ForumPostController extends Controller
 {
     public function index()
     {
+        $answers = ForumPost::all();
         $subjects = ForumSubject::with('latestPost')->get(); // Eager load latestPost
-        return view('subject.post.index', ['subjects' => $subjects]);
-//        $posts = ForumPost::with(['user', 'subject', 'parent'])->latest()->get(); // Trier par date de création (du plus récent au plus ancien)
-//        return view('subject.post.index', compact('posts'));
-    }
 
+        return view('subject.post.index', compact('subjects', 'answers'));
+    }
 
 
     public function show(ForumPost $post)
@@ -39,7 +38,7 @@ class ForumPostController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'content' => 'required|string',
+            'desciption' => 'required|string',
         ]);
 
         $post = new ForumPost($validatedData);

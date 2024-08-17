@@ -9,6 +9,7 @@ use App\Http\Controllers\CountryController;
 use App\Http\Controllers\ForumReactionController;
 use App\Http\Controllers\ReferenceCategoryController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\TriggerController;
 use App\Http\Controllers\TypologyCategoryController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -75,6 +76,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/rule/{rule}/classification/{classification}/edit', [RuleClassificationController::class, 'edit'])->name('rule.classification.edit');
     Route::delete('/rule/{rule}/classification/{classification}', [RuleClassificationController::class, 'destroy'])->name('rule.classification.destroy');
 
+    Route::post('/reference/add-to-basket', [ReferenceController::class, 'addToBasket'])->name('reference.addToBasket');
 
 
     Route::get('/charter', [charterController::class, 'index'])->name('charter.index');
@@ -112,7 +114,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/subject/{subject}/post/{post}', [ForumSubjectController::class, 'showPost'])->name('subject.post.showPost');
 // setting
     Route::get('/basket/{basket}', [ReferenceController::class, 'showBasket'])->name('basket.show');
-    Route::post('/reference/{reference}/add-to-basket', [ReferenceController::class, 'addToBasket'])->name('reference.addToBasket');
 
     Route::resource('country', CountryController::class);
     Route::post('typology_categories', [TypologyCategoryController::class, 'store'])->name('typology_categories.store');
@@ -127,7 +128,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/search/index', [SearchController::class, 'search'])->name('search');
     Route::get('/search/advanced', [SearchController::class, 'advancedSearch'])->name('search.advanced');
 //    Route::get('/activity/exportPdf', [ActivityController::class, 'exportPdf'])->name('activity.exportPdf');
-
+    Route::resource('triggers', TriggerController::class);
 
 });
 

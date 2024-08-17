@@ -7,7 +7,7 @@
             <th rowspan="2" class="text-center align-middle bg-primary text-white">Intitulé</th>
             <th rowspan="2" class="text-center align-middle bg-primary text-white">Typologies</th>
             <th colspan="2" class="text-center align-middle bg-success text-white">Les Bureaux</th>
-            <th colspan="2" class="text-center align-middle bg-warning text-dark">Semi-active</th>
+            <th colspan="2" class="text-center align-middle bg-warning text-dark">Salle de préarchivage</th>
             <th colspan="2" class="text-center align-middle bg-danger text-white">Archives Historique</th>
             <th rowspan="2" class="text-center align-middle bg-info text-white">Références</th>
         </tr>

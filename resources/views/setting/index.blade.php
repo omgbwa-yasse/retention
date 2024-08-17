@@ -23,6 +23,10 @@
                                     {{ __('Pays') }}
                                     <i class="fas fa-chevron-right"></i>
                                 </a>
+                                <a href="{{ route('triggers.index') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                    {{ __('Declencheur') }}
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
                             </div>
                         @else
                             <div class="alert alert-info" role="alert">

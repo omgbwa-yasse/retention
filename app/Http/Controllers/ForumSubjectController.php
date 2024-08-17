@@ -14,11 +14,18 @@ class ForumSubjectController extends Controller
         $subjects = ForumSubject::all();
         return view('subject.index', compact('subjects'));
     }
-    public function create()
+    public function create(Request $request)
     {
-        $classes = Classification::all()->where('country_id','=',Auth()->user()->getAuthIdentifier());
-        return view('subject.create', compact('classes'));
+        $classId = $request->input('class_id');
+        $user = auth()->user(); // Get the authenticated user
+        $countryId = $user->country_id; // Assuming the user model has a country_id attribute
+
+        // Fetch classifications where the country_id matches the authenticated user's country_id
+        $classes = Classification::where('country_id', $countryId)->get();
+
+        return view('subject.create', compact('classes', 'classId'));
     }
+
 
 
     public function store(Request $request)

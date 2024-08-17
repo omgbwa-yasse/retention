@@ -1,13 +1,22 @@
 <?php
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User; // Assurez-vous d'importer le modèle User
+
 class ArchiveSeeder extends Seeder
 {
     public function run(): void
     {
+        // Créer un utilisateur pour les références
+        $user = User::factory()->create([
+            'gender' => 'Male', // Ajoutez le champ gender ici
+            'country_id' => 1, // Ajoutez le champ country_id ici
+        ]);
+
         // ReferenceCategory
         DB::table('reference_categories')->insert([
             ['name' => 'Documents administratifs', 'description' => 'Documents officiels produits par l\'administration publique'],
@@ -20,11 +29,11 @@ class ArchiveSeeder extends Seeder
 
         // TypologyCategory
         DB::table('typology_categories')->insert([
-            ['name' => 'Documents textuels', 'description' => 'Tout type de document principalement textuel'],
-            ['name' => 'Documents iconographiques', 'description' => 'Images, photographies, dessins'],
-            ['name' => 'Documents audiovisuels', 'description' => 'Enregistrements sonores et vidéos'],
-            ['name' => 'Documents numériques', 'description' => 'Documents nés numériques ou numérisés'],
-            ['name' => 'Objets', 'description' => 'Artefacts physiques d\'importance historique'],
+            ['name' => 'Documents textuels', 'description' => 'Tout type de document principalement textuel', 'user_id' => $user->id],
+            ['name' => 'Documents iconographiques', 'description' => 'Images, photographies, dessins', 'user_id' => $user->id],
+            ['name' => 'Documents audiovisuels', 'description' => 'Enregistrements sonores et vidéos', 'user_id' => $user->id],
+            ['name' => 'Documents numériques', 'description' => 'Documents nés numériques ou numérisés', 'user_id' => $user->id],
+            ['name' => 'Objets', 'description' => 'Artefacts physiques d\'importance historique', 'user_id' => $user->id],
         ]);
 
         // BasketType

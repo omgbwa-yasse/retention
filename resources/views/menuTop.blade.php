@@ -17,13 +17,13 @@
                     <a class="nav-link" href="#"><i class="fas fa-hand-holding-heart"></i> Nous soutenir</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('subject.index') }}("><i class="fas fa-blog"></i> Forum</a>
+                    <a class="nav-link" href="{{ route('subject.index') }}"><i class="fas fa-blog"></i> Forum</a>
                 </li>
             </ul>
 
 
 
-            <form class="d-flex me-2 w-50" action="{{ route('search') }}" method="GET">
+            <form class="d-flex me-2 w-50" action="{{ route('search.advanced') }}" method="GET">
                 <div class="input-group">
                     <input class="form-control" type="search" name="query" placeholder="Règle, Classe, Durée" aria-label="Search">
                     <button class="btn btn-outline-light" type="submit"><i class="fas fa-search"></i></button>

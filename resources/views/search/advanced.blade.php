@@ -10,7 +10,7 @@
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <select class="form-select form-select-lg shadow-sm" id="type" name="type">
-                                <option value="">Sélectionnez un type</option>
+                                <option value="">Rechercher Partout</option>
                                 <option value="activity">Classification</option>
                                 <option value="reference">Référence</option>
                                 <option value="rule">Règle</option>
@@ -181,9 +181,9 @@
                                     <label for="basket_type" class="form-label">Type de panier</label>
                                     <select class="form-select form-select-lg" id="basket_type" name="basket_type">
                                         <option value="">Sélectionnez un type</option>
-{{--                                        @foreach ($basketTypes as $type)--}}
-{{--                                            <option value="{{ $type->id }}">{{ $type->name }}</option>--}}
-{{--                                        @endforeach--}}
+                                        {{--                                        @foreach ($basketTypes as $type)--}}
+                                        {{--                                            <option value="{{ $type->id }}">{{ $type->name }}</option>--}}
+                                        {{--                                        @endforeach--}}
                                     </select>
                                 </div>
                             </div>
@@ -199,19 +199,22 @@
 
         @if(isset($results))
             <div class="mt-5">
-                <h2 class="mb-4 text-primary fw-bold">Résultats de recherche pour : {{ ucfirst($type) }}</h2>
-                @if(count($results) == 0)
+                <h2 class="mb-4 text-primary fw-bold">Résultats de recherche</h2>
+                @if(empty($results))
                     <div class="alert alert-info shadow-sm">Aucun résultat trouvé.</div>
                 @else
-                    <div class="list-group shadow-sm">
-                        @foreach($results as $result)
-                            <div class="list-group-item list-group-item-action">
-                                <h5 class="mb-1 fw-bold">{{ $result->name }}</h5>
-                                <p class="mb-1 text-muted">{{ $result->description }}</p>
-                                <!-- Add more fields as needed -->
-                            </div>
-                        @endforeach
-                    </div>
+                    @foreach($results as $table => $items)
+                        <h3 class="mb-3 text-secondary fw-bold">{{ ucfirst($table) }}</h3>
+                        <div class="list-group shadow-sm">
+                            @foreach($items as $item)
+                                <div class="list-group-item list-group-item-action">
+                                    <h5 class="mb-1 fw-bold">{{ $item->name }}</h5>
+                                    <p class="mb-1 text-muted">{{ $item->description }}</p>
+                                    <!-- Add more fields as needed -->
+                                </div>
+                            @endforeach
+                        </div>
+                    @endforeach
                 @endif
             </div>
         @endif

@@ -38,7 +38,7 @@
 
                             <div class="mb-3">
                                 <label for="parent_id" class="form-label">Parent</label>
-                                <select name="parent_id" id="parent_id" class="form-select">
+                                <select name="parent_id" id="parent_id" class="form-select" required>
                                     <option value="">Sélectionner un parent</option>
                                     @foreach ($activities->groupBy('parent_id') as $parentId => $groupedActivities)
                                         <optgroup label="Parent ID: {{ $parentId }}">
