@@ -8,8 +8,8 @@
                 <div class="collapse show" id="recherche">
                     <ul class="list-unstyled pl-3">
                         <li><a href="{{ route('charter.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Tableau de gestion</a></li>
-                        <li><a href="{{ route('mission.index') }}" class="text-dark"><i  class="bi bi-list-check"></i> Domaines</a></li>
-                        <li><a href="{{ route('activity.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Activités</a></li>
+                        <li><a href="{{ route('mission.index') }}" class="text-dark"><i  class="bi bi-list-check"></i>Activités </a></li>
+                        <li><a href="{{ route('activity.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Domaines</a></li>
                         <li><a href="{{ route('rule.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Règles</a></li>
                         <li><a href="{{ route('typology.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Typologies</a></li>
                         <li><a href="{{ route('reference.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Références</a></li>
@@ -67,17 +67,17 @@
                     </ul>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link bg-dark text-white" data-toggle="collapse" href="#forum" aria-expanded="true"><i
-                        class="bi bi-chat-dots"></i> Forum</a>
-                <div class="collapse show" id="forum">
-                    <ul class="list-unstyled pl-3">
-                        <li><a href="{{ route('subject.index') }}" class="text-dark"><i class="bi bi-chat-square-dots"></i> Nouveautés</a></li>
-                        <li><a href="" class="text-dark"><i class="bi bi-chat-square-dots"></i> Sujets épinglés</a></li>
-                        <li><a href="{{ route('chat.index') }}" class="text-dark"><i class="bi bi-chat-square-dots"></i> En ligne</a></li>
-                    </ul>
-                </div>
-            </li>
+{{--            <li class="nav-item">--}}
+{{--                <a class="nav-link bg-dark text-white" data-toggle="collapse" href="#forum" aria-expanded="true"><i--}}
+{{--                        class="bi bi-chat-dots"></i> Forum</a>--}}
+{{--                <div class="collapse show" id="forum">--}}
+{{--                    <ul class="list-unstyled pl-3">--}}
+{{--                        <li><a href="{{ route('subject.index') }}" class="text-dark"><i class="bi bi-chat-square-dots"></i> Nouveautés</a></li>--}}
+{{--                        <li><a href="" class="text-dark"><i class="bi bi-chat-square-dots"></i> Sujets épinglés</a></li>--}}
+{{--                        <li><a href="{{ route('chat.index') }}" class="text-dark"><i class="bi bi-chat-square-dots"></i> En ligne</a></li>--}}
+{{--                    </ul>--}}
+{{--                </div>--}}
+{{--            </li>--}}
         </ul>
     </aside>
 @endguest

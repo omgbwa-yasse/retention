@@ -4,12 +4,12 @@ namespace Database\Seeders;
 
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use ArchiveSeeder;
-use ChatTypeSeeder;
-use CommunicabilitySeeder;
-use ForumReactionTypeSeeder;
+use Database\Seeders\ArchiveSeeder;
+use Database\Seeders\ChatTypeSeeder;
+use Database\Seeders\CommunicabilitySeeder;
+use Database\Seeders\ForumReactionTypeSeeder;
 use Illuminate\Database\Seeder;
-use OrderSeeder;
+use Database\Seeders\OrderSeeder;
 
 class DatabaseSeeder extends Seeder
 {

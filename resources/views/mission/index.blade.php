@@ -3,19 +3,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
 <script >
     document.addEventListener('DOMContentLoaded', function() {
-        var sortables = document.querySelectorAll('.sortable');
-        sortables.forEach(function(sortable) {
-            new Sortable(sortable, {
-                group: 'nested',
-                animation: 150,
-                fallbackOnBody: true,
-                swapThreshold: 0.65,
-                onEnd: function(evt) {
-                    // Ici, vous pouvez ajouter une requête AJAX pour mettre à jour l'ordre dans la base de données
-                    console.log('Item moved', evt.oldIndex, evt.newIndex);
-                }
-            });
-        });
+        // var sortables = document.querySelectorAll('.sortable');
+        // sortables.forEach(function(sortable) {
+        //     new Sortable(sortable, {
+        //         group: 'nested',
+        //         animation: 150,
+        //         fallbackOnBody: true,
+        //         swapThreshold: 0.65,
+        //         onEnd: function(evt) {
+        //             // Ici, vous pouvez ajouter une requête AJAX pour mettre à jour l'ordre dans la base de données
+        //             console.log('Item moved', evt.oldIndex, evt.newIndex);
+        //         }
+        //     });
+        // });
 
         document.querySelectorAll('.toggle-children').forEach(function(toggle) {
             toggle.addEventListener('click', function() {
@@ -32,7 +32,7 @@
     <div class="container-fluid py-4">
         <div class="row mb-4">
             <div class="col-md-6">
-                <h1 class="h2 fw-bold">{{ __('Mission Hierarchy') }}</h1>
+                <h1 class="h2 fw-bold">{{ __('Plan de Classement') }}</h1>
             </div>
             <div class="col-md-6 text-md-end">
                 <a href="{{ route('mission.create') }}" class="btn btn-primary">
@@ -43,7 +43,7 @@
 
         <div class="card shadow-sm">
             <div class="card-body">
-                <h3 class="card-title mb-4">Mission Organigram</h3>
+                <h3 class="card-title mb-4">Organigram</h3>
                 <div class="mission-tree">
                     <ul class="list-unstyled sortable">
                         @foreach($items as $mission)

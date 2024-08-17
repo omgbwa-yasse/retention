@@ -72,8 +72,8 @@
                             <div class="list-group">
                                 @foreach($reference->links as $link)
                                     <div class="list-group-item">
-                                        <a href="{{ $link->link }}" class="text-decoration-none">{{ $link->name }}</a>
-                                        <p class="text-success mb-1">{{ $link->link }}</p>
+                                        <a href="http://{{ $link->link }}" class="text-decoration-none">{{ $link->name }}<p class="text-success mb-1">({{ $link->link }})</p></a>
+
                                         <a href="{{ route('reference.link.show', [$reference, $link]) }}" class="btn btn-sm btn-outline-secondary">Voir</a>
                                     </div>
                                 @endforeach

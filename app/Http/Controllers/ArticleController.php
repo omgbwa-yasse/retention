@@ -12,14 +12,14 @@ class ArticleController extends Controller
     public function index(Reference $reference)
     {
         $articles = $reference->articles()->get();
-        return view('articles.articleIndex', compact('reference', 'articles'));
+        return view('reference.articles.articleIndex', compact('reference', 'articles'));
     }
 
 
 
     public function create(Reference $reference)
     {
-        return view('articles.articleCreate', compact('reference'));
+        return view('reference.articles.articleCreate', compact('reference'));
     }
 
 

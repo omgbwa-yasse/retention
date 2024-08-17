@@ -17,7 +17,7 @@
                     <a class="nav-link" href="#"><i class="fas fa-hand-holding-heart"></i> Nous soutenir</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fas fa-blog"></i> Blog</a>
+                    <a class="nav-link" href="{{ route('subject.index') }}("><i class="fas fa-blog"></i> Forum</a>
                 </li>
             </ul>
 
@@ -109,17 +109,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link bg-dark text-white" data-toggle="collapse" href="#forum"><i
-                                        class="bi bi-chat-dots"></i> Forum</a>
-                                <div class="collapse" id="forum">
-                                    <ul class="list-unstyled pl-3">
-                                        <li><a href="{{ route('subject.index') }}" class="text-dark"><i class="bi bi-chat-square-dots"></i> Nouveautés</a></li>
-                                        <li><a href="" class="text-dark"><i class="bi bi-chat-square-dots"></i> Sujets épinglés</a></li>
-                                        <li><a href="{{ route('chat.index') }}" class="text-dark"><i class="bi bi-chat-square-dots"></i> En ligne</a></li>
-                                    </ul>
-                                </div>
-                            </li>
+
                         </ul>
                     </div>
 
