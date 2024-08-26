@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Country;
 
 class Rule extends Model
 {
@@ -36,15 +35,14 @@ class Rule extends Model
         return $this->hasMany(Dul::class);
     }
 
-    public function countries()
+    public function country()
     {
-        return $this->belongsTo(country::class, 'country_id');
+        return $this->belongsTo(Country::class, 'country_id');
     }
-
 
     public function articles()
     {
-        return $this->belongsTo(Articles::class, 'rule_article', 'rule_id');
+        return $this->belongsToMany(Articles::class, 'dul_article', 'dul_id', 'article_id');
     }
 
     public function classifications()
@@ -52,23 +50,18 @@ class Rule extends Model
         return $this->belongsToMany(Classification::class, 'rule_classification', 'rule_id', 'classification_id');
     }
 
-    public function baskets()
-    {
-        return $this->belongsToMany(Basket::class, 'basket_rule', 'rule_id', 'basket_id');
-    }
+//    public function baskets()
+//    {
+//        return $this->belongsToMany(Basket::class, 'basket_rule', 'rule_id', 'basket_id');
+//    }
 
     public function status()
     {
         return $this->belongsTo(Status::class, 'status_id');
     }
+
     public function validator()
     {
         return $this->belongsTo(User::class, 'validated_by');
     }
-
-
-
-
 }
-
-

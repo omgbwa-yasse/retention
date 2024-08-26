@@ -30,11 +30,13 @@
                                 <select class="form-select @error('class_id') is-invalid @enderror" name="class_id" id="class_id">
                                     <option value="">Sélectionnez une classification</option>
                                     @foreach($classes as $classe)
-                                        <option value="{{ $classe->id }}" {{ old('class_id') == $classe->id ? 'selected' : '' }}>
+                                        <option value="{{ $classe->id }}" {{ (old('class_id', $classId) == $classe->id) ? 'selected' : '' }}>
                                             {{ $classe->code }} - {{ $classe->name }}
                                         </option>
                                     @endforeach
                                 </select>
+
+
                                 @error('class_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

@@ -25,12 +25,16 @@
                                     <td>{{ $rule->name }}</td>
                                     <td>
                                         @if ($rule->status_id == 1)
-                                            <span class="badge badge-danger">En attente</span>
+                                            <span class="badge badge-secondary">En attente</span>
                                         @elseif ($rule->status_id == 2)
                                             <span class="badge badge-primary">Acceptée</span>
                                         @elseif ($rule->status_id == 3)
-                                            <span class="badge badge-success">Rejeté</span>
+                                            <span class="badge badge-success">Valide</span>
+                                        @elseif ($rule->status_id == 3)
+                                                <span class="badge badge-danger">rejeté</span>
+
                                         @endif
+
                                     </td>
                                     <td>
                                         {{ $rule->validator ? $rule->validator->name . ', ' . $rule->validator->surname : 'Non validé' }}

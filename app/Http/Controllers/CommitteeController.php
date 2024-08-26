@@ -21,7 +21,7 @@ class CommitteeController extends Controller
     // Affiche la liste des éléments
     public function project()
     {
-        $rules = Rule::with(['actives', 'duas', 'duls', 'countries', 'articles', 'classifications', 'baskets', 'status'])
+        $rules = Rule::with(['actives', 'duas', 'duls', 'country', 'articles', 'classifications', 'status'])
             ->where('status_id', '=', 1)
             ->get();
         return view('rule.ruleIndex', compact('rules'));
@@ -29,15 +29,15 @@ class CommitteeController extends Controller
 
     public function examining()
     {
-        $rules = Rule::with(['actives', 'duas', 'duls', 'countries', 'articles', 'classifications', 'baskets', 'status'])
+        $rules = Rule::with(['actives', 'duas', 'duls', 'country', 'articles', 'classifications', 'status'])
             ->where('status_id', '=', 2)
             ->paginate(10); // Use paginate instead of get
 
-        return view('rule.ruleIndex', compact('rules'));
+        return view('validation.approve', compact('rules'));
     }
     public function approved()
     {
-        $rules = Rule::with(['actives', 'duas', 'duls', 'countries', 'articles', 'classifications', 'baskets', 'status'])
+        $rules = Rule::with(['actives', 'duas', 'duls', 'country', 'articles', 'classifications', 'status'])
             ->where('status_id', '=', 3)
             ->paginate(10); // Use paginate instead of get
         return view('rule.ruleIndex', compact('rules'));
@@ -58,6 +58,7 @@ class CommitteeController extends Controller
 
     public function update(Request $request, $id)
     {
+//        dd($request,$id);
         $rule = Rule::findOrFail($id);
         if ($rule->status_id == 1 && ($request->status_id == 2 || $request->status_id == 3)) {
             $rule->update([
@@ -65,10 +66,19 @@ class CommitteeController extends Controller
                 'validated_at' => now(),
                 'validated_by' => Auth::id()
             ]);
-        } else {
+        }
+        elseif ($rule->status_id == 2){
+            $rule->update([
+                'status_id' => $request->input('status_id'),
+                'validated_at' => now(),
+                'validated_by' => Auth::id()
+            ]);
+        }
+        else {
             abort(404);
         }
         return redirect()->route('committee.index')->with('success', 'Activité mise à jour avec succès.');
     }
+
 }
 

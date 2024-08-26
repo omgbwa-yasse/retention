@@ -16,11 +16,12 @@
                         <button class="btn btn-outline-success btn-sm" title="Exporter" onclick="window.location.href='{{ route('charter.export', $domaine->id) }}'">
                             <i class="bi bi-download me-1"></i> Exporter
                         </button>
-                        <button class="btn btn-outline-secondary btn-sm" title="Partager sur le forum">
+                        <button class="btn btn-outline-secondary btn-sm" title="Partager sur le forum" onclick="window.location.href='{{ route('subject.create', ['class_id' => $domaine->id]) }}'">
                             <i class="bi bi-share me-1"></i> Partager sur le forum
                         </button>
 
-                        <button class="btn btn-outline-info btn-sm" title="Commentaires">
+
+                        <button class="btn btn-outline-info btn-sm" title="Commentaires"  onclick="window.location.href='{{ route('subject.index') }}'">
                             <i class="bi bi-chat-dots me-1"></i> Commentaires <span class="badge bg-info text-white">{{ $domaine->subjects->count() }}</span>
                         </button>
 
