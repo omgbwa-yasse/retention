@@ -2,6 +2,7 @@
 
 
 Route::get('/', function () {
+
     return view('auth.login');
 });
 
@@ -38,6 +39,7 @@ use App\Http\Controllers\CommitteeController;
 use App\Http\Controllers\ForumSubjectController;
 use App\Http\Controllers\ForumChatController;
 use App\Http\Controllers\ChatController;
+Route::get('/reference/{reference}/generate-pdf', [ReferenceController::class, 'generatePdf'])->name('reference.generatePdf');
 Route::get('/activity/export', [ActivityController::class, 'export'])->name('activity.export');
 Route::get('/activity/pdf', [ActivityController::class, 'pdf'])->name('activity.pdf');
 Route::get('/rules/export', [RuleController::class, 'export'])->name('rule.export');

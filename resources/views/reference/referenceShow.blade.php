@@ -1,3 +1,5 @@
+<!-- resources/views/reference/referenceShow.blade.php -->
+
 @extends('index')
 
 @section('content')
@@ -99,7 +101,7 @@
                 <a href="#" class="btn btn-primary me-2">
                     <i class="fas fa-edit me-2"></i>Modifier
                 </a>
-                <a href="#" class="btn btn-secondary me-2">
+                <a href="{{ route('reference.generatePdf', $reference) }}" class="btn btn-secondary me-2">
                     <i class="fas fa-print me-2"></i>Imprimer
                 </a>
                 <a href="#" class="btn btn-info">

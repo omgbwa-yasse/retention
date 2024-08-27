@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Articles;
 use App\Models\basket;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\Reference;
 use App\Models\Country;
@@ -95,7 +96,12 @@ class ReferenceController extends Controller
 
 
 
-
+    public function generatePdf(Reference $reference)
+    {
+        $articles = $reference->articles;
+        $pdf = PDF::loadView('reference.reference_pdf', compact('reference', 'articles'));
+        return $pdf->download('reference.pdf');
+    }
     public function edit($id)
     {
         $references = Reference::findOrFail($id);
