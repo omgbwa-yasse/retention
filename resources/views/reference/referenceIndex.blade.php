@@ -183,9 +183,9 @@
                             <li class="list-group-item">
                                 <h5 class="mb-2">{{ $basket->name }}</h5>
                                 <ul class="list-unstyled">
-                                    @foreach ($basket->references as $reference)
-                                        <li class="mb-1"><i class="fas fa-book me-2"></i>{{ $reference->name }}</li>
-                                    @endforeach
+{{--                                    @foreach ($basket->references as $reference)--}}
+{{--                                        <li class="mb-1"><i class="fas fa-book me-2"></i>{{ $reference->name }}</li>--}}
+{{--                                    @endforeach--}}
                                 </ul>
                             </li>
                         @endforeach

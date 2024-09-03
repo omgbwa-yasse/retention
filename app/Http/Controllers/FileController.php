@@ -126,6 +126,25 @@ class FileController extends Controller
         return response()->download($filePath);
     }
 
+    public function preview(Reference $reference, string $name)
+    {
+        $referenceFile = ReferenceFile::where('reference_id', $reference->id)
+            ->where('name', $name)
+            ->first();
+
+        if ($referenceFile) {
+            $filePath = Storage::path($referenceFile->file_path);
+            $mimeType = Storage::mimeType($referenceFile->file_path);
+
+            return response()->file($filePath, [
+                'Content-Type' => $mimeType,
+                'Content-Disposition' => 'inline; filename="'.$referenceFile->name.'"'
+            ]);
+        }
+
+        return abort(404);
+    }
+
 
 
 }

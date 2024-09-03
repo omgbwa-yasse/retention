@@ -22,20 +22,16 @@
                 </div>
 
                 <div id="pdf-controls" class="mb-3 d-flex align-items-center" style="display: none;">
-                    <button id="prev-page" class="btn btn-outline-primary me-2">
-                        <i class="bi bi-chevron-left"></i> Previous
-                    </button>
+
                     <div class="input-group" style="width: auto;">
-                        <span class="input-group-text">Page</span>
-                        <input type="number" id="page-number" class="form-control" min="1" style="width: 70px;">
-                        <span class="input-group-text">of <span id="total-pages"></span></span>
+                        
                     </div>
-                    <button id="next-page" class="btn btn-outline-primary ms-2">
-                        Next <i class="bi bi-chevron-right"></i>
-                    </button>
+
                 </div>
 
-                <div id="pdf-container" class="border rounded" style="height: 600px; overflow: auto; display: none;"></div>
+                <div id="pdf-container" class="border rounded" style="height: 600px; overflow: auto; display: none;">
+                    <iframe id="pdf-iframe" src="" style="width: 100%; height: 100%; border: none;"></iframe>
+                </div>
                 <div id="preview-unavailable" class="alert alert-warning" role="alert" style="display: none;">
                     Aperçu non disponible
                 </div>
@@ -43,7 +39,6 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const filePath = '{{ $file->file_path }}';
@@ -54,8 +49,9 @@
                 return;
             }
 
-            const url = '{{ route('reference.file.download', [$reference, $file->name]) }}';
+            const url = '{{ route('reference.file.preview', [$reference, $file->name]) }}';
             const container = document.getElementById('pdf-container');
+            const iframe = document.getElementById('pdf-iframe');
             const prevPageButton = document.getElementById('prev-page');
             const nextPageButton = document.getElementById('next-page');
             const pageNumberInput = document.getElementById('page-number');
@@ -65,72 +61,41 @@
             container.style.display = 'block';
             pdfControls.style.display = 'flex';
 
-            let pdfDoc = null;
-            let pageNum = 1;
-            let pageRendering = false;
-            let pageNumPending = null;
-            let scale = 1.5;
-            let canvas = document.createElement('canvas');
-            let ctx = canvas.getContext('2d');
+            iframe.src = url;
 
-            container.appendChild(canvas);
-
-            pdfjsLib.getDocument(url).promise.then(function(pdf) {
-                pdfDoc = pdf;
-                totalPagesSpan.textContent = pdf.numPages;
-                renderPage(pageNum);
-            });
-
-            function renderPage(num) {
-                pageRendering = true;
-                pdfDoc.getPage(num).then(function(page) {
-                    const viewport = page.getViewport({ scale: scale });
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
-
-                    const renderContext = {
-                        canvasContext: ctx,
-                        viewport: viewport
-                    };
-                    page.render(renderContext).promise.then(function() {
-                        pageRendering = false;
-                        if (pageNumPending !== null) {
-                            renderPage(pageNumPending);
-                            pageNumPending = null;
-                        }
-                    });
-                });
-
-                pageNumberInput.value = num;
-            }
-
-            function queueRenderPage(num) {
-                if (pageRendering) {
-                    pageNumPending = num;
-                } else {
-                    renderPage(num);
-                }
-            }
+            iframe.onload = function() {
+                const pdfDoc = iframe.contentWindow.document;
+                totalPagesSpan.textContent = pdfDoc.querySelectorAll('.page').length;
+            };
 
             prevPageButton.addEventListener('click', function() {
-                if (pageNum <= 1) return;
-                pageNum--;
-                queueRenderPage(pageNum);
+                const currentPage = parseInt(pageNumberInput.value);
+                if (currentPage > 1) {
+                    pageNumberInput.value = currentPage - 1;
+                    navigateToPage(currentPage - 1);
+                }
             });
 
             nextPageButton.addEventListener('click', function() {
-                if (pageNum >= pdfDoc.numPages) return;
-                pageNum++;
-                queueRenderPage(pageNum);
+                const currentPage = parseInt(pageNumberInput.value);
+                const totalPages = parseInt(totalPagesSpan.textContent);
+                if (currentPage < totalPages) {
+                    pageNumberInput.value = currentPage + 1;
+                    navigateToPage(currentPage + 1);
+                }
             });
 
             pageNumberInput.addEventListener('change', function() {
-                const n = parseInt(this.value);
-                if (n > 0 && n <= pdfDoc.numPages) {
-                    pageNum = n;
-                    queueRenderPage(pageNum);
+                const pageNum = parseInt(this.value);
+                const totalPages = parseInt(totalPagesSpan.textContent);
+                if (pageNum > 0 && pageNum <= totalPages) {
+                    navigateToPage(pageNum);
                 }
             });
+
+            function navigateToPage(pageNum) {
+                iframe.contentWindow.postMessage({ type: 'navigate', page: pageNum }, '*');
+            }
         });
     </script>
 @endsection
