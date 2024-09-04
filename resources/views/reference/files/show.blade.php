@@ -24,7 +24,7 @@
                 <div id="pdf-controls" class="mb-3 d-flex align-items-center" style="display: none;">
 
                     <div class="input-group" style="width: auto;">
-                        
+
                     </div>
 
                 </div>
