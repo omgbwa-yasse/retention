@@ -1,83 +1,81 @@
 @guest
 @else
-    <aside id="sous-menu" class="bg-light d-none d-md-block" style="min-height: 100vh;">
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link active bg-dark text-white" data-toggle="collapse" href="#recherche"
-                   aria-expanded="true"><i class="bi bi-search"></i> Recherche</a>
-                <div class="collapse show" id="recherche">
-                    <ul class="list-unstyled pl-3">
-                        <li><a href="{{ route('charter.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Tableau de gestion</a></li>
-                        <li><a href="{{ route('mission.index') }}" class="text-dark"><i  class="bi bi-list-check"></i> Domaines  </a></li>
-                        <li><a href="{{ route('activity.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Activités </a></li>
-                        <li><a href="{{ route('rule.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Règles</a></li>
-                        <li><a href="{{ route('typology.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Typologies</a></li>
-                        <li><a href="{{ route('reference.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Références</a></li>
-                    </ul>
-                </div>
-            </li>
+    <aside id="sous-menu" class=" " style="min-height: 100vh; width: 250px;">
+        <nav class="navbar-dark">
+            <ul class="nav flex-column pt-3">
+                <li class="nav-item mb-2">
+                    <a class="nav-link d-flex align-items-center" data-toggle="collapse" href="#recherche">
+                        <i class="bi bi-search me-2"></i> Recherche
+                        <i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <div class="collapse show" id="recherche">
+                        <ul class="nav flex-column ms-3 mt-2">
+                            <li class="nav-item"><a href="{{ route('charter.index') }}" class="nav-link py-2"><i class="bi bi-list-check me-2"></i>Tableau de gestion</a></li>
+                            <li class="nav-item"><a href="{{ route('mission.index') }}" class="nav-link py-2"><i class="bi bi-list-check me-2"></i>Activités</a></li>
+                            <li class="nav-item"><a href="{{ route('activity.index') }}" class="nav-link py-2"><i class="bi bi-list-check me-2"></i>Domaines</a></li>
+                            <li class="nav-item"><a href="{{ route('rule.index') }}" class="nav-link py-2"><i class="bi bi-list-check me-2"></i>Règles</a></li>
+                            <li class="nav-item"><a href="{{ route('typology.index') }}" class="nav-link py-2"><i class="bi bi-list-check me-2"></i>Typologies</a></li>
+                            <li class="nav-item"><a href="{{ route('reference.index') }}" class="nav-link py-2"><i class="bi bi-list-check me-2"></i>Références</a></li>
+                        </ul>
+                    </div>
+                </li>
 
-            <li class="nav-item">
-                <a class="nav-link bg-dark text-white" data-toggle="collapse" href="#ajouter"
-                   aria-expanded="true"><i class="bi bi-plus-circle"></i> Ajouter</a>
-                <div class="collapse show" id="ajouter">
-                    <ul class="list-unstyled pl-3">
-                        <li><a href="{{ route('activity.create') }}" class="text-dark"><i  class="bi bi-plus-square"></i> Classe</a></li>
-                        <li><a href="{{ route('mission.create') }}" class="text-dark"><i class="bi bi-plus-square"></i> Domaine</a></li>
-                        <li><a href="{{ route('rule.create') }}" class="text-dark"><i class="bi bi-plus-square"></i> Règle</a></li>
-                        <li><a href="{{ route('typology.create') }}" class="text-dark"><i class="bi bi-plus-square"></i> Typologie</a></li>
-                        <li><a href="{{ route('reference.create') }}" class="text-dark"><i class="bi bi-plus-square"></i> Référence</a></li>
-                    </ul>
-                </div>
-            </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link d-flex align-items-center" data-toggle="collapse" href="#ajouter">
+                        <i class="bi bi-plus-circle me-2"></i> Ajouter
+                        <i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <div class="collapse show" id="ajouter">
+                        <ul class="nav flex-column ms-3 mt-2">
+                            <li class="nav-item"><a href="{{ route('activity.create') }}" class="nav-link py-2"><i class="bi bi-plus-square me-2"></i>Classe</a></li>
+                            <li class="nav-item"><a href="{{ route('mission.create') }}" class="nav-link py-2"><i class="bi bi-plus-square me-2"></i>Domaine</a></li>
+                            <li class="nav-item"><a href="{{ route('rule.create') }}" class="nav-link py-2"><i class="bi bi-plus-square me-2"></i>Règle</a></li>
+                            <li class="nav-item"><a href="{{ route('typology.create') }}" class="nav-link py-2"><i class="bi bi-plus-square me-2"></i>Typologie</a></li>
+                            <li class="nav-item"><a href="{{ route('reference.create') }}" class="nav-link py-2"><i class="bi bi-plus-square me-2"></i>Référence</a></li>
+                        </ul>
+                    </div>
+                </li>
 
-            <li class="nav-item">
-                <a class="nav-link bg-dark text-white" data-toggle="collapse" href="#paniers"
-                   aria-expanded="true"><i class="bi bi-basket"></i> Paniers</a>
-                <div class="collapse show" id="paniers">
-                    <ul class="list-unstyled pl-3">
-                        <li><a href="{{ route('basket.index') }}" class="text-dark"><i class="bi bi-gear"></i> Gérer</a></li>
-                        <li><a href="{{ route('basket.create') }}" class="text-dark"><i class="bi bi-plus-square"></i> Ajouter</a></li>
-                    </ul>
-                </div>
-            </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link d-flex align-items-center" data-toggle="collapse" href="#paniers">
+                        <i class="bi bi-basket me-2"></i> Paniers
+                        <i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <div class="collapse show" id="paniers">
+                        <ul class="nav flex-column ms-3 mt-2">
+                            <li class="nav-item"><a href="{{ route('basket.index') }}" class="nav-link py-2"><i class="bi bi-gear me-2"></i>Gérer</a></li>
+                            <li class="nav-item"><a href="{{ route('basket.create') }}" class="nav-link py-2"><i class="bi bi-plus-square me-2"></i>Ajouter</a></li>
+                        </ul>
+                    </div>
+                </li>
 
-            <li class="nav-item">
-                <a class="nav-link bg-dark text-white" data-toggle="collapse" href="#controle" aria-expanded="true"><i
-                        class="bi bi-shield-check"></i> Contrôle</a>
-                <div class="collapse show" id="controle">
-                    <ul class="list-unstyled pl-3">
-                        <li><a href="{{ route('committee.index') }}" class="text-dark"><i class="bi bi-check-circle"></i> Projet de règles</a></li>
-                        <li><a href="{{ route('committee.examining') }}" class="text-dark"><i class="bi bi-check-circle"></i> Règles en examen</a></li>
-                        <li><a href="{{ route('committee.approved') }}" class="text-dark"><i class="bi bi-hourglass-split"></i> Règles approuvées</a></li>
-                    </ul>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link bg-dark text-white" data-toggle="collapse" href="#parametre" aria-expanded="true"><i
-                        class="bi bi-gear"></i> Paramètre</a>
-                <div class="collapse show" id="parametre">
-                    <ul class="list-unstyled pl-3">
-                        <li>
-                            <a href="{{ route('user.show', Auth::user()->id) }}" class="text-dark">
-                                <i class="bi bi-person-circle"></i> Mon compte
-                            </a>
-                        </li>
-                        <li><a href="{{ route('setting.index') }}" class="text-dark"><i class="bi bi-sliders"></i> Généraux</a></li>
-                    </ul>
-                </div>
-            </li>
-{{--            <li class="nav-item">--}}
-{{--                <a class="nav-link bg-dark text-white" data-toggle="collapse" href="#forum" aria-expanded="true"><i--}}
-{{--                        class="bi bi-chat-dots"></i> Forum</a>--}}
-{{--                <div class="collapse show" id="forum">--}}
-{{--                    <ul class="list-unstyled pl-3">--}}
-{{--                        <li><a href="{{ route('subject.index') }}" class="text-dark"><i class="bi bi-chat-square-dots"></i> Nouveautés</a></li>--}}
-{{--                        <li><a href="" class="text-dark"><i class="bi bi-chat-square-dots"></i> Sujets épinglés</a></li>--}}
-{{--                        <li><a href="{{ route('chat.index') }}" class="text-dark"><i class="bi bi-chat-square-dots"></i> En ligne</a></li>--}}
-{{--                    </ul>--}}
-{{--                </div>--}}
-{{--            </li>--}}
-        </ul>
+                <li class="nav-item ">
+                    <a class="nav-link d-flex align-items-center" data-toggle="collapse" href="#controle">
+                        <i class="bi bi-shield-check me-2"></i> Contrôle
+                        <i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <div class="collapse show" id="controle">
+                        <ul class="nav flex-column ms-3 mt-2">
+                            <li class="nav-item"><a href="{{ route('committee.index') }}" class="nav-link py-2"><i class="bi bi-check-circle me-2"></i>Projet de règles</a></li>
+                            <li class="nav-item"><a href="{{ route('committee.examining') }}" class="nav-link py-2"><i class="bi bi-check-circle me-2"></i>Règles en examen</a></li>
+                            <li class="nav-item"><a href="{{ route('committee.approved') }}" class="nav-link py-2"><i class="bi bi-hourglass-split me-2"></i>Règles approuvées</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item mb-2">
+                    <a class="nav-link d-flex align-items-center" data-toggle="collapse" href="#parametre">
+                        <i class="bi bi-gear me-2"></i> Paramètres
+                        <i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <div class="collapse show" id="parametre">
+                        <ul class="nav flex-column ms-3 mt-2">
+                            <li class="nav-item"><a href="{{ route('user.show', Auth::user()->id) }}" class="nav-link py-2"><i class="bi bi-person-circle me-2"></i>Mon compte</a></li>
+                            <li class="nav-item"><a href="{{ route('setting.index') }}" class="nav-link py-2"><i class="bi bi-sliders me-2"></i>Généraux</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </nav>
     </aside>
 @endguest

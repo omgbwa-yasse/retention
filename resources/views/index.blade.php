@@ -71,11 +71,13 @@
 @extends('layouts.app')
 
 <body id="app">
-    <div class="container-fluid">@include('menuTop')
+ <div class="container-fluid">
+    @guest
+    @else
+    @include('menuTop')
 
         <div class="row">
-            @guest
-            @else
+
             <div class="col-2">
                 @include('menuAside')
             </div>
