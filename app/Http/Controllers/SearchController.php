@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\Active;
 use App\Models\Articles;
 use App\Models\basket;
 use App\Models\Classification;
@@ -37,11 +36,9 @@ class SearchController extends Controller
         $states = Status::all();
         $triggers = Trigger::all();
         $sorts = Sort::all();
-        $actives = Active::all();
         $articles = Articles::all()->where('country_id', '=', Auth::user()->country_id);
         $countries = Country::orderBy('name')->get();
         $activities = Classification::all();
-
         $name = $request->input('name');
         $description = $request->input('description');
         $code = $request->input('code');
@@ -149,7 +146,6 @@ class SearchController extends Controller
             'states',
             'triggers',
             'sorts',
-            'actives',
             'articles',
             'countries',
             'activities'
