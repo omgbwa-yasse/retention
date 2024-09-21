@@ -24,63 +24,7 @@
                 </div>
             </div>
 
-            <h4>Active (Bureau)</h4>
-            <div class="row mb-3">
-                <div class="col-4">
-                    <label for="active_duration" class="form-label">Durée</label>
-                    <input type="number" class="form-control" id="active_duration" name="active[duration]" value="{{ old('active.duration', $rule->active ? $rule->active->duration : '') }}">
-                </div>
-                <div class="col-4">
-                    <label for="active_trigger" class="form-label">Conserver</label>
-                    <select class="form-select" id="active_trigger" name="active[trigger_id]">
-                        @foreach($triggers as $trigger)
-                            <option value="{{ $trigger->id }}" {{ old('active.trigger_id', $rule->active ? $rule->active->trigger_id : '') == $trigger->id ? 'selected' : '' }}>{{ $trigger->code }} - {{ $trigger->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-4">
-                    <label for="active_sort" class="form-label">Trier</label>
-                    <select class="form-select" id="active_sort" name="active[sort_id]">
-                        @foreach($sorts as $sort)
-                            <option value="{{ $sort->id }}" {{ old('active.sort_id', $rule->active ? $rule->active->sort_id : '') == $sort->id ? 'selected' : '' }}>{{ $sort->code }} - {{ $sort->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-12">
-                    <label for="active_description" class="form-label">Description</label>
-                    <textarea class="form-control" id="active_description" rows="3" name="active[description]">{{ old('active.description', $rule->active ? $rule->active->description : '') }}</textarea>
-                </div>
-            </div>
-
-            <h4>Semi-active (Salle de préarchivage)</h4>
-            <div class="row mb-3">
-                <div class="col-4">
-                    <label for="dua_duration" class="form-label">Durée</label>
-                    <input type="number" class="form-control" id="dua_duration" name="dua[duration]" value="{{ old('dua.duration', $rule->dua ? $rule->dua->duration : '') }}">
-                </div>
-                <div class="col-4">
-                    <label for="dua_trigger" class="form-label">Conserver</label>
-                    <select class="form-select" id="dua_trigger" name="dua[trigger_id]">
-                        @foreach($triggers as $trigger)
-                            <option value="{{ $trigger->id }}" {{ old('dua.trigger_id', $rule->dua ? $rule->dua->trigger_id : '') == $trigger->id ? 'selected' : '' }}>{{ $trigger->code }} - {{ $trigger->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-4">
-                    <label for="dua_sort" class="form-label">Trier</label>
-                    <select class="form-select" id="dua_sort" name="dua[sort_id]">
-                        @foreach($sorts as $sort)
-                            <option value="{{ $sort->id }}" {{ old('dua.sort_id', $rule->dua ? $rule->dua->sort_id : '') == $sort->id ? 'selected' : '' }}>{{ $sort->code }} - {{ $sort->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-12">
-                    <label for="dua_description" class="form-label">Description</label>
-                    <textarea class="form-control" id="dua_description" rows="3" name="dua[description]">{{ old('dua.description', $rule->dua ? $rule->dua->description : '') }}</textarea>
-                </div>
-            </div>
-
-            <h4>Historique (Archives historiques)</h4>
+           <h4>Historique (Archives historiques)</h4>
             <div class="row mb-3">
                 <div class="col-4">
                     <label for="dul_duration" class="form-label">Durée</label>

@@ -267,45 +267,6 @@ return new class extends Migration
         $table->foreign('validated_by')->references('id')->on('users')->onDelete('set null');
     });
 
-
-        // Create active table
-        Schema::create('actives', function (Blueprint $table) {
-            $table->id();
-            $table->string('duration', 10);
-            $table->text('description')->nullable();
-            $table->unsignedInteger('rule_id');
-            $table->unsignedInteger('trigger_id');
-            $table->unsignedInteger('sort_id');
-            $table->unsignedInteger('country_id');
-            $table->unsignedInteger('user_id');
-            $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
-            $table->foreign('trigger_id')->references('id')->on('triggers')->onDelete('cascade');
-            $table->foreign('sort_id')->references('id')->on('sorts')->onDelete('cascade');
-            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
-        });
-
-
-        // Create dua table
-        Schema::create('duas', function (Blueprint $table) {
-            $table->id();
-            $table->string('duration', 10);
-            $table->text('description')->nullable();
-            $table->unsignedInteger('rule_id');
-            $table->unsignedInteger('trigger_id');
-            $table->unsignedInteger('sort_id');
-            $table->unsignedInteger('country_id');
-            $table->unsignedInteger('user_id');
-            $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
-            $table->foreign('trigger_id')->references('id')->on('triggers')->onDelete('cascade');
-            $table->foreign('sort_id')->references('id')->on('sorts')->onDelete('cascade');
-            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
-        });
-
-
         // Create dul table
         Schema::create('duls', function (Blueprint $table) {
             $table->id();

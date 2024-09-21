@@ -20,16 +20,6 @@ class Rule extends Model
         'validated_by'
     ];
 
-    public function actives()
-    {
-        return $this->hasMany(Active::class);
-    }
-
-    public function duas()
-    {
-        return $this->hasMany(Dua::class);
-    }
-
     public function duls()
     {
         return $this->hasMany(Dul::class);
@@ -50,10 +40,11 @@ class Rule extends Model
         return $this->belongsToMany(Classification::class, 'rule_classification', 'rule_id', 'classification_id');
     }
 
-//    public function baskets()
-//    {
-//        return $this->belongsToMany(Basket::class, 'basket_rule', 'rule_id', 'basket_id');
-//    }
+    public function baskets()
+    {
+        return $this->belongsToMany(Basket::class, 'basket_rule', 'rule_id', 'basket_id');
+
+    }
 
     public function status()
     {
