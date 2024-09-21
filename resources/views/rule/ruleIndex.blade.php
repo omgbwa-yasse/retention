@@ -140,8 +140,6 @@
                             </p>
                             <p class="card-text"><strong>Pays:</strong> {{ $rule->country->name ?? 'N/A' }}
                       <strong>DULs:</strong> <span class="badge bg-primary rounded-pill">{{ $rule->duls->count() }}</span>
-                                <strong>DUAs:</strong> <span class="badge bg-primary rounded-pill">{{ $rule->duas->count() }}</span>
-                                <strong>Actives:</strong> <span class="badge bg-primary rounded-pill">{{ $rule->actives->count() }}</span></p>
                             <div class="btn" role="group">
                                 <a href="{{ route('rule.show', $rule->id) }}" class="btn btn-outline-info" title="Voir">
                                     <i class="fas fa-eye"></i>

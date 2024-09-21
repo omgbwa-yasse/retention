@@ -11,8 +11,6 @@ use App\Models\Dua;
 use App\Models\Dul;
 use App\Models\Trigger;
 use App\Models\Sort;
-use App\Models\RuleActive;
-use App\Models\RuleDua;
 use App\Models\RuleDul;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,7 +19,7 @@ class CommitteeController extends Controller
     // Affiche la liste des éléments
     public function project()
     {
-        $rules = Rule::with(['actives', 'duas', 'duls', 'country', 'articles', 'classifications', 'status'])
+        $rules = Rule::with([ 'duls', 'country', 'articles', 'classifications', 'status'])
             ->where('status_id', '=', 1)
             ->get();
         return view('rule.ruleIndex', compact('rules'));
@@ -29,7 +27,7 @@ class CommitteeController extends Controller
 
     public function examining()
     {
-        $rules = Rule::with(['actives', 'duas', 'duls', 'country', 'articles', 'classifications', 'status'])
+        $rules = Rule::with([ 'duls', 'country', 'articles', 'classifications', 'status'])
             ->where('status_id', '=', 2)
             ->paginate(10); // Use paginate instead of get
 
@@ -37,7 +35,7 @@ class CommitteeController extends Controller
     }
     public function approved()
     {
-        $rules = Rule::with(['actives', 'duas', 'duls', 'country', 'articles', 'classifications', 'status'])
+        $rules = Rule::with([ 'duls', 'country', 'articles', 'classifications', 'status'])
             ->where('status_id', '=', 3)
             ->paginate(10); // Use paginate instead of get
         return view('rule.ruleIndex', compact('rules'));

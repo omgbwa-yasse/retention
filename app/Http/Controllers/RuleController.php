@@ -21,6 +21,8 @@ class RuleController extends Controller
 //        $rules = Rule::with(['actives', 'duas', 'duls', 'countries', 'articles', 'classifications', 'baskets', 'status'])->get();
 //        return view('rule.ruleIndex', compact('rules'));
 //    }
+
+
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -34,6 +36,9 @@ class RuleController extends Controller
 
         return view('rule.ruleIndex', compact('rules'));
     }
+
+
+
     // Affiche le formulaire de création d'un élément
     public function create()
     {
@@ -42,7 +47,7 @@ class RuleController extends Controller
         $sorts = Sort::all();
         $articles = Articles ::all()->where('country_id','=',Auth::user()->country_id);
         $countries = country::orderBy('name')->get();
-        return view('rule.ruleCreate', compact('countries','triggers','actives','articles','countries','sorts','states'));
+        return view('rule.ruleCreate', compact('countries','triggers','articles','countries','sorts','states'));
     }
 
 

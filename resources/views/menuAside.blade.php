@@ -8,8 +8,8 @@
                 <div class="collapse show" id="recherche">
                     <ul class="list-unstyled pl-3">
                         <li><a href="{{ route('charter.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Tableau de gestion</a></li>
-                        <li><a href="{{ route('mission.index') }}" class="text-dark"><i  class="bi bi-list-check"></i>Activités </a></li>
-                        <li><a href="{{ route('activity.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Domaines</a></li>
+                        <li><a href="{{ route('mission.index') }}" class="text-dark"><i  class="bi bi-list-check"></i> Domaines  </a></li>
+                        <li><a href="{{ route('activity.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Activités </a></li>
                         <li><a href="{{ route('rule.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Règles</a></li>
                         <li><a href="{{ route('typology.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Typologies</a></li>
                         <li><a href="{{ route('reference.index') }}" class="text-dark"><i class="bi bi-list-check"></i> Références</a></li>
