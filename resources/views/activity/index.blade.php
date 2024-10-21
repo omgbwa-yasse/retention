@@ -6,7 +6,7 @@
         // var sortables = document.querySelectorAll('.sortable');
         // sortables.forEach(function(sortable) {
         //     new Sortable(sortable, {
-        //         group: 'nested',
+        //         group: 'nested',plume ,engrenage
         //         animation: 150,
         //         fallbackOnBody: true,
         //         swapThreshold: 0.65,

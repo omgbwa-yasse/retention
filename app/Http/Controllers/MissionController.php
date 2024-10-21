@@ -25,30 +25,17 @@ class MissionController extends Controller
 
     public function index(Request $request)
     {
-        $countryId = Auth::user()->country_id;
-
         $search = $request->input('search');
 
-        $items = Classification::whereNull('parent_id')->where('country_id', $countryId);
+        $activities = Classification::query()
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            })
+            ->paginate(10);
 
-        if ($search) {
-            $items = $items->where(function($query) use ($search) {
-                $query->where('code', 'like', "%{$search}%")
-                    ->orWhere('name', 'like', "%{$search}%");
-            });
-        }
-
-        $items = $items->orderBy('code')->get();
-
-        $items->load('children');
-
-        $country = Country::find($countryId);
-
-        return view('mission.index', compact('items', 'country'));
+        return view('mission.index', compact('activities'));
     }
-
-
-
 
     // Affiche le formulaire de création d'un élément
     public function create()

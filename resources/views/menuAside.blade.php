@@ -11,8 +11,8 @@
                     <div class="collapse show" id="recherche">
                         <ul class="nav flex-column ms-3 mt-2">
                             <li class="nav-item"><a href="{{ route('charter.index') }}" class="nav-link py-2"><i class="bi bi-list-check me-2"></i>Tableau de gestion</a></li>
-                            <li class="nav-item"><a href="{{ route('mission.index') }}" class="nav-link py-2"><i class="bi bi-list-check me-2"></i>Activités</a></li>
-                            <li class="nav-item"><a href="{{ route('activity.index') }}" class="nav-link py-2"><i class="bi bi-list-check me-2"></i>Domaines</a></li>
+                            <li class="nav-item"><a href="{{ route('mission.index') }}" class="nav-link py-2"><i class="bi bi-list-check me-2"></i>Domaines</a></li>
+                            <li class="nav-item"><a href="{{ route('activity.index') }}" class="nav-link py-2"><i class="bi bi-list-check me-2"></i>Activités</a></li>
                             <li class="nav-item"><a href="{{ route('rule.index') }}" class="nav-link py-2"><i class="bi bi-list-check me-2"></i>Règles</a></li>
                             <li class="nav-item"><a href="{{ route('typology.index') }}" class="nav-link py-2"><i class="bi bi-list-check me-2"></i>Typologies</a></li>
                             <li class="nav-item"><a href="{{ route('reference.index') }}" class="nav-link py-2"><i class="bi bi-list-check me-2"></i>Références</a></li>

@@ -25,20 +25,31 @@ class ActivityController extends Controller
 //        $activities->load('countries');
 //        return view('activity.activityIndex', compact('activities'));
 //    }
-
     public function index(Request $request)
     {
+        $countryId = Auth::user()->country_id;
+
         $search = $request->input('search');
 
-        $activities = Classification::query()
-            ->when($search, function ($query, $search) {
-                $query->where('name', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%");
-            })
-            ->paginate(10);
+        $items = Classification::whereNull('parent_id')->where('country_id', $countryId);
 
-        return view('activity.activityIndex', compact('activities'));
+        if ($search) {
+            $items = $items->where(function($query) use ($search) {
+                $query->where('code', 'like', "%{$search}%")
+                    ->orWhere('name', 'like', "%{$search}%");
+            });
+        }
+
+        $items = $items->orderBy('code')->get();
+
+        $items->load('children');
+
+        $country = Country::find($countryId);
+
+        return view('activity.activityIndex', compact('items', 'country'));
     }
+
+
     public function pdf(Request $request)
     {
         $search = $request->input('search');
