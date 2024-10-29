@@ -71,27 +71,49 @@
 @extends('layouts.app')
 
 <body id="app">
- <div class="container-fluid">
-    @guest
-    @else
-    @include('menuTop')
-
+<div class="container-fluid">
+    @auth
+        @include('menuTop')
         <div class="row">
-
             <div class="col-2">
                 @include('menuAside')
             </div>
-
             <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <br>@endguest
                 @yield('content')
-
             </div>
         </div>
-        <div class="row">
-            @include('footer')
+    @else
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+            <div class="container">
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    <h4 class="mb-0">Portail africain des délais de conservation</h4>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">À propos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Nouveautés</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-primary ml-2" href="{{ route('login') }}">Connexion</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            @yield('content')
         </div>
+    @endauth
+    <div class="row">
+        @include('footer')
     </div>
+</div>
 
     <!-- Scripts de Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

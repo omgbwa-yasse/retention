@@ -1,13 +1,14 @@
 <?php
 
 
-Route::get('/', function () {
-
-    return view('auth.login');
-});
+//Route::get('/', function () {
+//
+//    return view('auth.login');
+//});
 
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\ForumReactionController;
+use App\Http\Controllers\PublicController;
 use App\Http\Controllers\ReferenceCategoryController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TriggerController;
@@ -48,8 +49,19 @@ Route::get('/rules/export', [RuleController::class, 'export'])->name('rule.expor
 Route::get('/mission/export', [MissionController::class, 'export'])->name('mission.export');
 Route::get('/typologies/export', [TypologyController::class, 'export'])->name('typology.export');
 Route::get('reference/{reference}/file/{name}/download', [FileController::class, 'download'])->name('reference.file.download');
-
-
+Route::get('/', [PublicController::class, 'index'])->name('public.index');
+Route::get('/search', [PublicController::class, 'search'])->name('public.search');
+// Routes publiques
+//Route::get('/', [PublicController::class, 'index'])->name('public.index');
+Route::get('/typologies', [PublicController::class, 'typologies'])->name('public.typologies');
+Route::get('/references', [PublicController::class, 'references'])->name('public.references');
+Route::get('/references/{reference}', [PublicController::class, 'showReference'])->name('public.references.show');
+Route::get('/rules', [PublicController::class, 'rules'])->name('public.rules');
+Route::get('/rules/{rule}', [PublicController::class, 'showRule'])->name('public.rules.show');
+Route::get('/classifications', [PublicController::class, 'classifications'])->name('public.classifications');
+Route::get('/search', [PublicController::class, 'search'])->name('public.search');
+Route::get('/about', [PublicController::class, 'about'])->name('public.about');
+Route::get('/news', [PublicController::class, 'news'])->name('public.news');
 // Route group for authentication
 Route::middleware(['auth'])->group(function () {
     // Controllers
@@ -93,7 +105,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/committee/project', [CommitteeController::class, 'project'])->name('committee.project');
     Route::get('/committee/examining', [CommitteeController::class, 'examining'])->name('committee.examining');
     Route::get('/committee/approved', [CommitteeController::class, 'approved'])->name('committee.approved');
-    Route::get('user/{id}', [UserController::class, 'show'])->name('user.show');
+//    Route::get('user/{id}', [UserController::class, 'show'])->name('user.show');
 
 
 //
