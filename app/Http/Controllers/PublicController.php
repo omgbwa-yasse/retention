@@ -9,6 +9,7 @@ use App\Models\Classification;
 use App\Models\ReferenceCategory;
 use App\Models\TypologyCategory;
 use App\Models\Country;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -71,17 +72,147 @@ class PublicController extends Controller
     /**
      * Recherche publique
      */
+    /**
+     * Recherche globale
+     */
+    /**
+     * Recherche publique
+     */
     public function search(Request $request)
     {
-        $query = $request->input('query');
+        $query = $request->input('q');
+        $type = $request->input('type');
+        $country = $request->input('country');
+        $duration = $request->input('duration');
+        $sort = $request->input('sort', 'name');
+        $order = $request->input('order', 'asc');
 
-        $references = Reference::where('name', 'like', "%{$query}%")->get();
-        $rules = Rule::where('name', 'like', "%{$query}%")->get();
-        $typologies = Typology::where('name', 'like', "%{$query}%")->get();
-        $classifications = Classification::where('name', 'like', "%{$query}%")->get();
+        if (!empty($query) || $request->has('show_all')) {
+            // Recherche des classifications
+            $classifications = Classification::with([
+                'typologies',
+                'rules.duls.trigger',
+                'rules.articles',
+                'country'
+            ]);
 
-        return view('search.index', compact('references', 'rules', 'typologies', 'classifications'));
+            if (!empty($query)) {
+                $classifications->where(function($q) use ($query) {
+                    $q->where('name', 'like', "%{$query}%")
+                        ->orWhere('code', 'like', "%{$query}%")
+                        ->orWhere('description', 'like', "%{$query}%");
+                });
+            }
+
+            if ($country) {
+                $classifications->where('country_id', $country);
+            }
+
+            if ($duration) {
+                $classifications->whereHas('rules.duls', function($q) use ($duration) {
+                    $q->where('duration', 'like', "%{$duration}%");
+                });
+            }
+
+            // Regrouper par typologie
+            $classifications = $classifications->get()
+                ->groupBy(function($item) {
+                    return $item->typologies->first() ? $item->typologies->first()->name : 'Sans typologie';
+                });
+
+            // Recherche des règles
+            $rules = Rule::with([
+                'classifications',
+                'duls.trigger',
+                'articles',
+                'country',
+                'status'
+            ])
+                ->where('status_id', 2); // Uniquement les règles validées
+
+            if (!empty($query)) {
+                $rules->where(function($q) use ($query) {
+                    $q->where('name', 'like', "%{$query}%")
+                        ->orWhere('code', 'like', "%{$query}%")
+                        ->orWhere('description', 'like', "%{$query}%");
+                });
+            }
+
+            if ($country) {
+                $rules->where('country_id', $country);
+            }
+
+            if ($duration) {
+                $rules->whereHas('duls', function($q) use ($duration) {
+                    $q->where('duration', 'like', "%{$duration}%");
+                });
+            }
+
+            // Tri
+            if ($sort === 'date') {
+                $rules->orderBy('created_at', $order);
+            } else {
+                $rules->orderBy($sort, $order);
+            }
+
+            $results = [
+                'classifications' => $classifications,
+                'rules' => $rules->get(),
+                'filters' => [
+                    'countries' => Country::all(),
+                    'durations' => [
+                        '1_year' => '1 an',
+                        '2_years' => '2 ans',
+                        '5_years' => '5 ans',
+                        '10_years' => '10 ans',
+                        'permanent' => 'Conservation permanente'
+                    ],
+                    'sorts' => [
+                        'name' => 'Nom',
+                        'code' => 'Code',
+                        'date' => 'Date'
+                    ]
+                ]
+            ];
+        } else {
+            $results = [];
+        }
+
+        return view('public.index', [
+            'searchQuery' => $query,
+            'searchResults' => $results,
+            'currentCountry' => $country,
+            'currentDuration' => $duration,
+            'currentSort' => $sort,
+            'currentOrder' => $order
+        ]);
     }
+
+    /**
+     * Affiche la charte publique pour une classification
+     */
+    public function showCharter($id)
+    {
+        // Si c'est un parent, on récupère tous ses enfants
+        // Si c'est un enfant, on récupère son parent et tous les frères/sœurs
+        $classification = Classification::with([
+            'parent.childrenRecursive', // Parent et tous ses enfants
+            'children', // Enfants directs
+            'childrenRecursive', // Tous les descendants
+            'rules.duls.trigger',
+            'rules.articles',
+            'typologies'
+        ])->findOrFail($id);
+
+        // Si c'est un enfant, on remonte au parent
+        $rootClassification = $classification->parent ?? $classification;
+
+        return view('public.charter', [
+            'classification' => $classification,
+            'rootClassification' => $rootClassification
+        ]);
+    }
+
     /**
      * Affiche la liste des références
      */
@@ -119,7 +250,65 @@ class PublicController extends Controller
 
         return view('public.references', compact('references', 'categories', 'countries'));
     }
+    /**
+     * Télécharger la charte en PDF
+     */
+    public function downloadCharter($id)
+    {
+        $classification = Classification::with([
+            'childrenRecursive',
+            'rules.actives.trigger',
+            'rules.duas.trigger',
+            'rules.duls.trigger',
+            'rules.articles',
+            'typologies'
+        ])->findOrFail($id);
 
+        $pdf = PDF::loadView('public.charter-pdf', compact('classification'));
+        return $pdf->download($classification->code . '-charte.pdf');
+    }
+
+    /**
+     * Filtrer les résultats de recherche
+     */
+    public function filter(Request $request)
+    {
+        $query = $request->input('q');
+        $typology = $request->input('typology');
+        $duration = $request->input('duration');
+
+        $classifications = Classification::with([
+            'typologies',
+            'rules.actives.trigger',
+            'rules.duas.trigger',
+            'rules.duls.trigger',
+            'rules.articles'
+        ]);
+
+        if ($typology) {
+            $classifications->whereHas('typologies', function($q) use ($typology) {
+                $q->where('name', $typology);
+            });
+        }
+
+        if ($duration) {
+            $classifications->whereHas('rules.duls', function($q) use ($duration) {
+                $q->where('duration', 'like', "%{$duration}%");
+            });
+        }
+
+        if ($query) {
+            $classifications->where(function($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%")
+                    ->orWhere('code', 'like', "%{$query}%")
+                    ->orWhere('description', 'like', "%{$query}%");
+            });
+        }
+
+        $results = $classifications->get()->groupBy('typologies.*.name');
+
+        return response()->json(['results' => $results]);
+    }
     /**
      * Affiche la liste des règles
      */

@@ -51,6 +51,8 @@ Route::get('/typologies/export', [TypologyController::class, 'export'])->name('t
 Route::get('reference/{reference}/file/{name}/download', [FileController::class, 'download'])->name('reference.file.download');
 Route::get('/', [PublicController::class, 'index'])->name('public.index');
 Route::get('/search', [PublicController::class, 'search'])->name('public.search');
+Route::get('/charter/{id}', [PublicController::class, 'showCharter'])->name('public.charter');
+Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->name('public.charter.pdf');
 // Routes publiques
 //Route::get('/', [PublicController::class, 'index'])->name('public.index');
 Route::get('/typologies', [PublicController::class, 'typologies'])->name('public.typologies');

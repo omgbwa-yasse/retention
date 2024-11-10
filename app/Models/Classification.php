@@ -68,5 +68,21 @@ class Classification extends Model
     {
         return $this->belongsToMany(ForumSubject::class, 'forum_subject_classification', 'classification_id', 'subject_id');
     }
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
+    }
+    public function getLevel()
+    {
+        $level = 0;
+        $parent = $this->parent;
+
+        while ($parent) {
+            $level++;
+            $parent = $parent->parent;
+        }
+
+        return $level;
+    }
 
 }

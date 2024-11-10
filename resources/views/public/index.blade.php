@@ -2,267 +2,364 @@
 @extends('index')
 
 @section('content')
-    <div class="container-fluid px-4">
-        <!-- Hero Section -->
-        <div class="bg-primary text-white p-5 rounded-3 mb-4 shadow-sm">
+    <div class="container-fluid py-4">
+        <!-- En-tête avec barre de recherche -->
+        <div class="bg-primary {{ !empty($searchQuery) ? 'py-3' : 'py-5' }} rounded-3 shadow-sm mb-4">
             <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-8">
-                        <h1 class="fw-bold mb-3">Portail africain des délais de conservation</h1>
-                        <p class="lead mb-4">Accédez aux informations sur les délais de conservation des documents en Afrique</p>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 text-center text-white">
+                        <h1 class="fw-bold {{ !empty($searchQuery) ? 'h2 mb-3' : 'display-4 mb-4' }}">
+                            Portail africain des délais de conservation
+                        </h1>
 
-                        <!-- Barre de recherche principale -->
-                        <form action="{{ route('public.search') }}" method="GET" class="mb-3">
-                            <div class="input-group input-group-lg shadow-sm">
-                                <input type="search"
-                                       name="q"
-                                       class="form-control"
-                                       placeholder="Rechercher des classifications, références, règles..."
-                                       aria-label="Recherche">
-                                <button class="btn btn-light" type="submit">
-                                    <i class="fas fa-search"></i>
+                        @if(empty($searchQuery))
+                            <p class="lead mb-4 opacity-75">
+                                Accédez aux informations sur les délais de conservation des documents en Afrique
+                            </p>
+                        @endif
+
+                        <!-- Barre de recherche -->
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-lg-10">
+                                <form action="{{ route('public.search') }}" method="GET" id="searchForm">
+                                    <div class="input-group input-group-lg shadow-sm bg-white rounded-pill">
+                                    <span class="input-group-text border-0 bg-transparent ps-4">
+                                        <i class="fas fa-search text-primary"></i>
+                                    </span>
+                                        <input
+                                            type="search"
+                                            name="q"
+                                            class="form-control border-0"
+                                            value="{{ $searchQuery ?? '' }}"
+                                            placeholder="Rechercher des classifications, règles..."
+                                            autocomplete="off"
+                                        >
+                                        <button type="submit" class="btn btn-light border-0 rounded-pill px-4">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                        <input type="hidden" name="order" value="{{ $currentOrder ?? 'asc' }}">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenu principal -->
+        <div class="container">
+            <div class="row">
+                <!-- Filtres -->
+                <div class="col-lg-3">
+                    <div class="card shadow-sm border-0 mb-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title mb-0">Filtres</h5>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="resetFilters()">
+                                    <i class="fas fa-undo"></i>
                                 </button>
-                                <a href="{{ route('public.search') }}" class="btn btn-light">
-                                    <i class="fas fa-sliders-h"></i>
-                                </a>
                             </div>
-                        </form>
-                    </div>
-                    <div class="col-lg-4 d-none d-lg-block">
-                        <i class="fas fa-book-reader fa-6x opacity-50"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Stats Cards -->
-        <div class="row g-4 mb-4">
-            <div class="col-sm-6 col-xl-3">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-shrink-0">
-                                <div class="rounded-3 p-3 bg-primary bg-opacity-10">
-                                    <i class="fas fa-folder fa-2x text-primary"></i>
+                            <!-- Filtres -->
+                            <div class="mb-3">
+                                <label class="form-label">Pays</label>
+                                <select name="country" class="form-select filter-select">
+                                    <option value="">Tous les pays</option>
+                                    @foreach($searchResults['filters']['countries'] ?? [] as $country)
+                                        <option value="{{ $country->id }}"
+                                            {{ $currentCountry == $country->id ? 'selected' : '' }}>
+                                            {{ $country->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Durée de conservation</label>
+                                <select name="duration" class="form-select filter-select">
+                                    <option value="">Toutes les durées</option>
+                                    @foreach($searchResults['filters']['durations'] ?? [] as $key => $label)
+                                        <option value="{{ $key }}"
+                                            {{ $currentDuration == $key ? 'selected' : '' }}>
+                                            {{ $label }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">Trier par</label>
+                                <div class="input-group">
+                                    <select name="sort" class="form-select filter-select">
+                                        @foreach($searchResults['filters']['sorts'] ?? [] as $key => $label)
+                                            <option value="{{ $key }}"
+                                                {{ $currentSort == $key ? 'selected' : '' }}>
+                                                {{ $label }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <button type="button"
+                                            class="btn btn-outline-secondary"
+                                            onclick="toggleSort(this)"
+                                            data-order="{{ $currentOrder ?? 'asc' }}">
+                                        <i class="fas fa-sort-{{ ($currentOrder ?? 'asc') == 'asc' ? 'up' : 'down' }}"></i>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h6 class="text-muted mb-0">Classifications</h6>
-                                <h3 class="fw-bold mb-0">{{ number_format($activities) }}</h3>
-                            </div>
+
+                            <a href="{{ route('public.search', ['show_all' => 1]) }}"
+                               class="btn btn-primary w-100">
+                                <i class="fas fa-list me-1"></i> Tout afficher
+                            </a>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="col-sm-6 col-xl-3">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-shrink-0">
-                                <div class="rounded-3 p-3 bg-success bg-opacity-10">
-                                    <i class="fas fa-book fa-2x text-success"></i>
+                    @if(!empty($searchResults['classifications']))
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body">
+                                <h6 class="mb-3">Typologies</h6>
+                                <div class="typology-filters">
+                                    @foreach($searchResults['classifications']->keys() as $typology)
+                                        <div class="form-check">
+                                            <input class="form-check-input filter-checkbox"
+                                                   type="checkbox"
+                                                   value="{{ $typology }}"
+                                                   id="type-{{ $loop->index }}">
+                                            <label class="form-check-label" for="type-{{ $loop->index }}">
+                                                {{ $typology }}
+                                                <span class="badge bg-light text-dark ms-1">
+                                                {{ $searchResults['classifications'][$typology]->count() }}
+                                            </span>
+                                            </label>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h6 class="text-muted mb-0">Références</h6>
-                                <h3 class="fw-bold mb-0">{{ number_format($references) }}</h3>
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Résultats -->
+                <div class="col-lg-9">
+                    @if(!empty($searchQuery) || request()->has('show_all'))
+                        <!-- En-tête des résultats -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <h5 class="mb-0">
+                                    @if(!empty($searchQuery))
+                                        Résultats pour "{{ $searchQuery }}"
+                                    @else
+                                        Toutes les classifications
+                                    @endif
+                                </h5>
+                                <small class="text-muted">
+                                    @if(isset($searchResults['classifications']))
+                                        {{ $searchResults['classifications']->flatten()->count() }} classifications
+                                    @endif
+                                    @if(isset($searchResults['rules']))
+                                        • {{ $searchResults['rules']->count() }} règles
+                                    @endif
+                                </small>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-sm-6 col-xl-3">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-shrink-0">
-                                <div class="rounded-3 p-3 bg-warning bg-opacity-10">
-                                    <i class="fas fa-gavel fa-2x text-warning"></i>
+                        <!-- Classifications -->
+                        @if(isset($searchResults['classifications']))
+                            @foreach($searchResults['classifications'] as $typology => $classifications)
+                                <div class="card shadow-sm border-0 mb-4 result-group"
+                                     data-typology="{{ $typology }}">
+                                    <div class="card-header bg-light border-0">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6 class="mb-0">
+                                                {{ $typology }}
+                                                <span class="badge bg-primary ms-2">
+                                                {{ $classifications->count() }}
+                                            </span>
+                                            </h6>
+                                            <button class="btn btn-sm btn-link"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#typology-{{ Str::slug($typology) }}">
+                                                <i class="fas fa-chevron-down"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="collapse show" id="typology-{{ Str::slug($typology) }}">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover mb-0">
+                                                <thead class="table-light">
+                                                <tr>
+                                                    <th style="width: 15%">Code</th>
+                                                    <th style="width: 40%">Intitulé</th>
+                                                    <th style="width: 30%">Durée légale</th>
+                                                    <th style="width: 15%" class="text-end">Actions</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($classifications as $classification)
+                                                    <tr>
+                                                        <td class="text-primary fw-bold">
+                                                            {{ $classification->code }}
+                                                        </td>
+                                                        <td>
+                                                            <div>{{ $classification->name }}</div>
+                                                            @if($classification->description)
+                                                                <small class="text-muted">
+                                                                    {{ Str::limit($classification->description, 100) }}
+                                                                </small>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            @if($classification->rules)
+                                                                @foreach($classification->rules as $rule)
+                                                                    @if($rule->duls)
+                                                                        @foreach($rule->duls as $dul)
+                                                                            <div class="badge bg-light text-dark mb-1">
+                                                                                {{ $dul->duration }}
+                                                                                <small class="text-muted">
+                                                                                    ({{ $dul->trigger->name }})
+                                                                                </small>
+                                                                            </div>
+                                                                        @endforeach
+                                                                    @endif
+                                                                @endforeach
+                                                            @endif
+                                                        </td>
+                                                        <td class="text-end">
+                                                            <a href="{{ route('public.charter', $classification->id) }}"
+                                                               class="btn btn-sm btn-primary"
+                                                               title="Voir la charte">
+                                                                <i class="fas fa-chart-bar"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+
+                        <!-- Règles -->
+                        @if(isset($searchResults['rules']) && $searchResults['rules']->isNotEmpty())
+                            <div class="card shadow-sm border-0 mb-4">
+                                <div class="card-header bg-light border-0">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0">
+                                            Règles de conservation
+                                            <span class="badge bg-primary ms-2">
+                                            {{ $searchResults['rules']->count() }}
+                                        </span>
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="table-light">
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Nom</th>
+                                            <th>Délai conservation</th>
+                                            <th class="text-end">Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($searchResults['rules'] as $rule)
+                                            <tr>
+                                                <td class="text-primary fw-bold">{{ $rule->code }}</td>
+                                                <td>
+                                                    <div>{{ $rule->name }}</div>
+                                                    @if($rule->description)
+                                                        <small class="text-muted">
+                                                            {{ Str::limit($rule->description, 100) }}
+                                                        </small>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @foreach($rule->duls as $dul)
+                                                        <div class="badge bg-light text-dark mb-1">
+                                                            {{ $dul->duration }}
+                                                            <small class="text-muted">
+                                                                ({{ $dul->trigger->name }})
+                                                            </small>
+                                                        </div>
+                                                    @endforeach
+                                                </td>
+                                                <td class="text-end">
+                                                    <button type="button"
+                                                            class="btn btn-sm btn-primary"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#ruleModal-{{ $rule->id }}">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h6 class="text-muted mb-0">Règles</h6>
-                                <h3 class="fw-bold mb-0">{{ number_format($rules) }}</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        @endif
 
-            <div class="col-sm-6 col-xl-3">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-shrink-0">
-                                <div class="rounded-3 p-3 bg-info bg-opacity-10">
-                                    <i class="fas fa-th-large fa-2x text-info"></i>
+                        <!-- Message si aucun résultat -->
+                        @if(empty($searchResults['classifications']) && empty($searchResults['rules']))
+                            <div class="text-center py-5">
+                                <div class="mb-3">
+                                    <i class="fas fa-search fa-3x text-muted"></i>
                                 </div>
+                                <h4>Aucun résultat trouvé</h4>
+                                <p class="text-muted">
+                                    <!-- Fin de index.blade.php -->
+                                    Essayez avec d'autres mots-clés ou modifiez vos filtres
+                                </p>
                             </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h6 class="text-muted mb-0">Typologies</h6>
-                                <h3 class="fw-bold mb-0">{{ number_format($typologies) }}</h3>
+                        @endif
+
+                    @else
+                        <!-- Page d'accueil si pas de recherche -->
+                        <div class="text-center py-5">
+                            <div class="mb-4">
+                                <i class="fas fa-book-reader fa-4x text-primary opacity-50"></i>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Main Sections -->
-        <div class="row g-4">
-            <!-- Classifications Section -->
-            <div class="col-md-6">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h3 class="card-title mb-0">
-                                <i class="fas fa-folder text-primary me-2"></i>Classifications
-                            </h3>
-                            <a href="" class="btn btn-outline-primary">
-                                Voir tout
-                                <i class="fas fa-arrow-right ms-1"></i>
-                            </a>
-                        </div>
-                        <div class="list-group list-group-flush">
-                            @foreach($latestActivities as $activity)
-                                <a href="{{ route('activity.show', $activity) }}"
-                                   class="list-group-item list-group-item-action">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-1">{{ $activity->name }}</h6>
-                                        <small class="text-muted">{{ $activity->code }}</small>
-                                    </div>
-                                    <p class="mb-1 text-muted small">{{ Str::limit($activity->description, 100) }}</p>
+                            <h4>Commencez votre recherche</h4>
+                            <p class="text-muted">
+                                Utilisez la barre de recherche ci-dessus ou
+                                <a href="{{ route('public.search', ['show_all' => 1]) }}">
+                                    consultez toutes les classifications
                                 </a>
-                            @endforeach
+                            </p>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Références Section -->
-            <div class="col-md-6">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h3 class="card-title mb-0">
-                                <i class="fas fa-book text-success me-2"></i>Références
-                            </h3>
-                            <a href="{{ route('public.references') }}" class="btn btn-outline-success">
-                                Voir tout
-                                <i class="fas fa-arrow-right ms-1"></i>
-                            </a>
-                        </div>
-                        <div class="list-group list-group-flush">
-                            @foreach($latestReferences as $reference)
-                                <a href="{{ route('reference.show', $reference) }}"
-                                   class="list-group-item list-group-item-action">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-1">{{ $reference->name }}</h6>
-                                        <small class="text-muted">{{ optional($reference->category)->name }}</small>
-                                    </div>
-                                    <p class="mb-1 text-muted small">{{ Str::limit($reference->description, 100) }}</p>
-                                </a>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Règles Section -->
-            <div class="col-md-6">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h3 class="card-title mb-0">
-                                <i class="fas fa-gavel text-warning me-2"></i>Règles
-                            </h3>
-                            <a href="{{ route('public.rules') }}" class="btn btn-outline-warning">
-                                Voir tout
-                                <i class="fas fa-arrow-right ms-1"></i>
-                            </a>
-                        </div>
-                        <div class="list-group list-group-flush">
-                            @foreach($latestRules as $rule)
-                                <a href="{{ route('rule.show', $rule) }}"
-                                   class="list-group-item list-group-item-action">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-1">{{ $rule->name }}</h6>
-                                        <small class="text-muted">{{ $rule->code }}</small>
-                                    </div>
-                                    <p class="mb-1 text-muted small">{{ Str::limit($rule->description, 100) }}</p>
-                                </a>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Typologies Section -->
-            <div class="col-md-6">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h3 class="card-title mb-0">
-                                <i class="fas fa-th-large text-info me-2"></i>Typologies
-                            </h3>
-                            <a href="{{ route('public.typologies') }}" class="btn btn-outline-info">
-                                Voir tout
-                                <i class="fas fa-arrow-right ms-1"></i>
-                            </a>
-                        </div>
-                        <div class="list-group list-group-flush">
-                            @foreach($latestTypologies as $typology)
-                                <a href="{{ route('typology.show', $typology) }}"
-                                   class="list-group-item list-group-item-action">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-1">{{ $typology->name }}</h6>
-                                        <small class="text-muted">{{ optional($typology->category)->name }}</small>
-                                    </div>
-                                    <p class="mb-1 text-muted small">{{ Str::limit($typology->description, 100) }}</p>
-                                </a>
-                            @endforeach
-                        </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
+
+    @push('scripts')
+        <script>
+            function resetFilters() {
+                document.querySelectorAll('.filter-select').forEach(select => select.value = '');
+                document.querySelectorAll('.filter-checkbox').forEach(cb => cb.checked = false);
+                document.getElementById('searchForm').submit();
+            }
+
+            function toggleSort(button) {
+                const currentOrder = button.dataset.order;
+                const newOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+                button.dataset.order = newOrder;
+                const icon = button.querySelector('i');
+                icon.className = `fas fa-sort-${newOrder === 'asc' ? 'up' : 'down'}`;
+                document.querySelector('input[name="order"]').value = newOrder;
+                document.getElementById('searchForm').submit();
+            }
+
+            // Soumission automatique des filtres
+            document.querySelectorAll('.filter-select, .filter-checkbox').forEach(element => {
+                element.addEventListener('change', () => document.getElementById('searchForm').submit());
+            });
+        </script>
+    @endpush
 @endsection
 
-@push('styles')
-    <style>
-        .card {
-            transition: transform 0.2s ease-in-out;
-            border: none;
-            border-radius: 10px;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .list-group-item-action:hover {
-            background-color: #f8f9fa;
-        }
-
-        .bg-primary {
-            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
-        }
-
-        .input-group-lg .form-control {
-            border: none;
-        }
-
-        .input-group-lg .btn {
-            border: none;
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
-        }
-
-        .rounded-3 {
-            border-radius: 0.5rem !important;
-        }
-    </style>
-@endpush
