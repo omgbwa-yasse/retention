@@ -35,11 +35,11 @@
                            title="Télécharger en PDF">
                             <i class="fas fa-file-pdf"></i>
                         </a>
-                        <a href="{{ route('public.charter.excel', $rootClassification->id) }}"
-                           class="btn btn-light"
-                           title="Télécharger en Excel">
-                            <i class="fas fa-file-excel"></i>
-                        </a>
+{{--                        <a href="{{ route('public.charter.excel', $rootClassification->id) }}"--}}
+{{--                           class="btn btn-light"--}}
+{{--                           title="Télécharger en Excel">--}}
+{{--                            <i class="fas fa-file-excel"></i>--}}
+{{--                        </a>--}}
                     </div>
                 </div>
             </div>

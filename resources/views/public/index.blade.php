@@ -167,139 +167,132 @@
                         <!-- Classifications -->
                         @if(isset($searchResults['classifications']))
                             @foreach($searchResults['classifications'] as $typology => $classifications)
-                                <div class="card shadow-sm border-0 mb-4 result-group"
-                                     data-typology="{{ $typology }}">
-                                    <div class="card-header bg-light border-0">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <h6 class="mb-0">
-                                                {{ $typology }}
-                                                <span class="badge bg-primary ms-2">
-                                                {{ $classifications->count() }}
-                                            </span>
-                                            </h6>
-                                            <button class="btn btn-sm btn-link"
-                                                    data-bs-toggle="collapse"
-                                                    data-bs-target="#typology-{{ Str::slug($typology) }}">
-                                                <i class="fas fa-chevron-down"></i>
-                                            </button>
+                                <div class="search-results-group mb-4" data-typology="{{ $typology }}">
+                                    <h6 class="text-muted mb-3">
+                                        {{ $typology }}
+                                        <span class="badge bg-light text-dark ms-2">
+                    {{ $classifications->count() }} résultats
+                </span>
+                                    </h6>
+
+                                    @foreach($classifications as $classification)
+                                        <div class="search-result mb-4">
+                                            <div class="d-flex align-items-center gap-2 mb-2">
+                                                <span class="badge bg-primary text-white">{{ $classification->code }}</span>
+                                                @if($classification->country)
+                                                    <span class="badge bg-light text-dark">{{ $classification->country->name }}</span>
+                                                @endif
+                                            </div>
+
+                                            <h3 class="h5 mb-2">
+                                                <a href="{{ route('public.charter', $classification->id) }}"
+                                                   class="text-decoration-none text-primary">
+                                                    {{ $classification->name }}
+                                                </a>
+                                            </h3>
+
+                                            @if($classification->description)
+                                                <p class="text-muted mb-2">
+                                                    {{ Str::limit($classification->description, 200) }}
+                                                </p>
+                                            @endif
+
+                                            <div class="d-flex flex-wrap gap-2 mb-2">
+                                                @if($classification->rules)
+                                                    @foreach($classification->rules as $rule)
+                                                        @if($rule->duls)
+                                                            @foreach($rule->duls as $dul)
+                                                                <span class="badge bg-light text-dark">
+                                            {{ $dul->duration }}
+                                            <small class="text-muted">({{ $dul->trigger->name }})</small>
+                                        </span>
+                                                            @endforeach
+                                                        @endif
+                                                    @endforeach
+                                                @endif
+                                            </div>
+
+                                            <div class="mt-2">
+                                                <div class="btn-group">
+                                                    <a href="{{ route('public.charter', $classification->id) }}"
+                                                       class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-chart-bar me-1"></i> Voir la charte
+                                                    </a>
+                                                    <a href="{{ route('public.charter.pdf', $classification->id) }}"
+                                                       class="btn btn-sm btn-outline-primary">
+                                                        <i class="fas fa-file-pdf"></i> PDF
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="collapse show" id="typology-{{ Str::slug($typology) }}">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover mb-0">
-                                                <thead class="table-light">
-                                                <tr>
-                                                    <th style="width: 15%">Code</th>
-                                                    <th style="width: 40%">Intitulé</th>
-                                                    <th style="width: 30%">Durée légale</th>
-                                                    <th style="width: 15%" class="text-end">Actions</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @foreach($classifications as $classification)
-                                                    <tr>
-                                                        <td class="text-primary fw-bold">
-                                                            {{ $classification->code }}
-                                                        </td>
-                                                        <td>
-                                                            <div>{{ $classification->name }}</div>
-                                                            @if($classification->description)
-                                                                <small class="text-muted">
-                                                                    {{ Str::limit($classification->description, 100) }}
-                                                                </small>
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                            @if($classification->rules)
-                                                                @foreach($classification->rules as $rule)
-                                                                    @if($rule->duls)
-                                                                        @foreach($rule->duls as $dul)
-                                                                            <div class="badge bg-light text-dark mb-1">
-                                                                                {{ $dul->duration }}
-                                                                                <small class="text-muted">
-                                                                                    ({{ $dul->trigger->name }})
-                                                                                </small>
-                                                                            </div>
-                                                                        @endforeach
-                                                                    @endif
-                                                                @endforeach
-                                                            @endif
-                                                        </td>
-                                                        <td class="text-end">
-                                                            <a href="{{ route('public.charter', $classification->id) }}"
-                                                               class="btn btn-sm btn-primary"
-                                                               title="Voir la charte">
-                                                                <i class="fas fa-chart-bar"></i>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             @endforeach
                         @endif
 
                         <!-- Règles -->
                         @if(isset($searchResults['rules']) && $searchResults['rules']->isNotEmpty())
-                            <div class="card shadow-sm border-0 mb-4">
-                                <div class="card-header bg-light border-0">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h6 class="mb-0">
-                                            Règles de conservation
-                                            <span class="badge bg-primary ms-2">
-                                            {{ $searchResults['rules']->count() }}
-                                        </span>
-                                        </h6>
-                                    </div>
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table table-hover mb-0">
-                                        <thead class="table-light">
-                                        <tr>
-                                            <th>Code</th>
-                                            <th>Nom</th>
-                                            <th>Délai conservation</th>
-                                            <th class="text-end">Actions</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($searchResults['rules'] as $rule)
-                                            <tr>
-                                                <td class="text-primary fw-bold">{{ $rule->code }}</td>
-                                                <td>
-                                                    <div>{{ $rule->name }}</div>
-                                                    @if($rule->description)
-                                                        <small class="text-muted">
-                                                            {{ Str::limit($rule->description, 100) }}
-                                                        </small>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @foreach($rule->duls as $dul)
-                                                        <div class="badge bg-light text-dark mb-1">
-                                                            {{ $dul->duration }}
-                                                            <small class="text-muted">
-                                                                ({{ $dul->trigger->name }})
-                                                            </small>
-                                                        </div>
-                                                    @endforeach
-                                                </td>
-                                                <td class="text-end">
+                            <div class="search-results-group mb-4">
+                                <h6 class="text-muted mb-3">
+                                    Règles de conservation
+                                    <span class="badge bg-light text-dark ms-2">
+                {{ $searchResults['rules']->count() }} résultats
+            </span>
+                                </h6>
+
+                                @foreach($searchResults['rules'] as $rule)
+                                    <div class="search-result mb-4">
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                            <span class="badge bg-primary text-white">{{ $rule->code }}</span>
+                                            @if($rule->country)
+                                                <span class="badge bg-light text-dark">{{ $rule->country->name }}</span>
+                                            @endif
+                                        </div>
+
+                                        <h3 class="h5 mb-2">
+                                            @if($rule->classifications->isNotEmpty())
+                                                <a href="{{ route('public.charter', $rule->classifications->first()->id) }}"
+                                                   class="text-decoration-none text-primary">
+                                                    {{ $rule->name }}
+                                                </a>
+                                            @else
+                                                {{ $rule->name }}
+                                            @endif
+                                        </h3>
+
+                                        @if($rule->description)
+                                            <p class="text-muted mb-2">
+                                                {{ Str::limit($rule->description, 200) }}
+                                            </p>
+                                        @endif
+
+                                        <div class="d-flex flex-wrap gap-2 mb-2">
+                                            @foreach($rule->duls as $dul)
+                                                <span class="badge bg-light text-dark">
+                            {{ $dul->duration }}
+                            <small class="text-muted">({{ $dul->trigger->name }})</small>
+                        </span>
+                                            @endforeach
+                                        </div>
+
+                                        <div class="mt-2">
+                                            @if($rule->classifications->isNotEmpty())
+                                                <div class="btn-group">
+                                                    <a href="{{ route('public.charter', $rule->classifications->first()->id) }}"
+                                                       class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-chart-bar me-1"></i> Voir la charte
+                                                    </a>
                                                     <button type="button"
-                                                            class="btn btn-sm btn-primary"
+                                                            class="btn btn-sm btn-outline-primary"
                                                             data-bs-toggle="modal"
-                                                            data-bs-target="#ruleModal-{{ $rule->id }}">
-                                                        <i class="fas fa-eye"></i>
+                                                            data-bs-target="#ruleDetailsModal-{{ $rule->id }}">
+                                                        <i class="fas fa-info-circle me-1"></i> Détails
                                                     </button>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
                         @endif
 
@@ -316,7 +309,6 @@
                                 </p>
                             </div>
                         @endif
-
                     @else
                         <!-- Page d'accueil si pas de recherche -->
                         <div class="text-center py-5">
@@ -362,4 +354,5 @@
         </script>
     @endpush
 @endsection
+
 
