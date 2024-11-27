@@ -268,9 +268,7 @@ class PublicController extends Controller
         return $pdf->download($classification->code . '-charte.pdf');
     }
 
-    /**
-     * Filtrer les résultats de recherche
-     */
+
     public function filter(Request $request)
     {
         $query = $request->input('q');

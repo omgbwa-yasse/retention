@@ -1,4 +1,3 @@
-<!-- resources/views/public/charter-pdf.blade.php -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -82,8 +81,6 @@
     </ul>
 </div>
 
-
-
 <h2>Classes</h2>
 <table>
     <thead>
@@ -101,7 +98,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach ($domaine->childrenRecursive as $class)
+    @foreach ($classification->childrenRecursive as $class)
         <tr>
             <td>{{ $class->code }}</td>
             <td>{{ $class->name }}</td>
@@ -193,11 +190,6 @@
     @endforeach
     </tbody>
 </table>
-
-<div class="footer">
-    <p>Généré le {{ now()->format('d/m/Y H:i:s') }}</p>
-</div>
-</body>
 
 <div class="footer">
     Page <span class="page-number"></span>
