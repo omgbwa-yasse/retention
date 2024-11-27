@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Articles;
-use App\Models\basket;
+use App\Models\Basket;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\Reference;

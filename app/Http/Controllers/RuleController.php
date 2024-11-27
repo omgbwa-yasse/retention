@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Rule;
 use App\Models\Country;
 use App\Models\Articles;
-use App\Models\status;
+use App\Models\Status;
 use App\Models\Dul;
 use App\Models\Trigger;
 use App\Models\Sort;
@@ -102,7 +102,7 @@ class RuleController extends Controller
     // Affiche un élément spécifique
     public function show(Rule $rule)
     {
-        $rule->load('countries')->load('actives')->load('duls')->load('classifications')->load('status');
+        $rule->load('countries')->load('duls')->load('classifications')->load('status');
         return view('rule.ruleShow', compact('rule'));
     }
 

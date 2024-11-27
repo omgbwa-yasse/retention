@@ -25,6 +25,10 @@ class Rule extends Model
         return $this->hasMany(Dul::class);
     }
 
+    public function countries()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
+    }
     public function country()
     {
         return $this->belongsTo(Country::class, 'country_id');

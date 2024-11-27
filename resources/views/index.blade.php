@@ -84,23 +84,40 @@
     @else
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    <h4 class="mb-0">{{ __('app.portal_name') }}</h4>
+                <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+                    <i class="fas fa-book-reader"></i>
+                    <span>African Retention</span>
                 </a>
+
+{{--                <div class="dropdown">--}}
+{{--                    <button class="btn btn-secondary dropdown-toggle" type="button" id="langDropdown" data-bs-toggle="dropdown">--}}
+{{--                        {{ config('app.available_locales')[App::getLocale()] }}--}}
+{{--                    </button>--}}
+{{--                    <ul class="dropdown-menu">--}}
+{{--                        @foreach(config('app.available_locales') as $locale => $label)--}}
+{{--                            <li>--}}
+{{--                                <a class="dropdown-item @if(App::getLocale() == $locale) active @endif"--}}
+{{--                                   href="{{ route('language.switch', $locale) }}">--}}
+{{--                                    {{ $label }}--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                        @endforeach--}}
+{{--                    </ul>--}}
+{{--                </div>--}}
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                        aria-label="{{ __('ui.toggle_navigation') }}">
+                        aria-label="{{ __('toggle_navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">{{ __('menu.about') }}</a>
+                            <a class="nav-link" href="#">{{ __('about') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">{{ __('menu.news') }}</a>
+                            <a class="nav-link" href="#">{{ __('news') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-primary ml-2" href="{{ route('login') }}">{{ __('menu.login') }}</a>
+                            <a class="btn btn-primary ml-2" href="{{ route('login') }}">{{ __('login') }}</a>
                         </li>
                     </ul>
                 </div>
