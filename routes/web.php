@@ -149,7 +149,9 @@ Route::middleware(['auth'])->group(function () {
 //    Route::get('/activity/exportPdf', [ActivityController::class, 'exportPdf'])->name('activity.exportPdf');
     Route::resource('triggers', TriggerController::class);
 
-    Route::get('language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
+    Route::get('language/{locale}', [LanguageController::class, 'switch'])
+        ->name('language.switch')
+        ->where('locale', '[a-zA-Z]{2}');
 
 });
 

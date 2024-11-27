@@ -7,38 +7,19 @@ use Illuminate\Support\Facades\App;
 
 class LanguageController extends Controller
 {
-    // Liste des langues disponibles dans la zone CEMAC
-    protected $availableLocales = [
-        'fr'    => 'Cameroun',      // Langue officielle dans tous les pays CEMAC
-        'en'    => 'English',      // Langue officielle dans tous les pays CEMAC
-        'ar'    => 'Arabe',         // Tchad
-        'sng'   => 'Sango',         // République Centrafricaine
-        'ln'    => 'Lingala',       // Congo, RDC
-        'kde'   => 'Makonde',       // Gabon
-        'bum'   => 'Bulu',          // Cameroun
-        'sg'    => 'Sango',         // Guinée Équatoriale
-    ];
-
     public function switch($locale)
     {
-        // Vérifie si la langue demandée est disponible
-        if (!array_key_exists($locale, $this->availableLocales)) {
-            abort(400, 'Langue non supportée');
+        // Vérifier si la locale est valide
+        if (array_key_exists($locale, config('app.available_locales'))) {
+            // Mettre à jour la session
+            session()->put('locale', $locale);
+
+            // Forcer la mise à jour de la locale
+            App::setLocale($locale);
+            app()->setLocale($locale);
+            config(['app.locale' => $locale]);
         }
 
-        // Stocke la langue choisie dans la session
-        session()->put('locale', $locale);
-
-        // Définit la langue pour l'application
-        App::setLocale($locale);
-
-        // Redirige vers la page précédente
         return redirect()->back();
-    }
-
-    // Méthode pour obtenir la liste des langues disponibles
-    public function getAvailableLocales()
-    {
-        return $this->availableLocales;
     }
 }

@@ -9,12 +9,12 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-8 text-center text-white">
                         <h1 class="fw-bold {{ !empty($searchQuery) ? 'h2 mb-3' : 'display-4 mb-4' }}">
-                            Portail africain des délais de conservation
+                            {{ __('portal_title') }}
                         </h1>
 
                         @if(empty($searchQuery))
                             <p class="lead mb-4 opacity-75">
-                                Accédez aux informations sur les délais de conservation des documents en Afrique
+                                {{ __('portal_description') }}
                             </p>
                         @endif
 
@@ -23,15 +23,15 @@
                             <div class="col-12 col-lg-10">
                                 <form action="{{ route('public.search') }}" method="GET" id="searchForm">
                                     <div class="input-group input-group-lg shadow-sm bg-white rounded-pill">
-                                    <span class="input-group-text border-0 bg-transparent ps-4">
-                                        <i class="fas fa-search text-primary"></i>
-                                    </span>
+                                        <span class="input-group-text border-0 bg-transparent ps-4">
+                                            <i class="fas fa-search text-primary"></i>
+                                        </span>
                                         <input
                                             type="search"
                                             name="q"
                                             class="form-control border-0"
                                             value="{{ $searchQuery ?? '' }}"
-                                            placeholder="Rechercher des classifications, règles..."
+                                            placeholder="{{ __('search_placeholder') }}"
                                             autocomplete="off"
                                         >
                                         <button type="submit" class="btn btn-light border-0 rounded-pill px-4">
@@ -55,17 +55,17 @@
                     <div class="card shadow-sm border-0 mb-4">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="card-title mb-0">Filtres</h5>
+                                <h5 class="card-title mb-0">{{ __('filters') }}</h5>
                                 <button class="btn btn-sm btn-outline-secondary" onclick="resetFilters()">
-                                    <i class="fas fa-undo"></i>
+                                    <i class="fas fa-undo"></i> {{ __('reset') }}
                                 </button>
                             </div>
 
                             <!-- Filtres -->
                             <div class="mb-3">
-                                <label class="form-label">Pays</label>
+                                <label class="form-label">{{ __('all_countries') }}</label>
                                 <select name="country" class="form-select filter-select">
-                                    <option value="">Tous les pays</option>
+                                    <option value="">{{ __('all_countries') }}</option>
                                     @foreach($searchResults['filters']['countries'] ?? [] as $country)
                                         <option value="{{ $country->id }}"
                                             {{ $currentCountry == $country->id ? 'selected' : '' }}>
@@ -76,9 +76,9 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Durée de conservation</label>
+                                <label class="form-label">{{ __('retention_period') }}</label>
                                 <select name="duration" class="form-select filter-select">
-                                    <option value="">Toutes les durées</option>
+                                    <option value="">{{ __('all_durations') }}</option>
                                     @foreach($searchResults['filters']['durations'] ?? [] as $key => $label)
                                         <option value="{{ $key }}"
                                             {{ $currentDuration == $key ? 'selected' : '' }}>
@@ -89,7 +89,7 @@
                             </div>
 
                             <div class="mb-4">
-                                <label class="form-label">Trier par</label>
+                                <label class="form-label">{{ __('sort_by') }}</label>
                                 <div class="input-group">
                                     <select name="sort" class="form-select filter-select">
                                         @foreach($searchResults['filters']['sorts'] ?? [] as $key => $label)
@@ -110,7 +110,7 @@
 
                             <a href="{{ route('public.search', ['show_all' => 1]) }}"
                                class="btn btn-primary w-100">
-                                <i class="fas fa-list me-1"></i> Tout afficher
+                                <i class="fas fa-list me-1"></i> {{ __('show_all') }}
                             </a>
                         </div>
                     </div>
@@ -118,7 +118,7 @@
                     @if(!empty($searchResults['classifications']))
                         <div class="card shadow-sm border-0">
                             <div class="card-body">
-                                <h6 class="mb-3">Typologies</h6>
+                                <h6 class="mb-3">{{ __('typologies') }}</h6>
                                 <div class="typology-filters">
                                     @foreach($searchResults['classifications']->keys() as $typology)
                                         <div class="form-check">
@@ -129,8 +129,8 @@
                                             <label class="form-check-label" for="type-{{ $loop->index }}">
                                                 {{ $typology }}
                                                 <span class="badge bg-light text-dark ms-1">
-                                                {{ $searchResults['classifications'][$typology]->count() }}
-                                            </span>
+                                                    {{ $searchResults['classifications'][$typology]->count() }}
+                                                </span>
                                             </label>
                                         </div>
                                     @endforeach
@@ -148,17 +148,17 @@
                             <div>
                                 <h5 class="mb-0">
                                     @if(!empty($searchQuery))
-                                        Résultats pour "{{ $searchQuery }}"
+                                        {{ __('results_for') }} "{{ $searchQuery }}"
                                     @else
-                                        Toutes les classifications
+                                        {{ __('all_classifications') }}
                                     @endif
                                 </h5>
                                 <small class="text-muted">
                                     @if(isset($searchResults['classifications']))
-                                        {{ $searchResults['classifications']->flatten()->count() }} classifications
+                                        {{ $searchResults['classifications']->flatten()->count() }} {{ __('classifications') }}
                                     @endif
                                     @if(isset($searchResults['rules']))
-                                        • {{ $searchResults['rules']->count() }} règles
+                                        • {{ $searchResults['rules']->count() }} {{ __('rules') }}
                                     @endif
                                 </small>
                             </div>
@@ -171,8 +171,8 @@
                                     <h6 class="text-muted mb-3">
                                         {{ $typology }}
                                         <span class="badge bg-light text-dark ms-2">
-                    {{ $classifications->count() }} résultats
-                </span>
+                                            {{ $classifications->count() }} {{ __('results') }}
+                                        </span>
                                     </h6>
 
                                     @foreach($classifications as $classification)
@@ -203,9 +203,9 @@
                                                         @if($rule->duls)
                                                             @foreach($rule->duls as $dul)
                                                                 <span class="badge bg-light text-dark">
-                                            {{ $dul->duration }}
-                                            <small class="text-muted">({{ $dul->trigger->name }})</small>
-                                        </span>
+                                                                    {{ $dul->duration }}
+                                                                    <small class="text-muted">({{ $dul->trigger->name }})</small>
+                                                                </span>
                                                             @endforeach
                                                         @endif
                                                     @endforeach
@@ -216,7 +216,7 @@
                                                 <div class="btn-group">
                                                     <a href="{{ route('public.charter', $classification->id) }}"
                                                        class="btn btn-sm btn-primary">
-                                                        <i class="fas fa-chart-bar me-1"></i> Voir la charte
+                                                        <i class="fas fa-chart-bar me-1"></i> {{ __('see_charter') }}
                                                     </a>
                                                     <a href="{{ route('public.charter.pdf', $classification->id) }}"
                                                        class="btn btn-sm btn-outline-primary">
@@ -234,10 +234,10 @@
                         @if(isset($searchResults['rules']) && $searchResults['rules']->isNotEmpty())
                             <div class="search-results-group mb-4">
                                 <h6 class="text-muted mb-3">
-                                    Règles de conservation
+                                    {{ __('retention_rules') }}
                                     <span class="badge bg-light text-dark ms-2">
-                {{ $searchResults['rules']->count() }} résultats
-            </span>
+                                        {{ $searchResults['rules']->count() }} {{ __('results') }}
+                                    </span>
                                 </h6>
 
                                 @foreach($searchResults['rules'] as $rule)
@@ -269,9 +269,9 @@
                                         <div class="d-flex flex-wrap gap-2 mb-2">
                                             @foreach($rule->duls as $dul)
                                                 <span class="badge bg-light text-dark">
-                            {{ $dul->duration }}
-                            <small class="text-muted">({{ $dul->trigger->name }})</small>
-                        </span>
+                                                    {{ $dul->duration }}
+                                                    <small class="text-muted">({{ $dul->trigger->name }})</small>
+                                                </span>
                                             @endforeach
                                         </div>
 
@@ -280,13 +280,13 @@
                                                 <div class="btn-group">
                                                     <a href="{{ route('public.charter', $rule->classifications->first()->id) }}"
                                                        class="btn btn-sm btn-primary">
-                                                        <i class="fas fa-chart-bar me-1"></i> Voir la charte
+                                                        <i class="fas fa-chart-bar me-1"></i> {{ __('see_charter') }}
                                                     </a>
                                                     <button type="button"
                                                             class="btn btn-sm btn-outline-primary"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#ruleDetailsModal-{{ $rule->id }}">
-                                                        <i class="fas fa-info-circle me-1"></i> Détails
+                                                        <i class="fas fa-info-circle me-1"></i> {{ __('details') }}
                                                     </button>
                                                 </div>
                                             @endif
@@ -302,10 +302,9 @@
                                 <div class="mb-3">
                                     <i class="fas fa-search fa-3x text-muted"></i>
                                 </div>
-                                <h4>Aucun résultat trouvé</h4>
+                                <h4>{{ __('no_results') }}</h4>
                                 <p class="text-muted">
-                                    <!-- Fin de index.blade.php -->
-                                    Essayez avec d'autres mots-clés ou modifiez vos filtres
+                                    {{ __('try_other') }}
                                 </p>
                             </div>
                         @endif
@@ -315,11 +314,11 @@
                             <div class="mb-4">
                                 <i class="fas fa-book-reader fa-4x text-primary opacity-50"></i>
                             </div>
-                            <h4>Commencez votre recherche</h4>
+                            <h4>{{ __('start_search') }}</h4>
                             <p class="text-muted">
-                                Utilisez la barre de recherche ci-dessus ou
+                                {{ __('use_search') }}
                                 <a href="{{ route('public.search', ['show_all' => 1]) }}">
-                                    consultez toutes les classifications
+                                    {{ __('view_all_classifications') }}
                                 </a>
                             </p>
                         </div>
@@ -354,5 +353,3 @@
         </script>
     @endpush
 @endsection
-
-

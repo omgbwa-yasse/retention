@@ -1,14 +1,58 @@
 {
-    "app": {
-        "name": "Conservation",
-        "portal_name": "Portail africain des délais de conservation"
-    },
-    "menu": {
-        "about": "À propos",
-        "news": "Nouveautés",
-        "login": "Connexion"
-    },
-    "ui": {
-        "toggle_navigation": "Basculer la navigation"
-    }
-}
+
+
+    "Rechercher": "Rechercher",
+    "Team": "Équipe",
+    "Support": "Support",
+    "Forum": "Forum",
+    "Login": "Connexion",
+    "Register": "Inscription",
+    "Logout": "Déconnexion",
+    "Profile": "Mon Profil",
+    "Settings": "Paramètres",
+    "Search": "Rechercher...",
+    "Recherche": "Recherche",
+    "Tableau de gestion": "Tableau de gestion",
+    "Domaines": "Domaines",
+    "Activités": "Activités",
+    "Règles": "Règles",
+    "Typologies": "Typologies",
+    "Références": "Références",
+    "Ajouter": "Ajouter",
+    "Classe": "Classe",
+    "Domaine": "Domaine",
+    "Règle": "Règle",
+    "Typologie": "Typologie",
+    "Référence": "Référence",
+    "Contrôle": "Contrôle",
+    "Projet de règles": "Projet de règles",
+    "Règles en examen": "Règles en examen",
+    "Règles approuvées": "Règles approuvées",
+    "Paramètres": "Paramètres",
+    "Mon compte": "Mon compte",
+    "Généraux": "Généraux",
+    "portal_title": "Portail africain des délais de conservation",
+    "portal_description": "Accédez aux informations sur les délais de conservation des documents en Afrique",
+    "search_placeholder": "Rechercher des classifications, règles...",
+    "filters": "Filtres",
+    "reset": "Réinitialiser",
+    "all_countries": "Tous les pays",
+    "retention_period": "Durée de conservation",
+    "all_durations": "Toutes les durées",
+    "sort_by": "Trier par",
+    "show_all": "Tout afficher",
+    "typologies": "Typologies",
+    "results_for": "Résultats pour",
+    "all_classifications": "Toutes les classifications",
+    "classifications": "classifications",
+    "rules": "règles",
+    "results": "résultats",
+    "see_charter": "Voir la charte",
+    "retention_rules": "Règles de conservation",
+    "details": "Détails",
+    "no_results": "Aucun résultat trouvé",
+    "try_other": "Essayez avec d'autres mots-clés ou modifiez vos filtres",
+    "start_search": "Commencez votre recherche",
+    "use_search": "Utilisez la barre de recherche ci-dessus ou",
+    "view_all_classifications": "consultez toutes les classifications"
+  }
