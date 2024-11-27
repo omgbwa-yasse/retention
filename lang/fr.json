@@ -1,0 +1,14 @@
+{
+    "app": {
+        "name": "Conservation",
+        "portal_name": "Portail africain des délais de conservation"
+    },
+    "menu": {
+        "about": "À propos",
+        "news": "Nouveautés",
+        "login": "Connexion"
+    },
+    "ui": {
+        "toggle_navigation": "Basculer la navigation"
+    }
+}

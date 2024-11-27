@@ -1,0 +1,15 @@
+
+{
+    "app": {
+        "name": "Retention",
+        "portal_name": "African Records Retention Portal"
+    },
+    "menu": {
+        "about": "About",
+        "news": "News",
+        "login": "Login"
+    },
+    "ui": {
+        "toggle_navigation": "Toggle navigation"
+    }
+}

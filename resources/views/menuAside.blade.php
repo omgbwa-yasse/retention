@@ -36,18 +36,18 @@
                     </ul>
                 </li>
 
-                <!-- Paniers -->
-                <li class="nav-item">
-                    <a class="nav-link link-light d-flex align-items-center py-2" data-bs-toggle="collapse" href="#paniers">
-                        <i class="bi bi-basket"></i>
-                        <span class="ms-2 me-auto">Paniers</span>
-                        <i class="bi bi-chevron-down fs-8"></i>
-                    </a>
-                    <ul class="collapse show nav flex-column ps-3 small" id="paniers">
-                        <li><a href="{{ route('basket.index') }}" class="nav-link link-light py-1"><i class="bi bi-gear"></i><span class="ms-2">Gérer</span></a></li>
-                        <li><a href="{{ route('basket.create') }}" class="nav-link link-light py-1"><i class="bi bi-plus-square"></i><span class="ms-2">Ajouter</span></a></li>
-                    </ul>
-                </li>
+{{--                <!-- Paniers -->--}}
+{{--                <li class="nav-item">--}}
+{{--                    <a class="nav-link link-light d-flex align-items-center py-2" data-bs-toggle="collapse" href="#paniers">--}}
+{{--                        <i class="bi bi-basket"></i>--}}
+{{--                        <span class="ms-2 me-auto">Paniers</span>--}}
+{{--                        <i class="bi bi-chevron-down fs-8"></i>--}}
+{{--                    </a>--}}
+{{--                    <ul class="collapse show nav flex-column ps-3 small" id="paniers">--}}
+{{--                        <li><a href="{{ route('basket.index') }}" class="nav-link link-light py-1"><i class="bi bi-gear"></i><span class="ms-2">Gérer</span></a></li>--}}
+{{--                        <li><a href="{{ route('basket.create') }}" class="nav-link link-light py-1"><i class="bi bi-plus-square"></i><span class="ms-2">Ajouter</span></a></li>--}}
+{{--                    </ul>--}}
+{{--                </li>--}}
 
                 <!-- Contrôle -->
                 <li class="nav-item">

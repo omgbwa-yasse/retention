@@ -54,9 +54,9 @@
                                 <a href="{{ route('reference.create') }}" class="btn btn-primary me-2">
                                     <i class="fas fa-plus"></i> Ajouter une référence
                                 </a>
-                                <button type="button" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#viewBasketModal">
-                                    <i class="fas fa-shopping-cart"></i> Panier
-                                </button>
+{{--                                <button type="button" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#viewBasketModal">--}}
+{{--                                    <i class="fas fa-shopping-cart"></i> Panier--}}
+{{--                                </button>--}}
                                 <a href="#" class="btn btn-secondary">
                                     <i class="fas fa-print"></i> Imprimer
                                 </a>
@@ -108,9 +108,9 @@
                                             </div>
                                             <div>
                                                 <a href="{{ route('reference.show', $reference->id) }}" class="btn btn-sm btn-outline-primary me-2">Voir plus</a>
-                                                <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addToBasketModal" data-reference-id="{{ $reference->id }}">
-                                                    Ajouter au panier
-                                                </button>
+{{--                                                <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addToBasketModal" data-reference-id="{{ $reference->id }}">--}}
+{{--                                                    Ajouter au panier--}}
+{{--                                                </button>--}}
                                             </div>
                                         </div>
                                         <p class="mb-1 mt-2">{{ $reference->description }}</p>
@@ -140,63 +140,63 @@
     </div>
 
     <!-- Modal pour ajouter au panier -->
-    <div class="modal fade" id="addToBasketModal" tabindex="-1" aria-labelledby="addToBasketModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="addToBasketModalLabel">Ajouter au panier</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{{ route('reference.addToBasket') }}" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <input type="hidden" name="reference_id" id="reference_id">
-                        <div class="mb-3">
-                            <label for="basket_id" class="form-label">Sélectionner un panier</label>
-                            <select class="form-select" name="basket_id" id="basket_id" required>
-                                @foreach ($baskets as $basket)
-                                    <option value="{{ $basket->id }}">{{ $basket->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                        <button type="submit" class="btn btn-primary">Ajouter</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+{{--    <div class="modal fade" id="addToBasketModal" tabindex="-1" aria-labelledby="addToBasketModalLabel" aria-hidden="true">--}}
+{{--        <div class="modal-dialog">--}}
+{{--            <div class="modal-content">--}}
+{{--                <div class="modal-header bg-primary text-white">--}}
+{{--                    <h5 class="modal-title" id="addToBasketModalLabel">Ajouter au panier</h5>--}}
+{{--                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>--}}
+{{--                </div>--}}
+{{--                <form action="{{ route('reference.addToBasket') }}" method="POST">--}}
+{{--                    @csrf--}}
+{{--                    <div class="modal-body">--}}
+{{--                        <input type="hidden" name="reference_id" id="reference_id">--}}
+{{--                        <div class="mb-3">--}}
+{{--                            <label for="basket_id" class="form-label">Sélectionner un panier</label>--}}
+{{--                            <select class="form-select" name="basket_id" id="basket_id" required>--}}
+{{--                                @foreach ($baskets as $basket)--}}
+{{--                                    <option value="{{ $basket->id }}">{{ $basket->name }}</option>--}}
+{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="modal-footer">--}}
+{{--                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>--}}
+{{--                        <button type="submit" class="btn btn-primary">Ajouter</button>--}}
+{{--                    </div>--}}
+{{--                </form>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 
     <!-- Modal pour consulter le panier -->
-    <div class="modal fade" id="viewBasketModal" tabindex="-1" aria-labelledby="viewBasketModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="viewBasketModalLabel">Consulter le panier</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <ul class="list-group">
-                        @foreach ($baskets as $basket)
-                            <li class="list-group-item">
-                                <h5 class="mb-2">{{ $basket->name }}</h5>
-                                <ul class="list-unstyled">
+{{--    <div class="modal fade" id="viewBasketModal" tabindex="-1" aria-labelledby="viewBasketModalLabel" aria-hidden="true">--}}
+{{--        <div class="modal-dialog">--}}
+{{--            <div class="modal-content">--}}
+{{--                <div class="modal-header bg-danger text-white">--}}
+{{--                    <h5 class="modal-title" id="viewBasketModalLabel">Consulter le panier</h5>--}}
+{{--                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>--}}
+{{--                </div>--}}
+{{--                <div class="modal-body">--}}
+{{--                    <ul class="list-group">--}}
+{{--                        @foreach ($baskets as $basket)--}}
+{{--                            <li class="list-group-item">--}}
+{{--                                <h5 class="mb-2">{{ $basket->name }}</h5>--}}
+{{--                                <ul class="list-unstyled">--}}
 {{--                                    @foreach ($basket->references as $reference)--}}
 {{--                                        <li class="mb-1"><i class="fas fa-book me-2"></i>{{ $reference->name }}</li>--}}
 {{--                                    @endforeach--}}
-                                </ul>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                </div>
-            </div>
-        </div>
-    </div>
+{{--                                </ul>--}}
+{{--                            </li>--}}
+{{--                        @endforeach--}}
+{{--                    </ul>--}}
+{{--                </div>--}}
+{{--                <div class="modal-footer">--}}
+{{--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 @endsection
 
 @push('styles')

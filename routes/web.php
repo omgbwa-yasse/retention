@@ -8,6 +8,7 @@
 
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\ForumReactionController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\ReferenceCategoryController;
 use App\Http\Controllers\SearchController;
@@ -147,6 +148,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/search/advanced', [SearchController::class, 'advancedSearch'])->name('search.advanced');
 //    Route::get('/activity/exportPdf', [ActivityController::class, 'exportPdf'])->name('activity.exportPdf');
     Route::resource('triggers', TriggerController::class);
+
+    Route::get('language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
 
 });
 

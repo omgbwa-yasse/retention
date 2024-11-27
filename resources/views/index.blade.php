@@ -1,30 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Retention') }}</title>
-    <!-- Vos balises meta et title ici -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <title>{{ __('app.name') }}</title>
 
-    <!-- CSS de Bootstrap -->
+    <!-- Meta tags and title -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    <!-- Votre CSS personnalisé -->
-{{--    <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">--}}
+    <!-- Custom CSS -->
+    {{--    <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">--}}
 
-    <!-- Votre JS jquery -->
-{{--    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>--}}
+    <!-- jQuery -->
+    {{--    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>--}}
     <style>
         input,textarea,select {
             box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        /* Style pour le conteneur principal */
+        /* Main container style */
         #container {
             margin-top: 1.5rem;
             border: 0;
@@ -33,7 +33,7 @@
             padding: 1.5rem;
         }
 
-        /* Style pour l'en-tête */
+        /* Header style */
         #container h1, #container h2 {
             background-color: #0178d4;
             color: #fff;
@@ -43,12 +43,12 @@
             margin-top: 0;
         }
 
-        /* Style pour les boutons */
+        /* Button style */
         #container .btn {
             margin-bottom: 1rem;
         }
 
-        /* Style pour la table */
+        /* Table style */
         #container .table {
             border: 1px solid #dee2e6;
         }
@@ -64,10 +64,9 @@
         #container .table tbody tr:hover {
             background-color: #f1f1f1;
         }
-
     </style>
-
 </head>
+
 @extends('layouts.app')
 
 <body id="app">
@@ -86,21 +85,22 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <h4 class="mb-0">Portail africain des délais de conservation</h4>
+                    <h4 class="mb-0">{{ __('app.portal_name') }}</h4>
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                        aria-label="{{ __('ui.toggle_navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">À propos</a>
+                            <a class="nav-link" href="#">{{ __('menu.about') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Nouveautés</a>
+                            <a class="nav-link" href="#">{{ __('menu.news') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-primary ml-2" href="{{ route('login') }}">Connexion</a>
+                            <a class="btn btn-primary ml-2" href="{{ route('login') }}">{{ __('menu.login') }}</a>
                         </li>
                     </ul>
                 </div>
@@ -115,9 +115,9 @@
     </div>
 </div>
 
-    <!-- Scripts de Bootstrap -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Bootstrap Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>
