@@ -180,7 +180,7 @@
                     @foreach ($class->rules as $rule)
                         @if ($rule->articles)
                             @foreach ($rule->articles as $article)
-                                {{ $article->name }}<br>
+                                {{ $article->name }} -<br>
                             @endforeach
                         @endif
                     @endforeach
@@ -189,7 +189,11 @@
         </tr>
     @endforeach
     </tbody>
+
+
 </table>
+
+
 
 <div class="footer">
     Page <span class="page-number"></span>
