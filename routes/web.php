@@ -54,17 +54,34 @@ Route::get('/', [PublicController::class, 'index'])->name('public.index');
 Route::get('/search', [PublicController::class, 'search'])->name('public.search');
 Route::get('/charter/{id}', [PublicController::class, 'showCharter'])->name('public.charter');
 Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->name('public.charter.pdf');
-// Routes publiques
-//Route::get('/', [PublicController::class, 'index'])->name('public.index');
-Route::get('/typologies', [PublicController::class, 'typologies'])->name('public.typologies');
-Route::get('/references', [PublicController::class, 'references'])->name('public.references');
-Route::get('/references/{reference}', [PublicController::class, 'showReference'])->name('public.references.show');
-Route::get('/rules', [PublicController::class, 'rules'])->name('public.rules');
-Route::get('/rules/{rule}', [PublicController::class, 'showRule'])->name('public.rules.show');
-Route::get('/classifications', [PublicController::class, 'classifications'])->name('public.classifications');
-Route::get('/search', [PublicController::class, 'search'])->name('public.search');
-Route::get('/about', [PublicController::class, 'about'])->name('public.about');
-Route::get('/news', [PublicController::class, 'news'])->name('public.news');
+
+
+// Accès au grand public
+
+Route::get('/', [PublicController::class, 'index'])->name('public.index');
+Route::prefix('public')->group(function () {
+
+    /*
+        Route::get('/typologies', [PublicController::class, 'typologies'])->name('public.typologies');
+        Route::get('/references', [PublicController::class, 'references'])->name('public.references');
+        Route::get('/references/{reference}', [PublicController::class, 'showReference'])->name('public.references.show');
+        Route::get('/rules', [PublicController::class, 'rules'])->name('public.rules');
+        Route::get('/rules/{rule}', [PublicController::class, 'showRule'])->name('public.rules.show');
+        Route::get('/classifications', [PublicController::class, 'classifications'])->name('public.classifications');
+
+    */
+
+    Route::get('/charter/{id}', [PublicController::class, 'showCharter'])->name('public.charter');
+    Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->name('public.charter.pdf');
+    Route::get('/search', [PublicController::class, 'search'])->name('public.search');
+    Route::get('/about', [PublicController::class, 'about'])->name('public.about');
+    Route::get('/news', [PublicController::class, 'news'])->name('public.news');
+
+});
+
+
+
+
 // Route group for authentication
 Route::middleware(['auth'])->group(function () {
     // Controllers
@@ -75,7 +92,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/activities/{id}/rules', [ActivityRuleController::class, 'show'])->name('activity.rules.show');
     Route::resource('activity.typology', ActivityTypologyController::class);
     Route::resource('reference', ReferenceController::class);
-
     Route::resource('reference.article', ArticleController::class);
     Route::resource('reference.link', LinkController::class);
     Route::resource('reference.file', FileController::class)->except(['download']);
@@ -84,8 +100,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('setting', SettingController::class);
     Route::resource('charter', CharterController::class);
     Route::resource('rule', RuleController::class);
-    Route::resource('active', ActiveController::class);
-    Route::resource('rule.dua', DuaController::class);
+
+    // Route::resource('active', ActiveController::class); // A supprimer
+    // Route::resource('rule.dua', DuaController::class); // A supprimer
+
     Route::resource('rule.dul', DulController::class);
     Route::resource('rule.dul.dulreference', DulArticleController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::resource('rule.classification', RuleClassificationController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
@@ -94,29 +112,21 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/rule/{rule_id}/classification', [RuleClassificationController::class, 'index'])->name('rule.classification.index');
     Route::get('/rule/{rule}/classification/{classification}/edit', [RuleClassificationController::class, 'edit'])->name('rule.classification.edit');
     Route::delete('/rule/{rule}/classification/{classification}', [RuleClassificationController::class, 'destroy'])->name('rule.classification.destroy');
-
     Route::post('/reference/add-to-basket', [ReferenceController::class, 'addToBasket'])->name('reference.addToBasket');
-
-
     Route::get('/charter', [charterController::class, 'index'])->name('charter.index');
     Route::get('/charter/print/{domaineId}', [charterController::class, 'printPdf'])->name('charter.print');
     Route::get('/charter/export/{domaineId}', [charterController::class, 'exportExcel'])->name('charter.export');
-
-
-
     Route::resource('user', UserController::class);
     Route::get('/committee/project', [CommitteeController::class, 'project'])->name('committee.project');
     Route::get('/committee/examining', [CommitteeController::class, 'examining'])->name('committee.examining');
     Route::get('/committee/approved', [CommitteeController::class, 'approved'])->name('committee.approved');
-//    Route::get('user/{id}', [UserController::class, 'show'])->name('user.show');
 
-
-//
-//    Route::prefix('committee')->group(function(){
-//        Route::get('/project', [CommitteeController::class, 'index'])->name('committee.index');
-//        Route::get('/examining', [CommitteeController::class, 'examining'])->name('committee.examining');
-//        Route::get('/approved', [CommitteeController::class, 'approved'])->name('committee.approved');
-//    });
+    // Route::get('user/{id}', [UserController::class, 'show'])->name('user.show');
+    // Route::prefix('committee')->group(function(){
+    // Route::get('/project', [CommitteeController::class, 'index'])->name('committee.index');
+    // Route::get('/examining', [CommitteeController::class, 'examining'])->name('committee.examining');
+    // Route::get('/approved', [CommitteeController::class, 'approved'])->name('committee.approved');
+    //});
 
     Route::resource('committee', CommitteeController::class);
     Route::resource('subject', ForumSubjectController::class);
@@ -125,28 +135,26 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/reaction/{post}', [ForumReactionController::class, 'add'])->name('reaction.add');
     Route::post('/subject/{subject}/post/{post}/reply', [ForumPostController::class, 'reply'])->name('subject.post.reply');
 
-//    Route::get('/subject/{subject}/post/{post}/edit', [ForumSubjectController::class, 'editPost'])->name('subject.post.editPost');
-//    Route::delete('/subject/{post}/post/{subject}', [ForumPostController::class, 'destroy'])->name('subject.post.destroy');
+    //Route::get('/subject/{subject}/post/{post}/edit', [ForumSubjectController::class, 'editPost'])->name('subject.post.editPost');
+    //Route::delete('/subject/{post}/post/{subject}', [ForumPostController::class, 'destroy'])->name('subject.post.destroy');
     Route::delete('/subjects/{subject}/posts/{post}', [ForumSubjectController::class, 'destroyPost'])->name('subject.post.destroyPost');
     Route::get('/subjects/{subject}/posts/{post}/edit', [ForumSubjectController::class, 'editPost'])->name('subject.post.editPost');
     Route::put('/subjects/{subject}/posts/{post}', [ForumSubjectController::class, 'updatePost'])->name('subject.post.updatePost');
     Route::get('/subject/{subject}/post/{post}', [ForumSubjectController::class, 'showPost'])->name('subject.post.showPost');
-// setting
-    Route::get('/basket/{basket}', [ReferenceController::class, 'showBasket'])->name('basket.show');
 
+    //setting
+    Route::get('/basket/{basket}', [ReferenceController::class, 'showBasket'])->name('basket.show');
     Route::resource('country', CountryController::class);
     Route::post('typology_categories', [TypologyCategoryController::class, 'store'])->name('typology_categories.store');
-
     Route::resource('reference_categories', ReferenceCategoryController::class);
     Route::resource('typology_categories', TypologyCategoryController::class);
-
-
     Route::resource('SearchController', SearchController::class);
 
     //research
     Route::get('/search/index', [SearchController::class, 'search'])->name('search');
     Route::get('/search/advanced', [SearchController::class, 'advancedSearch'])->name('search.advanced');
-//    Route::get('/activity/exportPdf', [ActivityController::class, 'exportPdf'])->name('activity.exportPdf');
+
+    //Route::get('/activity/exportPdf', [ActivityController::class, 'exportPdf'])->name('activity.exportPdf');
     Route::resource('triggers', TriggerController::class);
 
     Route::get('language/{locale}', [LanguageController::class, 'switch'])
