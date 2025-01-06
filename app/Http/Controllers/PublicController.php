@@ -116,7 +116,6 @@ class PublicController extends Controller
             });
 
         $records = $rules->concat($classes)->concat($references);
-        dd($records);
         return view('public.search.index', compact('records', 'searchTerm'));
 
     }
