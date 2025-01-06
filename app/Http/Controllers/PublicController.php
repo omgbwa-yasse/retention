@@ -142,6 +142,10 @@ class PublicController extends Controller
         ]);
     }
 
+
+
+
+
     /**
      * Affiche la charte publique pour une classification
      */
@@ -166,6 +170,13 @@ class PublicController extends Controller
             'rootClassification' => $rootClassification
         ]);
     }
+
+
+
+
+
+
+
 
     /**
      * Affiche la liste des références
@@ -204,6 +215,10 @@ class PublicController extends Controller
 
         return view('public.references', compact('references', 'categories', 'countries'));
     }
+
+
+
+
     /**
      * Télécharger la charte en PDF
      */
@@ -221,6 +236,7 @@ class PublicController extends Controller
         $pdf = PDF::loadView('public.charter-pdf', compact('classification'));
         return $pdf->download($classification->code . '-charte.pdf');
     }
+
 
 
     public function filter(Request $request)
@@ -261,6 +277,10 @@ class PublicController extends Controller
 
         return response()->json(['results' => $results]);
     }
+
+
+
+
     /**
      * Affiche la liste des règles
      */
@@ -299,6 +319,9 @@ class PublicController extends Controller
         return view('public.rules', compact('rules', 'countries', 'classifications'));
     }
 
+
+
+
     /**
      * Affiche la liste des classifications
      */
@@ -336,6 +359,12 @@ class PublicController extends Controller
 
         return view('public.classifications', compact('classifications', 'countries'));
     }
+
+
+
+
+
+
 
     /**
      * Recherche globale
