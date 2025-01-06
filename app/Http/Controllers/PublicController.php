@@ -76,62 +76,65 @@ class PublicController extends Controller
 
 
     public function search(Request $request)
-{
-    $searchTerm = $request->input('query');
+    {
+        $searchTerm = $request->input('query');
 
-    if (empty($searchTerm)) {
-        return view('public.search.index', compact('searchTerm'));
+        if (empty($searchTerm)) {
+            return $this->index();
+        }
+
+        $searchFunction = function ($query, $searchTerm) {
+            return $query->where('name', 'LIKE', "%{$searchTerm}%")
+                        ->orWhere('description', 'LIKE', "%{$searchTerm}%");
+        };
+
+        $rules = Rule::when($searchTerm, $searchFunction)
+                    ->get()
+                    ->map(function($item) use ($searchTerm) {
+                        $relevance = strpos($item->name, $searchTerm) !== false ? 1 : 2;
+                        if ($relevance !== 1 && strpos($item->description, $searchTerm) !== false) {
+                            $relevance = 2;
+                        }
+                        return array_merge($item->toArray(), [
+                            'type' => 'rule',
+                            'relevance' => $relevance
+                        ]);
+                    });
+
+        $classes = Classification::when($searchTerm, $searchFunction)
+                    ->get()
+                    ->map(function($item) use ($searchTerm) {
+                        $relevance = strpos($item->name, $searchTerm) !== false ? 1 : 2;
+                        if ($relevance !== 1 && strpos($item->description, $searchTerm) !== false) {
+                            $relevance = 2;
+                        }
+                        return array_merge($item->toArray(), [
+                            'type' => 'class',
+                            'relevance' => $relevance
+                        ]);
+                    });
+
+        $references = Reference::when($searchTerm, $searchFunction)
+                    ->get()
+                    ->map(function($item) use ($searchTerm) {
+                        $relevance = strpos($item->name, $searchTerm) !== false ? 1 : 2;
+                        if ($relevance !== 1 && strpos($item->description, $searchTerm) !== false) {
+                            $relevance = 2;
+                        }
+                        return array_merge($item->toArray(), [
+                            'type' => 'reference',
+                            'relevance' => $relevance
+                        ]);
+                    });
+
+        $records = collect([$rules, $classes, $references])->flatten()->sortBy('relevance');
+        $records = $rules->concat($classes)
+                    ->concat($references)
+                    ->sortByDesc('relevance')
+                    ->take(50);
+
+        return view('public.search.index', compact('records', 'searchTerm'));
     }
-
-    $searchFunction = function ($query, $searchTerm) {
-        return $query->where('name', 'LIKE', "%{$searchTerm}%")
-                     ->orWhere('description', 'LIKE', "%{$searchTerm}%");
-    };
-
-    $rules = Rule::when($searchTerm, $searchFunction)
-                ->get()
-                ->map(function($item) use ($searchTerm) {
-                    $relevance = strpos($item->name, $searchTerm) !== false ? 1 : 2;
-                    if ($relevance !== 1 && strpos($item->description, $searchTerm) !== false) {
-                        $relevance = 2;
-                    }
-                    return array_merge($item->toArray(), [
-                        'type' => 'rule',
-                        'relevance' => $relevance
-                    ]);
-                });
-
-    $classes = Classification::when($searchTerm, $searchFunction)
-                ->get()
-                ->map(function($item) use ($searchTerm) {
-                    $relevance = strpos($item->name, $searchTerm) !== false ? 1 : 2;
-                    if ($relevance !== 1 && strpos($item->description, $searchTerm) !== false) {
-                        $relevance = 2;
-                    }
-                    return array_merge($item->toArray(), [
-                        'type' => 'class',
-                        'relevance' => $relevance
-                    ]);
-                });
-
-    $references = Reference::when($searchTerm, $searchFunction)
-                ->get()
-                ->map(function($item) use ($searchTerm) {
-                    $relevance = strpos($item->name, $searchTerm) !== false ? 1 : 2;
-                    if ($relevance !== 1 && strpos($item->description, $searchTerm) !== false) {
-                        $relevance = 2;
-                    }
-                    return array_merge($item->toArray(), [
-                        'type' => 'reference',
-                        'relevance' => $relevance
-                    ]);
-                });
-
-    $records = collect([$rules, $classes, $references])->flatten()->sortBy('relevance');
-    dd($records);
-
-    return view('public.search.index', compact('records', 'searchTerm'));
-}
 
 
 
@@ -233,14 +236,29 @@ class PublicController extends Controller
 
 
     /**
+     * Affiche les détails d'une classe
+     */
+
+    public function showClass(INT $id)
+    {
+        $classification = Classification::with(['parent', 'childrenRecursive', 'rules.duls.trigger', 'rules.articles', 'typologies'])->findOrFail($id);
+        return view('public.classes.show', compact('classification'));
+    }
+   
+
+    /**
      * Affiche les détails d'une référence
      */
-    public function showReference(Reference $reference)
+    
+    public function showReference(INT $id)
     {
+        $reference = Reference::with(['category', 'countries', 'articles', 'files' => function($query) {
+            $query->whereNotNull('file_path');
+        }])->findOrFail($id);
+
         $reference->load(['category', 'countries', 'articles', 'files' => function($query) {
             $query->whereNotNull('file_path');
         }]);
-
         return view('public.references.show', compact('reference'));
     }
 
@@ -249,10 +267,10 @@ class PublicController extends Controller
     /**
      * Affiche les détails d'une règle
      */
-    public function showRule(Rule $rule)
+    public function showRule(INT $id)
     {
+        $rule = Rule::with(['country', 'classifications', 'duls.articles', 'duls.trigger', 'duls.sort'])->findOrFail($id);
         $rule->load(['country', 'classifications', 'duls.articles', 'duls.trigger', 'duls.sort']);
-
         return view('public.rules.show', compact('rule'));
     }
 
