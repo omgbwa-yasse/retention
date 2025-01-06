@@ -55,16 +55,13 @@ Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->n
 
 // Accès au grand public
 
-Route::get('/', [PublicController::class, 'index'])->name('public.index');
-Route::get('/public', [PublicController::class, 'index'])->name('public.index');
-Route::prefix('public')->group(function () {
-
-
+    Route::get('/', [PublicController::class, 'index'])->name('public.index');
+    Route::get('/public', [PublicController::class, 'index'])->name('public.index');
+    Route::prefix('public')->group(function () {
 
     /*
         les vues des rules, references et classes
     */
-
 
     Route::get('/rules/{rule}', [PublicController::class, 'showRule'])->name('public.rules.show');
     Route::get('/classes/{class}', [PublicController::class, 'showClass'])->name('public.classes.show');
@@ -103,10 +100,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('setting', SettingController::class);
     Route::resource('charter', CharterController::class);
     Route::resource('rule', RuleController::class);
-
-    // Route::resource('active', ActiveController::class); // A supprimer
-    // Route::resource('rule.dua', DuaController::class); // A supprimer
-
     Route::resource('rule.dul', DulController::class);
     Route::resource('rule.dul.dulreference', DulArticleController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::resource('rule.classification', RuleClassificationController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
