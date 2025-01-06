@@ -33,14 +33,14 @@ class Reference extends Model
         return $this->hasMany(ReferenceLink::class);
     }
 
-    public function countries()
+    public function country()
     {
-        return $this->belongsTo(Country::class);
+        return $this->belongsTo(Country::class, 'country_id');
     }
 
     public function articles()
     {
-        return $this->hasMany(Articles::class);
+        return $this->hasMany(Articles::class, 'reference_id');
     }
 
     public function baskets()

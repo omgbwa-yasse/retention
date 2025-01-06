@@ -44,7 +44,7 @@ class Dul extends Model
 
     public function articles()
     {
-        return $this->belongsToMany(Articles::class, 'dul_articles');
+        return $this->belongsToMany(Articles::class, 'dul_articles', 'dul_id', 'article_id');
     }
 
 

@@ -185,51 +185,6 @@ class PublicController extends Controller
     }
 
 
-
-    /**
-     * Affiche la liste des classifications
-     */
-    public function classifications(Request $request)
-    {
-        $query = Classification::with('parent')
-            ->select('classifications.*');
-
-        // Filtrage par type (parent/enfant)
-        if ($request->has('type')) {
-            if ($request->type === 'parent') {
-                $query->whereNull('parent_id');
-            } elseif ($request->type === 'child') {
-                $query->whereNotNull('parent_id');
-            }
-        }
-
-        // Filtrage par pays
-        if ($request->has('country')) {
-            $query->where('country_id', $request->country);
-        }
-
-        // Recherche
-        if ($request->has('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('code', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%");
-            });
-        }
-
-        $classifications = $query->paginate(10)->withQueryString();
-        $countries = Country::all();
-
-        return view('public.classifications', compact('classifications', 'countries'));
-    }
-
-
-
-
-
-
-
     /**
      * Recherche globale
      */
@@ -241,22 +196,22 @@ class PublicController extends Controller
 
     public function showClass(INT $id)
     {
-        $classification = Classification::with(['parent', 'childrenRecursive', 'rules.duls.trigger', 'rules.articles', 'typologies'])->findOrFail($id);
-        return view('public.classes.show', compact('classification'));
+        $class = Classification::with(['parent', 'childrenRecursive', 'rules.duls.trigger', 'rules.articles', 'typologies'])->findOrFail($id);
+        return view('public.classes.show', compact('class'));
     }
-   
+
 
     /**
      * Affiche les détails d'une référence
      */
-    
+
     public function showReference(INT $id)
     {
-        $reference = Reference::with(['category', 'countries', 'articles', 'files' => function($query) {
+        $reference = Reference::with(['category', 'country', 'articles', 'files' => function($query) {
             $query->whereNotNull('file_path');
         }])->findOrFail($id);
 
-        $reference->load(['category', 'countries', 'articles', 'files' => function($query) {
+        $reference->load(['category', 'country', 'articles', 'files' => function($query) {
             $query->whereNotNull('file_path');
         }]);
         return view('public.references.show', compact('reference'));
@@ -267,10 +222,11 @@ class PublicController extends Controller
     /**
      * Affiche les détails d'une règle
      */
+
     public function showRule(INT $id)
     {
-        $rule = Rule::with(['country', 'classifications', 'duls.articles', 'duls.trigger', 'duls.sort'])->findOrFail($id);
-        $rule->load(['country', 'classifications', 'duls.articles', 'duls.trigger', 'duls.sort']);
+        $rule = Rule::with(['country', 'classifications', 'duls.articles', 'duls.trigger', 'duls.sort','status','validator'])->findOrFail($id);
+        $rule->load(['country', 'classifications', 'duls.articles', 'duls.trigger', 'duls.sort', 'status', 'validator']);
         return view('public.rules.show', compact('rule'));
     }
 

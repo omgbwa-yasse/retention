@@ -23,13 +23,10 @@ use App\Http\Controllers\ReferenceController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\FileController;
-
 use App\Http\Controllers\TypologyController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CharterController;
 use App\Http\Controllers\RuleController;
-use App\Http\Controllers\ActiveController;
-use App\Http\Controllers\DuaController;
 use App\Http\Controllers\DulController;
 use App\Http\Controllers\DulArticleController;
 use App\Http\Controllers\RuleClassificationController;
@@ -59,18 +56,24 @@ Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->n
 // Accès au grand public
 
 Route::get('/', [PublicController::class, 'index'])->name('public.index');
+Route::get('/public', [PublicController::class, 'index'])->name('public.index');
 Route::prefix('public')->group(function () {
 
-    /*
-        Route::get('/typologies', [PublicController::class, 'typologies'])->name('public.typologies');
-        Route::get('/references', [PublicController::class, 'references'])->name('public.references');
-        Route::get('/references/{reference}', [PublicController::class, 'showReference'])->name('public.references.show');
-        Route::get('/rules', [PublicController::class, 'rules'])->name('public.rules');
-        Route::get('/rules/{rule}', [PublicController::class, 'showRule'])->name('public.rules.show');
-        Route::get('/classifications', [PublicController::class, 'classifications'])->name('public.classifications');
 
+
+    /*
+        les vues des rules, references et classes
     */
 
+
+    Route::get('/rules/{rule}', [PublicController::class, 'showRule'])->name('public.rules.show');
+    Route::get('/classes/{class}', [PublicController::class, 'showClass'])->name('public.classes.show');
+    Route::get('/references/{reference}', [PublicController::class, 'showReference'])->name('public.references.show');
+
+    /*
+        Pages statiques
+    */
+    Route::get('/class', [PublicController::class, 'showClass'])->name('public.class');
     Route::get('/charter/{id}', [PublicController::class, 'showCharter'])->name('public.charter');
     Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->name('public.charter.pdf');
     Route::get('/search', [PublicController::class, 'search'])->name('public.search');

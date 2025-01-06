@@ -21,6 +21,14 @@
                     <div class="list-group-item">
                         <h2 class="fw-bold">
                             {{ $value['name'] }}
+                            @if($value['type'] === 'reference')
+                                <a href="{{ route('public.references.show', $value['id']) }}" class="btn btn-sm btn-outline-success">Voir</a>
+                            @elseif ($value['type'] === 'rule')
+                                <a href="{{ route('public.rules.show', $value['id']) }}" class="btn btn-sm btn-outline-primary">Voir</a>
+                            @else
+                                <a href="{{ route('public.classes.show', $value['id']) }}" class="btn btn-sm btn-outline-secondary">Voir</a>
+                            @endif
+
                             <span class="badge {{ $value['type'] === 'reference' ? 'bg-success' : ($value['type'] === 'rule' ? 'bg-primary' : ($value['type'] === 'class' ? 'bg-secondary' : '')) }} text-white">
                                 {{ ucfirst($value['type']) }}
                             </span>

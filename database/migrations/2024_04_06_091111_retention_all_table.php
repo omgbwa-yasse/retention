@@ -288,7 +288,7 @@ return new class extends Migration
 
 
         // Create dul_article table
-        Schema::create('dul_article', function (Blueprint $table) {
+        Schema::create('dul_articles', function (Blueprint $table) {
             $table->unsignedInteger('dul_id');
             $table->unsignedInteger('article_id');
             $table->primary(['dul_id', 'article_id']);
@@ -300,7 +300,7 @@ return new class extends Migration
 
 
         // Create rule_classification table
-        Schema::create('rule_classification', function (Blueprint $table) {
+        Schema::create('rule_classifications', function (Blueprint $table) {
             $table->unsignedInteger('classification_id');
             $table->unsignedInteger('rule_id');
             $table->primary(['classification_id', 'rule_id']);
