@@ -20,64 +20,18 @@ class PublicController extends Controller
      */
     public function index()
     {
-        return view('public.index', [
-            // Statistiques
-            'activities' => Classification::count(),
-            'references' => Reference::count(),
-            'rules' => Rule::where('status_id', 2)->count(),
-            'typologies' => Typology::count(),
-
-            // Derniers éléments
-            'latestActivities' => Classification::latest()->take(5)->get(),
-            'latestReferences' => Reference::latest()->take(5)->get(),
-            'latestRules' => Rule::where('status_id', 2)->latest()->take(5)->get(),
-            'latestTypologies' => Typology::latest()->take(5)->get(),
-        ]);
-    }
-    /**
-     * Affiche la liste des typologies
-     */
-    public function typologies(Request $request)
-    {
-        $query = Typology::with('category')
-            ->select('typologies.*')
-            ->leftJoin('typology_categories', 'typologies.category_id', '=', 'typology_categories.id');
-
-        // Filtrage par catégorie
-        if ($request->has('category')) {
-            $query->where('category_id', $request->category);
-        }
-
-        // Recherche
-        if ($request->has('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('typologies.name', 'like', "%{$search}%")
-                    ->orWhere('typologies.description', 'like', "%{$search}%")
-                    ->orWhere('typology_categories.name', 'like', "%{$search}%");
-            });
-        }
-
-        // Tri
-        $sort = $request->get('sort', 'name');
-        $direction = $request->get('direction', 'asc');
-        $query->orderBy($sort, $direction);
-
-        $typologies = $query->paginate(10)->withQueryString();
-        $categories = TypologyCategory::all();
-
-        return view('public.typologies', compact('typologies', 'categories'));
+        $classes = Classification::with([
+            'typologies',
+            'rules.duls.trigger',
+            'rules.articles',
+            'country',
+            'parent',
+            'user'
+        ])->orderBy('created_at', 'desc')->paginate(50);
+        return view('public.search.index', compact('classes'));
     }
 
-    /**
-     * Recherche publique
-     */
-    /**
-     * Recherche globale
-     */
-    /**
-     * Recherche publique
-     */
+
     public function search(Request $request)
     {
         $query = $request->input('q');

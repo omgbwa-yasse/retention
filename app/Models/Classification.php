@@ -59,7 +59,7 @@ class Classification extends Model
         return $this->belongsTo(Country::class, 'country_id');
     }
 
-    public function users()
+    public function user()
     {
         return $this->belongsTo(user::class, 'user_id');
     }
