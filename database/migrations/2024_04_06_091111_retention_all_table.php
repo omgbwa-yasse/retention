@@ -525,7 +525,18 @@ return new class extends Migration
             $table->timestamps();
         });
 
+
+        // news
+        Schema::create('news', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->text('description');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->timestamps();
+        });
+
     }
+
 
 
     /**
@@ -639,5 +650,13 @@ return new class extends Migration
         Schema::dropIfExists('countries');
         Schema::dropIfExists('statuses');
 
+
+        /*
+
+        News
+
+        */
+
+        Schema::dropIfExists('news');
     }
 };
