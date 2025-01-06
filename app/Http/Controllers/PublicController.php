@@ -76,49 +76,63 @@ class PublicController extends Controller
 
 
     public function search(Request $request)
-    {
-        $searchTerm = $request->input('search');
+{
+    $searchTerm = $request->input('query');
 
-        $rules = Rule::where('name', 'LIKE', "%{$searchTerm}%")
-            ->orWhere('description', 'LIKE', "%{$searchTerm}%")
-            ->get()
-            ->map(function($item) {
-                return [
-                    'id' => $item->id,
-                    'name' => $item->name,
-                    'description' => $item->description,
-                    'type' => 'rule'
-                ];
-            });
-
-        $classes = Classification::where('name', 'LIKE', "%{$searchTerm}%")
-            ->orWhere('description', 'LIKE', "%{$searchTerm}%")
-            ->get()
-            ->map(function($item) {
-                return [
-                    'id' => $item->id,
-                    'name' => $item->name,
-                    'description' => $item->description,
-                    'type' => 'class'
-                ];
-            });
-
-        $references = Reference::where('name', 'LIKE', "%{$searchTerm}%")
-            ->orWhere('description', 'LIKE', "%{$searchTerm}%")
-            ->get()
-            ->map(function($item) {
-                return [
-                    'id' => $item->id,
-                    'name' => $item->name,
-                    'description' => $item->description,
-                    'type' => 'reference'
-                ];
-            });
-
-        $records = $rules->concat($classes)->concat($references);
-        return view('public.search.index', compact('records', 'searchTerm'));
-
+    if (empty($searchTerm)) {
+        return view('public.search.index', compact('searchTerm'));
     }
+
+    $searchFunction = function ($query, $searchTerm) {
+        return $query->where('name', 'LIKE', "%{$searchTerm}%")
+                     ->orWhere('description', 'LIKE', "%{$searchTerm}%");
+    };
+
+    $rules = Rule::when($searchTerm, $searchFunction)
+                ->get()
+                ->map(function($item) use ($searchTerm) {
+                    $relevance = strpos($item->name, $searchTerm) !== false ? 1 : 2;
+                    if ($relevance !== 1 && strpos($item->description, $searchTerm) !== false) {
+                        $relevance = 2;
+                    }
+                    return array_merge($item->toArray(), [
+                        'type' => 'rule',
+                        'relevance' => $relevance
+                    ]);
+                });
+
+    $classes = Classification::when($searchTerm, $searchFunction)
+                ->get()
+                ->map(function($item) use ($searchTerm) {
+                    $relevance = strpos($item->name, $searchTerm) !== false ? 1 : 2;
+                    if ($relevance !== 1 && strpos($item->description, $searchTerm) !== false) {
+                        $relevance = 2;
+                    }
+                    return array_merge($item->toArray(), [
+                        'type' => 'class',
+                        'relevance' => $relevance
+                    ]);
+                });
+
+    $references = Reference::when($searchTerm, $searchFunction)
+                ->get()
+                ->map(function($item) use ($searchTerm) {
+                    $relevance = strpos($item->name, $searchTerm) !== false ? 1 : 2;
+                    if ($relevance !== 1 && strpos($item->description, $searchTerm) !== false) {
+                        $relevance = 2;
+                    }
+                    return array_merge($item->toArray(), [
+                        'type' => 'reference',
+                        'relevance' => $relevance
+                    ]);
+                });
+
+    $records = collect([$rules, $classes, $references])->flatten()->sortBy('relevance');
+    dd($records);
+
+    return view('public.search.index', compact('records', 'searchTerm'));
+}
+
 
 
 

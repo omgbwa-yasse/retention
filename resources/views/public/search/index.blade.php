@@ -38,7 +38,13 @@
                                 {{ $value['country']['name'] }}
                                 ({{ $value['country']['abbr'] }}),
                             @endif
-                            créé le {{ \Carbon\Carbon::parse($value['created_at'])->format('d/m/Y') }}
+
+                            @if(isset($value['created_at']))
+                                {{ \Carbon\Carbon::parse($value['created_at'])->format('d/m/Y') }}
+                            @else
+                                {{ 'Date non disponible' }}
+                            @endif
+
                             @if(isset($value['user']))
                                 par {{ $value['user']['name'] }}
                             @endif
