@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container text-center my-4">
-        <h1>Trouvez vos délais de conservation !</h1>
+        <h1>Trouvez tout ici !</h1>
         <form method="GET" action="{{ route('public.search') }}" class="d-flex justify-content-center">
             <input type="text"
                    name="query"
