@@ -1,6 +1,6 @@
 <!-- resources/views/public/classes/show.blade.php -->
 
-@extends('layouts.app')
+@extends('index')
 
 @section('content')
 <div class="container mt-5">
