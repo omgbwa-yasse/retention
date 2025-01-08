@@ -124,6 +124,8 @@
             </div>
         </nav>
         <div class="container-fluid">
+            <a href="{{ url()->previous() }}" class="btn btn-primary">Retour</a>
+
             @yield('content')
         </div>
     @endauth
