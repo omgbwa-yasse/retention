@@ -21,11 +21,16 @@
                     <div class="list-group-item">
                         <h2 class="fw-bold">
                             {{ $value['name'] }}
+
                             @if($value['type'] === 'reference')
                                 <a href="{{ route('public.references.show', $value['id']) }}" class="btn btn-sm btn-outline-success">Voir</a>
                             @elseif ($value['type'] === 'rule')
                                 <a href="{{ route('public.rules.show', $value['id']) }}" class="btn btn-sm btn-outline-primary">Voir</a>
                             @else
+                                <a href="{{ route('public.charter', $value['id']) }}"
+                                   class="btn btn-sm btn-primary">
+                                    <i class="fas fa-chart-bar me-1"></i> {{ __('see_charter') }}
+                                </a>
                                 <a href="{{ route('public.classes.show', $value['id']) }}" class="btn btn-sm btn-outline-secondary">Voir</a>
                             @endif
 
