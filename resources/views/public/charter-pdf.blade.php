@@ -88,10 +88,6 @@
         <th>Cote</th>
         <th>Intitulé</th>
         <th>Typologies</th>
-        <th>Active Délai</th>
-        <th>Active Déclencheur</th>
-        <th>Semi-active Délai</th>
-        <th>Semi-active Déclencheur</th>
         <th>Durée légale Délai</th>
         <th>Durée légale Déclencheur</th>
         <th>Références</th>

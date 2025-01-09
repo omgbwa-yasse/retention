@@ -37,19 +37,9 @@
             @endforeach
         @endif
     </td>
-    <td class="{{ $hasRules ? '' : 'table-light' }}">
-        @if($hasRules)
-            @foreach($rules as $rule)
-                @foreach($rule->duls as $dul)
-                    {{ $dul->trigger->name }}<br>
-                @endforeach
-            @endforeach
-        @endif
-    </td>
 
-    <!-- Délais semi-actifs (si applicable dans votre système) -->
-    <td class="{{ $hasRules ? '' : 'table-light' }}"></td>
-    <td class="{{ $hasRules ? '' : 'table-light' }}"></td>
+
+
 
     <!-- Durée légale -->
     <td class="{{ $hasRules ? '' : 'table-light' }}">

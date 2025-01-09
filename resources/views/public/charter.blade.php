@@ -54,19 +54,11 @@
                             <th rowspan="2" class="align-middle">Code</th>
                             <th rowspan="2" class="align-middle">Intitulé</th>
                             <th rowspan="2" class="align-middle">Typologies</th>
-                            <th colspan="2" class="text-center bg-success text-white">Délai actif</th>
-                            <th colspan="2" class="text-center bg-info text-white">Délai semi-actif</th>
+
                             <th colspan="2" class="text-center bg-warning text-white">Durée légale</th>
                             <th rowspan="2" class="align-middle">Références</th>
                         </tr>
-                        <tr>
-                            <th class="bg-success text-white">Durée</th>
-                            <th class="bg-success text-white">Déclencheur</th>
-                            <th class="bg-info text-white">Durée</th>
-                            <th class="bg-info text-white">Déclencheur</th>
-                            <th class="bg-warning text-white">Durée</th>
-                            <th class="bg-warning text-white">Déclencheur</th>
-                        </tr>
+
                         </thead>
                         <tbody>
                         <!-- Parent -->
