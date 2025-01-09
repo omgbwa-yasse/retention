@@ -48,7 +48,7 @@ Route::get('/mission/export', [MissionController::class, 'export'])->name('missi
 Route::get('/typologies/export', [TypologyController::class, 'export'])->name('typology.export');
 Route::get('reference/{reference}/file/{name}/download', [FileController::class, 'download'])->name('reference.file.download');
 Route::get('/', [PublicController::class, 'index'])->name('public.index');
-Route::get('/search', [PublicController::class, 'search'])->name('public.search');
+
 Route::get('/charter/{id}', [PublicController::class, 'showCharter'])->name('public.charter');
 Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->name('public.charter.pdf');
 
@@ -58,6 +58,17 @@ Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->n
     Route::get('/', [PublicController::class, 'index'])->name('public.index');
     Route::get('/public', [PublicController::class, 'index'])->name('public.index');
     Route::prefix('public')->group(function () {
+
+
+
+
+ /*
+        Recherche simple et avancée
+    */
+    Route::get('/search', [PublicController::class, 'search'])->name('public.search');
+    Route::get('/search/advanced', [PublicController::class, 'advancedFormular'])->name('public.search.advanced');
+
+
 
     /*
         les vues des rules, references et classes

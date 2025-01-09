@@ -137,7 +137,117 @@ class PublicController extends Controller
     }
 
 
+    public function advancedFormular()
+    {
+        $countries = Country::all();
+        $referenceCategories = ReferenceCategory::all();
+        return view('public.search.advanced', compact('countries',  'referenceCategories'));
+    }
 
+
+
+    public function advanced(Request $request)
+    {
+        // Récupération des paramètres
+        $term = $request->input('term');
+        $type = $request->input('type');
+        $countries = $request->input('countries');
+        $dateMode = $request->input('date_mode', 'single'); // 'single' ou 'range'
+        $date = $request->input('date');
+        $dateOperator = $request->input('date_operator', '=');
+        $dateFrom = $request->input('date_from');
+        $dateTo = $request->input('date_to');
+
+        // Si aucun terme de recherche, retourner l'index
+        if (empty($term)) {
+            return $this->index();
+        }
+
+        // Validation de l'opérateur de date
+        $validOperators = ['=', '>', '<', '>=', '<='];
+        if (!in_array($dateOperator, $validOperators)) {
+            $dateOperator = '=';
+        }
+
+        // Fonction de recherche de base
+        $searchFunction = function ($query) use ($term, $countries, $date, $dateOperator, $dateFrom, $dateTo, $dateMode) {
+            $query->where(function ($q) use ($term) {
+                $q->where('name', 'LIKE', "%{$term}%")
+                  ->orWhere('description', 'LIKE', "%{$term}%");
+            });
+
+            if ($countries) {
+                $query->whereIn('country', (array)$countries);
+            }
+
+            // Gestion des dates selon le mode
+            if ($dateMode === 'range' && $dateFrom && $dateTo) {
+                $query->whereBetween('created_at', [$dateFrom, $dateTo]);
+            } elseif ($dateMode === 'single' && $date) {
+                $query->whereDate('created_at', $dateOperator, $date);
+            }
+
+            return $query;
+        };
+
+        // Fonction pour calculer la pertinence
+        $calculateRelevance = function ($item) use ($term) {
+            $namePos = stripos($item->name, $term);
+            $descPos = stripos($item->description, $term);
+
+            if ($namePos !== false) {
+                return 1;
+            } elseif ($descPos !== false) {
+                return 2;
+            }
+            return 3;
+        };
+
+        // Initialisation des collections
+        $results = collect();
+
+        // Recherche conditionnelle selon le type
+        if (!$type || $type === 'rule') {
+            $rules = Rule::when(true, $searchFunction)
+                ->get()
+                ->map(function($item) use ($calculateRelevance) {
+                    return array_merge($item->toArray(), [
+                        'type' => 'rule',
+                        'relevance' => $calculateRelevance($item)
+                    ]);
+                });
+            $results = $results->concat($rules);
+        }
+
+        if (!$type || $type === 'class') {
+            $classes = Classification::when(true, $searchFunction)
+                ->get()
+                ->map(function($item) use ($calculateRelevance) {
+                    return array_merge($item->toArray(), [
+                        'type' => 'class',
+                        'relevance' => $calculateRelevance($item)
+                    ]);
+                });
+            $results = $results->concat($classes);
+        }
+
+        if (!$type || $type === 'reference') {
+            $references = Reference::when(true, $searchFunction)
+                ->get()
+                ->map(function($item) use ($calculateRelevance) {
+                    return array_merge($item->toArray(), [
+                        'type' => 'reference',
+                        'relevance' => $calculateRelevance($item)
+                    ]);
+                });
+            $results = $results->concat($references);
+        }
+
+        // Tri des résultats par pertinence et limitation à 50 résultats
+        $records = $results->sortBy('relevance')->take(50);
+
+        return view('public.search.index', compact('records', 'term', 'dateMode', 'date', 'dateOperator', 'dateFrom', 'dateTo'));
+    }
 
 
 

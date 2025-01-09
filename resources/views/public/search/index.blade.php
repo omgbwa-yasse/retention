@@ -4,13 +4,9 @@
     <div class="container text-center my-4">
         <h1>Trouvez tout ici !</h1>
         <form method="GET" action="{{ route('public.search') }}" class="d-flex justify-content-center">
-            <input type="text"
-                   name="query"
-                   class="form-control me-2"
-                   placeholder="Search..."
-                   value="{{ request('query') }}" {{-- Garde la valeur de recherche --}}
-            />
-            <button type="submit" class="btn btn-primary">Search</button>
+            <input type="text" name="query" class="form-control me-2" placeholder="Search..." value="{{ request('query') }}" />
+            <button type="submit" class="btn btn-primary me-2">Rechercher</button>
+            <a href="{{ route('public.search.advanced') }}" class="btn btn-primary">Avancée</a>
         </form>
     </div>
 
@@ -27,17 +23,24 @@
                             @elseif ($value['type'] === 'rule')
                                 <a href="{{ route('public.rules.show', $value['id']) }}" class="btn btn-sm btn-outline-primary">Voir</a>
                             @else
-                                <a href="{{ route('public.charter', $value['id']) }}"
-                                   class="btn btn-sm btn-primary">
+                                <a href="{{ route('public.charter', $value['id']) }}" class="btn btn-sm btn-primary">
                                     <i class="fas fa-chart-bar me-1"></i> {{ __('see_charter') }}
                                 </a>
                                 <a href="{{ route('public.classes.show', $value['id']) }}" class="btn btn-sm btn-outline-secondary">Voir</a>
                             @endif
 
                             <span class="badge {{ $value['type'] === 'reference' ? 'bg-success' : ($value['type'] === 'rule' ? 'bg-primary' : ($value['type'] === 'class' ? 'bg-secondary' : '')) }} text-white">
+                                @if($value['type'] === 'reference')
+                                    <i class="bi bi-book me-1"></i>
+                                @elseif($value['type'] === 'rule')
+                                    <i class="bi bi-archive me-1"></i>
+                                @elseif($value['type'] === 'class')
+                                    <i class="bi bi-folder me-1"></i>
+                                @endif
                                 {{ ucfirst($value['type']) }}
                             </span>
                         </h2>
+
                         <p class="mb-1">{{ $value['description'] }}</p>
 
                         @if(isset($value['parent']))
@@ -85,11 +88,31 @@
                         @endfor
 
                         {{-- Bouton Next --}}
-                        <li class="page-item {{ ($records->currentPage() == $records->lastPage()) ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $records->nextPageUrl() }}" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <!-- Previous Page Link -->
+                                <li class="page-item {{ ($records->currentPage() == 1) ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $records->previousPageUrl() }}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+
+                                <!-- Page Numbers -->
+                                @for ($i = 1; $i <= $records->lastPage(); $i++)
+                                    <li class="page-item {{ ($records->currentPage() == $i) ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $records->url($i) }}">{{ $i }}</a>
+                                    </li>
+                                @endfor
+
+                                <!-- Next Page Link -->
+                                <li class="page-item {{ ($records->currentPage() == $records->lastPage()) ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $records->nextPageUrl() }}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+
                     </ul>
                 </nav>
             @endif
