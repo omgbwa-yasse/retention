@@ -3,91 +3,82 @@
 @section('content')
     <div class="container-fluid py-4">
         <!-- Formulaire de recherche -->
-        <div class="card shadow-sm mb-4">
-            <div class="card-body">
-                <form action="{{ route('public.search.advanced.results') }}" method="GET" class="row g-3">
-                    <!-- Terme de recherche -->
-                    <div class="col-md-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="term" name="term"
-                                   value="{{ request('term') }}" placeholder="Rechercher...">
-                            <label for="term">Terme def recherche</label>
-                        </div>
-                    </div>
-
-                    <!-- Type de recherche -->
-                    <div class="col-md-2">
-                        <div class="form-floating">
-                            <select class="form-select" id="type" name="type">
-                                <option value="">Tous les types</option>
-                                <option value="rule" {{ request('type') == 'rule' ? 'selected' : '' }}>Règles</option>
-                                <option value="class" {{ request('type') == 'class' ? 'selected' : '' }}>Classifications</option>
-                                <option value="reference" {{ request('type') == 'reference' ? 'selected' : '' }}>Références</option>
-                            </select>
-                            <label for="type">Type</label>
-                        </div>
-                    </div>
-
-                    <!-- Pays -->
-                    <div class="col-md-2">
-                        <div class="form-floating">
-                            <select class="form-select" id="countries" name="countries[]" multiple>
-                                @foreach($countries as $code => $name)
-                                    <option value="{{ $code }}" {{ in_array($code, (array)request('countries')) ? 'selected' : '' }}>
-                                        {{ $name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <label for="countries">Pays</label>
-                        </div>
-                    </div>
-
-                    <!-- Mode de date -->
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <!-- Mode date exacte -->
-                                <div class="mb-3">
-                                    <label class="form-label">Date exacte</label>
-                                    <div class="input-group">
-                                        <input type="date" class="form-control" id="date" name="date" value="{{ request('date') }}">
-                                        <select class="form-select" name="date_operator" style="max-width: 80px;">
-                                            <option value="=" {{ request('date_operator') == '=' ? 'selected' : '' }}>=</option>
-                                            <option value=">" {{ request('date_operator') == '>' ? 'selected' : '' }}>&gt;</option>
-                                            <option value=">=" {{ request('date_operator') == '>=' ? 'selected' : '' }}>&gt;=</option>
-                                            <option value="<" {{ request('date_operator') == '<' ? 'selected' : '' }}>&lt;</option>
-                                            <option value="<=" {{ request('date_operator') == '<=' ? 'selected' : '' }}>&lt;=</option>
-                                        </select>
-                                    </div>
+        <div class="container-fluid py-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <form action="{{ route('public.search.advanced.results') }}" method="GET">
+                        <!-- Première ligne : Terme de recherche -->
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="term" name="term"
+                                           value="{{ request('term') }}" placeholder="Rechercher...">
+                                    <label for="term">Terme de recherche</label>
                                 </div>
+                            </div>
+                        </div>
 
-                                <!-- Mode période -->
-                                <div>
-                                    <label class="form-label">Période</label>
-                                    <div class="row g-2">
-                                        <div class="col-6">
+                        <!-- Deuxième ligne : Typologie, Pays, Dates -->
+                        <div class="row mb-3">
+                            <!-- Type de recherche -->
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <select class="form-select" id="type" name="type">
+                                        <option value="">Tous les types</option>
+                                        <option value="rule" {{ request('type') == 'rule' ? 'selected' : '' }}>Règles</option>
+                                        <option value="class" {{ request('type') == 'class' ? 'selected' : '' }}>Classifications</option>
+                                        <option value="reference" {{ request('type') == 'reference' ? 'selected' : '' }}>Références</option>
+                                    </select>
+                                    <label for="type">Typologie</label>
+                                </div>
+                            </div>
+
+                            <!-- Pays -->
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <select class="form-select" id="countries" name="countries[]" multiple>
+                                        @foreach($countries as $code => $name)
+                                            <option value="{{ $code }}" {{ in_array($code, (array)request('countries')) ? 'selected' : '' }}>
+                                                {{ $name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <label for="countries">Pays</label>
+                                </div>
+                            </div>
+
+                            <!-- Dates -->
+                            <div class="col-md-6">
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <div class="form-floating">
                                             <input type="date" class="form-control" id="date_from" name="date_from"
-                                                   value="{{ request('date_from') }}" placeholder="Date début">
+                                                   value="{{ request('date_from') }}">
+                                            <label for="date_from">Date début</label>
                                         </div>
-                                        <div class="col-6">
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-floating">
                                             <input type="date" class="form-control" id="date_to" name="date_to"
-                                                   value="{{ request('date_to') }}" placeholder="Date fin">
+                                                   value="{{ request('date_to') }}">
+                                            <label for="date_to">Date fin</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Bouton de recherche -->
-                    <div class="col-md-1 d-flex align-items-center">
-                        <button type="submit" class="btn btn-primary w-100">
-                            <i class="bi bi-search"></i> Rechercher
-                        </button>
-                    </div>
-                </form>
+                        <!-- Troisième ligne : Bouton de recherche -->
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="bi bi-search"></i> Rechercher
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
 
         <!-- Résultats de recherche -->
         @if(isset($records) && $records->count() > 0)
