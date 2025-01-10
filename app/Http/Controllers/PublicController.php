@@ -300,8 +300,8 @@ class PublicController extends Controller
 
     public function showRule(INT $id)
     {
-        $rule = Rule::with(['country', 'classifications', 'duls.articles', 'duls.trigger', 'duls.sort','status','validator'])->findOrFail($id);
-        $rule->load(['country', 'classifications', 'duls.articles', 'duls.trigger', 'duls.sort', 'status', 'validator']);
+        $rule = Rule::with(['country', 'classifications', 'duls.trigger', 'duls.sort','status','validator'])->findOrFail($id);
+        $rule->load(['country', 'classifications', 'duls.trigger', 'duls.sort', 'status', 'validator']);
         return view('public.rules.show', compact('rule'));
     }
 
