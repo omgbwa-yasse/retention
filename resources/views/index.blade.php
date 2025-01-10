@@ -78,6 +78,7 @@
                 @include('menuAside')
             </div>
             <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <a href="{{ url()->previous() }}" class="btn btn-primary">Retour</a>
                 @yield('content')
             </div>
         </div>
@@ -124,7 +125,17 @@
             </div>
         </nav>
         <div class="container-fluid">
-            <a href="{{ url()->previous() }}" class="btn btn-primary">Retour</a>
+            <div class="mb-3 px-4">
+                {{-- Bouton Accueil avec icône maison --}}
+                <a href="{{ url('/') }}" class="btn btn-primary me-2">
+                    <i class="fas fa-home"></i> Accueil
+                </a>
+
+                {{-- Bouton Retour avec icône flèche --}}
+                <a href="{{ url()->previous() }}" class="btn btn-primary">
+                    <i class="fas fa-arrow-left"></i> Retour
+                </a>
+            </div>
 
             @yield('content')
         </div>
