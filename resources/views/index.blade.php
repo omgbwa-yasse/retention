@@ -78,7 +78,7 @@
                 @include('menuAside')
             </div>
             <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <a href="{{ url()->previous() }}" class="btn btn-primary">Retour</a>
+{{--                <a href="{{ url()->previous() }}" class="btn btn-primary">Retour</a>--}}
                 @yield('content')
             </div>
         </div>
