@@ -15,7 +15,83 @@ use Illuminate\Support\Facades\DB;
 
 class PublicController extends Controller
 {
+    public function advancedFormular()
+    {
+        $countries = Country::pluck('name', 'abbr');
+        return view('public.search.advanced', compact('countries'));
+    }
 
+    public function advanced(Request $request)
+    {
+//         Debug pour voir ce qui arrive
+
+
+        $query = $request->input('term');
+        $type = $request->input('type');
+        $countries = $request->input('countries', []);
+
+//        if (!$query) {
+//            return $this->advancedFormular();
+//        }
+
+        $results = collect();
+
+        // Fonction de recherche pour chaque modèle
+        $searchQuery = function ($query) use ($request) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'LIKE', "%{$request->term}%")
+                    ->orWhere('description', 'LIKE', "%{$request->term}%");
+            });
+
+            if (!empty($request->countries)) {
+                $query->whereIn('country', $request->countries);
+            }
+
+            if ($request->date) {
+                $query->whereDate('created_at', $request->date_operator ?? '=', $request->date);
+            } elseif ($request->date_from && $request->date_to) {
+                $query->whereBetween('created_at', [
+                    $request->date_from . ' 00:00:00',
+                    $request->date_to . ' 23:59:59'
+                ]);
+            }
+
+            return $query;
+        };
+
+        // Récupération des résultats
+        if (!$type || $type === 'rule') {
+            $rules = Rule::when(true, $searchQuery)->get()
+                ->map(fn($item) => [...$item->toArray(), 'type' => 'rule']);
+            $results = $results->concat($rules);
+        }
+
+        if (!$type || $type === 'class') {
+            $classes = Classification::when(true, $searchQuery)->get()
+                ->map(fn($item) => [...$item->toArray(), 'type' => 'class']);
+            $results = $results->concat($classes);
+        }
+
+        if (!$type || $type === 'reference') {
+            $references = Reference::when(true, $searchQuery)->get()
+                ->map(fn($item) => [...$item->toArray(), 'type' => 'reference']);
+            $results = $results->concat($references);
+        }
+//        dd($request->all());
+//        dd([
+//            'count' => $results->count(),
+//            'empty' => $results->isEmpty(),
+//            'first_few' => $results->take(100)->toArray()
+//        ]);
+
+        $countries = Country::pluck('name', 'abbr');
+
+        return view('public.search.advanced', [
+            'records' => $results,
+            'countries' => $countries,
+            'searchTerm' => $query
+        ]);
+    }
 
     /**
      * Affiche la page d'accueil publique
@@ -137,117 +213,6 @@ class PublicController extends Controller
     }
 
 
-    public function advancedFormular()
-    {
-        $countries = Country::all();
-        $referenceCategories = ReferenceCategory::all();
-        return view('public.search.advanced', compact('countries',  'referenceCategories'));
-    }
-
-
-
-    public function advanced(Request $request)
-    {
-        // Récupération des paramètres
-        $term = $request->input('term');
-        $type = $request->input('type');
-        $countries = $request->input('countries');
-        $dateMode = $request->input('date_mode', 'single'); // 'single' ou 'range'
-        $date = $request->input('date');
-        $dateOperator = $request->input('date_operator', '=');
-        $dateFrom = $request->input('date_from');
-        $dateTo = $request->input('date_to');
-
-        // Si aucun terme de recherche, retourner l'index
-        if (empty($term)) {
-            return $this->index();
-        }
-
-        // Validation de l'opérateur de date
-        $validOperators = ['=', '>', '<', '>=', '<='];
-        if (!in_array($dateOperator, $validOperators)) {
-            $dateOperator = '=';
-        }
-
-        // Fonction de recherche de base
-        $searchFunction = function ($query) use ($term, $countries, $date, $dateOperator, $dateFrom, $dateTo, $dateMode) {
-            $query->where(function ($q) use ($term) {
-                $q->where('name', 'LIKE', "%{$term}%")
-                  ->orWhere('description', 'LIKE', "%{$term}%");
-            });
-
-            if ($countries) {
-                $query->whereIn('country', (array)$countries);
-            }
-
-            // Gestion des dates selon le mode
-            if ($dateMode === 'range' && $dateFrom && $dateTo) {
-                $query->whereBetween('created_at', [$dateFrom, $dateTo]);
-            } elseif ($dateMode === 'single' && $date) {
-                $query->whereDate('created_at', $dateOperator, $date);
-            }
-
-            return $query;
-        };
-
-        // Fonction pour calculer la pertinence
-        $calculateRelevance = function ($item) use ($term) {
-            $namePos = stripos($item->name, $term);
-            $descPos = stripos($item->description, $term);
-
-            if ($namePos !== false) {
-                return 1;
-            } elseif ($descPos !== false) {
-                return 2;
-            }
-            return 3;
-        };
-
-        // Initialisation des collections
-        $results = collect();
-
-        // Recherche conditionnelle selon le type
-        if (!$type || $type === 'rule') {
-            $rules = Rule::when(true, $searchFunction)
-                ->get()
-                ->map(function($item) use ($calculateRelevance) {
-                    return array_merge($item->toArray(), [
-                        'type' => 'rule',
-                        'relevance' => $calculateRelevance($item)
-                    ]);
-                });
-            $results = $results->concat($rules);
-        }
-
-        if (!$type || $type === 'class') {
-            $classes = Classification::when(true, $searchFunction)
-                ->get()
-                ->map(function($item) use ($calculateRelevance) {
-                    return array_merge($item->toArray(), [
-                        'type' => 'class',
-                        'relevance' => $calculateRelevance($item)
-                    ]);
-                });
-            $results = $results->concat($classes);
-        }
-
-        if (!$type || $type === 'reference') {
-            $references = Reference::when(true, $searchFunction)
-                ->get()
-                ->map(function($item) use ($calculateRelevance) {
-                    return array_merge($item->toArray(), [
-                        'type' => 'reference',
-                        'relevance' => $calculateRelevance($item)
-                    ]);
-                });
-            $results = $results->concat($references);
-        }
-
-        // Tri des résultats par pertinence et limitation à 50 résultats
-        $records = $results->sortBy('relevance')->take(50);
-
-        return view('public.search.index', compact('records', 'term', 'dateMode', 'date', 'dateOperator', 'dateFrom', 'dateTo'));
-    }
 
 
 

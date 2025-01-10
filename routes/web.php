@@ -55,7 +55,7 @@ Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->n
 
 // Accès au grand public
 
-    Route::get('/', [PublicController::class, 'index'])->name('public.index');
+    Route::get('/', [PublicController::class, 'index']);
     Route::get('/public', [PublicController::class, 'index'])->name('public.index');
     Route::prefix('public')->group(function () {
 
@@ -67,8 +67,7 @@ Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->n
     */
     Route::get('/search', [PublicController::class, 'search'])->name('public.search');
     Route::get('/search/advanced', [PublicController::class, 'advancedFormular'])->name('public.search.advanced');
-
-
+    Route::get('/search/advanced/results', [PublicController::class, 'advanced'])->name('public.search.advanced.results');
 
     /*
         les vues des rules, references et classes
@@ -82,8 +81,8 @@ Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->n
         Pages statiques
     */
     Route::get('/class', [PublicController::class, 'showClass'])->name('public.class');
-    Route::get('/charter/{id}', [PublicController::class, 'showCharter'])->name('public.charter');
-    Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->name('public.charter.pdf');
+//    Route::get('/charter/{id}', [PublicController::class, 'showCharter'])->name('public.charter');
+//    Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->name('public.charter.pdf');
     Route::get('/search', [PublicController::class, 'search'])->name('public.search');
     Route::get('/about', [PublicController::class, 'about'])->name('public.about');
     Route::get('/news', [PublicController::class, 'news'])->name('public.news');
