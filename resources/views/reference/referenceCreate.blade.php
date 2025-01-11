@@ -3,7 +3,7 @@
 @section('content')
     <div class="container my-5">
         <div class="row justify-content-center">
-            <div class="col-lg-8">
+            <div class="">
                 <div class="card shadow">
                     <div class="card-header bg-primary text-white py-3">
                         <h4 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Créer une nouvelle référence</h4>

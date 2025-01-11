@@ -3,7 +3,7 @@
 @section('content')
     <div class="container my-5">
         <div class="row justify-content-center">
-            <div class="col-lg-10">
+            <div class="">
                 <div class="card shadow">
                     <div class="card-header bg-primary text-white">
                         <h2 class="mb-0"><i class="fas fa-file-alt me-2"></i>Ajouter une règle de conservation</h2>

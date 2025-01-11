@@ -1,42 +1,45 @@
-<!-- resources/views/charter/classes.blade.php -->
-<div class="table-responsive">
-    <table class="table table-striped table-bordered table-hover shadow-sm">
-        <thead class="table-light">
+{{-- resources/views/charter/classes.blade.php --}}
+<div class="overflow-x-auto">
+    <table class="compact-table">
+        <thead>
         <tr>
-            <th rowspan="2" class="text-center align-middle bg-primary text-white">Cote</th>
-            <th rowspan="2" class="text-center align-middle bg-primary text-white">Intitulé</th>
-            <th rowspan="2" class="text-center align-middle bg-primary text-white">Typologies</th>
-            <th class="text-center bg-success text-white">Déclencheur</th>
-            <th class="text-center bg-success text-white">Durée légale </th>
-            <th rowspan="2" class="text-center align-middle bg-info text-white">Références</th>
-
+            <th rowspan="2" class="text-center">Cote</th>
+            <th rowspan="2" class="text-center">Intitulé</th>
+            <th rowspan="2" class="text-center">Typologies</th>
+            <th class="text-center">Déclencheur</th>
+            <th class="text-center">Durée légale</th>
+            <th rowspan="2" class="text-center">Références</th>
         </tr>
         </thead>
         <tbody>
         @foreach ($classes as $class)
             <tr>
-            <td class="fw-bold">{{ $class->code }}</td>
-            <td>{{ $class->name }}</td>
+                <td class="font-medium">{{ $class->code }}</td>
+                <td>{{ $class->name }}</td>
                 <td>
                     @if ($class->typologies)
                         @foreach ($class->typologies as $typology)
-                            {{ $typology->name }}<br>
+                            <div class="validator-chip">
+                                {{ $typology->name }}
+                            </div>
                         @endforeach
                     @endif
-            </td>
-                <td>
                 </td>
+                <td></td>
                 <td>
                     @if ($class->rules)
                         @foreach ($class->rules as $rule)
                             @if ($rule->duls)
                                 @foreach ($rule->duls as $dul)
-                                    {{ $dul->duration }}<br>
+                                    <div class="status-badge status-valid">
+                                        {{ $dul->duration }}
+                                    </div>
                                 @endforeach
                             @endif
                         @endforeach
                     @endif
                 </td>
+                <td></td>
             </tr>
             @if ($class->children->isNotEmpty())
                 @include('charter.classes', ['classes' => $class->children])

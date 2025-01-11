@@ -3,7 +3,7 @@
 @section('content')
     <div class="container py-4">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="">
                 <div class="card shadow">
                     <div class="card-header bg-primary text-white">
                         <h1 class="mb-0"><i class="fas fa-shopping-basket me-2"></i>Ajouter un panier</h1>

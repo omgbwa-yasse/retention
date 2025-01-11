@@ -55,10 +55,7 @@
         <th>Cote</th>
         <th>Intitulé</th>
         <th>Typologies</th>
-        <th>Active Délai</th>
-        <th>Active Déclencheur</th>
-        <th>Semi-active Délai</th>
-        <th>Semi-active Déclencheur</th>
+
         <th>Durée légale Délai</th>
         <th>Durée légale Déclencheur</th>
         <th>Références</th>
@@ -73,50 +70,6 @@
                 @if ($class->typologies)
                     @foreach ($class->typologies as $typology)
                         {{ $typology->name }}<br>
-                    @endforeach
-                @endif
-            </td>
-            <td>
-                @if ($class->rules)
-                    @foreach ($class->rules as $rule)
-                        @if ($rule->actives)
-                            @foreach ($rule->actives as $active)
-                                {{ $active->duration }}<br>
-                            @endforeach
-                        @endif
-                    @endforeach
-                @endif
-            </td>
-            <td>
-                @if ($class->rules)
-                    @foreach ($class->rules as $rule)
-                        @if ($rule->actives)
-                            @foreach ($rule->actives as $active)
-                                {{ $active->trigger->name }}<br>
-                            @endforeach
-                        @endif
-                    @endforeach
-                @endif
-            </td>
-            <td>
-                @if ($class->rules)
-                    @foreach ($class->rules as $rule)
-                        @if ($rule->duas)
-                            @foreach ($rule->duas as $dua)
-                                {{ $dua->duration }}<br>
-                            @endforeach
-                        @endif
-                    @endforeach
-                @endif
-            </td>
-            <td>
-                @if ($class->rules)
-                    @foreach ($class->rules as $rule)
-                        @if ($rule->duas)
-                            @foreach ($rule->duas as $dua)
-                                {{ $dua->trigger->name }}<br>
-                            @endforeach
-                        @endif
                     @endforeach
                 @endif
             </td>
