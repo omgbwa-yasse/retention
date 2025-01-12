@@ -81,7 +81,7 @@
     @else
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
             <div class="container">
-                <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+                <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('public.index') }}">
                     <i class="fas fa-book-reader"></i>
                     <span>African Retention</span>
                 </a>
@@ -108,10 +108,10 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">{{ __('about') }}</a>
+                            <a class="nav-link" href="{{ route('public.about')}}">{{ __('about') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">{{ __('news') }}</a>
+                            <a class="nav-link" href="{{ route('public.news') }}">{{ __('news') }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="btn btn-primary ml-2" href="{{ route('login') }}">{{ __('login') }}</a>

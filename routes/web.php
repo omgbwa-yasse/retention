@@ -37,6 +37,7 @@ use App\Http\Controllers\ActivityRuleController;
 use App\Http\Controllers\CommitteeController;
 use App\Http\Controllers\ForumSubjectController;
 use App\Http\Controllers\ForumChatController;
+use App\Http\Controllers\PublicNewsController;
 use App\Http\Controllers\ChatController;
 
 Route::get('reference/{reference}/file/{name}/preview', [FileController::class, 'preview'])->name('reference.file.preview');
@@ -81,15 +82,12 @@ Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->n
         Pages statiques
     */
     Route::get('/class', [PublicController::class, 'showClass'])->name('public.class');
-//    Route::get('/charter/{id}', [PublicController::class, 'showCharter'])->name('public.charter');
-//    Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->name('public.charter.pdf');
+    //    Route::get('/charter/{id}', [PublicController::class, 'showCharter'])->name('public.charter');
+    //    Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->name('public.charter.pdf');
     Route::get('/search', [PublicController::class, 'search'])->name('public.search');
     Route::get('/about', [PublicController::class, 'about'])->name('public.about');
     Route::get('/news', [PublicController::class, 'news'])->name('public.news');
-
 });
-
-
 
 
 // Route group for authentication
