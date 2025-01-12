@@ -12,6 +12,7 @@ use App\Models\Country;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class PublicController extends Controller
 {
@@ -21,18 +22,74 @@ class PublicController extends Controller
         return view('public.search.advanced', compact('countries'));
     }
 
+    /**
+     * Affiche la page d'accueil publique
+     */
+
+
+
+
+    public function index()
+    {
+        // Récupérer les règles avec pagination
+        $rules = Rule::latest()
+            ->paginate(50)
+            ->map(function($item) {
+                return [
+                    'id' => $item->id,
+                    'name' => $item->name,
+                    'description' => $item->description,
+                    'type' => 'rule',
+                    'created_at' => $item->created_at
+                ];
+            });
+
+        // Récupérer les classes avec pagination
+        $classes = Classification::latest()
+            ->paginate(50)
+            ->map(function($item) {
+                return [
+                    'id' => $item->id,
+                    'name' => $item->name,
+                    'description' => $item->description,
+                    'type' => 'class',
+                    'created_at' => $item->created_at
+                ];
+            });
+
+        // Récupérer les références avec pagination
+        $references = Reference::latest()
+            ->paginate(50)
+            ->map(function($item) {
+                return [
+                    'id' => $item->id,
+                    'name' => $item->name,
+                    'description' => $item->description,
+                    'type' => 'reference',
+                    'created_at' => $item->created_at
+                ];
+            });
+
+        // Combiner et trier tous les résultats par date de création
+        $records = $rules->concat($classes)
+                ->concat($references)
+                ->sortByDesc('created_at');
+
+        return view('public.search.index', compact('records'));
+    }
+
+
+
+
+
+
+
+
     public function advanced(Request $request)
     {
-//         Debug pour voir ce qui arrive
-
-
         $query = $request->input('term');
         $type = $request->input('type');
         $countries = $request->input('countries', []);
-
-//        if (!$query) {
-//            return $this->advancedFormular();
-//        }
 
         $results = collect();
 
@@ -77,76 +134,27 @@ class PublicController extends Controller
                 ->map(fn($item) => [...$item->toArray(), 'type' => 'reference']);
             $results = $results->concat($references);
         }
-//        dd($request->all());
-//        dd([
-//            'count' => $results->count(),
-//            'empty' => $results->isEmpty(),
-//            'first_few' => $results->take(100)->toArray()
-//        ]);
+
+        // Paginer les résultats
+        $perPage = 50;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentItems = $results->slice(($currentPage - 1) * $perPage, $perPage)->values();
+        $paginator = new LengthAwarePaginator($currentItems, $results->count(), $perPage, $currentPage, [
+            'path' => LengthAwarePaginator::resolveCurrentPath(),
+        ]);
+
+        // Ajouter les paramètres de requête aux liens de pagination
+        $paginator->appends($request->except('page'));
 
         $countries = Country::pluck('name', 'abbr');
 
         return view('public.search.advanced', [
-            'records' => $results,
+            'records' => $paginator,
             'countries' => $countries,
             'searchTerm' => $query
         ]);
     }
 
-    /**
-     * Affiche la page d'accueil publique
-     */
-    public function index()
-    {
-        // Récupérer les 5 dernières règles
-        $rules = Rule::latest()
-            ->take(5)
-            ->get()
-            ->map(function($item) {
-                return [
-                    'id' => $item->id,
-                    'name' => $item->name,
-                    'description' => $item->description,
-                    'type' => 'rule',
-                    'created_at' => $item->created_at
-                ];
-            });
-
-        // Récupérer les 5 dernières classes
-        $classes = Classification::latest()
-            ->take(5)
-            ->get()
-            ->map(function($item) {
-                return [
-                    'id' => $item->id,
-                    'name' => $item->name,
-                    'description' => $item->description,
-                    'type' => 'class',
-                    'created_at' => $item->created_at
-                ];
-            });
-
-        // Récupérer les 5 dernières références
-        $references = Reference::latest()
-            ->take(5)
-            ->get()
-            ->map(function($item) {
-                return [
-                    'id' => $item->id,
-                    'name' => $item->name,
-                    'description' => $item->description,
-                    'type' => 'reference',
-                    'created_at' => $item->created_at
-                ];
-            });
-
-        // Combiner et trier tous les résultats par date de création
-        $records = $rules->concat($classes)
-                ->concat($references)
-                ->sortByDesc('created_at')
-                ->take(50);
-        return view('public.search.index', compact('records'));
-    }
 
 
 
@@ -203,11 +211,18 @@ class PublicController extends Controller
                         ]);
                     });
 
-        $records = collect([$rules, $classes, $references])->flatten()->sortBy('relevance');
+        // Combiner et trier tous les résultats par pertinence
         $records = $rules->concat($classes)
                     ->concat($references)
-                    ->sortByDesc('relevance')
-                    ->take(50);
+                    ->sortByDesc('relevance');
+
+        // Paginer les résultats
+        $perPage = 50;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentItems = $records->slice(($currentPage - 1) * $perPage, $perPage)->values();
+        $records = new LengthAwarePaginator($currentItems, $records->count(), $perPage, $currentPage, [
+            'path' => LengthAwarePaginator::resolveCurrentPath(),
+        ]);
 
         return view('public.search.index', compact('records', 'searchTerm'));
     }

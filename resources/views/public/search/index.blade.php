@@ -71,51 +71,32 @@
 
 
             @if($records instanceof \Illuminate\Pagination\LengthAwarePaginator)
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center">
-                        {{-- Bouton Previous --}}
-                        <li class="page-item {{ ($records->currentPage() == 1) ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $records->previousPageUrl() }}" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {{-- Bouton Previous --}}
+                    <li class="page-item {{ ($records->currentPage() == 1) ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $records->previousPageUrl() }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    {{-- Numéros de page --}}
+                    @for ($i = max(1, $records->currentPage() - 2); $i <= min($records->lastPage(), $records->currentPage() + 2); $i++)
+                        <li class="page-item {{ ($records->currentPage() == $i) ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $records->url($i) }}{{ $searchTerm ? 'query=' . $searchTerm : '' }}">{{ $i }}</a>
                         </li>
+                    @endfor
 
-                        {{-- Numéros de page --}}
-                        @for ($i = max(1, $records->currentPage() - 2); $i <= min($records->lastPage(), $records->currentPage() + 2); $i++)
-                            <li class="page-item {{ ($records->currentPage() == $i) ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $records->url($i) }}">{{ $i }}</a>
-                            </li>
-                        @endfor
+                    {{-- Bouton Next --}}
+                    <li class="page-item {{ ($records->currentPage() == $records->lastPage()) ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $records->nextPageUrl() }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        @endif
 
-                        {{-- Bouton Next --}}
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination">
-                                <!-- Previous Page Link -->
-                                <li class="page-item {{ ($records->currentPage() == 1) ? 'disabled' : '' }}">
-                                    <a class="page-link" href="{{ $records->previousPageUrl() }}" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-
-                                <!-- Page Numbers -->
-                                @for ($i = 1; $i <= $records->lastPage(); $i++)
-                                    <li class="page-item {{ ($records->currentPage() == $i) ? 'active' : '' }}">
-                                        <a class="page-link" href="{{ $records->url($i) }}">{{ $i }}</a>
-                                    </li>
-                                @endfor
-
-                                <!-- Next Page Link -->
-                                <li class="page-item {{ ($records->currentPage() == $records->lastPage()) ? 'disabled' : '' }}">
-                                    <a class="page-link" href="{{ $records->nextPageUrl() }}" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-
-                    </ul>
-                </nav>
-            @endif
         </div>
     @else
         <div class="alert alert-info text-center">
