@@ -28,37 +28,13 @@
             padding: 1.5rem;
         }
 
-        /* Header style */
-        #container h1, #container h2 {
-            background-color: #0178d4;
-            color: #fff;
-            padding: 1rem;
-            border-top-left-radius: 0.5rem;
-            border-top-right-radius: 0.5rem;
-            margin-top: 0;
-        }
 
         /* Button style */
         #container .btn {
             margin-bottom: 1rem;
         }
 
-        /* Table style */
-        #container .table {
-            border: 1px solid #dee2e6;
-        }
 
-        #container .table th, #container .table td {
-            border: 1px solid #dee2e6;
-        }
-
-        #container .table th {
-            background-color: #f8f9fa;
-        }
-
-        #container .table tbody tr:hover {
-            background-color: #f1f1f1;
-        }
     </style>
 
 </head>
@@ -73,14 +49,14 @@
             <div class="col-2">
                 @include('menuAside')
             </div>
-            <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="col-md-9 ms-sm-auto  px-md-4">
 {{--                <a href="{{ url()->previous() }}" class="btn btn-primary">Retour</a>--}}
                 @yield('content')
             </div>
         </div>
     @else
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
-            <div class="container">
+            <div class="container ">
                 <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('public.index') }}">
                     <i class="fas fa-book-reader"></i>
                     <span>African Retention</span>
@@ -120,10 +96,10 @@
                 </div>
             </div>
         </nav>
-        <div class="container-fluid">
-            <div class="mb-3 px-4">
+        <div class="container">
+            <div class="">
                 {{-- Bouton Accueil avec icône maison --}}
-                <a href="{{ url('/') }}" class="btn btn-primary me-2">
+                <a href="{{ url('/') }}" class="btn btn-primary ">
                     <i class="fas fa-home"></i> Accueil
                 </a>
 
@@ -141,7 +117,7 @@
     </div>
 </div>
 
-<!-- Bootstrap Scripts -->
+
 
 </body>
 

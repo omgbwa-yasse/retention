@@ -3,9 +3,9 @@
 @section('content')
     <div class="container my-5">
         @foreach($domaines as $domaine)
-            <div class="card mb-4 shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h2 class="mb-0">{{ $domaine->code }} - {{ $domaine->name }}</h2>
+            <div class="card  mb-4 shadow-sm">
+                <div class="card-header bg-gray text-primary ">
+                    <h2 class="mb-0"> <b>{{ $domaine->code }} </b>- {{ $domaine->name }}</h2>
                 </div>
                 <div class="card-body">
                     <p class="card-text">{{ $domaine->description }}</p>
