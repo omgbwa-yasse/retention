@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
         <!-- Logo/Brand -->
-        <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('home') }}">
             <i class="fas fa-book-reader"></i>
             <span>African Retention</span>
         </a>

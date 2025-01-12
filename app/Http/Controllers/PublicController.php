@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Typology;
 use App\Models\Reference;
 use App\Models\Rule;
+use App\Models\News;
 use App\Models\Classification;
 use App\Models\ReferenceCategory;
 use App\Models\TypologyCategory;
@@ -339,11 +340,10 @@ class PublicController extends Controller
      */
     public function news()
     {
-        $news = DB::table('news')
-            ->where('published', true)
+        $news = News::where('published', true)
             ->orderBy('created_at', 'desc')
             ->paginate(10);
-
+            $news =  $news ->load('user');
         return view('public.news', compact('news'));
     }
 

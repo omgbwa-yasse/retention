@@ -531,7 +531,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->boolean('published')->default(true);
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
 
