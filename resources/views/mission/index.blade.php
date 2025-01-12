@@ -43,10 +43,10 @@
 @section('content')
     <div class="container my-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="mb-0 text-primary"><i class="bi bi-list-task me-2"></i>Activités</h1>
+            <h1 class="mb-0 text-primary"><i class="bi bi-list-task me-2"></i>Missions</h1>
             <div>
                 <a href="{{ route('activity.create') }}" class="btn btn-primary me-2">
-                    <i class="bi bi-plus-circle me-2"></i>Nouvelle activité
+                    <i class="bi bi-plus-circle me-2"></i>Nouvelle Mission
                 </a>
                 <a href="{{ route('activity.export') }}" class="btn btn-success">
                     <i class="bi bi-file-earmark-arrow-down me-2"></i>Exporter en PDF
@@ -58,7 +58,7 @@
             <div class="card-body">
                 <form action="{{ route('activity.index') }}" method="GET">
                     <div class="input-group">
-                        <input type="text" name="search" class="form-control form-control-lg" placeholder="Rechercher une activité..." value="{{ request('search') }}">
+                        <input type="text" name="search" class="form-control form-control-lg" placeholder="Rechercher une Mission..." value="{{ request('search') }}">
                         <button class="btn btn-outline-primary" type="submit">
                             <i class="bi bi-search me-2"></i>Rechercher
                         </button>
@@ -114,7 +114,7 @@
                                 <form action="{{ route('activity.destroy', $activity->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette activité ?')">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette Mission ?')">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
@@ -125,7 +125,7 @@
             </div>
         @empty
             <div class="alert alert-info" role="alert">
-                Aucune activité trouvée
+                Aucune Mission trouvée
             </div>
         @endforelse
 
