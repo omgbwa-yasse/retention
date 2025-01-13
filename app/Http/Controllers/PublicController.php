@@ -19,7 +19,7 @@ class PublicController extends Controller
 {
     public function advancedFormular()
     {
-        $countries = Country::pluck('name', 'abbr');
+        $countries = Country::all();
         return view('public.search.advanced', compact('countries'));
     }
 
@@ -90,7 +90,6 @@ class PublicController extends Controller
     {
         $query = $request->input('term');
         $type = $request->input('type');
-        $countries = $request->input('countries', []);
 
         $results = collect();
 
@@ -100,9 +99,10 @@ class PublicController extends Controller
                 $q->where('name', 'LIKE', "%{$request->term}%")
                     ->orWhere('description', 'LIKE', "%{$request->term}%");
             });
-
-            if (!empty($request->countries)) {
-                $query->whereIn('country', $request->countries);
+            if (!empty($request->country)) {
+                $query->whereHas('country', function ($q) use ($request) {
+                    $q->where('id', $request->country);
+                });
             }
 
             if ($request->date) {
@@ -119,19 +119,19 @@ class PublicController extends Controller
 
         // Récupération des résultats
         if (!$type || $type === 'rule') {
-            $rules = Rule::when(true, $searchQuery)->get()
+            $rules = Rule::where($searchQuery)->with('country')->get()
                 ->map(fn($item) => [...$item->toArray(), 'type' => 'rule']);
             $results = $results->concat($rules);
         }
 
         if (!$type || $type === 'class') {
-            $classes = Classification::when(true, $searchQuery)->get()
+            $classes = Classification::where($searchQuery)->with('country')->get()
                 ->map(fn($item) => [...$item->toArray(), 'type' => 'class']);
             $results = $results->concat($classes);
         }
 
         if (!$type || $type === 'reference') {
-            $references = Reference::when(true, $searchQuery)->get()
+            $references = Reference::where($searchQuery)->with('country')->get()
                 ->map(fn($item) => [...$item->toArray(), 'type' => 'reference']);
             $results = $results->concat($references);
         }
@@ -140,17 +140,16 @@ class PublicController extends Controller
         $perPage = 50;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $currentItems = $results->slice(($currentPage - 1) * $perPage, $perPage)->values();
-        $paginator = new LengthAwarePaginator($currentItems, $results->count(), $perPage, $currentPage, [
+        $records = new LengthAwarePaginator($currentItems, $results->count(), $perPage, $currentPage, [
             'path' => LengthAwarePaginator::resolveCurrentPath(),
         ]);
 
         // Ajouter les paramètres de requête aux liens de pagination
-        $paginator->appends($request->except('page'));
+        $records->appends($request->except('page'));
 
-        $countries = Country::pluck('name', 'abbr');
-
+        $countries = Country::all();
         return view('public.search.advanced', [
-            'records' => $paginator,
+            'records' => $records,
             'countries' => $countries,
             'searchTerm' => $query
         ]);
@@ -168,54 +167,59 @@ class PublicController extends Controller
             return $this->index();
         }
 
-        $searchFunction = function ($query, $searchTerm) {
-            return $query->where('name', 'LIKE', "%{$searchTerm}%")
-                        ->orWhere('description', 'LIKE', "%{$searchTerm}%");
+        // Diviser les mots-clés
+        $searchTerms = preg_split('/\s+/', trim($searchTerm));
+
+        // Fonction pour ajouter des conditions dynamiques
+        $searchFunction = function ($query) use ($searchTerms) {
+            foreach ($searchTerms as $term) {
+                $query->where(function ($subQuery) use ($term) {
+                    $subQuery->where('name', 'LIKE', "%{$term}%")
+                            ->orWhere('description', 'LIKE', "%{$term}%")
+                            ->orWhereHas('country', function ($q) use ($term) {
+                                $q->where('name', 'LIKE', "%{$term}%");
+                            });
+                });
+            }
         };
 
-        $rules = Rule::when($searchTerm, $searchFunction)
+        // Rechercher dans les règles
+        $rules = Rule::where($searchFunction)
                     ->get()
-                    ->map(function($item) use ($searchTerm) {
-                        $relevance = strpos($item->name, $searchTerm) !== false ? 1 : 2;
-                        if ($relevance !== 1 && strpos($item->description, $searchTerm) !== false) {
-                            $relevance = 2;
-                        }
+                    ->map(function ($item) use ($searchTerms) {
+                        $relevance = $this->calculateRelevance($item, $searchTerms);
                         return array_merge($item->toArray(), [
                             'type' => 'rule',
-                            'relevance' => $relevance
+                            'relevance' => $relevance,
                         ]);
                     });
 
-        $classes = Classification::when($searchTerm, $searchFunction)
+        // Rechercher dans les classes
+        $classes = Classification::where($searchFunction)
                     ->get()
-                    ->map(function($item) use ($searchTerm) {
-                        $relevance = strpos($item->name, $searchTerm) !== false ? 1 : 2;
-                        if ($relevance !== 1 && strpos($item->description, $searchTerm) !== false) {
-                            $relevance = 2;
-                        }
+                    ->map(function ($item) use ($searchTerms) {
+                        $relevance = $this->calculateRelevance($item, $searchTerms);
                         return array_merge($item->toArray(), [
                             'type' => 'class',
-                            'relevance' => $relevance
+                            'relevance' => $relevance,
                         ]);
                     });
 
-        $references = Reference::when($searchTerm, $searchFunction)
+        // Rechercher dans les références
+        $references = Reference::where($searchFunction)
                     ->get()
-                    ->map(function($item) use ($searchTerm) {
-                        $relevance = strpos($item->name, $searchTerm) !== false ? 1 : 2;
-                        if ($relevance !== 1 && strpos($item->description, $searchTerm) !== false) {
-                            $relevance = 2;
-                        }
+                    ->map(function ($item) use ($searchTerms) {
+                        $relevance = $this->calculateRelevance($item, $searchTerms);
                         return array_merge($item->toArray(), [
                             'type' => 'reference',
-                            'relevance' => $relevance
+                            'relevance' => $relevance,
                         ]);
                     });
 
         // Combiner et trier tous les résultats par pertinence
         $records = $rules->concat($classes)
-                    ->concat($references)
-                    ->sortByDesc('relevance');
+                        ->concat($references)
+                        ->sortByDesc('relevance');
 
         // Paginer les résultats
         $perPage = 50;
@@ -227,6 +231,24 @@ class PublicController extends Controller
 
         return view('public.search.index', compact('records', 'searchTerm'));
     }
+
+    /**
+     * Calculer la pertinence pour un élément.
+     */
+    private function calculateRelevance($item, $searchTerms)
+    {
+        $relevance = 0;
+        foreach ($searchTerms as $term) {
+            if (stripos($item->name, $term) !== false) {
+                $relevance += 1;
+            }
+            if (stripos($item->description, $term) !== false) {
+                $relevance += 1;
+            }
+        }
+        return $relevance;
+    }
+
 
 
 

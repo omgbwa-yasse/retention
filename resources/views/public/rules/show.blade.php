@@ -25,6 +25,7 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <h6 class="text-uppercase text-muted small mb-2">Validation</h6>
+                            @if($rule->validated_at && $rule->validator)
                             <table class="table table-sm">
                                 <tr>
                                     <th class="ps-0 border-0">Validé par:</th>
@@ -35,6 +36,7 @@
                                     <td class="border-0">{{ $rule->validated_at }}</td>
                                 </tr>
                             </table>
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -36,10 +36,10 @@
                             <!-- Pays -->
                             <div class="col-md-3">
                                 <div class="form-floating">
-                                    <select class="form-select" id="countries" name="countries[]" multiple>
-                                        @foreach($countries as $code => $name)
-                                            <option value="{{ $code }}" {{ in_array($code, (array)request('countries')) ? 'selected' : '' }}>
-                                                {{ $name }}
+                                    <select class="form-select" id="countries" name="country">
+                                        @foreach($countries as $country)
+                                            <option value="{{ $country->id }}" {{ request('country') == $country->id ? 'selected' : '' }}>
+                                                {{ $country->name }} ({{ $country->abbr }})
                                             </option>
                                         @endforeach
                                     </select>
@@ -117,7 +117,7 @@
                                     </td>
                                     <td>{{ $record['name'] }}</td>
                                     <td>{{ Str::limit($record['description'], 100) }}</td>
-                                    <td>{{ $record['country'] ?? 'N/A' }}</td>
+                                    <td>{{ $record['country']['name'] ?? 'N/A' }}</td>
                                     <td>{{ $record['created_at'] ? date('d/m/Y', strtotime($record['created_at'])) : 'N/A' }}</td>
                                     <td>
                                         @switch($record['type'])
