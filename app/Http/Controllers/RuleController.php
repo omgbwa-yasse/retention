@@ -116,7 +116,7 @@ class RuleController extends Controller
         $countries = Country::orderBy('name')->get();
         $triggers = Trigger::orderBy('name')->get();
         $sorts = Sort::orderBy('name')->get();
-        $rule->load('Actives','duas','duls');
+        $rule->load('duls');
         return view('rule.ruleEdit', compact('rule', 'countries', 'triggers', 'sorts'));
     }
 

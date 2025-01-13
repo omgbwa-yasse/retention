@@ -31,7 +31,7 @@
                     <div class="col-md-6">
                         <p><strong>ID :</strong> {{ $item->id }}</p>
                         <p><strong>Code :</strong> {{ $item->code }}</p>
-                        <p><strong>Pays :</strong> {{ $item->countries->name }}</p>
+                        <p><strong>Pays :</strong> {{ $item->country->name }}</p>
                     </div>
                     <div class="col-md-6">
                         <p><strong>Description :</strong></p>
