@@ -55,8 +55,7 @@
 
                         <!-- Pagination -->
                         <div class="d-flex justify-content-center mt-4">
-                            {{-- {{ $subjects->links() }} --}}
-                            links
+                            {{ $subjects->links() }}
                         </div>
                     </div>
                 </div>

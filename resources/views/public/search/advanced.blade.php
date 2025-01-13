@@ -144,7 +144,9 @@
                         </table>
                     </div>
                 </div>
+                {{ $records->links() }}
             </div>
+
         @elseif(request()->has('term'))
             <div class="alert alert-info">
                 Aucun résultat trouvé pour votre recherche.

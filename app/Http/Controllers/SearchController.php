@@ -50,8 +50,8 @@ class SearchController extends Controller
         $rule_category = $request->input('rule_category');
         $typology_code = $request->input('typology_code');
         $typology_category = $request->input('typology_category');
-        $basket_code = $request->input('basket_code');
-        $basket_type = $request->input('basket_type');
+//        $basket_code = $request->input('basket_code');
+//        $basket_type = $request->input('basket_type');
 
         $results = [];
 
@@ -65,12 +65,12 @@ class SearchController extends Controller
                 if ($country_id) $query->where('country_id', $country_id);
             })->get();
 
-            $results['baskets'] = Basket::where(function ($query) use ($name, $description, $basket_code, $basket_type) {
-                if ($name) $query->where('name', 'like', "%{$name}%");
-                if ($description) $query->where('description', 'like', "%{$description}%");
-                if ($basket_code) $query->where('code', 'like', "%{$basket_code}%");
-                if ($basket_type) $query->where('type_id', $basket_type);
-            })->get();
+//            $results['baskets'] = Basket::where(function ($query) use ($name, $description, $basket_code, $basket_type) {
+//                if ($name) $query->where('name', 'like', "%{$name}%");
+//                if ($description) $query->where('description', 'like', "%{$description}%");
+//                if ($basket_code) $query->where('code', 'like', "%{$basket_code}%");
+//                if ($basket_type) $query->where('type_id', $basket_type);
+//            })->get();
 
             $results['references'] = Reference::where(function ($query) use ($name, $description, $ref_code, $ref_type) {
                 if ($name) $query->where('name', 'like', "%{$name}%");
@@ -104,14 +104,14 @@ class SearchController extends Controller
                         if ($country_id) $query->where('country_id', $country_id);
                     })->get();
                     break;
-                case 'basket':
-                    $results = Basket::where(function ($query) use ($name, $description, $basket_code, $basket_type) {
-                        if ($name) $query->where('name', 'like', "%{$name}%");
-                        if ($description) $query->where('description', 'like', "%{$description}%");
-                        if ($basket_code) $query->where('code', 'like', "%{$basket_code}%");
-                        if ($basket_type) $query->where('type_id', $basket_type);
-                    })->get();
-                    break;
+//                case 'basket':
+//                    $results = Basket::where(function ($query) use ($name, $description, $basket_code, $basket_type) {
+//                        if ($name) $query->where('name', 'like', "%{$name}%");
+//                        if ($description) $query->where('description', 'like', "%{$description}%");
+//                        if ($basket_code) $query->where('code', 'like', "%{$basket_code}%");
+//                        if ($basket_type) $query->where('type_id', $basket_type);
+//                    })->get();
+//                    break;
                 case 'reference':
                     $results = Reference::where(function ($query) use ($name, $description, $ref_code, $ref_type) {
                         if ($name) $query->where('name', 'like', "%{$name}%");

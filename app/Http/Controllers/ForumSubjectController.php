@@ -11,7 +11,9 @@ class ForumSubjectController extends Controller
 {
     public function index()
     {
-        $subjects = ForumSubject::all();
+        $subjects = ForumSubject::with('user')  // Chargement eager de la relation user si elle existe
+        ->orderBy('created_at', 'desc')     // Les plus récents d'abord
+        ->paginate(10);
         return view('subject.index', compact('subjects'));
     }
     public function create(Request $request)

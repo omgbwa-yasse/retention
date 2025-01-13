@@ -15,7 +15,6 @@
                                 <option value="reference">Référence</option>
                                 <option value="rule">Règle</option>
                                 <option value="typology">Typologie</option>
-                                <option value="basket">Panier</option>
                             </select>
                         </div>
                     </div>
@@ -163,33 +162,6 @@
                     </div>
                 </div>
 
-                <!-- Basket section -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#basketFields">
-                            Panier
-                        </button>
-                    </h2>
-                    <div id="basketFields" class="accordion-collapse collapse" data-bs-parent="#searchAccordion">
-                        <div class="accordion-body">
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="basket_code" class="form-label">Code de panier</label>
-                                    <input type="text" class="form-control form-control-lg" id="basket_code" name="basket_code">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="basket_type" class="form-label">Type de panier</label>
-                                    <select class="form-select form-select-lg" id="basket_type" name="basket_type">
-                                        <option value="">Sélectionnez un type</option>
-                                        {{--                                        @foreach ($basketTypes as $type)--}}
-                                        {{--                                            <option value="{{ $type->id }}">{{ $type->name }}</option>--}}
-                                        {{--                                        @endforeach--}}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="text-center">
