@@ -49,16 +49,39 @@
                     </p>
 
                     <div class="d-flex align-$items-center">
-                        <p class="me-1"><strong>Sous-classes:</strong> <span class="badge bg-secondary">{{ $activity->children?->count() ?? '0' }}</span></p>
-                        <p class="me-1"><strong>Pays:</strong> <span class="badge bg-secondary"> {{ $activity->countries?->name ?? 'N/A' }}</span></p>
+                        <p class="me-1"><strong>Sous-classes :</strong> <span class="badge bg-secondary">{{ $activity->children?->count() ?? '0' }}</span></p>
+                        <p class="me-1"><strong>Pays :</strong> <span class="badge bg-secondary"> {{ $activity->countries?->name ?? 'N/A' }}</span></p>
+                        <p class="me-1"><strong>Parent :</strong> <span class="badge bg-secondary"> {{ $activity->parent->name ?? 'N/A' }} </span></p>
                     </div>
                 </label>
             </div>
         @endforeach
 
-        <div class="mt-4 d-flex justify-content-center">
-            {{ $items->links() }}
-        </div>
+        <nav aria-label="Page navigation mt-3">
+            <ul class="pagination justify-content-center">
+                {{-- Bouton Previous --}}
+                <li class="page-item {{ ($items->currentPage() == 1) ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ $items->previousPageUrl() }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                {{-- Numéros de page --}}
+                @for ($i = max(1, $items->currentPage() - 2); $i <= min($items->lastPage(), $items->currentPage() + 2); $i++)
+                    <li class="page-item {{ ($items->currentPage() == $i) ? 'active' : '' }}">
+                        <a class="page-link" href="{{ $items->url($i) }}">{{ $i }}</a>
+                    </li>
+                @endfor
+
+                {{-- Bouton Next --}}
+                <li class="page-item {{ ($items->currentPage() == $items->lastPage()) ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ $items->nextPageUrl() }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
     </div>
 
 @endsection

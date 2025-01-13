@@ -15,8 +15,6 @@ class charterController extends Controller
     {
         $country = Country::find(Auth::user()->country_id);
         $domaines = Classification::with('childrenRecursive',
-            'rules.actives.trigger',
-            'rules.duas.trigger',
             'rules.duls.trigger',
             'rules.articles',
             'typologies')
@@ -29,8 +27,6 @@ class charterController extends Controller
     public function exportExcel($domaineId)
     {
         $domaine = Classification::with('childrenRecursive',
-            'rules.actives.trigger',
-            'rules.duas.trigger',
             'rules.duls.trigger',
             'rules.articles',
             'typologies')
@@ -44,8 +40,6 @@ class charterController extends Controller
     public function printPdf($domaineId)
     {
         $domaine = Classification::with('childrenRecursive',
-            'rules.actives.trigger',
-            'rules.duas.trigger',
             'rules.duls.trigger',
             'rules.articles',
             'typologies')

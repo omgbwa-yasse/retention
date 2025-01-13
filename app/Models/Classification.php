@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Classification extends Model
 {
@@ -18,61 +22,57 @@ class Classification extends Model
         'user_id'
     ];
 
-    public function parent()
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(Classification::class, 'parent_id');
     }
 
-    public function children()
+    public function children(): HasMany
     {
         return $this->hasMany(Classification::class, 'parent_id');
     }
 
-    public function rules()
+    public function rules(): BelongsToMany
     {
         return $this->belongsToMany(Rule::class, 'rule_classification', 'classification_id', 'rule_id');
     }
 
-    public function domaine()
+    public function domaine(): BelongsTo
     {
-        return $this->hasOne(self::class, 'id', 'parent_id')
-            ->with('domaine')
-            ->whereNull('parent_id');
+        return $this->belongsTo(Classification::class, 'parent_id');
     }
-    public function childrenRecursive()
+
+    public function childrenRecursive(): HasMany
     {
         return $this->children()->with('childrenRecursive');
     }
 
-    public function typologies()
+    public function typologies(): BelongsToMany
     {
         return $this->belongsToMany(Typology::class, 'classification_typology', 'activity_id', 'typology_id');
     }
 
-    public function baskets()
+    public function baskets(): BelongsToMany
     {
-        return $this->belongsToMany(Basket::class, 'basket_classification', 'classification_id', 'basket_id');
+        return $this->belongsToMany(Basket::class, 'basket_classification', 'activity_id', 'basket_id');
     }
 
-    public function countries()
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Country::class, 'country_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function user()
-    {
-        return $this->belongsTo(user::class, 'user_id');
-    }
-
-    public function subjects()
+    public function subjects(): BelongsToMany
     {
         return $this->belongsToMany(ForumSubject::class, 'forum_subject_classification', 'classification_id', 'subject_id');
     }
-    public function country()
+
+    public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class, 'country_id');
     }
-    public function getLevel()
+
+    public function getLevel(): int
     {
         $level = 0;
         $parent = $this->parent;
@@ -84,5 +84,4 @@ class Classification extends Model
 
         return $level;
     }
-
 }

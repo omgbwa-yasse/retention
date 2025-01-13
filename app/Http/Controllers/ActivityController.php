@@ -13,38 +13,29 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class ActivityController extends Controller
 {
-    // Affiche la liste des éléments
-//    public function index()
-//    {
-//        $countryId = Auth::user()->country_id;
-//        $activities = Classification::whereNotNull('parent_id')->where('country_id', $countryId)->orderBy('code')->get();
-//        $activities->load('parent');
-//        $activities->load('rules');
-//        $activities->load('domaine'); // refuse d'afficher les éléments
-//        $activities->load('typologies');
-//        $activities->load('countries');
-//        return view('activity.activityIndex', compact('activities'));
-//    }
-public function index(Request $request)
-{
-    $countryId = Auth::user()->country_id;
 
-    $search = $request->input('search');
+    public function index(Request $request)
+    {
+        $countryId = Auth::user()->country_id;
 
-    $items = Classification::whereNull('parent_id')
-        ->where('country_id', $countryId)
-        ->when($search, function ($query) use ($search) {
-            $query->where('code', 'like', "%{$search}%")
-                ->orWhere('name', 'like', "%{$search}%");
-        })
-        ->orderBy('code')
-        ->with('children', 'country', 'user')
-        ->paginate(50);
+        $search = $request->input('search');
 
-    $country = Country::find($countryId);
+        $items = Classification::whereNot('parent_id')
+            ->where('country_id', $countryId)
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('code', 'like', "%{$search}%")
+                      ->orWhere('name', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('code')
+            ->with('children', 'country', 'user')
+            ->paginate(2);
 
-    return view('activity.activityIndex', compact('items', 'country'));
-}
+        $country = Country::find($countryId);
+
+        return view('activity.activityIndex', compact('items', 'country'));
+    }
 
 
 
@@ -109,7 +100,7 @@ public function index(Request $request)
     // Affiche un élément spécifique
     public function show($id)
     {
-        $activity = Classification::findOrFail($id);
+        $activity = Classification::findOrFail($id)->with('parent','typologies','rules')->first();
         $parentName = $activity->parent ? $activity->parent->name : 'No parent';
         return view('activity.activityShow', compact('activity', 'parentName'));
 

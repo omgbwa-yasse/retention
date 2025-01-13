@@ -25,14 +25,13 @@
         <div class="form-group">
             <label for="parent_id">Catégorie Parent</label>
             <select class="form-control" id="parent_id" name="parent_id">
-                <option value="">Créer un nouveau domaine</option>
                 @foreach ($activities as $parent)
                     <option value="{{ $parent->id }}" @selected($activity->parent_id == $parent->id)>{{$parent->code }} - {{$parent->name }}</option>
                 @endforeach
             </select>
         </div>
 
-        <input type="hidden" name="country_id" value="{{ $auth->country_id }}">
+        <input type="hidden" name="country_id" value="{{ auth()->user()->country_id }}">
 
         <button type="submit" class="btn btn-primary">Sauvegarder</button>
         <a href="{{ route('activity.index') }}" class="btn btn-secondary">Annuler</a>

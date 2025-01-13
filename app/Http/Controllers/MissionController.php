@@ -14,28 +14,24 @@ use Illuminate\Support\Facades\Auth;
 class MissionController extends Controller
 {
     // Affiche la liste des éléments
-    //    public function index()
-    //    {
-    //        $countryId = Auth::user()->country_id;
-    //        $items = Classification::whereNull('parent_id')->where('country_id', $countryId)->orderBy('code')->get();
-    //        $items->load('children');
-    //        $country = Country ::find($countryId);
-    //        return view('mission.index', compact('items','country'));
-    //    }
-
     public function index(Request $request)
     {
         $search = $request->input('search');
-
+        $countryId = Auth::user()->country_id;
         $activities = Classification::query()
-            ->when($search, function ($query, $search) {
-                $query->where('name', 'like', "%{$search}%")
+            ->where('country_id', $countryId)
+            ->whereNull('parent_id')
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
+                });
             })
-            ->paginate(10);
+            ->paginate(2);
 
         return view('mission.index', compact('activities'));
     }
+
 
     // Affiche le formulaire de création d'un élément
     public function create()

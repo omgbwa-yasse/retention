@@ -56,8 +56,29 @@
             </div>
         @endforeach
 
-        <div class="mt-4 d-flex justify-content-center">
-            {{ $activities->links() }}
-        </div>
+        <nav aria-label="Page navigation mt-3">
+            <ul class="pagination justify-content-center">
+                {{-- Bouton Previous --}}
+                <li class="page-item {{ ($activities->currentPage() == 1) ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ $activities->previousPageUrl() }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                {{-- Numéros de page --}}
+                @for ($i = max(1, $activities->currentPage() - 2); $i <= min($activities->lastPage(), $activities->currentPage() + 2); $i++)
+                    <li class="page-item {{ ($activities->currentPage() == $i) ? 'active' : '' }}">
+                        <a class="page-link" href="{{ $activities->url($i) }}">{{ $i }}</a>
+                    </li>
+                @endfor
+
+                {{-- Bouton Next --}}
+                <li class="page-item {{ ($activities->currentPage() == $activities->lastPage()) ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ $activities->nextPageUrl() }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 @endsection

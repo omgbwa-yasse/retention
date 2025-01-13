@@ -36,7 +36,7 @@ class Rule extends Model
 
     public function articles()
     {
-        return $this->belongsToMany(Articles::class, 'dul_article', 'dul_id', 'article_id');
+        return $this->belongsToMany(Articles::class, 'dul_articles', 'dul_id', 'article_id');
     }
 
     public function classifications()
