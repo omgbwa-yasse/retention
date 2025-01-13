@@ -12,7 +12,7 @@
                     </a>
                     <ul class="collapse show nav flex-column" id="recherche">
                         <li><a href="{{ route('charter.index') }}" class="nav-link link-light"><i class="bi bi-list-check"></i>{{ __('Tableau de gestion') }}</a></li>
-                        <li><a href="{{ route('mission.index') }}" class="nav-link link-light"><i class="bi bi-list-check"></i>{{ __('Domaines') }}</a></li>
+                        <li><a href="{{ route('mission.index') }}" class="nav-link link-light"><i class="bi bi-list-check"></i>{{ __('Missions') }}</a></li>
                         <li><a href="{{ route('activity.index') }}" class="nav-link link-light"><i class="bi bi-list-check"></i>{{ __('Activités') }}</a></li>
                         <li><a href="{{ route('rule.index') }}" class="nav-link link-light"><i class="bi bi-list-check"></i>{{ __('Règles') }}</a></li>
                         <li><a href="{{ route('typology.index') }}" class="nav-link link-light"><i class="bi bi-list-check"></i>{{ __('Typologies') }}</a></li>
