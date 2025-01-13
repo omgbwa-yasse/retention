@@ -25,29 +25,27 @@ class ActivityController extends Controller
 //        $activities->load('countries');
 //        return view('activity.activityIndex', compact('activities'));
 //    }
-    public function index(Request $request)
-    {
-        $countryId = Auth::user()->country_id;
+public function index(Request $request)
+{
+    $countryId = Auth::user()->country_id;
 
-        $search = $request->input('search');
+    $search = $request->input('search');
 
-        $items = Classification::whereNull('parent_id')->where('country_id', $countryId);
+    $items = Classification::whereNull('parent_id')
+        ->where('country_id', $countryId)
+        ->when($search, function ($query) use ($search) {
+            $query->where('code', 'like', "%{$search}%")
+                ->orWhere('name', 'like', "%{$search}%");
+        })
+        ->orderBy('code')
+        ->with('children', 'country', 'user')
+        ->paginate(50);
 
-        if ($search) {
-            $items = $items->where(function($query) use ($search) {
-                $query->where('code', 'like', "%{$search}%")
-                    ->orWhere('name', 'like', "%{$search}%");
-            });
-        }
+    $country = Country::find($countryId);
 
-        $items = $items->orderBy('code')->get();
+    return view('activity.activityIndex', compact('items', 'country'));
+}
 
-        $items->load('children');
-
-        $country = Country::find($countryId);
-
-        return view('activity.activityIndex', compact('items', 'country'));
-    }
 
 
     public function pdf(Request $request)

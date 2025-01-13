@@ -1,47 +1,64 @@
 @extends('index')
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
-<script >
-    document.addEventListener('DOMContentLoaded', function() {
-
-
-        document.querySelectorAll('.toggle-children').forEach(function(toggle) {
-            toggle.addEventListener('click', function() {
-                var children = this.closest('li').querySelector('ul');
-                if (children) {
-                    children.classList.toggle('d-none');
-                    this.textContent = children.classList.contains('d-none') ? '▶' : '▼';
-                }
-            });
-        });
-    });
-</script>
 @section('content')
-    <div class="container-fluid py-4">
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <h1 class="h2 fw-bold">{{ __('Plan de Classement') }}</h1>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <a href="{{ route('activity.create') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-circle me-2"></i>Create New Activity
+    <div class="container my-5">
+        <div class="d-flex justify-content-between align-$items-center mb-4">
+            <h1 class="mb-0 text-primary"><i class="bi bi-list-task me-2"></i>Activités</h1>
+            <div>
+                <a href="{{ route('activity.create') }}" class="btn btn-primary me-2">
+                    <i class="bi bi-plus-circle me-2"></i>Nouvelle Activité
+                </a>
+                <a href="{{ route('activity.export') }}" class="btn btn-success">
+                    <i class="bi bi-file-earmark-arrow-down me-2"></i>Exporter en PDF
                 </a>
             </div>
         </div>
 
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <div class="mission-tree">
-                    <ul class="list-unstyled sortable">
-                        @foreach($items as $mission)
-                            @include('activity.partials.tree_item', ['mission' => $mission, 'level' => 0])
-                        @endforeach
-                    </ul>
-                </div>
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>{{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @foreach ( $items as $activity )
+            <div class="list-group mt-4">
+                <label class="list-group-item">
+                    <h4 class="fw-bold mb-0">
+                        <a href="{{ route('activity.show', $activity->id) }}" class="text-decoration-none" title="Voir">
+                            <i class="bi bi-eye"></i> {{ $activity->code }} - {{ $activity->name }}
+                        </a>
+                    </h4>
+                    <p>
+                        @if (strlen($activity->description) > 100)
+                            {{ substr($activity->description, 0, 100) }}
+                            <a href="#" class="text-primary" id="see-more-{{ $activity->id }}" onclick="toggleDescription({{ $activity->id }}); return false;">Voir plus</a>
+                            <span id="full-description-{{ $activity->id }}" style="display: none;">{{ substr($activity->description, 100) }}
+                                <a href="#" class="text-primary" id="see-less-{{ $activity->id }}" onclick="toggleDescription({{ $activity->id }}); return false;">Voir moins</a>
+                            </span>
+                        @else
+                            {{ $activity->description }}
+                        @endif
+                    </p>
+
+                    <div class="d-flex align-$items-center">
+                        <p class="me-1"><strong>Sous-classes:</strong> <span class="badge bg-secondary">{{ $activity->children?->count() ?? '0' }}</span></p>
+                        <p class="me-1"><strong>Pays:</strong> <span class="badge bg-secondary"> {{ $activity->countries?->name ?? 'N/A' }}</span></p>
+                    </div>
+                </label>
+            </div>
+        @endforeach
+
+        <div class="mt-4 d-flex justify-content-center">
+            {{ $items->links() }}
         </div>
     </div>
-
-    <style>
 
 @endsection
