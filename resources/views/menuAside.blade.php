@@ -1,69 +1,65 @@
 @guest
 @else
-    <!-- Pour debug -->
-    <div >
-
-    </div>
-    <aside class="sidebar bg-dark" style="width: 220px;">
+    <aside class="sidebar bg-dark">
         <nav class="nav-menu">
-            <ul class="nav flex-column py-2">
+            <ul class="nav flex-column">
                 <!-- Search -->
                 <li class="nav-item">
-                    <a class="nav-link link-light d-flex align-items-center py-2" data-bs-toggle="collapse" href="#recherche">
+                    <a class="nav-link link-light d-flex align-items-center" data-bs-toggle="collapse" href="#recherche">
                         <i class="bi bi-search"></i>
-                        <span class="ms-2 me-auto">{{ __('Recherche') }}</span>
-                        <i class="bi bi-chevron-down fs-8"></i>
+                        <span>{{ __('Recherche') }}</span>
+                        <i class="bi bi-chevron-down"></i>
                     </a>
-                    <ul class="collapse show nav flex-column ps-3 small" id="recherche">
-                        <li><a href="{{ route('charter.index') }}" class="nav-link link-light py-1"><i class="bi bi-list-check"></i><span class="ms-2">{{ __('Tableau de gestion') }}</span></a></li>
-                        <li><a href="{{ route('mission.index') }}" class="nav-link link-light py-1"><i class="bi bi-list-check"></i><span class="ms-2">{{ __('Domaines') }}</span></a></li>
-                        <li><a href="{{ route('activity.index') }}" class="nav-link link-light py-1"><i class="bi bi-list-check"></i><span class="ms-2">{{ __('Activités') }}</span></a></li>
-                        <li><a href="{{ route('rule.index') }}" class="nav-link link-light py-1"><i class="bi bi-list-check"></i><span class="ms-2">{{ __('Règles') }}</span></a></li>
-                        <li><a href="{{ route('typology.index') }}" class="nav-link link-light py-1"><i class="bi bi-list-check"></i><span class="ms-2">{{ __('Typologies') }}</span></a></li>
-                        <li><a href="{{ route('reference.index') }}" class="nav-link link-light py-1"><i class="bi bi-list-check"></i><span class="ms-2">{{ __('Références') }}</span></a></li>
+                    <ul class="collapse show nav flex-column" id="recherche">
+                        <li><a href="{{ route('charter.index') }}" class="nav-link link-light"><i class="bi bi-list-check"></i>{{ __('Tableau de gestion') }}</a></li>
+                        <li><a href="{{ route('mission.index') }}" class="nav-link link-light"><i class="bi bi-list-check"></i>{{ __('Domaines') }}</a></li>
+                        <li><a href="{{ route('activity.index') }}" class="nav-link link-light"><i class="bi bi-list-check"></i>{{ __('Activités') }}</a></li>
+                        <li><a href="{{ route('rule.index') }}" class="nav-link link-light"><i class="bi bi-list-check"></i>{{ __('Règles') }}</a></li>
+                        <li><a href="{{ route('typology.index') }}" class="nav-link link-light"><i class="bi bi-list-check"></i>{{ __('Typologies') }}</a></li>
+                        <li><a href="{{ route('reference.index') }}" class="nav-link link-light"><i class="bi bi-list-check"></i>{{ __('Références') }}</a></li>
                     </ul>
                 </li>
 
                 <!-- Add -->
                 <li class="nav-item">
-                    <a class="nav-link link-light d-flex align-items-center py-2" data-bs-toggle="collapse" href="#ajouter">
+                    <a class="nav-link link-light d-flex align-items-center" data-bs-toggle="collapse" href="#ajouter">
                         <i class="bi bi-plus-circle"></i>
-                        <span class="ms-2 me-auto">{{ __('Ajouter') }}</span>
-                        <i class="bi bi-chevron-down fs-8"></i>
+                        <span>{{ __('Ajouter') }}</span>
+                        <i class="bi bi-chevron-down"></i>
                     </a>
-                    <ul class="collapse show nav flex-column ps-3 small" id="ajouter">
-                        <li><a href="{{ route('activity.create') }}" class="nav-link link-light py-1"><i class="bi bi-plus-square"></i><span class="ms-2">{{ __('Classe') }}</span></a></li>
-                        <li><a href="{{ route('mission.create') }}" class="nav-link link-light py-1"><i class="bi bi-plus-square"></i><span class="ms-2">{{ __('Domaine') }}</span></a></li>
-                        <li><a href="{{ route('rule.create') }}" class="nav-link link-light py-1"><i class="bi bi-plus-square"></i><span class="ms-2">{{ __('Règle') }}</span></a></li>
-                        <li><a href="{{ route('typology.create') }}" class="nav-link link-light py-1"><i class="bi bi-plus-square"></i><span class="ms-2">{{ __('Typologie') }}</span></a></li>
-                        <li><a href="{{ route('reference.create') }}" class="nav-link link-light py-1"><i class="bi bi-plus-square"></i><span class="ms-2">{{ __('Référence') }}</span></a></li>
+                    <ul class="collapse show nav flex-column" id="ajouter">
+                        <li><a href="{{ route('activity.create') }}" class="nav-link link-light"><i class="bi bi-plus-square"></i>{{ __('Classe') }}</a></li>
+                        <li><a href="{{ route('mission.create') }}" class="nav-link link-light"><i class="bi bi-plus-square"></i>{{ __('Domaine') }}</a></li>
+                        <li><a href="{{ route('rule.create') }}" class="nav-link link-light"><i class="bi bi-plus-square"></i>{{ __('Règle') }}</a></li>
+                        <li><a href="{{ route('typology.create') }}" class="nav-link link-light"><i class="bi bi-plus-square"></i>{{ __('Typologie') }}</a></li>
+                        <li><a href="{{ route('reference.create') }}" class="nav-link link-light"><i class="bi bi-plus-square"></i>{{ __('Référence') }}</a></li>
                     </ul>
                 </li>
 
                 <!-- Control -->
                 <li class="nav-item">
-                    <a class="nav-link link-light d-flex align-items-center py-2" data-bs-toggle="collapse" href="#controle">
+                    <a class="nav-link link-light d-flex align-items-center" data-bs-toggle="collapse" href="#controle">
                         <i class="bi bi-shield-check"></i>
-                        <span class="ms-2 me-auto">{{ __('Contrôle') }}</span>
-                        <i class="bi bi-chevron-down fs-8"></i>
+                        <span>{{ __('Contrôle') }}</span>
+                        <i class="bi bi-chevron-down"></i>
                     </a>
-                    <ul class="collapse show nav flex-column ps-3 small" id="controle">
-                        <li><a href="{{ route('committee.index') }}" class="nav-link link-light py-1"><i class="bi bi-check-circle"></i><span class="ms-2">{{ __('Projet de règles') }}</span></a></li>
-                        <li><a href="{{ route('committee.examining') }}" class="nav-link link-light py-1"><i class="bi bi-check-circle"></i><span class="ms-2">{{ __('Règles en examen') }}</span></a></li>
-                        <li><a href="{{ route('committee.approved') }}" class="nav-link link-light py-1"><i class="bi bi-hourglass-split"></i><span class="ms-2">{{ __('Règles approuvées') }}</span></a></li>
+                    <ul class="collapse show nav flex-column" id="controle">
+                        <li><a href="{{ route('committee.index') }}" class="nav-link link-light"><i class="bi bi-check-circle"></i>{{ __('Projet de règles') }}</a></li>
+                        <li><a href="{{ route('committee.examining') }}" class="nav-link link-light"><i class="bi bi-check-circle"></i>{{ __('Règles en examen') }}</a></li>
+                        <li><a href="{{ route('committee.approved') }}" class="nav-link link-light"><i class="bi bi-hourglass-split"></i>{{ __('Règles approuvées') }}</a></li>
                     </ul>
                 </li>
 
                 <!-- Settings -->
                 <li class="nav-item">
-                    <a class="nav-link link-light d-flex align-items-center py-2" data-bs-toggle="collapse" href="#parametre">
+                    <a class="nav-link link-light d-flex align-items-center" data-bs-toggle="collapse" href="#parametre">
                         <i class="bi bi-gear"></i>
-                        <span class="ms-2 me-auto">{{ __('Paramètres') }}</span>
-                        <i class="bi bi-chevron-down fs-8"></i>
+                        <span>{{ __('Paramètres') }}</span>
+                        <i class="bi bi-chevron-down"></i>
                     </a>
-                    <ul class="collapse show nav flex-column ps-3 small" id="parametre">
-                        <li><a href="{{ route('user.show', Auth::user()->id) }}" class="nav-link link-light py-1"><i class="bi bi-person-circle"></i><span class="ms-2">{{ __('Mon compte') }}</span></a></li>
-                        <li><a href="{{ route('setting.index') }}" class="nav-link link-light py-1"><i class="bi bi-sliders"></i><span class="ms-2">{{ __('Généraux') }}</span></a></li>
+                    <ul class="collapse show nav flex-column" id="parametre">
+                        <li><a href="{{ route('user.show', Auth::user()->id) }}" class="nav-link link-light"><i class="bi bi-person-circle"></i>{{ __('Mon compte') }}</a></li>
+                        <li><a href="{{ route('setting.index') }}" class="nav-link link-light"><i class="bi bi-sliders"></i>{{ __('Généraux') }}</a></li>
                     </ul>
                 </li>
             </ul>
@@ -72,44 +68,51 @@
 
     <style>
         .sidebar {
+            width: 200px;
             min-height: 100vh;
-            transition: width 0.3s;
+            background-color: #212529;
         }
 
         .nav-menu .nav-link {
-            border-radius: 4px;
-            margin: 2px 8px;
-            transition: all 0.2s;
+            padding: 8px 12px;
+            color: rgba(255, 255, 255, 0.85);
         }
 
         .nav-menu .nav-link:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
         }
 
         .nav-menu .nav-link i {
-            font-size: 0.9rem;
+            font-size: 14px;
         }
 
-        .nav-menu .collapse {
-            transition: all 0.2s;
-        }
-
-        .nav-menu .collapse .nav-link {
-            padding-left: 0.5rem;
-            opacity: 0.8;
-        }
-
-        .nav-menu .collapse .nav-link:hover {
-            opacity: 1;
-            background: rgba(255, 255, 255, 0.05);
+        .nav-menu .nav-link span {
+            margin-left: 8px;
+            margin-right: auto;
         }
 
         .nav-menu .bi-chevron-down {
-            transition: transform 0.2s;
+            font-size: 12px;
+            margin-left: 4px;
         }
 
-        .nav-menu .collapsed .bi-chevron-down {
-            transform: rotate(-90deg);
+        .nav-menu .collapse .nav-link {
+            padding: 6px 12px 6px 32px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .nav-menu .collapse .nav-link:hover {
+            color: #fff;
+        }
+
+        .nav-menu .collapse .nav-link i {
+            margin-right: 6px;
+        }
+
+        .nav-item {
+            margin-bottom: 2px;
         }
     </style>
 @endguest

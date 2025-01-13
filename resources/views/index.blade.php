@@ -42,15 +42,15 @@
 @extends('layouts.app')
 
 <body id="app">
-<div class="container-fluid">
+<div >
     @auth
         @include('menuTop')
         <div class="row">
-            <div class="col-2">
+            <div class="col-md-2">
                 @include('menuAside')
             </div>
-            <div class="col-md-9 ms-sm-auto  px-md-4">
-{{--                <a href="{{ url()->previous() }}" class="btn btn-primary">Retour</a>--}}
+            <div class="col-md-9  px-md-4">
+                {{--                <a href="{{ url()->previous() }}" class="btn btn-primary">Retour</a>--}}
                 @yield('content')
             </div>
         </div>
@@ -62,21 +62,6 @@
                     <span>African Retention</span>
                 </a>
 
-{{--                <div class="dropdown">--}}
-{{--                    <button class="btn btn-secondary dropdown-toggle" type="button" id="langDropdown" data-bs-toggle="dropdown">--}}
-{{--                        {{ config('app.available_locales')[App::getLocale()] }}--}}
-{{--                    </button>--}}
-{{--                    <ul class="dropdown-menu">--}}
-{{--                        @foreach(config('app.available_locales') as $locale => $label)--}}
-{{--                            <li>--}}
-{{--                                <a class="dropdown-item @if(App::getLocale() == $locale) active @endif"--}}
-{{--                                   href="{{ route('language.switch', $locale) }}">--}}
-{{--                                    {{ $label }}--}}
-{{--                                </a>--}}
-{{--                            </li>--}}
-{{--                        @endforeach--}}
-{{--                    </ul>--}}
-{{--                </div>--}}
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                         aria-label="{{ __('toggle_navigation') }}">
                     <span class="navbar-toggler-icon"></span>
