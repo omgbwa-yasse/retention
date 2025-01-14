@@ -18,11 +18,11 @@ class Typology extends Model
 
     public function category()
     {
-        return $this->belongsTo(TypologyCategory::class);
+        return $this->belongsTo(TypologyCategory::class, 'category_id');
     }
 
-    public function classifications()
+    public function activities()
     {
-        return $this->hasMany(Classification::class);
+        return $this->hasMany(Activity::class, 'typology_id');
     }
 }

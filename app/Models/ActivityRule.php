@@ -3,25 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\Classification;
+use App\Models\Activity;
 use Illuminate\Database\Eloquent\Model;
 
 class ActivityRule extends Model
 {
     use HasFactory;
 
-    protected $table = 'rule_classification';
+    protected $table = 'rule_activity';
 
     protected $fillable = [
-        'classification_id',
+        'activity_id',
         'rule_id',
     ];
 
     public $timestamps = false;
 
-    public function classification()
+    public function activity()
     {
-        return $this->belongsTo(Classification::class);
+        return $this->belongsTo(Activity::class);
     }
 
     public function rule()

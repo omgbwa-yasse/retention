@@ -3,7 +3,7 @@
 
 @section('content')
     <h1>Modifier la relation</h1>
-    <form action="{{ route('rule.classification.update', $rule->id) }}" method="POST">
+    <form action="{{ route('rule.activity.update', $rule->id) }}" method="POST">
         @csrf
         @method('PUT')
         <div>
@@ -11,10 +11,10 @@
             <input type="text" name="name" id="name" value="{{ $rule->name }}">
         </div>
         <div>
-            <label for="classifications">Classifications:</label>
-            <select name="classifications[]" id="classifications" multiple>
-                @foreach($classifications as $classification)
-                    <option value="{{ $classification->id }}" {{ $rule->classifications->contains($classification->id) ? 'selected' : '' }}>{{ $classification->name }}</option>
+            <label for="activities">Classifications:</label>
+            <select name="activities[]" id="activities" multiple>
+                @foreach($activities as $activity)
+                    <option value="{{ $activity->id }}" {{ $rule->activities->contains($activity->id) ? 'selected' : '' }}>{{ $activity->name }}</option>
                 @endforeach
             </select>
         </div>

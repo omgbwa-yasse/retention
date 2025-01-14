@@ -5,7 +5,7 @@ use App\Exports\ActivitiesExport;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Models\Classification;
+use App\Models\Activity;
 use App\Models\Country;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -20,7 +20,7 @@ class ActivityController extends Controller
 
         $search = $request->input('search');
 
-        $items = Classification::whereNot('parent_id')
+        $items = Activity::whereNot('parent_id')
             ->where('country_id', $countryId)
             ->when($search, function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
@@ -43,7 +43,7 @@ class ActivityController extends Controller
     {
         $search = $request->input('search');
 
-        $activities = Classification::query()
+        $activities = Activity::query()
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
@@ -59,7 +59,7 @@ class ActivityController extends Controller
     {
         $auth = Auth::user();
         $countryId = Auth::user()->country_id;
-        $activities = Classification::where('country_id', $countryId)->orderBy('code')->get();
+        $activities = Activity::where('country_id', $countryId)->orderBy('code')->get();
         return view('activity.activityCreate', compact('activities', 'auth'));
     }
 
@@ -78,10 +78,10 @@ class ActivityController extends Controller
             'country_id' => 'required|exists:countries,id',
         ]);
 
-        $parent = Classification::findOrFail($request->parent_id);
+        $parent = Activity::findOrFail($request->parent_id);
         $code = $parent->code . $request->input('code');
 
-        Classification::create([
+        Activity::create([
             'code' => $code,
             'name' => $request->input('name'),
             'description' => $request->input('description'),
@@ -100,7 +100,7 @@ class ActivityController extends Controller
     // Affiche un élément spécifique
     public function show($id)
     {
-        $activity = Classification::findOrFail($id)->with('parent','typologies','rules')->first();
+        $activity = Activity::findOrFail($id)->with('parent','typologies','rules')->first();
         $parentName = $activity->parent ? $activity->parent->name : 'No parent';
         return view('activity.activityShow', compact('activity', 'parentName'));
 
@@ -113,8 +113,8 @@ class ActivityController extends Controller
     // Affiche le formulaire de modification d'un élément
     public function edit($id)
     {
-        $activity = Classification::findOrFail($id);
-        $activities = Classification::orderBy('code')->get();
+        $activity = Activity::findOrFail($id);
+        $activities = Activity::orderBy('code')->get();
         return view('activity.activityEdit', compact('activity', 'activities'));
     }
 
@@ -131,7 +131,7 @@ class ActivityController extends Controller
             'parent_id' => 'nullable|exists:classifications,id'
         ]);
 
-        $item = Classification::findOrFail($id);
+        $item = Activity::findOrFail($id);
         $item->code = $request->input('code');
         $item->name = $request->input('name');
         $item->parent_id = $request->input('parent_id');
@@ -145,7 +145,7 @@ class ActivityController extends Controller
 
     public function destroy($id)
     {
-        $classification = Classification::findOrFail($id);
+        $classification = Activity::findOrFail($id);
 
         if ($classification->children->isNotEmpty()) {
             return back()->with('error', 'Impossible de supprimer cette classification. Elle a des enfants. Veuillez supprimer les enfants d\'abord.');
@@ -172,7 +172,7 @@ class ActivityController extends Controller
 
     public function export()
     {
-        $activities = Classification::all();
+        $activities = Activity::all();
 
         $pdf = PDF::loadView('activity.pdf', compact('activities'));
 

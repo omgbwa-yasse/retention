@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Classification;
+use App\Models\Activity;
 use App\Models\Typology;
 use Illuminate\Http\Request;
 
 class ActivityTypologyController extends Controller
 {
-    public function index(Classification $activity)
+    public function index(Activity $activity)
     {
         $activity->load('typologies');
         return view('activity.typology.index', compact('activity'));
@@ -18,7 +18,7 @@ class ActivityTypologyController extends Controller
 
 
 
-    public function create(Classification $activity){
+    public function create(Activity $activity){
         $typologies = Typology::all();
         return view('activity.typology.create', compact('activity', 'typologies'));
     }
@@ -26,7 +26,7 @@ class ActivityTypologyController extends Controller
 
 
 
-    public function update(Request $request, Classification $activity)
+    public function update(Request $request, Activity $activity)
     {
         $request->validate([
             'typology_ids' => 'required|array',
@@ -40,7 +40,7 @@ class ActivityTypologyController extends Controller
 
 
 
-    public function store(Request $request, Classification $activity)
+    public function store(Request $request, Activity $activity)
     {
         $request->validate([
             'typology_ids' => 'required|exists:typologies,id',
@@ -56,7 +56,7 @@ class ActivityTypologyController extends Controller
 
 
 
-    public function destroy(Classification $activity, Typology $typology)
+    public function destroy(Activity $activity, Typology $typology)
     {
         if ($typology->activitys()->count() > 0) {
             return redirect()->back()->with('error', 'Typology cannot be deleted because it is associated with one or more activitys.');
