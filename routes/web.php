@@ -107,6 +107,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('typology', TypologyController::class);
     Route::resource('setting', SettingController::class);
     Route::resource('charter', CharterController::class);
+
+    /*
+        Règles de conservation
+    */
     Route::resource('rule', RuleController::class);
     Route::resource('rule.article', RuleArticleController::class)->names('rule.article');
     Route::resource('rule.classification', RuleClassificationController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
@@ -115,31 +119,33 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/rule/{rule_id}/classification', [RuleClassificationController::class, 'index'])->name('rule.classification.index');
     Route::get('/rule/{rule}/classification/{classification}/edit', [RuleClassificationController::class, 'edit'])->name('rule.classification.edit');
     Route::delete('/rule/{rule}/classification/{classification}', [RuleClassificationController::class, 'destroy'])->name('rule.classification.destroy');
+
+    /*
+        Chartes de conservation
+    */
     Route::post('/reference/add-to-basket', [ReferenceController::class, 'addToBasket'])->name('reference.addToBasket');
     Route::get('/charter', [charterController::class, 'index'])->name('charter.index');
     Route::get('/charter/print/{domaineId}', [charterController::class, 'printPdf'])->name('charter.print');
     Route::get('/charter/export/{domaineId}', [charterController::class, 'exportExcel'])->name('charter.export');
     Route::resource('user', UserController::class);
+
+    /*
+        Comité de validation
+    */
     Route::get('/committee/project', [CommitteeController::class, 'project'])->name('committee.project');
     Route::get('/committee/examining', [CommitteeController::class, 'examining'])->name('committee.examining');
     Route::get('/committee/approved', [CommitteeController::class, 'approved'])->name('committee.approved');
 
-    // Route::get('user/{id}', [UserController::class, 'show'])->name('user.show');
-    // Route::prefix('committee')->group(function(){
-    // Route::get('/project', [CommitteeController::class, 'index'])->name('committee.index');
-    // Route::get('/examining', [CommitteeController::class, 'examining'])->name('committee.examining');
-    // Route::get('/approved', [CommitteeController::class, 'approved'])->name('committee.approved');
-    //});
 
+    /*
+        Forum
+    */
     Route::resource('committee', CommitteeController::class);
     Route::resource('subject', ForumSubjectController::class);
     Route::resource('subject.post', ForumPostController::class);
     Route::resource('chat', ForumChatController::class);
     Route::post('/reaction/{post}', [ForumReactionController::class, 'add'])->name('reaction.add');
     Route::post('/subject/{subject}/post/{post}/reply', [ForumPostController::class, 'reply'])->name('subject.post.reply');
-
-    //Route::get('/subject/{subject}/post/{post}/edit', [ForumSubjectController::class, 'editPost'])->name('subject.post.editPost');
-    //Route::delete('/subject/{post}/post/{subject}', [ForumPostController::class, 'destroy'])->name('subject.post.destroy');
     Route::delete('/subjects/{subject}/posts/{post}', [ForumSubjectController::class, 'destroyPost'])->name('subject.post.destroyPost');
     Route::get('/subjects/{subject}/posts/{post}/edit', [ForumSubjectController::class, 'editPost'])->name('subject.post.editPost');
     Route::put('/subjects/{subject}/posts/{post}', [ForumSubjectController::class, 'updatePost'])->name('subject.post.updatePost');

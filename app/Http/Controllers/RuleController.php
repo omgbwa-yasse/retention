@@ -6,7 +6,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\Rule;
 use App\Models\Country;
-use App\Models\Articles;
+use App\Models\Article;
 use App\Models\Status;
 use App\Models\Trigger;
 use App\Models\Sort;
@@ -44,7 +44,7 @@ class RuleController extends Controller
         $states = Status::all();
         $triggers = Trigger::all();
         $sorts = Sort::all();
-        $articles = Articles::all()->where('country_id', '=', Auth::user()->country_id);
+        $articles = Article::all()->where('country_id', '=', Auth::user()->country_id);
         return view('rule.ruleCreate', compact( 'triggers', 'articles', 'sorts', 'states'));
 
     }
@@ -90,7 +90,7 @@ class RuleController extends Controller
     // Affiche un élément spécifique
     public function show(Rule $rule)
     {
-        $rule->load(['country', 'status']);
+        $rule->load(['country', 'status','articles', 'trigger', 'sort']);
         return view('rule.ruleShow', compact('rule'));
     }
 
