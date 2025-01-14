@@ -3,7 +3,7 @@
 @section('content')
     <div class="container my-5">
         <div class="row justify-content-center">
-            <div class="">
+            <div class="col-md-8">
                 <div class="card shadow">
                     <div class="card-header bg-primary text-white">
                         <h2 class="mb-0"><i class="fas fa-file-alt me-2"></i>Ajouter une règle de conservation</h2>
@@ -50,37 +50,37 @@
                                 <div class="card-body">
                                     <div class="row mb-3">
                                         <div class="col-md-4">
-                                            <label for="dul_duration" class="form-label">Durée</label>
-                                            <input type="number" class="form-control @error('dul_duration') is-invalid @enderror" id="dul_duration" name="dul_duration" value="{{ old('dul_duration') }}" required>
-                                            @error('dul_duration')
+                                            <label for="duration" class="form-label">Durée</label>
+                                            <input type="number" class="form-control @error('duration') is-invalid @enderror" id="duration" name="duration" value="{{ old('duration') }}" required>
+                                            @error('duration')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="dul_trigger" class="form-label">Conserver</label>
-                                            <select class="form-select @error('dul_trigger') is-invalid @enderror" id="dul_trigger" name="dul_trigger" required>
+                                            <label for="trigger_id" class="form-label">Conserver</label>
+                                            <select class="form-select @error('trigger_id') is-invalid @enderror" id="trigger_id" name="trigger_id" required>
                                                 <option value="">Sélectionnez une option</option>
                                                 @foreach($triggers as $trigger)
-                                                    <option value="{{ $trigger->id }}" {{ old('dul_trigger') == $trigger->id ? 'selected' : '' }}>
+                                                    <option value="{{ $trigger->id }}" {{ old('trigger_id') == $trigger->id ? 'selected' : '' }}>
                                                         {{ $trigger->code }} - {{ $trigger->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            @error('dul_trigger')
+                                            @error('trigger_id')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="dul_sort" class="form-label">Sort</label>
-                                            <select class="form-select @error('dul_sort') is-invalid @enderror" id="dul_sort" name="dul_sort" required>
+                                            <label for="sort_id" class="form-label">Sort</label>
+                                            <select class="form-select @error('sort_id') is-invalid @enderror" id="sort_id" name="sort_id" required>
                                                 <option value="">Sélectionnez une option</option>
                                                 @foreach($sorts as $sort)
-                                                    <option value="{{ $sort->id }}" {{ old('dul_sort') == $sort->id ? 'selected' : '' }}>
+                                                    <option value="{{ $sort->id }}" {{ old('sort_id') == $sort->id ? 'selected' : '' }}>
                                                         {{ $sort->code }} - {{ $sort->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            @error('dul_sort')
+                                            @error('sort_id')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>

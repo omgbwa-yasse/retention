@@ -8,21 +8,12 @@ use App\Models\Rule;
 use App\Models\Country;
 use App\Models\Articles;
 use App\Models\Status;
-use App\Models\Dul;
 use App\Models\Trigger;
 use App\Models\Sort;
 use Illuminate\Support\Facades\Auth;
 
 class RuleController extends Controller
 {
-    // Affiche la liste des éléments
-//    public function index()
-//    {
-//        $rules = Rule::with(['actives', 'duas', 'duls', 'countries', 'articles', 'classifications', 'baskets', 'status'])->get();
-//        return view('rule.ruleIndex', compact('rules'));
-//    }
-
-
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -39,16 +30,20 @@ class RuleController extends Controller
 
 
 
+
+
     // Affiche le formulaire de création d'un élément
     public function create()
     {
-        $states = status::all();
-        $triggers = trigger::all();
+        $states = Status::all();
+        $triggers = Trigger::all();
         $sorts = Sort::all();
-        $articles = Articles ::all()->where('country_id','=',Auth::user()->country_id);
-        $countries = country::orderBy('name')->get();
-        return view('rule.ruleCreate', compact('countries','triggers','articles','countries','sorts','states'));
+        $articles = Articles::all()->where('country_id', '=', Auth::user()->country_id);
+        $countries = Country::orderBy('name')->get();
+        return view('rule.ruleCreate', compact('countries', 'triggers', 'articles', 'sorts', 'states'));
     }
+
+
 
 
 
@@ -56,38 +51,28 @@ class RuleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'code' => 'required',
-            'name' => 'required',
+            'code' => 'required|unique:rules|max:10',
+            'name' => 'required|unique:rules|max:100',
             'description' => 'nullable',
-            'dul_duration' => 'required',
-            'dul_trigger' => 'required',
-            'dul_sort' => 'required'
+            'duration' => 'required|max:10',
+            'trigger_id' => 'required|exists:triggers,id',
+            'sort_id' => 'required|exists:sorts,id',
         ]);
 
         $countryId = Auth::user()->country_id;
         $country = Country::find($countryId);
         $code = $country->abbr . $request->input('code');
 
-        $rule = Rule::create([
+        Rule::create([
             'code' => $code,
             'name' => $request->input('name'),
             'description' => $request->input('description'),
+            'duration' => $request->input('duration'),
+            'trigger_id' => $request->input('trigger_id'),
+            'sort_id' => $request->input('sort_id'),
             'country_id' => $countryId,
             'user_id' => Auth::user()->id,
             'status_id' => 1
-        ]);
-
-
-        $ruleId = $rule->id;
-
-        Dul::create([
-            'duration' => $request->input('dul_duration'),
-            'description' => $request->input('dul_description'),
-            'trigger_id' => $request->input('dul_trigger'),
-            'sort_id' => $request->input('dul_sort'),
-            'rule_id' => $ruleId,
-            'country_id' => $countryId,
-            'user_id' => Auth::user()->id
         ]);
 
         return redirect()->route('rule.index')->with('success', 'Rule created successfully.');
@@ -96,13 +81,10 @@ class RuleController extends Controller
 
 
 
-
-
-
     // Affiche un élément spécifique
     public function show(Rule $rule)
     {
-        $rule->load(['country', 'duls', 'classifications', 'status']);
+        $rule->load(['country', 'status']);
         return view('rule.ruleShow', compact('rule'));
     }
 
@@ -116,11 +98,8 @@ class RuleController extends Controller
         $countries = Country::orderBy('name')->get();
         $triggers = Trigger::orderBy('name')->get();
         $sorts = Sort::orderBy('name')->get();
-        $rule->load('duls');
         return view('rule.ruleEdit', compact('rule', 'countries', 'triggers', 'sorts'));
     }
-
-
 
 
 
@@ -129,12 +108,12 @@ class RuleController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'code' => 'required',
-            'name' => 'required',
+            'code' => 'required|max:10',
+            'name' => 'required|max:100',
             'description' => 'nullable',
-            'dul_duration' => 'required',
-            'dul_trigger' => 'required',
-            'dul_sort' => 'required',
+            'duration' => 'required|max:10',
+            'trigger_id' => 'required|exists:triggers,id',
+            'sort_id' => 'required|exists:sorts,id',
         ]);
 
         $countryId = Auth::user()->country_id;
@@ -151,20 +130,13 @@ class RuleController extends Controller
             'code' => $code,
             'name' => $request->input('name'),
             'description' => $request->input('description'),
+            'duration' => $request->input('duration'),
+            'trigger_id' => $request->input('trigger_id'),
+            'sort_id' => $request->input('sort_id'),
             'country_id' => $countryId,
             'user_id' => Auth::user()->id,
             'status_id' => 1
         ]);
-
-        Dul::where('rule_id', $id)
-           ->update([
-               'duration' => $request->input('dul_duration'),
-               'description' => $request->input('dul_description'),
-               'trigger_id' => $request->input('dul_trigger'),
-               'sort_id' => $request->input('dul_sort'),
-               'country_id' => $countryId,
-               'user_id' => Auth::user()->id
-           ]);
 
         return redirect()->route('rule.index')->with('success', 'Rule updated successfully.');
     }
@@ -175,16 +147,13 @@ class RuleController extends Controller
     // Supprime un élément spécifique
     public function destroy(Rule $rule)
     {
-
-        $dul = Dul::where('rule_id', $rule->id)->get();
-        foreach ($dul as $d) {
-            $d->delete();
-        }
-
         $rule->delete();
 
         return redirect()->route('rule.index')->with('success', 'Rule deleted successfully.');
     }
+
+
+
 
     public function export()
     {
@@ -194,5 +163,4 @@ class RuleController extends Controller
 
         return $pdf->download('regles_de_conservation.pdf');
     }
-
 }

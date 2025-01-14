@@ -2,141 +2,74 @@
 
 @section('content')
     <div class="container my-5">
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white">
-                <h1 class="mb-0">{{ $rule->name }}</h1>
-                <h6 class="mb-0">{{ $rule->code }}</h6>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <h5 class="card-title">Description</h5>
-                        <p class="card-text">{{ $rule->description }}</p>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="mb-0"><i class="fas fa-eye me-2"></i>Détails de la règle de conservation</h2>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h4 class="mb-0"><i class="fas fa-info-circle me-2"></i>Informations de base</h4>
+                            </div>
                             <div class="card-body">
-                                <h5 class="card-title">Informations</h5>
-                                <p class="mb-1">
-                                    <strong>Statut :</strong>
-                                    <span class="badge bg-{{ $rule->status->color ?? 'secondary' }}">
-                                        {{ $rule->status->name }}
-                                    </span>
-                                </p>
-                                <p class="mb-1">
-                                    <strong>Pays concernés :</strong>
-                                    <span class="badge bg-info">{{ $rule->country->name }}</span>
-                                </p>
+                                <div class="row mb-3">
+                                    <div class="col-md-2">
+                                        <strong>Référence:</strong>
+                                        <p>{{ $rule->code }}</p>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <strong>Intitulé:</strong>
+                                        <p>{{ $rule->name }}</p>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Description:</strong>
+                                    <p>{{ $rule->description }}</p>
+                                </div>
                             </div>
                         </div>
+
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h4 class="mb-0"><i class="fas fa-history me-2"></i>Historique (Archives historiques)</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <strong>Durée:</strong>
+                                        <p>{{ $rule->duration }}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <strong>Conserver:</strong>
+                                        <p>{{ $rule->trigger->code }} - {{ $rule->trigger->name }}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <strong>Sort:</strong>
+                                        <p>{{ $rule->sort->code }} - {{ $rule->sort->name }}</p>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Description:</strong>
+                                    <p>{{ $rule->dul_description }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <a href="{{ route('rule.edit', $rule->id) }}" class="btn btn-primary">
+                                <i class="fas fa-edit me-2"></i>Modifier
+                            </a>
+                            <form action="{{ route('rule.destroy', $rule->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette règle ?')">
+                                    <i class="fas fa-trash me-2"></i>Supprimer
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                </div>
-
-                <h3 class="mt-4">Durée légale</h3>
-                <div class="card mb-4">
-                    <div class="card-header bg-secondary text-white">
-                        <h5 class="mb-0">Définitive</h5>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered mb-0">
-                            <thead>
-                            <tr>
-                                <th>Durée</th>
-                                <th>Déclencheur</th>
-                                <th>Description</th>
-                                <th>Sort</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @forelse($rule->duls ?? collect() as $item)
-                                <tr>
-                                    <td>{{ $item->duration }} ans</td>
-                                    <td>
-                                        @if($item->trigger)
-                                            {{ $item->trigger->code }} - {{ $item->trigger->name }}
-                                        @else
-                                            N/A
-                                        @endif
-                                    </td>
-                                    <td>{{ $item->description }}</td>
-                                    <td>
-                                        @if($item->sort)
-                                            {{ $item->sort->code }}
-                                        @else
-                                            N/A
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('rule.article.edit',[$rule->id, $item->id]) }}" class="btn btn-warning btn-sm">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="4" class="text-center">Aucune donnée disponible</td>
-                                </tr>
-                            @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <h3 class="mt-4">Classifications</h3>
-                <div class="table-responsive mb-4">
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                        <tr>
-                            <th>Code</th>
-                            <th>Nom</th>
-                            <th>Description</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @forelse($rule->classifications as $classification)
-                            <tr>
-                                <td>{{ $classification->code }}</td>
-                                <td>{{ $classification->name }}</td>
-                                <td>{{ $classification->description }}</td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="3" class="text-center">Aucune classification</td>
-                            </tr>
-                        @endforelse
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="d-flex flex-wrap gap-2 mb-4">
-
-                    @if ($rule->duls->isEmpty())
-                        <a href="{{ route('rule.dul.create', $rule->id) }}" class="btn btn-outline-primary">
-                            <i class="fas fa-plus"></i> Durée définitive
-                        </a>
-                    @endif
-
-                    <a href="{{ route('rule.classification.create', $rule->id) }}" class="btn btn-outline-primary">
-                        <i class="fas fa-plus"></i> Ajouter une classification
-                    </a>
-                </div>
-                <hr>
-
-                <div class="d-flex gap-2">
-                    <a href="{{ route('rule.index') }}" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> Retour à la liste
-                    </a>
-                    <a href="{{ route('rule.edit', $rule->id) }}" class="btn btn-warning">
-                        <i class="fas fa-edit"></i> Modifier
-                    </a>
-                    <form action="{{ route('rule.destroy', $rule->id) }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette règle ?')">
-                            <i class="fas fa-trash"></i> Supprimer
-                        </button>
-                    </form>
                 </div>
             </div>
         </div>

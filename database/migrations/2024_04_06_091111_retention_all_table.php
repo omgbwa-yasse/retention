@@ -255,6 +255,9 @@ return new class extends Migration
         $table->string('code', 10)->unique();
         $table->string('name', 100)->unique();
         $table->text('description')->nullable();
+        $table->string('duration', 10);
+        $table->unsignedInteger('trigger_id');
+        $table->unsignedInteger('sort_id');
         $table->unsignedInteger('status_id')->default(1);
         $table->unsignedInteger('country_id');
         $table->unsignedInteger('user_id');
@@ -267,35 +270,15 @@ return new class extends Migration
         $table->foreign('validated_by')->references('id')->on('users')->onDelete('set null');
     });
 
-        // Create dul table
-        Schema::create('duls', function (Blueprint $table) {
-            $table->id();
-            $table->string('duration', 10);
-            $table->text('description')->nullable();
-            $table->unsignedInteger('country_id');
-            $table->unsignedInteger('rule_id');
-            $table->unsignedInteger('trigger_id');
-            $table->unsignedInteger('sort_id');
-            $table->unsignedInteger('user_id');
-            $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
-            $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
-            $table->foreign('trigger_id')->references('id')->on('triggers')->onDelete('cascade');
-            $table->foreign('sort_id')->references('id')->on('sorts')->onDelete('cascade');
-        });
-
-
-
         // Create dul_article table
-        Schema::create('dul_articles', function (Blueprint $table) {
-            $table->unsignedInteger('dul_id');
+        Schema::create('rule_articles', function (Blueprint $table) {
+            $table->unsignedInteger('rule_id');
             $table->unsignedInteger('article_id');
-            $table->primary(['dul_id', 'article_id']);
+            $table->primary(['rule_id', 'article_id']);
             $table->unsignedInteger('user_id');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('dul_id')->references('id')->on('duls')->onDelete('cascade');
+            $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
             $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
         });
 
@@ -590,7 +573,7 @@ return new class extends Migration
         */
         Schema::dropIfExists('rules');
         Schema::dropIfExists('rule_classification');
-        Schema::dropIfExists('dul_article');
+        Schema::dropIfExists('dul_articles');
         Schema::dropIfExists('duls');
         Schema::dropIfExists('duas');
         Schema::dropIfExists('actives');
