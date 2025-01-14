@@ -7,11 +7,11 @@
         <li><strong>Nom de la Règle:</strong> {{ $rule->name }}</li>
         <li><strong>Classifications:</strong>
             <ul>
-                @foreach($rule->activities as $activity)
-                    <li>{{ $activity->name }}</li>
+                @foreach($rule->classifications as $classification)
+                    <li>{{ $classification->name }}</li>
                 @endforeach
             </ul>
         </li>
     </ul>
-    <a href="{{ route('rule.activity.index') }}">Retour à la liste</a>
+    <a href="{{ route('rule.classification.index') }}">Retour à la liste</a>
 @endsection

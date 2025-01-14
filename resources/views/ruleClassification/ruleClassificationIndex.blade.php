@@ -24,15 +24,15 @@
                             <td>{{ $rule->name }}</td>
                             <td>
                                 <ul>
-                                    @foreach($rule->activities as $activity)
-                                        <li>{{ $activity->name }}</li>
+                                    @foreach($rule->classifications as $classification)
+                                        <li>{{ $classification->name }}</li>
                                     @endforeach
                                 </ul>
                             </td>
                             <td>
-                                @foreach($rule->activities as $activity)
-                                    {{-- <a href="{{ route('rule.activity.edit', ['rule' => $rule->id, 'activity' => $activity->id]) }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Editer</a> --}}
-                                    <form action="{{ route('rule.activity.destroy', ['rule' => $rule->id, 'activity' => $activity->id]) }}" method="POST" style="display:inline;">
+                                @foreach($rule->classifications as $classification)
+                                    {{-- <a href="{{ route('rule.classification.edit', ['rule' => $rule->id, 'classification' => $classification->id]) }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Editer</a> --}}
+                                    <form action="{{ route('rule.classification.destroy', ['rule' => $rule->id, 'classification' => $classification->id]) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Supprimer</button>

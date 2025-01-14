@@ -44,8 +44,8 @@
 </head>
 <body>
 <div class="header">
-    <h1>{{ $mission->code }} - {{ $mission->name }}</h1>
-    <p>{{ $mission->description }}</p>
+    <h1>{{ $domaine->code }} - {{ $domaine->name }}</h1>
+    <p>{{ $domaine->description }}</p>
 </div>
 
 <h2>Classes</h2>
@@ -62,20 +62,20 @@
     </tr>
     </thead>
     <tbody>
-    @foreach ($mission->childrenRecursive as $activity)
+    @foreach ($domaine->childrenRecursive as $class)
         <tr>
-            <td>{{ $activity->code }}</td>
-            <td>{{ $activity->name }}</td>
+            <td>{{ $class->code }}</td>
+            <td>{{ $class->name }}</td>
             <td>
-                @if ($activity->typologies)
-                    @foreach ($activity->typologies as $typology)
+                @if ($class->typologies)
+                    @foreach ($class->typologies as $typology)
                         {{ $typology->name }}<br>
                     @endforeach
                 @endif
             </td>
             <td>
-                @if ($activity->rules)
-                    @foreach ($activity->rules as $rule)
+                @if ($class->rules)
+                    @foreach ($class->rules as $rule)
                         @if ($rule->duls)
                             @foreach ($rule->duls as $dul)
                                 {{ $dul->duration }}<br>
@@ -85,8 +85,8 @@
                 @endif
             </td>
             <td>
-                @if ($activity->rules)
-                    @foreach ($activity->rules as $rule)
+                @if ($class->rules)
+                    @foreach ($class->rules as $rule)
                         @if ($rule->duls)
                             @foreach ($rule->duls as $dul)
                                 {{ $dul->trigger->name }}<br>
@@ -96,8 +96,8 @@
                 @endif
             </td>
             <td>
-                @if ($activity->rules)
-                    @foreach ($activity->rules as $rule)
+                @if ($class->rules)
+                    @foreach ($class->rules as $rule)
                         @if ($rule->articles)
                             @foreach ($rule->articles as $article)
                                 {{ $article->name }}<br>

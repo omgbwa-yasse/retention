@@ -29,7 +29,7 @@ use App\Http\Controllers\CharterController;
 use App\Http\Controllers\RuleController;
 use App\Http\Controllers\DulController;
 use App\Http\Controllers\DulArticleController;
-use App\Http\Controllers\RuleActivityController;
+use App\Http\Controllers\RuleClassificationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForumPostController;
 use App\Http\Controllers\BasketController;
@@ -71,11 +71,11 @@ Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->n
     Route::get('/search/advanced/results', [PublicController::class, 'advanced'])->name('public.search.advanced.results');
 
     /*
-        les vues des rules, references et activities
+        les vues des rules, references et classes
     */
 
     Route::get('/rules/{rule}', [PublicController::class, 'showRule'])->name('public.rules.show');
-    Route::get('/activities/{class}', [PublicController::class, 'showClass'])->name('public.activities.show');
+    Route::get('/classes/{class}', [PublicController::class, 'showClass'])->name('public.classes.show');
     Route::get('/references/{reference}', [PublicController::class, 'showReference'])->name('public.references.show');
 
     /*
@@ -110,12 +110,12 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('rule', RuleController::class);
     Route::resource('rule.dul', DulController::class);
     Route::resource('rule.article', DulArticleController::class)->names('rule.article');
-    Route::resource('rule.activity', RuleActivityController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
-    Route::resource('rule.activity', RuleActivityController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
-    Route::get('/rule-activity', [RuleActivityController::class, 'index'])->name('rule.activity.ruleActivityIndex');
-    Route::get('/rule/{rule_id}/activity', [RuleActivityController::class, 'index'])->name('rule.activity.index');
-    Route::get('/rule/{rule}/activity/{activity}/edit', [RuleActivityController::class, 'edit'])->name('rule.activity.edit');
-    Route::delete('/rule/{rule}/activity/{activity}', [RuleActivityController::class, 'destroy'])->name('rule.activity.destroy');
+    Route::resource('rule.classification', RuleClassificationController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
+    Route::resource('rule.classification', RuleClassificationController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
+    Route::get('/rule-classification', [RuleClassificationController::class, 'index'])->name('rule.classification.ruleClassificationIndex');
+    Route::get('/rule/{rule_id}/classification', [RuleClassificationController::class, 'index'])->name('rule.classification.index');
+    Route::get('/rule/{rule}/classification/{classification}/edit', [RuleClassificationController::class, 'edit'])->name('rule.classification.edit');
+    Route::delete('/rule/{rule}/classification/{classification}', [RuleClassificationController::class, 'destroy'])->name('rule.classification.destroy');
     Route::post('/reference/add-to-basket', [ReferenceController::class, 'addToBasket'])->name('reference.addToBasket');
     Route::get('/charter', [charterController::class, 'index'])->name('charter.index');
     Route::get('/charter/print/{domaineId}', [charterController::class, 'printPdf'])->name('charter.print');

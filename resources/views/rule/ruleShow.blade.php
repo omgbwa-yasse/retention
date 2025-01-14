@@ -94,15 +94,15 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @forelse($rule->activities as $activity)
+                        @forelse($rule->classifications as $classification)
                             <tr>
-                                <td>{{ $activity->code }}</td>
-                                <td>{{ $activity->name }}</td>
-                                <td>{{ $activity->description }}</td>
+                                <td>{{ $classification->code }}</td>
+                                <td>{{ $classification->name }}</td>
+                                <td>{{ $classification->description }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3" class="text-center">Aucune activité</td>
+                                <td colspan="3" class="text-center">Aucune classification</td>
                             </tr>
                         @endforelse
                         </tbody>
@@ -117,8 +117,8 @@
                         </a>
                     @endif
 
-                    <a href="{{ route('rule.activity.create', $rule->id) }}" class="btn btn-outline-primary">
-                        <i class="fas fa-plus"></i> Ajouter une activity
+                    <a href="{{ route('rule.classification.create', $rule->id) }}" class="btn btn-outline-primary">
+                        <i class="fas fa-plus"></i> Ajouter une classification
                     </a>
                 </div>
                 <hr>

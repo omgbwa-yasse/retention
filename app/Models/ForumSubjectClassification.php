@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SubjectActivity extends Model
+class ForumSubjectClassification extends Model
 {
     use HasFactory;
 
-    protected $table = 'forum_subject_activity';
+    protected $table = 'forum_subject_classification';
 
     protected $fillable = [
-        'activity_id',
+        'classification_id',
         'subject_id',
         'create_at',
         'update_at',
@@ -22,12 +22,12 @@ class SubjectActivity extends Model
 
     public function classes()
     {
-        return $this->belongsTo(Activity::class, 'activity_id');
+        return $this->belongsTo(Classification::class);
     }
 
     public function subjects()
     {
-        return $this->belongsTo(ForumSubject::class, 'subject_id');
+        return $this->belongsTo(ForumSubject::class);
     }
 }
 

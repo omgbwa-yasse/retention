@@ -28,7 +28,7 @@
             </div>
         @endif
 
-        @foreach ( $activities as $activity )
+        @foreach ( $items as $activity )
             <div class="list-group mt-4">
                 <label class="list-group-item">
                     <h4 class="fw-bold mb-0">

@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RuleActivity extends Model
+class RuleClassification extends Model
 {
     use HasFactory;
 
-    protected $table = 'rule_activity';
+    protected $table = 'rule_classification';
 
     public $timestamps = false;
 
     protected $fillable = [
-        'activity_id',
+        'classification_id',
         'rule_id'
     ];
 }

@@ -44,6 +44,7 @@ return new class extends Migration
         */
 
 
+
         Schema::create('references', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100)->unique();
@@ -58,12 +59,14 @@ return new class extends Migration
             $table->index(['name', 'category_id']);
         });
 
+
         Schema::create('reference_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100)->unique();
             $table->text('description');
             $table->timestamps();
         });
+
 
         Schema::create('reference_country', function (Blueprint $table) {
             $table->unsignedInteger('country_id');
@@ -72,6 +75,7 @@ return new class extends Migration
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
             $table->foreign('reference_id')->references('id')->on('references')->onDelete('cascade');
         });
+
 
         Schema::create('reference_links', function (Blueprint $table) {
             $table->id();
@@ -84,6 +88,7 @@ return new class extends Migration
             $table->foreign('reference_id')->references('id')->on('references')->onDelete('cascade');
             $table->index('reference_id');
         });
+
 
         Schema::create('reference_files', function (Blueprint $table) {
             $table->id();
@@ -98,6 +103,9 @@ return new class extends Migration
             $table->index('reference_id');
         });
 
+
+
+
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
             $table->string('reference', 10)->unique();
@@ -111,22 +119,27 @@ return new class extends Migration
         });
 
         /*
-            activities
+
+
+
+            Classifications
+
+
 
         */
 
-        // Create activity_typology table
-        Schema::create('activity_typologies', function (Blueprint $table) {
+        // Create classification_typology table
+        Schema::create('classification_typology', function (Blueprint $table) {
             $table->unsignedInteger('activity_id');
             $table->unsignedInteger('typology_id');
             $table->primary(['activity_id', 'typology_id']);
-            $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
+            $table->foreign('activity_id')->references('id')->on('classifications')->onDelete('cascade');
             $table->foreign('typology_id')->references('id')->on('typologies')->onDelete('cascade');
         });
 
 
-        // Create activities table
-        Schema::create('activities', function (Blueprint $table) {
+        // Create classifications table
+        Schema::create('classifications', function (Blueprint $table) {
             $table->id();
             $table->string('code', 10);
             $table->string('name', 100)->unique();
@@ -136,10 +149,9 @@ return new class extends Migration
             $table->unsignedInteger('user_id');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('parent_id')->references('id')->on('activities')->onDelete('cascade');
+            $table->foreign('parent_id')->references('id')->on('classifications')->onDelete('cascade');
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
         });
-
 
         // Create communicabilities table
         Schema::create('communicabilities', function (Blueprint $table) {
@@ -150,26 +162,26 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Create activity_communicability table
-        Schema::create('activity_communicability', function (Blueprint $table) {
-            $table->unsignedInteger('activity_id');
+        // Create classification_communicability table
+        Schema::create('classification_communicability', function (Blueprint $table) {
+            $table->unsignedInteger('classification_id');
             $table->unsignedInteger('communicability_id');
-            $table->primary(['activity_id', 'communicability_id']);
-            $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
+            $table->primary(['classification_id', 'communicability_id']);
+            $table->foreign('classification_id')->references('id')->on('classifications')->onDelete('cascade');
             $table->foreign('communicability_id')->references('id')->on('communicabilities')->onDelete('cascade');
         });
 
 
         // Create communicabilities table
-        Schema::create('activity_orders', function (Blueprint $table) {
+        Schema::create('classification_orders', function (Blueprint $table) {
             $table->id();
             $table->string('description', 10);
             $table->unsignedInteger('order_id');
-            $table->unsignedInteger('activity_id');
+            $table->unsignedInteger('classification_id');
             $table->unsignedInteger('user_id');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
+            $table->foreign('classification_id')->references('id')->on('classifications')->onDelete('cascade');
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
         });
 
@@ -206,6 +218,9 @@ return new class extends Migration
 
         });
 
+
+
+
         // Create typologies table
         Schema::create('typologies', function (Blueprint $table) {
             $table->id();
@@ -234,29 +249,46 @@ return new class extends Migration
 
 
         // Create rule table
-        Schema::create('rules', function (Blueprint $table) {
+
+    Schema::create('rules', function (Blueprint $table) {
+        $table->id();
+        $table->string('code', 10)->unique();
+        $table->string('name', 100)->unique();
+        $table->text('description')->nullable();
+        $table->unsignedInteger('status_id')->default(1);
+        $table->unsignedInteger('country_id');
+        $table->unsignedInteger('user_id');
+        $table->unsignedInteger('validated_by')->nullable();
+        $table->dateTime('validated_at')->nullable();
+        $table->timestamps();
+        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        $table->foreign('status_id')->references('id')->on('statuses')->onDelete('cascade');
+        $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
+        $table->foreign('validated_by')->references('id')->on('users')->onDelete('set null');
+    });
+
+        // Create dul table
+        Schema::create('duls', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 10)->unique();
-            $table->string('name', 100)->unique();
-            $table->text('description')->nullable();
             $table->string('duration', 10);
+            $table->text('description')->nullable();
+            $table->unsignedInteger('country_id');
+            $table->unsignedInteger('rule_id');
             $table->unsignedInteger('trigger_id');
             $table->unsignedInteger('sort_id');
-            $table->unsignedInteger('status_id')->default(1);
-            $table->unsignedInteger('country_id');
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('validated_by')->nullable();
-            $table->dateTime('validated_at')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('status_id')->references('id')->on('statuses')->onDelete('cascade');
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
-            $table->foreign('validated_by')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
+            $table->foreign('trigger_id')->references('id')->on('triggers')->onDelete('cascade');
+            $table->foreign('sort_id')->references('id')->on('sorts')->onDelete('cascade');
         });
 
 
+
         // Create dul_article table
-        Schema::create('rule_articles', function (Blueprint $table) {
+        Schema::create('dul_articles', function (Blueprint $table) {
             $table->unsignedInteger('dul_id');
             $table->unsignedInteger('article_id');
             $table->primary(['dul_id', 'article_id']);
@@ -268,12 +300,12 @@ return new class extends Migration
         });
 
 
-        // Create rule_activity table
-        Schema::create('rule_activities', function (Blueprint $table) {
-            $table->unsignedInteger('activity_id');
+        // Create rule_classification table
+        Schema::create('rule_classifications', function (Blueprint $table) {
+            $table->unsignedInteger('classification_id');
             $table->unsignedInteger('rule_id');
-            $table->primary(['activity_id', 'rule_id']);
-            $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
+            $table->primary(['classification_id', 'rule_id']);
+            $table->foreign('classification_id')->references('id')->on('classifications')->onDelete('cascade');
             $table->foreign('rule_id')->references('id')->on('rules')->onDelete('cascade');
         });
 
@@ -373,18 +405,18 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Create forum_subject_activity table
-        Schema::create('forum_subject_activity', function (Blueprint $table) {
+        // Create forum_subject_classification table
+        Schema::create('forum_subject_classification', function (Blueprint $table) {
             $table->unsignedBigInteger('subject_id');
-            $table->unsignedBigInteger('activity_id');
-            $table->primary(['subject_id', 'activity_id']);
+            $table->unsignedBigInteger('classification_id');
+            $table->primary(['subject_id', 'classification_id']);
             // Foreign key constraints
             $table->foreign('subject_id')->references('id')->on('forum_subjects')->onDelete('cascade');
-            $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
+            $table->foreign('classification_id')->references('id')->on('classifications')->onDelete('cascade');
         });
 
         // Create user_subject table
-        Schema::create('user_subjects', function (Blueprint $table) {
+        Schema::create('user_subject', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('subject_id');
             $table->primary(['user_id', 'subject_id']);
@@ -395,7 +427,7 @@ return new class extends Migration
         });
 
         // Create user_post table
-        Schema::create('user_posts', function (Blueprint $table) {
+        Schema::create('user_post', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('post_id');
             $table->primary(['user_id', 'post_id']);
@@ -435,6 +467,7 @@ return new class extends Migration
 
 
         */
+
 
 
         Schema::create('chat_types', function (Blueprint $table) {
@@ -534,19 +567,19 @@ return new class extends Migration
         /*
 
 
-        activities
+        classifications
 
 
         */
-        Schema::dropIfExists('activities');
-        Schema::dropIfExists('activity_typology');
+        Schema::dropIfExists('classifications');
+        Schema::dropIfExists('classification_typology');
         Schema::dropIfExists('typologies');
         Schema::dropIfExists('typology_categories');
         Schema::dropIfExists('typologies');
         Schema::dropIfExists('typology_categories');
-        Schema::dropIfExists('activity_communicability');
+        Schema::dropIfExists('classification_communicability');
         Schema::dropIfExists('communicabilities');
-        Schema::dropIfExists('activity_orders');
+        Schema::dropIfExists('classification_orders');
         Schema::dropIfExists('orders');
         /*
 
@@ -556,7 +589,7 @@ return new class extends Migration
 
         */
         Schema::dropIfExists('rules');
-        Schema::dropIfExists('rule_activity');
+        Schema::dropIfExists('rule_classification');
         Schema::dropIfExists('dul_article');
         Schema::dropIfExists('duls');
         Schema::dropIfExists('duas');
@@ -571,7 +604,7 @@ return new class extends Migration
 
         */
         Schema::dropIfExists('basket_reference');
-        Schema::dropIfExists('basket_activity');
+        Schema::dropIfExists('basket_classification');
         Schema::dropIfExists('basket_rule');
         Schema::dropIfExists('basket_types');
         Schema::dropIfExists('baskets');
@@ -587,7 +620,7 @@ return new class extends Migration
         Schema::dropIfExists('forum_reaction_posts');
         Schema::dropIfExists('user_post');
         Schema::dropIfExists('user_subject');
-        Schema::dropIfExists('forum_subject_activity');
+        Schema::dropIfExists('forum_subject_classification');
         Schema::dropIfExists('forum_reaction_types');
         Schema::dropIfExists('forum_posts');
         Schema::dropIfExists('forum_subjects');

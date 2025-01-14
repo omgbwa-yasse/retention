@@ -22,7 +22,7 @@ class ForumSubject extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 
     public function posts(): HasMany
@@ -32,7 +32,7 @@ class ForumSubject extends Model
 
     public function classes(): BelongsToMany
     {
-        return $this->belongsToMany(Activity::class, 'forum_subject_classification', 'subject_id', 'classification_id');
+        return $this->belongsToMany(Classification::class, 'forum_subject_classification', 'subject_id', 'classification_id');
     }
 
     public function latestPost(): HasOne

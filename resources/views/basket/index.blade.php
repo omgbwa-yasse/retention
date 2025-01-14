@@ -59,8 +59,8 @@
 
                                 <h3 class="h5 mt-4">Classifications associées</h3>
                                 <ul class="list-unstyled">
-                                    @foreach($basket->activities as $activity)
-                                        <li><i class="bi bi-tag me-2"></i>{{ $activity->name }}</li>
+                                    @foreach($basket->classes as $class)
+                                        <li><i class="bi bi-tag me-2"></i>{{ $class->name }}</li>
                                     @endforeach
                                 </ul>
                             </div>

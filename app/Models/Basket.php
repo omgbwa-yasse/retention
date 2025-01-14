@@ -23,7 +23,7 @@ class basket extends Model
 
     public function classes()
     {
-        return $this->belongsToMany(Activity::class, 'basket_activity', 'basket_id', 'activity_id');
+        return $this->belongsToMany(Classification::class, 'basket_classification', 'basket_id', 'classification_id');
     }
 
     public function references()

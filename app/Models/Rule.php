@@ -36,9 +36,9 @@ class Rule extends Model
         return $this->belongsToMany(Articles::class, 'dul_articles', 'dul_id', 'article_id');
     }
 
-    public function activitys()
+    public function classifications()
     {
-        return $this->belongsToMany(Activity::class, 'rule_activity', 'rule_id', 'activity_id');
+        return $this->belongsToMany(Classification::class, 'rule_classification', 'rule_id', 'classification_id');
     }
 
     public function baskets()
