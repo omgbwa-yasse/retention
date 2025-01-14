@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Basket;
 use App\Models\BasketType;
-use App\Models\Activity;
+use App\Models\Classification;
 use App\Models\Reference;
 use App\Models\Rule;
 use Illuminate\Http\Request;
@@ -13,23 +13,24 @@ class BasketController extends Controller
 {
     public function index()
     {
-        $baskets = Basket::with('references', 'rules', 'activities')->get();
+        // Récupérer tous les paniers avec leurs références, règles et classifications associées
+        $baskets = Basket::with('references', 'rules', 'classes')->get();
+
+        // Passer les données à la vue
         return view('basket.index', compact('baskets'));
     }
-
-
     public function addToBasket(Request $request, Reference $reference)
     {
         $basketId = $request->input('basket_id');
         $basket = Basket::findOrFail($basketId);
+
+        // Vérifiez si l'élément existe déjà dans le panier
         if (!$basket->references()->where('reference_id', $reference->id)->exists()) {
             $basket->references()->attach($reference->id);
         }
+
         return redirect()->route('reference.index')->with('success', 'Référence ajoutée au panier avec succès.');
     }
-
-
-
 
     public function showBasket(Basket $basket)
     {
@@ -42,7 +43,7 @@ class BasketController extends Controller
     public function create()
     {
         $basketTypes = BasketType::all();
-        $activities = Activity::all();
+        $classifications = Classification::all();
         $references = Reference::all();
         $rules = Rule::all();
         return view('basket.create', compact('basketTypes', 'classifications', 'references', 'rules'));
@@ -57,12 +58,15 @@ class BasketController extends Controller
             'description' => 'nullable|string',
             'type_id' => 'nullable|exists:basket_types,id'
         ]);
+
         $basket = Basket::create([
             'name' => $request->name,
             'description' => $request->description,
             'type_id' => $request->type_id,
             'user_id' => Auth::user()->getAuthIdentifier()
         ]);
+
+
         return redirect()->route('basket.index')->with('success', 'Basket created successfully.');
     }
 
@@ -85,7 +89,7 @@ class BasketController extends Controller
         if ($basket->doesntHave('classes') && $basket->doesntHave('rules') && $basket->doesntHave('references')) {
             $basketTypes = BasketType::all();
         }
-        $classifications = Activity::all();
+        $classifications = Classification::all();
         $references = Reference::all();
         $rules = Rule::all();
         return view('basket.edit', compact('basket', 'basketTypes', 'classifications', 'references', 'rules'));
@@ -112,8 +116,8 @@ class BasketController extends Controller
             // TODO: Implement basket type association
         }
 
-        if ($request->has('activitity_ids')) {
-            $basket->activities()->sync($request->activity_ids);
+        if ($request->has('classification_ids')) {
+            $basket->classifications()->sync($request->classification_ids);
         }
 
         if ($request->has('reference_ids')) {

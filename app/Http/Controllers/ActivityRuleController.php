@@ -3,31 +3,31 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Activity;
+use App\Models\Classification;
 use App\Models\ActivityRule;
 use App\Models\Rule;
 use Illuminate\Support\Facades\Auth;
 
 class ActivityRuleController extends Controller
 {
-    public function index(Activity $activity)
+    public function index(Classification $activity)
     {
         $activity->load('rules');
 //        dd($activity);
         return view('activity.rule.index', compact('activity'));
     }
 
-    public function create(Activity $activity)
+    public function create(Classification $activity)
     {
         $rules = Rule::where('country_id', '=', auth()->user()->country_id)->get();
         return view('activity.rule.create', compact('activity', 'rules'));
     }
 
-    public function store(Request $request, Activity $activity)
+    public function store(Request $request, Classification $activity)
     {
         $request['classification_id'] = $activity->id;
         $request->validate([
-            'classification_id' => 'required|exists:activities,id',
+            'classification_id' => 'required|exists:classifications,id',
             'rule_id' => 'required|exists:rules,id',
         ]);
         ActivityRule::create($request->all());
@@ -47,9 +47,9 @@ class ActivityRuleController extends Controller
 
     public function edit(ActivityRule $activityRule)
     {
-        $activities = Activity::all();
+        $classifications = Classification::all();
         $rules = Rule::all();
-        return view('activity.rule.edit', compact('activityRule', 'activities', 'rules'));
+        return view('activity.rule.edit', compact('activityRule', 'classifications', 'rules'));
     }
 
 
@@ -58,7 +58,7 @@ class ActivityRuleController extends Controller
     public function update(Request $request, ActivityRule $activityRule)
     {
         $request->validate([
-            'classification_id' => 'sometimes|required|exists:activities,id',
+            'classification_id' => 'sometimes|required|exists:classifications,id',
             'rule_id' => 'sometimes|required|exists:rules,id',
         ]);
 
