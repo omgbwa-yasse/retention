@@ -2,11 +2,11 @@
 
 @section('content')
 
-<h1>Remove Rule {{ $rule->name }} from Classification {{ $classification->name }}</h1>
+<h1>Remove Rule {{ $rule->name }} from Classification {{ $activity->name }}</h1>
 
 <p>Are you sure?</p>
 
-<form action="{{ route('activity.rule.destroy', [$classification, $rule]) }}" method="POST">
+<form action="{{ route('activity.rule.destroy', [$activity, $rule]) }}" method="POST">
     @csrf
     @method('DELETE')
     <div>
@@ -14,5 +14,5 @@
     </div>
 </form>
 
-<a href="{{ route('activity.rule.index', $classification) }}">No</a>
+<a href="{{ route('activity.rule.index', $activity) }}">No</a>
 @endsection

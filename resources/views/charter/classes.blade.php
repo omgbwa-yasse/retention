@@ -10,13 +10,13 @@
         </tr>
         </thead>
         <tbody>
-        @foreach ($classes as $class)
+        @foreach ($activities as $activity)
             <tr>
-                <td class="font-medium">{{ $class->code }}</td>
-                <td>{{ $class->name }}</td>
+                <td class="font-medium">{{ $activity->code }}</td>
+                <td>{{ $activity->name }}</td>
                 <td>
-                    @if ($class->rules)
-                        @foreach ($class->rules as $rule)
+                    @if ($activity->rules)
+                        @foreach ($activity->rules as $rule)
                             @if ($rule->duls)
                                 @foreach ($rule->duls as $dul)
                                     <div class="status-badge status-valid">
@@ -29,8 +29,8 @@
                 </td>
                 <td></td>
             </tr>
-            @if ($class->children->isNotEmpty())
-                @include('charter.classes', ['classes' => $class->children])
+            @if ($activity->children->isNotEmpty())
+                @include('charter.classes', ['classes' => $activity->children])
             @endif
         @endforeach
         </tbody>
