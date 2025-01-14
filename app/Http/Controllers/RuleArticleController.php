@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\DulArticle;
+use App\Models\RuleArticle;
 
-class DulArticleController extends Controller
+class RuleArticleController extends Controller
 {
 
     public function create(Request $request)
@@ -15,7 +15,7 @@ class DulArticleController extends Controller
             'artcile_id' => 'required|integer',
         ]);
 
-        DulArticle::create($validatedData);
+        RuleArticle::create($validatedData);
 
         return redirect()->back()->with('success', 'L\'association a été créée avec succès.');
     }
@@ -25,7 +25,7 @@ class DulArticleController extends Controller
 
     public function show($dulId, $articleId)
     {
-        $dulArticle = DulArticle::where('dul_id', $dulId)->where('reference_id', $articleId)->first();
+        $dulArticle = RuleArticle::where('dul_id', $dulId)->where('reference_id', $articleId)->first();
         $dulArticle = $dulArticle->load('dul','articles');
         return redirect()->route('reference.article.index', $articleId)->with('success', 'Articles updated successfully.');
 
@@ -37,7 +37,7 @@ class DulArticleController extends Controller
 
     public function update(Request $request, $dulId, $articleId)
     {
-        $dulArticle = DulArticle::where('dul_id', $dulId)->where('reference_id', $articleId)->first();
+        $dulArticle = RuleArticle::where('dul_id', $dulId)->where('reference_id', $articleId)->first();
 
         $dulArticle->update($request->all());
 
@@ -49,7 +49,7 @@ class DulArticleController extends Controller
 
     public function destroy($dulId, $articleId)
     {
-        DulArticle::where('dul_id', $dulId)->where('reference_id', $articleId)->delete();
+        RuleArticle::where('dul_id', $dulId)->where('reference_id', $articleId)->delete();
 
         return redirect()->back()->with('success', 'L\'association a été supprimée avec succès.');
     }

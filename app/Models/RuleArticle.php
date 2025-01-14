@@ -5,19 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Articles;
-use App\Models\Dul;
+use App\Models\Rule;
 
-class DulArticle extends Model
+class RuleArticle extends Model
 {
     use HasFactory;
 
-    protected $table = 'dul_articles';
+    protected $table = 'rule_articles';
     public $timestamps = false;
-    protected $fillable = ['dul_id', 'article_id'];
+    protected $fillable = ['rule_id', 'article_id'];
 
-    public function duls()
+    public function rules()
     {
-        return $this->belongsTo(Dul::class, 'dul_id');
+        return $this->belongsTo(Rule::class, 'rule_id');
     }
 
     public function articles()

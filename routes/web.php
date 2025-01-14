@@ -28,7 +28,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CharterController;
 use App\Http\Controllers\RuleController;
 use App\Http\Controllers\DulController;
-use App\Http\Controllers\DulArticleController;
+use App\Http\Controllers\RuleArticleController;
 use App\Http\Controllers\RuleClassificationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForumPostController;
@@ -108,8 +108,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('setting', SettingController::class);
     Route::resource('charter', CharterController::class);
     Route::resource('rule', RuleController::class);
-    Route::resource('rule.dul', DulController::class);
-    Route::resource('rule.article', DulArticleController::class)->names('rule.article');
+    Route::resource('rule.article', RuleArticleController::class)->names('rule.article');
     Route::resource('rule.classification', RuleClassificationController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::resource('rule.classification', RuleClassificationController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::get('/rule-classification', [RuleClassificationController::class, 'index'])->name('rule.classification.ruleClassificationIndex');
