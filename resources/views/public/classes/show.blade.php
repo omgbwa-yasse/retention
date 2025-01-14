@@ -8,14 +8,14 @@
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-start mb-4">
                     <div>
-                        <h1 class="display-6 mb-2">{{ $class->name }}</h1>
-                        <p class="text-muted mb-0">Code de référence: {{ $class->code }}</p>
+                        <h1 class="display-6 mb-2">{{ $activity->name }}</h1>
+                        <p class="text-muted mb-0">Code de référence: {{ $activity->code }}</p>
                     </div>
                     <div class="text-end">
                         <div class="text-muted small">
-                            Créé par: {{ $class->user->name }}
+                            Créé par: {{ $activity->user->name }}
                             <br>
-                            Pays: {{ $class->country->name }}
+                            Pays: {{ $activity->country->name }}
                         </div>
                     </div>
                 </div>
@@ -23,7 +23,7 @@
                 <!-- Description -->
                 <div class="mb-4">
                     <h6 class="text-uppercase text-muted small mb-2">Description</h6>
-                    <p class="mb-0">{{ $class->description }}</p>
+                    <p class="mb-0">{{ $activity->description }}</p>
                 </div>
 
                 <!-- Classification -->
@@ -34,7 +34,7 @@
                             <table class="table table-sm">
                                 <tr>
                                     <th class="bg-light w-25">Parent</th>
-                                    <td>{{ $class->parent ? $class->parent->name : 'Non défini' }}</td>
+                                    <td>{{ $activity->parent ? $activity->parent->name : 'Non défini' }}</td>
                                 </tr>
                             </table>
                         </div>
@@ -52,7 +52,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($class->childrenRecursive as $child)
+                            @forelse($activity->childrenRecursive as $child)
                                 <tr>
                                     <td>{{ $child->name }}</td>
                                 </tr>
@@ -80,7 +80,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($class->rules as $rule)
+                            @forelse($activity->rules as $rule)
                                 <tr>
                                     <td class="fw-medium">{{ $rule->name }}</td>
                                     <td>{{ $rule->duls->name }}</td>
@@ -112,7 +112,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($class->typologies as $typology)
+                            @forelse($activity->typologies as $typology)
                                 <tr>
                                     <td>{{ $typology->name }}</td>
                                 </tr>
@@ -131,7 +131,7 @@
             <div class="card-footer bg-light text-muted small p-3">
                 <div class="d-flex justify-content-between">
                     <span>Document généré le {{ date('d/m/Y') }}</span>
-                    <span>Référence: {{ $class->code }}</span>
+                    <span>Référence: {{ $activity->code }}</span>
                 </div>
             </div>
         </div>
