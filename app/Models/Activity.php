@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Classification extends Model
+class Activity extends Model
 {
     use HasFactory;
 
@@ -24,22 +24,22 @@ class Classification extends Model
 
     public function parent(): BelongsTo
     {
-        return $this->belongsTo(Classification::class, 'parent_id');
+        return $this->belongsTo(Activity::class, 'parent_id');
     }
 
     public function children(): HasMany
     {
-        return $this->hasMany(Classification::class, 'parent_id');
+        return $this->hasMany(Activity::class, 'parent_id');
     }
 
     public function rules(): BelongsToMany
     {
-        return $this->belongsToMany(Rule::class, 'rule_classification', 'classification_id', 'rule_id');
+        return $this->belongsToMany(Rule::class, 'rule_activity', 'activity_id', 'rule_id');
     }
 
     public function domaine(): BelongsTo
     {
-        return $this->belongsTo(Classification::class, 'parent_id');
+        return $this->belongsTo(Activity::class, 'parent_id');
     }
 
     public function childrenRecursive(): HasMany
@@ -49,12 +49,12 @@ class Classification extends Model
 
     public function typologies(): BelongsToMany
     {
-        return $this->belongsToMany(Typology::class, 'classification_typology', 'activity_id', 'typology_id');
+        return $this->belongsToMany(Typology::class, 'activity_typology', 'activity_id', 'typology_id');
     }
 
     public function baskets(): BelongsToMany
     {
-        return $this->belongsToMany(Basket::class, 'basket_classification', 'activity_id', 'basket_id');
+        return $this->belongsToMany(Basket::class, 'basket_activity', 'activity_id', 'basket_id');
     }
 
     public function user(): BelongsTo
@@ -64,7 +64,7 @@ class Classification extends Model
 
     public function subjects(): BelongsToMany
     {
-        return $this->belongsToMany(ForumSubject::class, 'forum_subject_classification', 'classification_id', 'subject_id');
+        return $this->belongsToMany(ForumSubject::class, 'forum_subject_activity', 'activity_id', 'subject_id');
     }
 
     public function country(): BelongsTo

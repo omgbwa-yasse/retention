@@ -44,7 +44,6 @@ return new class extends Migration
         */
 
 
-
         Schema::create('references', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100)->unique();
@@ -59,14 +58,12 @@ return new class extends Migration
             $table->index(['name', 'category_id']);
         });
 
-
         Schema::create('reference_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100)->unique();
             $table->text('description');
             $table->timestamps();
         });
-
 
         Schema::create('reference_country', function (Blueprint $table) {
             $table->unsignedInteger('country_id');
@@ -75,7 +72,6 @@ return new class extends Migration
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
             $table->foreign('reference_id')->references('id')->on('references')->onDelete('cascade');
         });
-
 
         Schema::create('reference_links', function (Blueprint $table) {
             $table->id();
@@ -88,7 +84,6 @@ return new class extends Migration
             $table->foreign('reference_id')->references('id')->on('references')->onDelete('cascade');
             $table->index('reference_id');
         });
-
 
         Schema::create('reference_files', function (Blueprint $table) {
             $table->id();
@@ -103,9 +98,6 @@ return new class extends Migration
             $table->index('reference_id');
         });
 
-
-
-
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
             $table->string('reference', 10)->unique();
@@ -119,17 +111,12 @@ return new class extends Migration
         });
 
         /*
-
-
-
             activities
-
-
 
         */
 
         // Create activity_typology table
-        Schema::create('activity_typology', function (Blueprint $table) {
+        Schema::create('activity_typologies', function (Blueprint $table) {
             $table->unsignedInteger('activity_id');
             $table->unsignedInteger('typology_id');
             $table->primary(['activity_id', 'typology_id']);
@@ -152,6 +139,7 @@ return new class extends Migration
             $table->foreign('parent_id')->references('id')->on('activities')->onDelete('cascade');
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
         });
+
 
         // Create communicabilities table
         Schema::create('communicabilities', function (Blueprint $table) {
@@ -218,9 +206,6 @@ return new class extends Migration
 
         });
 
-
-
-
         // Create typologies table
         Schema::create('typologies', function (Blueprint $table) {
             $table->id();
@@ -254,11 +239,9 @@ return new class extends Migration
             $table->string('code', 10)->unique();
             $table->string('name', 100)->unique();
             $table->text('description')->nullable();
-            //
             $table->string('duration', 10);
             $table->unsignedInteger('trigger_id');
             $table->unsignedInteger('sort_id');
-            //
             $table->unsignedInteger('status_id')->default(1);
             $table->unsignedInteger('country_id');
             $table->unsignedInteger('user_id');
@@ -401,7 +384,7 @@ return new class extends Migration
         });
 
         // Create user_subject table
-        Schema::create('user_subject', function (Blueprint $table) {
+        Schema::create('user_subjects', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('subject_id');
             $table->primary(['user_id', 'subject_id']);
@@ -412,7 +395,7 @@ return new class extends Migration
         });
 
         // Create user_post table
-        Schema::create('user_post', function (Blueprint $table) {
+        Schema::create('user_posts', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('post_id');
             $table->primary(['user_id', 'post_id']);
@@ -452,7 +435,6 @@ return new class extends Migration
 
 
         */
-
 
 
         Schema::create('chat_types', function (Blueprint $table) {

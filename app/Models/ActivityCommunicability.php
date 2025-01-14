@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ClassificationCommunicability extends Model
+class ActivityCommunicability extends Model
 {
     use HasFactory;
-    protected $table = 'classification_communication';
+    protected $table = 'activity_communication';
 }
