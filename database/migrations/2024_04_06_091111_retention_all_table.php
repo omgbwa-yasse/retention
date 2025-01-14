@@ -293,6 +293,7 @@ return new class extends Migration
             $table->unsignedInteger('article_id');
             $table->primary(['dul_id', 'article_id']);
             $table->unsignedInteger('user_id');
+            $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('dul_id')->references('id')->on('duls')->onDelete('cascade');
             $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');

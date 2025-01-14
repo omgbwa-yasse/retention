@@ -109,7 +109,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('charter', CharterController::class);
     Route::resource('rule', RuleController::class);
     Route::resource('rule.dul', DulController::class);
-    Route::resource('rule.dul.dulreference', DulArticleController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
+    Route::resource('rule.article', DulArticleController::class)->names('rule.article');
     Route::resource('rule.classification', RuleClassificationController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::resource('rule.classification', RuleClassificationController::class)->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::get('/rule-classification', [RuleClassificationController::class, 'index'])->name('rule.classification.ruleClassificationIndex');

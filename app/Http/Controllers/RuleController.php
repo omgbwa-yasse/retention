@@ -102,7 +102,7 @@ class RuleController extends Controller
     // Affiche un élément spécifique
     public function show(Rule $rule)
     {
-        $rule->load('countries')->load('duls')->load('classifications')->load('status');
+        $rule->load(['country', 'duls', 'classifications', 'status']);
         return view('rule.ruleShow', compact('rule'));
     }
 

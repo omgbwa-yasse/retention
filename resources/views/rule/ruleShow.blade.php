@@ -25,11 +25,7 @@
                                 </p>
                                 <p class="mb-1">
                                     <strong>Pays concernés :</strong>
-                                    @forelse($rule->countries as $country)
-                                        <span class="badge bg-info">{{ $country }}</span>
-                                    @empty
-                                        <span class="text-muted">Aucun pays spécifié</span>
-                                    @endforelse
+                                    <span class="badge bg-info">{{ $rule->country->name }}</span>
                                 </p>
                             </div>
                         </div>
@@ -49,6 +45,7 @@
                                 <th>Déclencheur</th>
                                 <th>Description</th>
                                 <th>Sort</th>
+                                <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -69,6 +66,11 @@
                                         @else
                                             N/A
                                         @endif
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('rule.article.edit',[$rule->id, $item->id]) }}" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             @empty
@@ -108,14 +110,17 @@
                 </div>
 
                 <div class="d-flex flex-wrap gap-2 mb-4">
-                    <a href="{{ route('rule.dul.create', $rule->id) }}" class="btn btn-outline-primary">
-                        <i class="fas fa-plus"></i> Durée définitive
-                    </a>
+
+                    @if ($rule->duls->isEmpty())
+                        <a href="{{ route('rule.dul.create', $rule->id) }}" class="btn btn-outline-primary">
+                            <i class="fas fa-plus"></i> Durée définitive
+                        </a>
+                    @endif
+
                     <a href="{{ route('rule.classification.create', $rule->id) }}" class="btn btn-outline-primary">
                         <i class="fas fa-plus"></i> Ajouter une classification
                     </a>
                 </div>
-
                 <hr>
 
                 <div class="d-flex gap-2">
