@@ -3,7 +3,7 @@
 @section('content')
     <div class="container my-5">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="card shadow">
                     <div class="card-header bg-primary text-white">
                         <h2 class="mb-0"><i class="fas fa-file-alt me-2"></i>Ajouter une règle de conservation</h2>
@@ -85,17 +85,11 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="dul_description" class="form-label">Description</label>
-                                        <textarea class="form-control @error('dul_description') is-invalid @enderror" id="dul_description" rows="3" name="dul_description" required>{{ old('dul_description') }}</textarea>
-                                        @error('dul_description')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+
                                 </div>
                             </div>
 
-                            <div class="d-grid gap-2">
+                            <div class="d-flex justify-content-between">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-save me-2"></i>Enregistrer
                                 </button>

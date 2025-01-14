@@ -13,17 +13,16 @@ class Rule extends Model
         'code',
         'name',
         'description',
+        'duration',
         'country_id',
+        'trigger_id',
+        'sort_id',
         'user_id',
         'status_id',
         'validated_at',
         'validated_by'
     ];
 
-    public function duls()
-    {
-        return $this->hasMany(Dul::class);
-    }
 
 
     public function country()
@@ -31,6 +30,15 @@ class Rule extends Model
         return $this->belongsTo(Country::class, 'country_id');
     }
 
+    public function trigger()
+    {
+        return $this->belongsTo(Trigger::class, 'trigger_id');
+    }
+
+    public function sort()
+    {
+        return $this->belongsTo(Sort::class, 'sort_id');
+    }
     public function articles()
     {
         return $this->belongsToMany(Articles::class, 'dul_articles', 'dul_id', 'article_id');

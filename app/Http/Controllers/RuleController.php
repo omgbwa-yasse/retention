@@ -23,6 +23,7 @@ class RuleController extends Controller
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
             })
+            ->with(['country', 'status', 'trigger', 'sort'])
             ->paginate(10);
 
         return view('rule.ruleIndex', compact('rules'));
