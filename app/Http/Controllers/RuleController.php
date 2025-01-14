@@ -17,18 +17,23 @@ class RuleController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-
+        $country_id = Auth::user()->country_id;
         $rules = Rule::query()
-            ->when($search, function ($query, $search) {
-                $query->where('name', 'like', "%{$search}%")
+            ->when($search, function ($query) use ($search, $country_id) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
+                })
+                ->where('country_id', $country_id);
+            })
+            ->when(!$search, function ($query) use ($country_id) {
+                $query->where('country_id', $country_id);
             })
             ->with(['country', 'status', 'trigger', 'sort'])
             ->paginate(10);
 
         return view('rule.ruleIndex', compact('rules'));
     }
-
 
 
 
@@ -40,8 +45,8 @@ class RuleController extends Controller
         $triggers = Trigger::all();
         $sorts = Sort::all();
         $articles = Articles::all()->where('country_id', '=', Auth::user()->country_id);
-        $countries = Country::orderBy('name')->get();
-        return view('rule.ruleCreate', compact('countries', 'triggers', 'articles', 'sorts', 'states'));
+        return view('rule.ruleCreate', compact( 'triggers', 'articles', 'sorts', 'states'));
+
     }
 
 
