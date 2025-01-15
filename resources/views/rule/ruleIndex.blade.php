@@ -47,16 +47,6 @@
                                             <a href="{{ route('rule.show', $rule->id) }}" class="btn btn-info btn-sm">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <a href="{{ route('rule.edit', $rule->id) }}" class="btn btn-primary btn-sm">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <form action="{{ route('rule.destroy', $rule->id) }}" method="POST" style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette règle ?')">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

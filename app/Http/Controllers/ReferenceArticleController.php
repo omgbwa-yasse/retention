@@ -12,14 +12,14 @@ class ReferenceArticleController extends Controller
     public function index(INT $id)
     {
         $reference = Reference::findOrFail($id)->with('category','articles')->get();
-        return view('reference.articles.show' , compact('reference'));
+        return view('reference.article.show' , compact('reference'));
     }
 
 
 
     public function create(Reference $reference)
     {
-        return view('reference.articles.create', compact('reference'));
+        return view('reference.article.create', compact('reference'));
     }
 
 
@@ -34,7 +34,7 @@ class ReferenceArticleController extends Controller
             return redirect()->route('article.index', $reference)->with('error', 'ReferenceArticle not found for this reference.');
         }
         $article->load('reference','reference.category');
-        return view('reference.articles.show', compact('article', 'reference'));
+        return view('reference.article.show', compact('article', 'reference'));
     }
 
 
@@ -60,7 +60,7 @@ class ReferenceArticleController extends Controller
         if ($article->reference_id != $reference->id) {
             abort(404);
         }
-        return view('reference.articles.edit', compact('article', 'reference'));
+        return view('reference.article.edit', compact('article', 'reference'));
     }
 
 

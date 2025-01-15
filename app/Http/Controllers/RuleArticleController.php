@@ -19,6 +19,9 @@ class RuleArticleController extends Controller
         $articles = ReferenceArticle::whereHas('reference', function ($query) {
             $query->where('country_id', auth()->user()->country_id);
         })
+        ->whereDoesntHave('rules', function ($query) use ($ruleId) {
+            $query->where('rule_id', $ruleId);
+        })
         ->get();
 
         return view('rule.article.create', compact('rule', 'articles'));
@@ -31,7 +34,7 @@ class RuleArticleController extends Controller
         $rule = Rule::findOrFail($ruleId);
 
         $validatedData = $request->validate([
-            'article_id' => 'required|exists:articles,id',
+            'article_id' => 'required|exists:reference_articles,id',
         ]);
 
         RuleArticle::create([
@@ -46,13 +49,10 @@ class RuleArticleController extends Controller
 
 
 
-    public function show($reference_id, $article_id)
+    public function show($rule_id, $article_id)
     {
-        $article = ReferenceArticle::where('reference_id', $reference_id)->where('id', $article_id)->first();
-        $article = $article->load('reference');
-        $reference = $article->reference;
-        return view('reference.articles.show', compact( 'article','reference'));
-
+        $ruleArticle = RuleArticle::where('rule_id', $rule_id)->where('article_id', $article_id)->firstOrFail();
+        return view('rule.article.edit', compact('ruleArticle'));
     }
 
 
@@ -69,10 +69,14 @@ class RuleArticleController extends Controller
 
 
 
-    public function destroy($dulId, $articleId)
+    public function destroy(INT $ruleId, INT $articleId)
     {
-        RuleArticle::where('rule_id', $dulId)->where('reference_id', $articleId)->delete();
-        return redirect()->back()->with('success', 'L\'association a été supprimée avec succès.');
+        $rule = Rule::findOrFail($ruleId)->load('articles');
+        if ($rule->articles()->detach($articleId)) {
+            return redirect()->back()->with('success', 'L\'article a été détaché de la règle avec succès.');
+        } else {
+            return redirect()->back()->with('error', 'L\'association n\'a pas été trouvée.');
+        }
     }
 
 

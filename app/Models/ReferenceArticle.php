@@ -24,6 +24,10 @@ class ReferenceArticle extends Model
     {
         return $this->belongsTo(Reference::class, 'reference_id');
     }
+    public function rules()
+    {
+        return $this->belongsToMany(Rule::class, 'rule_articles', 'article_id', 'rule_id');
+    }
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

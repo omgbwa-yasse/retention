@@ -36,7 +36,7 @@
                     <select name="article_id" class="form-control">
                         <option value="">Sélectionnez un article</option>
                         @foreach($articles as $article)
-                            <option value="{{ $article->id }}">{{ $article->source->name }} / {{ $article->reference }} - {{ $article->name }}</option>
+                            <option value="{{ $article->id }}">{{ $article->reference->name }} / {{ $article->code }} - {{ $article->name }}</option>
                         @endforeach
                     </select>
                 </div>
