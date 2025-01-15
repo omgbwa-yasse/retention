@@ -9,10 +9,10 @@ class ArticleController extends Controller
 {
 
 
-    public function index(Reference $reference)
+    public function index(Reference $article)
     {
-        $Article = $reference->Article()->get();
-        return view('reference.Article.articleIndex', compact('reference', 'Article'));
+        $article = $article->Article()->get();
+        return view('reference.Article.articleIndex', compact('reference', 'article'));
     }
 
 
@@ -31,7 +31,7 @@ class ArticleController extends Controller
             return redirect()->route('article.index', $reference)->with('error', 'Article not found for this reference.');
         }
         $article->load('reference','reference.category');
-        return view('reference.Article.articleShow', compact('article', 'reference'));
+        return view('reference.articles.articleShow', compact('article', 'reference'));
     }
 
 

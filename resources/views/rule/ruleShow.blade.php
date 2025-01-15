@@ -69,6 +69,7 @@
                                             <tr>
                                                 <th>Référence</th>
                                                 <th>Intitulé</th>
+                                                <th>Sources</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -78,7 +79,11 @@
                                                     <td>{{ $article->code }}</td>
                                                     <td>{{ $article->name }}</td>
                                                     <td>
-                                                        <a href="{{ route('rule.article.show', $article->id) }}" class="btn btn-primary">
+                                                        <span class="badge bg-danger">{{ $article->reference->name }}</span>
+                                                        <span class="badge bg-primary">{{ $article->reference->category->name }}</span>
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ route('rule.article.show', [$rule->id, $article->id]) }}" class="btn btn-primary">
                                                             <i class="fas fa-eye"></i>
                                                         </a>
                                                     </td>

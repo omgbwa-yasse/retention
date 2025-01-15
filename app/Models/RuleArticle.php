@@ -13,7 +13,7 @@ class RuleArticle extends Model
 
     protected $table = 'rule_articles';
     public $timestamps = false;
-    protected $fillable = ['rule_id', 'article_id'];
+    protected $fillable = ['rule_id', 'article_id', 'user_id'];
 
     public function rules()
     {

@@ -20,7 +20,7 @@ class Reference extends Model
 
     public function category()
     {
-        return $this->belongsTo(ReferenceCategory::class);
+        return $this->belongsTo(ReferenceCategory::class, 'category_id');
     }
 
     public function files()
@@ -46,6 +46,11 @@ class Reference extends Model
     public function baskets()
     {
         return $this->belongsToMany(Basket::class, 'basket_reference', 'reference_id', 'basket_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
 }

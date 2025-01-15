@@ -11,7 +11,7 @@ class Article extends Model
     use HasFactory;
 
     protected $fillable = [
-        'reference',
+        'code',
         'name',
         'description',
         'reference_id',
@@ -21,6 +21,10 @@ class Article extends Model
     public function reference()
     {
         return $this->belongsTo(Reference::class, 'reference_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
 }

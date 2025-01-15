@@ -11,45 +11,44 @@ class RuleArticleController extends Controller
 {
 
 
+
     public function create(int $ruleId)
     {
         $rule = Rule::findOrFail($ruleId);
-        $articles = Article::whereHas('reference', function ($query) {
-            $query->where('country_id', Auth()->User()->country_id);
-        })->get();
+
+        $articles = Article::whereHas('source', function ($query) {
+            $query->where('country_id', auth()->user()->country_id);
+        })
+        ->get();
+
         return view('ruleArticle.create', compact('rule', 'articles'));
     }
 
-    public function store(Request $request, INT $rule_id)
+
+
+    public function store(Request $request, int $ruleId)
     {
-        $rule = Rule::find($rule_id);
-        // Valider les données entrantes
+        $rule = Rule::findOrFail($ruleId);
+
         $validatedData = $request->validate([
-            'rule_id' => 'required|integer|exists:rules,id',
-            'article_id' => 'required|integer|exists:articles,id',
-            'user_id' => 'required|integer|exists:users,id',
+            'article_id' => 'required|exists:articles,id',
         ]);
 
-        // Créer une nouvelle instance de RuleArticle
-        $ruleArticle = new RuleArticle();
-        $ruleArticle->rule_id =  $rule->id;
-        $ruleArticle->article_id = $validatedData['article_id'];
-        $ruleArticle->user_id = Auth()->User()->id;
-        $ruleArticle->save();
+        RuleArticle::create([
+            'rule_id' => $rule->id,
+            'article_id' => $validatedData['article_id'],
+            'user_id' => auth()->id(),
+        ]);
 
-        // Récupérer l'instance de Rule associée
-        $rule = Rule::find($validatedData['rule_id']);
-
-        // Rediriger vers la route rule.show avec l'ID de la règle
-        return redirect()->route('rule.show', $rule->id);
+        return redirect()->route('rule.show', $rule->id)
+            ->with('success', 'Article associé avec succès');
     }
-
 
 
 
     public function show($dulId, $articleId)
     {
-        $dulArticle = RuleArticle::where('rule_id', $dulId)->where('reference_id', $articleId)->first();
+        $dulArticle = RuleArticle::where('rule_id', $dulId)->where('article_id', $articleId)->first();
         $dulArticle = $dulArticle->load('rules','articles');
         return redirect()->route('reference.article.index', $articleId)->with('success', 'Articles updated successfully.');
 
