@@ -30,7 +30,7 @@ class ActivityController extends Controller
             })
             ->orderBy('code')
             ->with('children', 'country', 'user')
-            ->paginate(2);
+            ->paginate(30);
 
         $country = Country::find($countryId);
 
