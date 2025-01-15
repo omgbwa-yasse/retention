@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\RuleArticle;
-use App\Models\Article;
+use App\Models\ReferenceArticle;
 use App\Models\Rule;
 
 class RuleArticleController extends Controller
@@ -16,12 +16,12 @@ class RuleArticleController extends Controller
     {
         $rule = Rule::findOrFail($ruleId);
 
-        $articles = Article::whereHas('source', function ($query) {
+        $articles = ReferenceArticle::whereHas('reference', function ($query) {
             $query->where('country_id', auth()->user()->country_id);
         })
         ->get();
 
-        return view('ruleArticle.create', compact('rule', 'articles'));
+        return view('rule.article.create', compact('rule', 'articles'));
     }
 
 
@@ -41,14 +41,14 @@ class RuleArticleController extends Controller
         ]);
 
         return redirect()->route('rule.show', $rule->id)
-            ->with('success', 'Article associé avec succès');
+            ->with('success', 'ReferenceArticle associé avec succès');
     }
 
 
 
     public function show($reference_id, $article_id)
     {
-        $article = Article::where('reference_id', $reference_id)->where('id', $article_id)->first();
+        $article = ReferenceArticle::where('reference_id', $reference_id)->where('id', $article_id)->first();
         $article = $article->load('reference');
         $reference = $article->reference;
         return view('reference.articles.show', compact( 'article','reference'));

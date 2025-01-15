@@ -6,7 +6,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\Rule;
 use App\Models\Country;
-use App\Models\Article;
+use App\Models\ReferenceArticle;
 use App\Models\Status;
 use App\Models\Trigger;
 use App\Models\Sort;
@@ -44,7 +44,7 @@ class RuleController extends Controller
         $states = Status::all();
         $triggers = Trigger::all();
         $sorts = Sort::all();
-        $articles = Article::all()->where('country_id', '=', Auth::user()->country_id);
+        $articles = ReferenceArticle::all()->where('country_id', '=', Auth::user()->country_id);
         return view('rule.ruleCreate', compact( 'triggers', 'articles', 'sorts', 'states'));
 
     }
@@ -153,8 +153,10 @@ class RuleController extends Controller
     // Supprime un élément spécifique
     public function destroy(Rule $rule)
     {
+        if ($rule->articles()->count() > 0) {
+            return redirect()->route('rule.index')->with('error', 'Cannot delete rule because it has related articles.');
+        }
         $rule->delete();
-
         return redirect()->route('rule.index')->with('success', 'Rule deleted successfully.');
     }
 

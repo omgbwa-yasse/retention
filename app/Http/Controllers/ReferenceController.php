@@ -17,15 +17,6 @@ class ReferenceController extends Controller
 {
 
 
-//    public function index()
-//    {
-//        $references = Reference::all();
-//
-//        $references->load('links', 'countries', 'articles', 'files');
-//
-//        return view('reference.referenceIndex', compact('references'));
-//    }
-
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -79,7 +70,6 @@ class ReferenceController extends Controller
         return view('reference.referenceCreate', compact('categories', 'countries'));
     }
 
-
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -95,7 +85,6 @@ class ReferenceController extends Controller
     }
 
 
-
     public function generatePdf(Reference $reference)
     {
         $articles = $reference->articles;
@@ -108,10 +97,6 @@ class ReferenceController extends Controller
         $categories = ReferenceCategory::all();
         return view('reference.referenceEdit', compact('references', 'categories'));
     }
-
-
-
-
 
 
     public function update(Request $request, $id)
@@ -166,7 +151,7 @@ class ReferenceController extends Controller
     {
         $error = '';
 
-        if (!$reference->files->isEmpty() && !$reference->links->isEmpty() && !$reference->articles->isEmpty() && !$reference->sources->isEmpty()) {
+        if (!$reference->files->isEmpty() && !$reference->links->isEmpty() && !$reference->articles->isEmpty()) {
             if (!$reference->files->isNotEmpty()) {
                 $error .= 'Cannot delete reference with associated files. ';
             }
