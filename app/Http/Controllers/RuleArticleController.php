@@ -46,11 +46,12 @@ class RuleArticleController extends Controller
 
 
 
-    public function show($dulId, $articleId)
+    public function show($reference_id, $article_id)
     {
-        $dulArticle = RuleArticle::where('rule_id', $dulId)->where('article_id', $articleId)->first();
-        $dulArticle = $dulArticle->load('rules','articles');
-        return redirect()->route('reference.article.index', $articleId)->with('success', 'Articles updated successfully.');
+        $article = Article::where('reference_id', $reference_id)->where('id', $article_id)->first();
+        $article = $article->load('reference');
+        $reference = $article->reference;
+        return view('reference.articles.show', compact( 'article','reference'));
 
     }
 

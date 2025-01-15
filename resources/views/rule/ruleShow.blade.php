@@ -83,7 +83,7 @@
                                                         <span class="badge bg-primary">{{ $article->reference->category->name }}</span>
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('rule.article.show', [$rule->id, $article->id]) }}" class="btn btn-primary">
+                                                        <a href="{{ route('rule.article.show', [$article->reference->id, $article->id]) }}" class="btn btn-primary">
                                                             <i class="fas fa-eye"></i>
                                                         </a>
                                                     </td>

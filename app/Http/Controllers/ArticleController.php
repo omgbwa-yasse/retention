@@ -34,7 +34,6 @@ class ArticleController extends Controller
             return redirect()->route('article.index', $reference)->with('error', 'Article not found for this reference.');
         }
         $article->load('reference','reference.category');
-        dd($article);
         return view('reference.articles.show', compact('article', 'reference'));
     }
 
