@@ -10,6 +10,15 @@
                     <div class="card-header bg-primary text-white">
                         <h5 class="card-title mb-0">{{ $reference->name }}</h5>
                     </div>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="card-body">
                         <p><strong>Description:</strong> {{ $reference->description }}</p>
                         <p><strong>Catégorie:</strong>

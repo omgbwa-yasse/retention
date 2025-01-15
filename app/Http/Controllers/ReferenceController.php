@@ -187,7 +187,17 @@ class ReferenceController extends Controller
             return redirect()->route('reference.index')->with('error', $error);
         }
 
-        $reference->delete();
+
+
+        if ($reference->articles->isNotEmpty()) {
+            foreach ($reference->articles as $article) {
+            if ($article->rules->isNotEmpty()) {
+                return redirect()->route('reference.show', $reference->id)->with('error', 'Cannot delete reference with associated article rules.');
+            }else{
+                $reference->delete();
+            }
+            }
+        }
 
         return redirect()->route('reference.index')->with('success', 'La référence a été supprimée avec succès.');
     }
