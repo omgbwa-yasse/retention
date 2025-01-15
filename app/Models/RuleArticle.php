@@ -11,7 +11,7 @@ class RuleArticle extends Model
 {
     use HasFactory;
 
-    protected $table = 'rule_articles';
+
     public $timestamps = false;
     protected $fillable = ['rule_id', 'article_id', 'user_id'];
 

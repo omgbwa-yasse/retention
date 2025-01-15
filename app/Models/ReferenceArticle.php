@@ -10,6 +10,8 @@ class ReferenceArticle extends Model
 {
     use HasFactory;
 
+    protected $table = 'reference_articles';
+
     protected $fillable = [
         'code',
         'name',
