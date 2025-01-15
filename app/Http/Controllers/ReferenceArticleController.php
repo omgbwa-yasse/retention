@@ -84,9 +84,12 @@ class ReferenceArticleController extends Controller
 
 
 
-    public function destroy(Reference $reference, ReferenceArticle $ReferenceArticle)
+    public function destroy(int $reference_id, int $article_id)
     {
-        $ReferenceArticle->delete();
-        return redirect()->route('reference.article.index', $reference)->with('success', 'ReferenceArticle deleted successfully.');
+        $referenceArticle = ReferenceArticle::where('reference_id', $reference_id)
+            ->where('id', $article_id)
+            ->firstOrFail();
+        $referenceArticle->delete();
+        return redirect()->route('reference.show', $reference_id)->with('success', 'ReferenceArticle deleted successfully.');
     }
 }

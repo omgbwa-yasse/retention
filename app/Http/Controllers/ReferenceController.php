@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Articles;
+use App\Models\ReferenceArticle;
 use App\Models\Basket;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -29,7 +29,7 @@ class ReferenceController extends Controller
 
         $baskets = Basket::all();
 
-        return view('reference.referenceIndex', compact('references', 'baskets'));
+        return view('reference.index', compact('references', 'baskets'));
     }
 
     public function addToBasket(Request $request)
@@ -55,11 +55,15 @@ class ReferenceController extends Controller
         return redirect()->route('reference.index')->with('success', 'Référence ajoutée au panier avec succès.');
     }
 
-    public function show(Reference $reference)
+
+
+
+    public function show(INT $reference_id)
     {
-        $articles = $reference->articles;
-        return view('reference.referenceShow', compact('reference', 'articles'));
+        $reference = Reference::findOrFail($reference_id)->load('category', 'country', 'files', 'links');
+        return view('reference.show', compact('reference'));
     }
+
 
 
 
@@ -67,8 +71,12 @@ class ReferenceController extends Controller
     {
         $categories = ReferenceCategory::all();
         $countries = Country::all();
-        return view('reference.referenceCreate', compact('categories', 'countries'));
+        return view('reference.create', compact('categories', 'countries'));
     }
+
+
+
+
 
     public function store(Request $request)
     {
@@ -85,18 +93,28 @@ class ReferenceController extends Controller
     }
 
 
+
+
+
+
     public function generatePdf(Reference $reference)
     {
         $articles = $reference->articles;
         $pdf = PDF::loadView('reference.reference_pdf', compact('reference', 'articles'));
         return $pdf->download('reference.pdf');
     }
+
+
+
+
     public function edit($id)
     {
         $references = Reference::findOrFail($id);
         $categories = ReferenceCategory::all();
-        return view('reference.referenceEdit', compact('references', 'categories'));
+        return view('reference.edit', compact('references', 'categories'));
     }
+
+
 
 
     public function update(Request $request, $id)
@@ -141,8 +159,9 @@ class ReferenceController extends Controller
             }
         }
 
-        return redirect()->route('reference.referenceIndex')->with('success', 'La référence a été mise à jour avec succès.');
+        return redirect()->route('reference.index')->with('success', 'La référence a été mise à jour avec succès.');
     }
+
 
 
 
@@ -165,12 +184,12 @@ class ReferenceController extends Controller
             $error = rtrim($error, '. ');
             $error .= '.';
 
-            return redirect()->route('reference.referenceIndex')->with('error', $error);
+            return redirect()->route('reference.index')->with('error', $error);
         }
 
         $reference->delete();
 
-        return redirect()->route('reference.referenceIndex')->with('success', 'La référence a été supprimée avec succès.');
+        return redirect()->route('reference.index')->with('success', 'La référence a été supprimée avec succès.');
     }
 
 

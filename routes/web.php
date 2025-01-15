@@ -95,15 +95,18 @@ Route::middleware(['auth'])->group(function () {
     // Controllers
     Route::resource('mission', MissionController::class);
     Route::resource('basket', basketController::class);
+
     Route::resource('activity', ActivityController::class);
     Route::resource('activity.rule', ActivityRuleController::class);
     Route::get('/activities/{id}/rules', [ActivityRuleController::class, 'show'])->name('activity.rules.show');
     Route::resource('activity.typology', ActivityTypologyController::class);
+
     Route::resource('reference', ReferenceController::class);
     Route::resource('reference.article', ReferenceArticleController::class);
     Route::resource('reference.link', LinkController::class);
     Route::resource('reference.file', FileController::class)->except(['download']);
     Route::resource('reference-category', ReferenceCategoryController::class);
+
     Route::resource('typology', TypologyController::class);
     Route::resource('setting', SettingController::class);
     Route::resource('charter', CharterController::class);
