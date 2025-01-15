@@ -108,7 +108,7 @@ return new class extends Migration
 
         Schema::create('reference_articles', function (Blueprint $table) {
             $table->id();
-            $table->string('reference', 10)->unique();
+            $table->string('code', 20)->unique();
             $table->string('name', 255)->nullable();
             $table->text('description');
             $table->unsignedInteger('reference_id');
