@@ -34,7 +34,7 @@ class ActivityController extends Controller
 
         $country = Country::find($countryId);
 
-        return view('activity.activityIndex', compact('items', 'country'));
+        return view('activity.index', compact('items', 'country'));
     }
 
 
@@ -60,7 +60,7 @@ class ActivityController extends Controller
         $auth = Auth::user();
         $countryId = Auth::user()->country_id;
         $activities = Classification::where('country_id', $countryId)->orderBy('code')->get();
-        return view('activity.activityCreate', compact('activities', 'auth'));
+        return view('activity.create', compact('activities', 'auth'));
     }
 
 
@@ -102,7 +102,7 @@ class ActivityController extends Controller
     {
         $activity = Classification::findOrFail($id)->with('parent','typologies','rules')->first();
         $parentName = $activity->parent ? $activity->parent->name : 'No parent';
-        return view('activity.activityShow', compact('activity', 'parentName'));
+        return view('activity.show', compact('activity', 'parentName'));
 
     }
 
@@ -115,7 +115,7 @@ class ActivityController extends Controller
     {
         $activity = Classification::findOrFail($id);
         $activities = Classification::orderBy('code')->get();
-        return view('activity.activityEdit', compact('activity', 'activities'));
+        return view('activity.edit', compact('activity', 'activities'));
     }
 
 

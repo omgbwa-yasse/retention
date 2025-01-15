@@ -1,118 +1,87 @@
 @extends('index')
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
-<script >
-    document.addEventListener('DOMContentLoaded', function() {
-        // var sortables = document.querySelectorAll('.sortable');
-        // sortables.forEach(function(sortable) {
-        //     new Sortable(sortable, {
-        //         group: 'nested',plume ,engrenage
-        //         animation: 150,
-        //         fallbackOnBody: true,
-        //         swapThreshold: 0.65,
-        //         onEnd: function(evt) {
-        //             // Ici, vous pouvez ajouter une requête AJAX pour mettre à jour l'ordre dans la base de données
-        //             console.log('Item moved', evt.oldIndex, evt.newIndex);
-        //         }
-        //     });
-        // });
-
-        document.querySelectorAll('.toggle-children').forEach(function(toggle) {
-            toggle.addEventListener('click', function() {
-                var children = this.closest('li').querySelector('ul');
-                if (children) {
-                    children.classList.toggle('d-none');
-                    this.textContent = children.classList.contains('d-none') ? '▶' : '▼';
-                }
-            });
-        });
-    });
-</script>
 @section('content')
-    <div class="container-fluid py-4">
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <h1 class="h2 fw-bold">{{ __('Plan de Classement') }}</h1>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <a href="{{ route('mission.create') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-circle me-2"></i>Create New Mission
+    <div class="container my-5">
+        <div class="d-flex justify-content-between align-$items-center mb-4">
+            <h1 class="mb-0 text-primary"><i class="bi bi-list-task me-2"></i>Activités</h1>
+            <div>
+                <a href="{{ route('activity.create') }}" class="btn btn-primary me-2">
+                    <i class="bi bi-plus-circle me-2"></i>Nouvelle Activité
+                </a>
+                <a href="{{ route('activity.export') }}" class="btn btn-success">
+                    <i class="bi bi-file-earmark-arrow-down me-2"></i>Exporter en PDF
                 </a>
             </div>
         </div>
 
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h3 class="card-title mb-4">Organigram</h3>
-                <div class="mission-tree">
-                    <ul class="list-unstyled sortable">
-                        @foreach($items as $mission)
-                            @include('mission.partials.tree_item', ['mission' => $mission, 'level' => 0])
-                        @endforeach
-                    </ul>
-                </div>
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>{{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @foreach ( $items as $activity )
+            <div class="list-group mt-4">
+                <label class="list-group-item">
+                    <h4 class="fw-bold mb-0">
+                        <a href="{{ route('activity.show', $activity->id) }}" class="text-decoration-none" title="Voir">
+                            <i class="bi bi-eye"></i> {{ $activity->code }} - {{ $activity->name }}
+                        </a>
+                    </h4>
+                    <p>
+                        @if (strlen($activity->description) > 100)
+                            {{ substr($activity->description, 0, 100) }}
+                            <a href="#" class="text-primary" id="see-more-{{ $activity->id }}" onclick="toggleDescription({{ $activity->id }}); return false;">Voir plus</a>
+                            <span id="full-description-{{ $activity->id }}" style="display: none;">{{ substr($activity->description, 100) }}
+                                <a href="#" class="text-primary" id="see-less-{{ $activity->id }}" onclick="toggleDescription({{ $activity->id }}); return false;">Voir moins</a>
+                            </span>
+                        @else
+                            {{ $activity->description }}
+                        @endif
+                    </p>
+
+                    <div class="d-flex align-$items-center">
+                        <p class="me-1"><strong>Sous-classes :</strong> <span class="badge bg-secondary">{{ $activity->children?->count() ?? '0' }}</span></p>
+                        <p class="me-1"><strong>Pays :</strong> <span class="badge bg-secondary"> {{ $activity->countries?->name ?? 'N/A' }}</span></p>
+                        <p class="me-1"><strong>Parent :</strong> <span class="badge bg-secondary"> {{ $activity->parent->name ?? 'N/A' }} </span></p>
+                    </div>
+                </label>
+            </div>
+        @endforeach
+
+        <nav aria-label="Page navigation mt-3">
+            <ul class="pagination justify-content-center">
+                {{-- Bouton Previous --}}
+                <li class="page-item {{ ($items->currentPage() == 1) ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ $items->previousPageUrl() }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                {{-- Numéros de page --}}
+                @for ($i = max(1, $items->currentPage() - 2); $i <= min($items->lastPage(), $items->currentPage() + 2); $i++)
+                    <li class="page-item {{ ($items->currentPage() == $i) ? 'active' : '' }}">
+                        <a class="page-link" href="{{ $items->url($i) }}">{{ $i }}</a>
+                    </li>
+                @endfor
+
+                {{-- Bouton Next --}}
+                <li class="page-item {{ ($items->currentPage() == $items->lastPage()) ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ $items->nextPageUrl() }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
     </div>
 
-    <style>
-        .mission-tree, .mission-tree ul {
-            padding-left: 20px;
-        }
-        .mission-tree li {
-            position: relative;
-            margin-bottom: 10px;
-        }
-        .mission-tree li::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -15px;
-            border-left: 1px solid #dee2e6;
-            height: 100%;
-        }
-        .mission-tree li:last-child::before {
-            height: 20px;
-        }
-        .mission-tree li::after {
-            content: "";
-            position: absolute;
-            top: 20px;
-            left: -15px;
-            border-top: 1px solid #dee2e6;
-            width: 15px;
-        }
-        .mission-item {
-            border: 1px solid #dee2e6;
-            padding: 10px;
-            border-radius: 4px;
-            background-color: #f8f9fa;
-            display: inline-block;
-            min-width: 200px;
-        }
-        .mission-item:hover {
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .toggle-children {
-            cursor: pointer;
-            color: #6c757d;
-            margin-right: 5px;
-        }
-        .sortable-ghost {
-            opacity: 0.5;
-        }
-        .badge-activity {
-            background-color: #28a745;
-            color: white;
-        }
-        .badge-mission {
-            background-color: #007bff;
-            color: white;
-        }
-    </style>
-
 @endsection
-
-@push('scripts')
-
-@endpush
