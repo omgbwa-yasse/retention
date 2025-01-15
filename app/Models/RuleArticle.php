@@ -22,7 +22,7 @@ class RuleArticle extends Model
 
     public function articles()
     {
-        return $this->belongsTo(Articles::class, 'article_id');
+        return $this->belongsTo(Article ::class, 'article_id');
     }
 }
 
