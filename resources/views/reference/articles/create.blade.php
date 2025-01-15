@@ -7,8 +7,8 @@
         @csrf
 
         <div class="form-group">
-            <label for="reference">Reference</label>
-            <input type="text" class="form-control" id="reference" name="reference" required>
+            <label for="code">Code</label>
+            <input type="text" class="form-control w-50" id="code" name="code" required>
         </div>
 
         <div class="form-group">
@@ -21,6 +21,9 @@
             <textarea class="form-control" id="description" name="description" required></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary">Create</button>
+        <div class="d-flex justify-content-between">
+            <a href="{{ route('reference.show', $reference->id) }}" class="btn btn-secondary">Retour</a>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </div>
     </form>
 @endsection

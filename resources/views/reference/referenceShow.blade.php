@@ -25,7 +25,7 @@
                             <div class="list-group">
                                 @foreach($reference->articles as $article)
                                     <a href="{{ route('reference.article.show', [$reference, $article]) }}" class="list-group-item list-group-item-action">
-                                        {{ $article->reference }} - {{ $article->name }}
+                                        {{ $article->code }} - {{ $article->name }}
                                     </a>
                                 @endforeach
                             </div>

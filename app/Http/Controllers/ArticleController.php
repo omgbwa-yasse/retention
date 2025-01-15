@@ -9,29 +9,33 @@ class ArticleController extends Controller
 {
 
 
-    public function index(Reference $article)
+    public function index(INT $id)
     {
-        $article = $article->Article()->get();
-        return view('reference.Article.articleIndex', compact('reference', 'article'));
+        $reference = Reference::findOrFail($id)->with('category','articles')->get();
+        return view('reference.articles.show' , compact('reference'));
     }
 
 
 
     public function create(Reference $reference)
     {
-        return view('reference.Article.articleCreate', compact('reference'));
+        return view('reference.articles.create', compact('reference'));
     }
 
 
 
 
-    public function show(Reference $reference, Article $article)
+    public function show(INT $reference_id, INT $article_id)
     {
+        $reference = Reference::findOrFail($reference_id);
+        $article = Article::findOrFail($article_id);
+
         if ($article->reference_id !== $reference->id) {
             return redirect()->route('article.index', $reference)->with('error', 'Article not found for this reference.');
         }
         $article->load('reference','reference.category');
-        return view('reference.articles.articleShow', compact('article', 'reference'));
+        dd($article);
+        return view('reference.articles.show', compact('article', 'reference'));
     }
 
 
@@ -39,7 +43,7 @@ class ArticleController extends Controller
     public function store(Request $request, Reference $reference)
     {
          Article::create([
-            'reference' => $request->input('reference'),
+            'code' => $request->input('code'),
             'name' => $request->input('name'),
             'description' => $request->input('description'),
             'reference_id' => $reference->id,
@@ -57,7 +61,7 @@ class ArticleController extends Controller
         if ($article->reference_id != $reference->id) {
             abort(404);
         }
-        return view('reference.Article.articleEdit', compact('article', 'reference'));
+        return view('reference.articles.edit', compact('article', 'reference'));
     }
 
 
@@ -65,11 +69,11 @@ class ArticleController extends Controller
     public function update(Request $request, Reference $reference_id, Article $Article)
     {
         $request->validate([
-            'reference' => 'required',
+            'code' => 'required',
             'name' => 'required',
             'description' => 'required'
         ]);
-        $Article->name = $request->input('reference');
+        $Article->name = $request->input('code');
         $Article->name = $request->input('name');
         $Article->description = $request->input('description');
         $Article->save();

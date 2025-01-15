@@ -3,7 +3,7 @@
 @section('content')
     <div class="container my-5">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="card shadow">
                     <div class="card-header bg-primary text-white">
                         <h2 class="mb-0"><i class="fas fa-edit me-2"></i>Modifier une règle de conservation</h2>
@@ -46,7 +46,7 @@
 
                             <div class="card mb-4">
                                 <div class="card-header bg-light">
-                                    <h4 class="mb-0"><i class="fas fa-history me-2"></i>Historique (Archives historiques)</h4>
+                                    <h4 class="mb-0"><i class="fas fa-history me-2"></i> Délai de conservation </h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="row mb-3">
@@ -58,7 +58,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="trigger_id" class="form-label">Conserver</label>
+                                            <label for="trigger_id" class="form-label">Evènement déclencheur</label>
                                             <select class="form-select @error('trigger_id') is-invalid @enderror" id="trigger_id" name="trigger_id" required>
                                                 <option value="">Sélectionnez une option</option>
                                                 @foreach($triggers as $trigger)
@@ -96,13 +96,16 @@
                                 </div>
                             </div>
 
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                                <button type="submit" class="btn btn-primary me-md-2">
                                     <i class="fas fa-save me-2"></i>Enregistrer
                                 </button>
-                                <button type="reset" class="btn btn-secondary">
+                                <button type="reset" class="btn btn-secondary me-md-2">
                                     <i class="fas fa-undo me-2"></i>Réinitialiser
                                 </button>
+                                <a href="{{ route('rule.show', $rule->id) }}" class="btn btn-light ms-auto">
+                                    <i class="fas fa-arrow-left me-2"></i>Retour
+                                </a>
                             </div>
                         </form>
                     </div>
