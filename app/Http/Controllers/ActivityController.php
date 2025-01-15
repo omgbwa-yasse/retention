@@ -143,18 +143,16 @@ class ActivityController extends Controller
 
 
 
-    public function destroy($id)
+    public function destroy(INT $id)
     {
         $classification = Classification::findOrFail($id);
-
-        if ($classification->children->isNotEmpty()) {
-            return back()->with('error', 'Impossible de supprimer cette classification. Elle a des enfants. Veuillez supprimer les enfants d\'abord.');
+        if($classification->children->count()>0){
+            return redirect()->route('activity.index')->with('error', 'Impossible de supprimer cet élément.');
         }
-
         $classification->delete();
-
         return redirect()->route('activity.index')->with('success', 'Élément supprimé avec succès.');
     }
+
 
     public function map($activity): array
     {
