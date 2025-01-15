@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Articles;
+use App\Models\ReferenceArticle;
 use App\Models\Rule;
 
 class RuleArticle extends Model
@@ -22,7 +22,7 @@ class RuleArticle extends Model
 
     public function articles()
     {
-        return $this->belongsTo(Article ::class, 'article_id');
+        return $this->belongsTo(ReferenceArticle ::class, 'article_id');
     }
 }
 

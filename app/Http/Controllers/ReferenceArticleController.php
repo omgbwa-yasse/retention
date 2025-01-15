@@ -1,11 +1,11 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\Article;
+use App\Models\ReferenceArticle;
 use App\Models\Reference;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ArticleController extends Controller
+class ReferenceArticleController extends Controller
 {
 
 
@@ -28,10 +28,10 @@ class ArticleController extends Controller
     public function show(INT $reference_id, INT $article_id)
     {
         $reference = Reference::findOrFail($reference_id);
-        $article = Article::findOrFail($article_id);
+        $article = ReferenceArticle::findOrFail($article_id);
 
         if ($article->reference_id !== $reference->id) {
-            return redirect()->route('article.index', $reference)->with('error', 'Article not found for this reference.');
+            return redirect()->route('article.index', $reference)->with('error', 'ReferenceArticle not found for this reference.');
         }
         $article->load('reference','reference.category');
         return view('reference.articles.show', compact('article', 'reference'));
@@ -41,7 +41,7 @@ class ArticleController extends Controller
 
     public function store(Request $request, Reference $reference)
     {
-         Article::create([
+         ReferenceArticle::create([
             'code' => $request->input('code'),
             'name' => $request->input('name'),
             'description' => $request->input('description'),
@@ -49,13 +49,13 @@ class ArticleController extends Controller
             'user_id' => Auth::user()->getAuthIdentifier()
         ]);
 
-        return redirect()->route('reference.article.index', $reference)->with('success', 'Article created successfully.');
+        return redirect()->route('reference.article.index', $reference)->with('success', 'ReferenceArticle created successfully.');
     }
 
 
 
 
-    public function edit(Reference $reference, Article $article)
+    public function edit(Reference $reference, ReferenceArticle $article)
     {
         if ($article->reference_id != $reference->id) {
             abort(404);
@@ -65,28 +65,28 @@ class ArticleController extends Controller
 
 
 
-    public function update(Request $request, Reference $reference_id, Article $Article)
+    public function update(Request $request, Reference $reference_id, ReferenceArticle $ReferenceArticle)
     {
         $request->validate([
             'code' => 'required',
             'name' => 'required',
             'description' => 'required'
         ]);
-        $Article->name = $request->input('code');
-        $Article->name = $request->input('name');
-        $Article->description = $request->input('description');
-        $Article->save();
-        $reference = Article::findOrFail('$reference_id');
-        return redirect()->route('reference.article.index', $reference)->with('success', 'Article updated successfully.');
+        $ReferenceArticle->name = $request->input('code');
+        $ReferenceArticle->name = $request->input('name');
+        $ReferenceArticle->description = $request->input('description');
+        $ReferenceArticle->save();
+        $reference = ReferenceArticle::findOrFail('$reference_id');
+        return redirect()->route('reference.article.index', $reference)->with('success', 'ReferenceArticle updated successfully.');
     }
 
 
 
 
 
-    public function destroy(Reference $reference, Article $Article)
+    public function destroy(Reference $reference, ReferenceArticle $ReferenceArticle)
     {
-        $Article->delete();
-        return redirect()->route('reference.article.index', $reference)->with('success', 'Article deleted successfully.');
+        $ReferenceArticle->delete();
+        return redirect()->route('reference.article.index', $reference)->with('success', 'ReferenceArticle deleted successfully.');
     }
 }

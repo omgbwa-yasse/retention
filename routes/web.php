@@ -20,7 +20,7 @@ use App\Http\Controllers\MissionController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ActivityTypologyController;
 use App\Http\Controllers\ReferenceController;
-use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ReferenceArticleController;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\TypologyController;
@@ -100,7 +100,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/activities/{id}/rules', [ActivityRuleController::class, 'show'])->name('activity.rules.show');
     Route::resource('activity.typology', ActivityTypologyController::class);
     Route::resource('reference', ReferenceController::class);
-    Route::resource('reference.article', ArticleController::class);
+    Route::resource('reference.article', ReferenceArticleController::class);
     Route::resource('reference.link', LinkController::class);
     Route::resource('reference.file', FileController::class)->except(['download']);
     Route::resource('reference-category', ReferenceCategoryController::class);

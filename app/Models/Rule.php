@@ -41,7 +41,7 @@ class Rule extends Model
     }
     public function articles()
     {
-        return $this->belongsToMany(Article::class, 'rule_articles', 'rule_id', 'article_id');
+        return $this->belongsToMany(ReferenceArticle::class, 'rule_articles', 'rule_id', 'article_id');
     }
 
     public function classifications()
