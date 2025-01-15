@@ -106,7 +106,7 @@ return new class extends Migration
 
 
 
-        Schema::create('articles', function (Blueprint $table) {
+        Schema::create('reference_articles', function (Blueprint $table) {
             $table->id();
             $table->string('reference', 10)->unique();
             $table->string('name', 255)->nullable();
@@ -546,7 +546,7 @@ return new class extends Migration
         Schema::dropIfExists('reference_links');
         Schema::dropIfExists('reference_country');
         Schema::dropIfExists('reference_categories');
-        Schema::dropIfExists('articles');
+        Schema::dropIfExists('reference_articles');
         /*
 
 
