@@ -2,7 +2,106 @@
 
 @section('content')
     <div class="container text-center my-4">
+
         <h1><strong> Rechercher !</strong></h1>
+
+
+        <div class="container my-4">
+            <div class="row justify-content-center text-center">
+                @if(isset($number_country))
+                <!-- Nombre de pays -->
+                <div class="col-md-2 col-sm-4 mb-4">
+                    <div class="card shadow-sm" style="transform: scale(0.75); margin: auto;">
+                        <div class="card-body">
+                            <div class="mb-2">
+                                <i class="bi bi-globe2 display-5 text-primary"></i>
+                            </div>
+                            <p class="display-6">{{ $number_country }}</p>
+                            <h5 class="card-title mt-1">Pays</h5>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                @if(isset($number_classes))
+                <!-- Nombre de classifications -->
+                <div class="col-md-2 col-sm-4 mb-4">
+                    <div class="card shadow-sm" style="transform: scale(0.75); margin: auto;">
+                        <div class="card-body">
+                            <div class="mb-2">
+                                <i class="bi bi-tags display-5 text-success"></i>
+                            </div>
+                            <p class="display-6">{{ $number_classes }}</p>
+                            <h5 class="card-title mt-1">Classifications</h5>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                @if(isset($number_rules))
+                <!-- Nombre de règles -->
+                <div class="col-md-2 col-sm-4 mb-4">
+                    <div class="card shadow-sm" style="transform: scale(0.75); margin: auto;">
+                        <div class="card-body">
+                            <div class="mb-2">
+                                <i class="bi bi-list-check display-5 text-danger"></i>
+                            </div>
+                            <p class="display-6">{{ $number_rules }}</p>
+                            <h5 class="card-title mt-1">Règles</h5>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                @if(isset($number_references))
+                <!-- Nombre de références -->
+                <div class="col-md-2 col-sm-4 mb-4">
+                    <div class="card shadow-sm" style="transform: scale(0.75); margin: auto;">
+                        <div class="card-body">
+                            <div class="mb-2">
+                                <i class="bi bi-book display-5 text-warning"></i>
+                            </div>
+                            <p class="display-6">{{ $number_references }}</p>
+                            <h5 class="card-title mt-1">Références</h5>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                @if(isset($number_articles))
+                <!-- Nombre d'articles -->
+                <div class="col-md-2 col-sm-4 mb-4">
+                    <div class="card shadow-sm" style="transform: scale(0.75); margin: auto;">
+                        <div class="card-body">
+                            <div class="mb-2">
+                                <i class="bi bi-file-text display-5 text-info"></i>
+                            </div>
+                            <p class="display-6">{{ $number_articles }}</p>
+                            <h5 class="card-title mt-1">Articles</h5>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                @if(isset($number_typologies))
+                <!-- Nombre de typologies -->
+                <div class="col-md-2 col-sm-4 mb-4">
+                    <div class="card shadow-sm" style="transform: scale(0.75); margin: auto;">
+                        <div class="card-body">
+                            <div class="mb-2">
+                                <i class="bi bi-diagram-3 display-5 text-secondary"></i>
+                            </div>
+                            <p class="display-6">{{ $number_typologies }}</p>
+                            <h5 class="card-title mt-1">Typologies</h5>
+                        </div>
+                    </div>
+                </div>
+                @endif
+            </div>
+        </div>
+
+
+
         <form method="GET" action="{{ route('public.search') }}" class="d-flex justify-content-center">
             <input type="text" name="query" class="form-control me-2" placeholder="Search..." value="{{ request('query') }}" />
             <button type="submit" class="btn btn-primary me-2">Rechercher</button>

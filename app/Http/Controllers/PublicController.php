@@ -10,6 +10,7 @@ use App\Models\Classification;
 use App\Models\ReferenceCategory;
 use App\Models\TypologyCategory;
 use App\Models\Country;
+use App\Models\ReferenceArticle;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,12 @@ class PublicController extends Controller
      public function index()
      {
 
+        $number_country = Country::count();
+        $number_classes = Classification::count();
+        $number_rules = Rule::count();
+        $number_references = Reference::count();
+        $number_articles = ReferenceArticle::count();
+        $number_typologies = Typology::count();
 
          // Récupérer les règles
          $rules = Rule::query()
@@ -94,7 +101,7 @@ class PublicController extends Controller
              ['path' => request()->url()]
          );
 
-         return view('public.search.index', compact('records'));
+         return view('public.search.index', compact('records','number_country' ,'number_classes','number_rules','number_references','number_articles','number_typologies'));
      }
 
 
