@@ -14,12 +14,14 @@ class charterController extends Controller
     public function index()
     {
         $country = Country::find(Auth::user()->country_id);
+
         $domaines = Classification::with('childrenRecursive',
             'rules.articles',
             'typologies')
             ->whereNull('parent_id')
+            ->where('country_id', $country->id)
             ->get();
-        $country = Country::findOrFail(Auth()->user()->country_id);
+
         return view('charter.index', compact('country', 'domaines'));
     }
 
