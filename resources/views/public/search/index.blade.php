@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container text-center my-4">
-        <h1>Trouvez tout ici !</h1>
+        <h1><strong> Rechercher !</strong></h1>
         <form method="GET" action="{{ route('public.search') }}" class="d-flex justify-content-center">
             <input type="text" name="query" class="form-control me-2" placeholder="Search..." value="{{ request('query') }}" />
             <button type="submit" class="btn btn-primary me-2">Rechercher</button>

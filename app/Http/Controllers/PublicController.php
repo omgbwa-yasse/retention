@@ -12,6 +12,7 @@ use App\Models\TypologyCategory;
 use App\Models\Country;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -30,57 +31,71 @@ class PublicController extends Controller
 
 
 
-    public function index()
-    {
-        // Récupérer les règles avec pagination
-        $rules = Rule::latest()
-            ->paginate(10)
-            ->map(function($item) {
-                return [
-                    'id' => $item->id,
-                    'name' => $item->name,
-                    'description' => $item->description,
-                    'type' => 'rule',
-                    'created_at' => $item->created_at
-                ];
-            });
-
-        // Récupérer les classes avec pagination
-        $classes = Classification::latest()
-            ->paginate(10)
-            ->map(function($item) {
-                return [
-                    'id' => $item->id,
-                    'name' => $item->name,
-                    'description' => $item->description,
-                    'type' => 'class',
-                    'created_at' => $item->created_at
-                ];
-            });
-
-        // Récupérer les références avec pagination
-        $references = Reference::latest()
-            ->paginate(10)
-            ->map(function($item) {
-                return [
-                    'id' => $item->id,
-                    'name' => $item->name,
-                    'description' => $item->description,
-                    'type' => 'reference',
-                    'created_at' => $item->created_at
-                ];
-            });
-
-        // Combiner et trier tous les résultats par date de création
-        $records = $rules->concat($classes)
-                ->concat($references)
-                ->sortByDesc('created_at');
-
-        return view('public.search.index', compact('records'));
-    }
+     public function index()
+     {
 
 
+         // Récupérer les règles
+         $rules = Rule::query()
+             ->latest()
+             ->get()
+             ->map(function($item) {
+                 return [
+                     'id' => $item->id,
+                     'name' => $item->name,
+                     'description' => $item->description,
+                     'type' => 'rule',
+                     'created_at' => $item->created_at
+                 ];
+             });
 
+         // Récupérer les classifications
+         $classes = Classification::query()
+             ->latest()
+             ->get()
+             ->map(function($item) {
+                 return [
+                     'id' => $item->id,
+                     'name' => $item->name,
+                     'description' => $item->description,
+                     'type' => 'class',
+                     'created_at' => $item->created_at
+                 ];
+             });
+
+         // Récupérer les références
+         $references = Reference::query()
+             ->latest()
+             ->get()
+             ->map(function($item) {
+                 return [
+                     'id' => $item->id,
+                     'name' => $item->name,
+                     'description' => $item->description,
+                     'type' => 'reference',
+                     'created_at' => $item->created_at
+                 ];
+             });
+
+         // Combiner tous les résultats
+         $allRecords = $rules->concat($classes)->concat($references);
+
+         // Trier par date de création
+         $sortedRecords = $allRecords->sortByDesc('created_at');
+
+         // Paginer les résultats combinés
+         $perPage = 10;
+         $currentPage = request()->get('page', 1);
+         $records = new \Illuminate\Pagination\LengthAwarePaginator(
+             $sortedRecords->forPage($currentPage, $perPage),
+             $sortedRecords->count(),
+             $perPage,
+             $currentPage,
+             ['path' => request()->url()]
+         );
+
+         return view('public.search.index', compact('records'));
+     }
 
 
 
