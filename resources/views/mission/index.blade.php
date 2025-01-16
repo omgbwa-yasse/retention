@@ -1,22 +1,7 @@
 @extends('index')
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
 <script >
     document.addEventListener('DOMContentLoaded', function() {
-        // var sortables = document.querySelectorAll('.sortable');
-        // sortables.forEach(function(sortable) {
-        //     new Sortable(sortable, {
-        //         group: 'nested',
-        //         animation: 150,
-        //         fallbackOnBody: true,
-        //         swapThreshold: 0.65,
-        //         onEnd: function(evt) {
-        //             // Ici, vous pouvez ajouter une requête AJAX pour mettre à jour l'ordre dans la base de données
-        //             console.log('Item moved', evt.oldIndex, evt.newIndex);
-        //         }
-        //     });
-        // });
-
         document.querySelectorAll('.toggle-children').forEach(function(toggle) {
             toggle.addEventListener('click', function() {
                 var children = this.closest('li').querySelector('ul');
