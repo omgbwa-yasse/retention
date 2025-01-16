@@ -20,17 +20,21 @@ class ReferenceController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-
         $references = Reference::query()
-            ->when($search, function ($query, $search) {
-                $query->where('name', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%");
-            })->paginate(150);
-
+            ->where('country_id', Auth()->user()->country_id)
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                          ->orWhere('description', 'like', "%{$search}%");
+                });
+            })
+            ->paginate(15);
         $baskets = Basket::all();
-
-        return view('reference.index', compact('references', 'baskets'));
+        $country = Country::findOrFail(Auth()->user()->country_id);
+        return view('reference.index', compact('references', 'baskets', 'country'));
     }
+
+
 
     public function addToBasket(Request $request)
     {

@@ -3,8 +3,7 @@
     <div class="container my-5">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="display-4 text-primary mb-4"><i class="fas fa-book-open me-3"></i>Référentiels juridiques</h1>
-
+                <h1 class="display-4 text-primary mb-4"><i class="fas fa-book-open me-3"></i>Référentiels juridiques {{ $country->name ?? ''}} </h1>
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
                         <div class="row align-items-center">

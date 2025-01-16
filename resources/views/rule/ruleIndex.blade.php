@@ -6,7 +6,7 @@
             <div class="col-md-12">
                 <div class="card shadow">
                     <div class="card-header bg-primary text-white">
-                        <h2 class="mb-0"><i class="fas fa-list me-2"></i>Liste des règles de conservation</h2>
+                        <h2 class="mb-0"><i class="fas fa-list me-2"></i>Liste des règles de conservation {{ $country->name ?? ''}}</h2>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">

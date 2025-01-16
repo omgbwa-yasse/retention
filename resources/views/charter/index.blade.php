@@ -5,7 +5,7 @@
         @foreach($domaines as $domaine)
             <div class="card  mb-4 shadow-sm">
                 <div class="card-header bg-gray text-primary ">
-                    <h2 class="mb-0"> <b>{{ $domaine->code }} </b>- {{ $domaine->name }}</h2>
+                    <h2 class="mb-0"> <b>{{ $domaine->code }} </b>- {{ $domaine->name }} - {{ $country->name ?? ''}} </h2>
                 </div>
                 <div class="card-body">
                     <p class="card-text">{{ $domaine->description }}</p>

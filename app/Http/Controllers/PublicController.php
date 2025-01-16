@@ -183,19 +183,23 @@ class PublicController extends Controller
             }
         };
 
-        // Rechercher dans les règles
-        $rules = Rule::where($searchFunction)
+        // Rechercher dans les règles avec eager loading de la relation country
+        $rules = Rule::with('country')
+                    ->where($searchFunction)
                     ->get()
                     ->map(function ($item) use ($searchTerms) {
                         $relevance = $this->calculateRelevance($item, $searchTerms);
                         return array_merge($item->toArray(), [
                             'type' => 'rule',
                             'relevance' => $relevance,
+                            'country_name' => $item->country ? $item->country->name : null
                         ]);
                     });
 
-        // Rechercher dans les classes
-        $classes = Classification::where($searchFunction)
+
+        // Rechercher dans les classes avec eager loading de la relation country
+        $classes = Classification::with('country')
+                    ->where($searchFunction)
                     ->get()
                     ->map(function ($item) use ($searchTerms) {
                         $relevance = $this->calculateRelevance($item, $searchTerms);
@@ -205,14 +209,15 @@ class PublicController extends Controller
                         ]);
                     });
 
-        // Rechercher dans les références
-        $references = Reference::where($searchFunction)
+        // Rechercher dans les références avec eager loading de la relation country
+        $references = Reference::with('country')
+                    ->where($searchFunction)
                     ->get()
                     ->map(function ($item) use ($searchTerms) {
                         $relevance = $this->calculateRelevance($item, $searchTerms);
                         return array_merge($item->toArray(), [
                             'type' => 'reference',
-                            'relevance' => $relevance,
+                            'relevance' => $relevance
                         ]);
                     });
 
@@ -229,9 +234,9 @@ class PublicController extends Controller
             'path' => LengthAwarePaginator::resolveCurrentPath(),
         ]);
 
+
         return view('public.search.index', compact('records', 'searchTerm'));
     }
-
     /**
      * Calculer la pertinence pour un élément.
      */

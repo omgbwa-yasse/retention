@@ -32,7 +32,10 @@ class RuleController extends Controller
             ->with(['country', 'status', 'trigger', 'sort'])
             ->paginate(10);
 
-        return view('rule.ruleIndex', compact('rules'));
+
+            $country = Country::findOrFail(Auth()->user()->country_id);
+
+        return view('rule.ruleIndex', compact('rules','country'));
     }
 
 

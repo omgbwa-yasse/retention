@@ -19,7 +19,7 @@ class charterController extends Controller
             'typologies')
             ->whereNull('parent_id')
             ->get();
-
+        $country = Country::findOrFail(Auth()->user()->country_id);
         return view('charter.index', compact('country', 'domaines'));
     }
 
