@@ -6,6 +6,7 @@
             <div class="col-md-12">
                 <h1>Missions</h1>
                 <a href="{{ route('mission.create') }}" class="btn btn-primary">Add Mission</a>
+
                 <ul class="list-group mt-5">
                     @foreach($activities as $mission)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -18,6 +19,7 @@
                     </li>
                     @endforeach
                 </ul>
+
             </div>
         </div>
     </div>
