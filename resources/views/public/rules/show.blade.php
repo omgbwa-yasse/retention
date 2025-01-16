@@ -77,31 +77,30 @@
                 <!-- Duls -->
                 <div>
                     <h6 class="text-uppercase text-muted small mb-2">Duls associés</h6>
-                    @forelse($rule->duls as $dul)
                         <div class="border rounded mb-3">
                             <div class="table-responsive">
                                 <table class="table table-sm mb-0">
                                     <thead class="table-light">
                                     <tr>
                                         <th colspan="2" class="border-bottom">
-                                            {{ $dul->name }}
+                                            {{ $rule->name }}
                                         </th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
                                         <th class="w-25 bg-light">Trigger</th>
-                                        <td>{{ $dul->trigger->name }}</td>
+                                        <td>{{ $rule->trigger->name }}</td>
                                     </tr>
                                     <tr>
                                         <th class="w-25 bg-light">Sort</th>
-                                        <td>{{ $dul->sort->name }}</td>
+                                        <td>{{ $rule->sort->name }}</td>
                                     </tr>
                                     <tr>
                                         <th class="w-25 bg-light">Articles</th>
                                         <td>
                                             <div class="d-flex flex-wrap gap-1">
-                                                @foreach($dul->articles as $article)
+                                                @foreach($rule->articles as $article)
                                                     <span class="badge bg-light text-dark">
                                                         {{ $article->name }}
                                                     </span>
@@ -113,9 +112,8 @@
                                 </table>
                             </div>
                         </div>
-                    @empty
                         <div class="text-muted">Aucun Dul associé</div>
-                    @endforelse
+
                 </div>
             </div>
 
