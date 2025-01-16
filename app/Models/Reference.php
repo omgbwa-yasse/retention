@@ -40,7 +40,7 @@ class Reference extends Model
 
     public function articles()
     {
-        return $this->hasMany(ReferenceArticle::class, 'reference_id', 'article_id');
+        return $this->hasMany(ReferenceArticle::class, 'reference_id', 'id');
     }
 
     public function baskets()

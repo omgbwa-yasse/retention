@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 
-class ReferenceCategoriesTableSeeder extends Seeder
+class _03ReferenceCategoriesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

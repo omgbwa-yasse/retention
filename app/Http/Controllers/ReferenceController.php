@@ -60,7 +60,7 @@ class ReferenceController extends Controller
 
     public function show(INT $reference_id)
     {
-        $reference = Reference::findOrFail($reference_id)->load('category', 'country', 'files', 'links');
+        $reference = Reference::findOrFail($reference_id)->load('articles','category', 'country', 'files', 'links');
         return view('reference.show', compact('reference'));
     }
 

@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class TypologyCategoriesTableSeeder extends Seeder
+class _04TypologyCategoriesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
