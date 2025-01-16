@@ -32,7 +32,7 @@
     <div class="container-fluid py-4">
         <div class="row mb-4">
             <div class="col-md-6">
-                <h1 class="h2 fw-bold">{{ __('Plan de Classement') }}</h1>
+                <h1 class="h2 fw-bold">{{ __('Mission') }}</h1>
             </div>
             <div class="col-md-6 text-md-end">
                 <a href="{{ route('mission.create') }}" class="btn btn-primary">
@@ -43,7 +43,6 @@
 
         <div class="card shadow-sm">
             <div class="card-body">
-                <h3 class="card-title mb-4">Organigram</h3>
                 <div class="mission-tree">
                     <ul class="list-unstyled sortable">
                         @foreach($items as $mission)
