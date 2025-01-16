@@ -88,6 +88,10 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                        <tr>
+                                            <th class="w-25 bg-light">Durée</th>
+                                            <td>{{ $rule->duration }} ans</td>
+                                        </tr>
                                     <tr>
                                         <th class="w-25 bg-light">Trigger</th>
                                         <td>{{ $rule->trigger->name }}</td>
@@ -112,8 +116,6 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="text-muted">Aucun Dul associé</div>
-
                 </div>
             </div>
 
