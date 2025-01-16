@@ -26,9 +26,7 @@ class MissionController extends Controller
                     $q->where('name', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
                 });
-            })
-            ->paginate(2);
-
+            })->with('children')->paginate(20);
         return view('mission.index', compact('activities'));
     }
 
