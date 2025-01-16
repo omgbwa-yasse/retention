@@ -34,7 +34,7 @@ class PublicController extends Controller
     {
         // Récupérer les règles avec pagination
         $rules = Rule::latest()
-            ->paginate(50)
+            ->paginate(10)
             ->map(function($item) {
                 return [
                     'id' => $item->id,
@@ -47,7 +47,7 @@ class PublicController extends Controller
 
         // Récupérer les classes avec pagination
         $classes = Classification::latest()
-            ->paginate(50)
+            ->paginate(10)
             ->map(function($item) {
                 return [
                     'id' => $item->id,
@@ -60,7 +60,7 @@ class PublicController extends Controller
 
         // Récupérer les références avec pagination
         $references = Reference::latest()
-            ->paginate(50)
+            ->paginate(10)
             ->map(function($item) {
                 return [
                     'id' => $item->id,
@@ -137,7 +137,7 @@ class PublicController extends Controller
         }
 
         // Paginer les résultats
-        $perPage = 50;
+        $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $currentItems = $results->slice(($currentPage - 1) * $perPage, $perPage)->values();
         $records = new LengthAwarePaginator($currentItems, $results->count(), $perPage, $currentPage, [
@@ -222,7 +222,7 @@ class PublicController extends Controller
                         ->sortByDesc('relevance');
 
         // Paginer les résultats
-        $perPage = 50;
+        $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $currentItems = $records->slice(($currentPage - 1) * $perPage, $perPage)->values();
         $records = new LengthAwarePaginator($currentItems, $records->count(), $perPage, $currentPage, [
