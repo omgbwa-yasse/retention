@@ -142,7 +142,7 @@ return new class extends Migration
         Schema::create('classifications', function (Blueprint $table) {
             $table->id();
             $table->string('code', 10);
-            $table->string('name', 100)->unique();
+            $table->string('name', 100);
             $table->text('description')->nullable();
             $table->unsignedInteger('parent_id')->nullable();
             $table->unsignedInteger('country_id');
