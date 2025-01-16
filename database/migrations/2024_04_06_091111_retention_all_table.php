@@ -252,8 +252,8 @@ return new class extends Migration
 
     Schema::create('rules', function (Blueprint $table) {
         $table->id();
-        $table->string('code', 10)->unique();
-        $table->string('name', 100)->unique();
+        $table->string('code', 10);
+        $table->string('name', 100);
         $table->text('description')->nullable();
         $table->string('duration', 10);
         $table->unsignedInteger('trigger_id');

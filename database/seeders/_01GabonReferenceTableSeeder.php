@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class _02GabonReferenceTableSeeder extends Seeder
+class _01GabonReferenceTableSeeder extends Seeder
 {
     use WithoutModelEvents;
 
