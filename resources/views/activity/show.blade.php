@@ -19,19 +19,20 @@
                     </div>
 
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p><strong>ID :</strong> {{ $activity->id }}</p>
+                        <div class="col-md-12">
+                            <div class="col-md-12">
                                 <p><strong>Code :</strong> {{ $activity->code }}</p>
-                                <p><strong>Titre :</strong> {{ $activity->name }}</p>
+                                <h3>Titre : <strong> {{ $activity->name }} </strong></h3>
                                 <p><strong>Description :</strong> {{ $activity->description }}</p>
                                 <p><strong>Nombre de classe de fille :</strong> {{ $activity->children->count() }}</p>
                                 <p><strong>Dans :</strong> {{ $activity->parent ? $activity->parent->name : 'N/A' }}</p>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <h4>Actions</h4>
-                                <a href="{{ route('activity.typology.index', $activity ) }}" class="btn btn-outline-primary btn-sm mb-2 d-block">Gérer les typologies</a>
-                                <a href="{{ route('activity.rule.index', $activity ) }}" class="btn btn-outline-primary btn-sm mb-2 d-block">Gérer les règles de conservation</a>
+                                <div class="d-flex">
+                                    <a href="{{ route('activity.typology.index', $activity ) }}" class="btn btn-outline-primary btn-sm mb-2 mr-2 me-2">Gérer les typologies</a>
+                                    <a href="{{ route('activity.rule.index', $activity ) }}" class="btn btn-outline-primary btn-sm mb-2 me-2">Gérer les règles de conservation</a>
+                                </div>
                             </div>
                         </div>
 

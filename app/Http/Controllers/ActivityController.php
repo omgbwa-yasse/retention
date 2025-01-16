@@ -98,10 +98,11 @@ class ActivityController extends Controller
 
 
     // Affiche un élément spécifique
-    public function show($id)
+    public function show(INT $activity_id)
     {
-        $activity = Classification::findOrFail($id)->with('parent','typologies','rules')->first();
-        $parentName = $activity->parent ? $activity->parent->name : 'No parent';
+        $activity = Classification::findOrFail($activity_id);
+        $activity->load('children', 'country', 'user');
+        $parentName = $activity->parent ? $activity->parent->name : '';
         return view('activity.show', compact('activity', 'parentName'));
 
     }
