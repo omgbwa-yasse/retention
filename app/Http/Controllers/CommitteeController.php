@@ -19,7 +19,7 @@ class CommitteeController extends Controller
     // Affiche la liste des éléments
     public function project()
     {
-        $rules = Rule::with([ 'duls', 'country', 'articles', 'classifications', 'status'])
+        $rules = Rule::with([ 'country', 'articles', 'classifications', 'status'])
             ->where('status_id', '=', 1)
             ->get();
         return view('rule.ruleIndex', compact('rules'));
@@ -27,7 +27,7 @@ class CommitteeController extends Controller
 
     public function examining()
     {
-        $rules = Rule::with([ 'duls', 'country', 'articles', 'classifications', 'status'])
+        $rules = Rule::with([  'country', 'articles', 'classifications', 'status'])
             ->where('status_id', '=', 2)
             ->paginate(10); // Use paginate instead of get
 
@@ -35,7 +35,7 @@ class CommitteeController extends Controller
     }
     public function approved()
     {
-        $rules = Rule::with([ 'duls', 'country', 'articles', 'classifications', 'status'])
+        $rules = Rule::with([ 'country', 'articles', 'classifications', 'status'])
             ->where('status_id', '=', 3)
             ->paginate(10); // Use paginate instead of get
         return view('rule.ruleIndex', compact('rules'));
@@ -50,7 +50,7 @@ class CommitteeController extends Controller
 
     public function show(Rule $rule)
     {
-        $rule->load('countries')->load('actives')->load('duls')->load('classifications')->load('status');
+        $rule->load('countries')->load('actives')->load('classifications')->load('status');
         return view('committee.show', compact('rule'));
     }
 

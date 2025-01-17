@@ -29,7 +29,7 @@
                                 <label for="content" class="col-md-4 col-form-label text-md-right">{{ __('Contenu') }}</label>
 
                                 <div class="col-md-6">
-                                    <textarea id="content" class="form-control @error('desciption') is-invalid @enderror" name="desciption" required autocomplete="desciption">{{ old('desciption') }}</textarea>
+                                    <textarea id="content" class="form-control @error('content') is-invalid @enderror" name="content" required autocomplete="desciption">{{ old('desciption') }}</textarea>
 
                                     @error('content')
                                     <span class="invalid-feedback" role="alert">

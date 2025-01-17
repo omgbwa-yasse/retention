@@ -292,7 +292,7 @@ class PublicController extends Controller
             'parent.childrenRecursive', // Parent et tous ses enfants
             'children', // Enfants directs
             'childrenRecursive', // Tous les descendants
-            'rules.duls.trigger',
+            'rules.trigger',
             'rules.articles',
             'typologies'
         ])->findOrFail($id);

@@ -38,7 +38,7 @@ class ForumPostController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'desciption' => 'required|string',
+            'content' => 'required|string',
         ]);
 
         $post = new ForumPost($validatedData);
