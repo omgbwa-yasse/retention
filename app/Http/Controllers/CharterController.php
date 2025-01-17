@@ -9,7 +9,7 @@ use App\Models\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class charterController extends Controller
+class CharterController extends Controller
 {
     public function index()
     {

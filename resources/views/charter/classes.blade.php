@@ -35,7 +35,7 @@
                         @endforeach
                     @endif
                 </td>
-                <td></td>
+                <td> </td>
             </tr>
             @if ($class->children->isNotEmpty())
                 @include('charter.classes', ['classes' => $class->children])

@@ -131,9 +131,9 @@ Route::middleware(['auth'])->group(function () {
         Chartes de conservation
     */
     Route::post('/reference/add-to-basket', [ReferenceController::class, 'addToBasket'])->name('reference.addToBasket');
-    Route::get('/charter', [charterController::class, 'index'])->name('charter.index');
-    Route::get('/charter/print/{domaineId}', [charterController::class, 'printPdf'])->name('charter.print');
-    Route::get('/charter/export/{domaineId}', [charterController::class, 'exportExcel'])->name('charter.export');
+    Route::get('/charter', [CharterController::class, 'index'])->name('charter.index');
+    Route::get('/charter/print/{domaineId}', [CharterController::class, 'printPdf'])->name('charter.print');
+    Route::get('/charter/export/{domaineId}', [CharterController::class, 'exportExcel'])->name('charter.export');
     Route::resource('user', UserController::class);
 
     /*
