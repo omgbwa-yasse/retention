@@ -1,12 +1,20 @@
 {{-- resources/views/charter/classes.blade.php --}}
-<div class="overflow-x-auto">
+<div class="overflow-x-auto" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
     <table class="compact-table table table-bordered">
         <thead>
         <tr>
-            <th rowspan="2" class="text-left">Cote</th>
-            <th rowspan="2" class="text-left">Intitulé</th>
-            <th class="text-left">Durée légale</th>
-            <th rowspan="2" class="text-left">Références</th>
+            <th rowspan="2" class="text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }}">
+                {{ __('table_code') }}
+            </th>
+            <th rowspan="2" class="text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }}">
+                {{ __('table_title') }}
+            </th>
+            <th class="text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }}">
+                {{ __('table_legal_duration') }}
+            </th>
+            <th rowspan="2" class="text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }}">
+                {{ __('table_references') }}
+            </th>
         </tr>
         </thead>
         <tbody>

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <title>Domaine PDF</title>
+    <title>{{ __('domain_pdf_title') }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            direction: {{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }};
         }
         h1 {
             font-size: 24px;
@@ -26,7 +27,7 @@
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
-            text-align: left;
+            text-align: {{ app()->getLocale() === 'ar' ? 'right' : 'left' }};
         }
         th {
             background-color: #f2f2f2;
@@ -44,21 +45,20 @@
 </head>
 <body>
 <div class="header">
-    <h1>{{ $domaine->code }} - {{ $domaine->name }}</h1>
+    <h1>{{ __('domain_code_name', ['code' => $domaine->code, 'name' => $domaine->name]) }}</h1>
     <p>{{ $domaine->description }}</p>
 </div>
 
-<h2>Classes</h2>
+<h2>{{ __('classes_title') }}</h2>
 <table>
     <thead>
     <tr>
-        <th>Cote</th>
-        <th>Intitulé</th>
-        <th>Typologies</th>
-
-        <th>Durée légale Délai</th>
-        <th>Durée légale Déclencheur</th>
-        <th>Références</th>
+        <th>{{ __('table_reference') }}</th>
+        <th>{{ __('table_title') }}</th>
+        <th>{{ __('table_typologies') }}</th>
+        <th>{{ __('table_legal_duration') }}</th>
+        <th>{{ __('table_legal_trigger') }}</th>
+        <th>{{ __('table_references') }}</th>
     </tr>
     </thead>
     <tbody>
@@ -112,7 +112,7 @@
 </table>
 
 <div class="footer">
-    <p>Généré le {{ now()->format('d/m/Y H:i:s') }}</p>
+    <p>{{ __('generated_on') }}</p>
 </div>
 </body>
 </html>
