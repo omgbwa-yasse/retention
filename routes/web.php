@@ -89,6 +89,10 @@ Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->n
     Route::get('/news', [PublicController::class, 'news'])->name('public.news');
 });
 
+Route::get('language/{locale}', [LanguageController::class, 'switch'])
+    ->name('language.switch')
+    ->where('locale', '[a-zA-Z]{2}');
+
 
 // Route group for authentication
 Route::middleware(['auth'])->group(function () {
@@ -168,12 +172,8 @@ Route::middleware(['auth'])->group(function () {
 
     //Route::get('/activity/exportPdf', [ActivityController::class, 'exportPdf'])->name('activity.exportPdf');
     Route::resource('triggers', TriggerController::class);
-
-    Route::get('language/{locale}', [LanguageController::class, 'switch'])
-        ->name('language.switch')
-        ->where('locale', '[a-zA-Z]{2}');
-
 });
+
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -56,6 +56,7 @@
         </div>
     @else
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+
             <div class="container ">
                 <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('public.index') }}">
                     <i class="fas fa-book-reader"></i>
@@ -80,6 +81,24 @@
                     </ul>
                 </div>
             </div>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- Sélecteur de langue -->
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="langDropdown" data-bs-toggle="dropdown">
+                        {{ config('app.available_locales')[App::getLocale()] }}
+                    </button>
+                    <ul class="dropdown-menu">
+                        @foreach(config('app.available_locales') as $locale => $label)
+                            <li>
+                                <a class="dropdown-item @if(App::getLocale() == $locale) active @endif"
+                                   href="{{ route('language.switch', $locale) }}">
+                                    {{ $label }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </ul>
         </nav>
         <div class="container">
             <div class="">

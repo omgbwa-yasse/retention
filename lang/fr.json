@@ -1,6 +1,4 @@
 {
-
-
     "Rechercher": "Rechercher",
     "Team": "Équipe",
     "Support": "Support",
@@ -57,10 +55,8 @@
     "view_all_classifications": "consultez toutes les classifications",
     "who_we_are": "Qui sommes-nous ?",
     "who_we_are_description": "L'ONG Archivistes Leaders International est une association étrangère officiellement reconnue par le gouvernement de la Côte d'Ivoire, comme en témoigne l'arrêté ministériel N°0588/MIS/DGAT/DAG/SDVA émis par le Ministère de l'Intérieur et de la Sécurité. Cette reconnaissance officielle, accordée le 8 janvier 2023, confère à l'organisation un statut légal pour opérer sur le territoire ivoirien, conformément à la loi N°60-315 du 21 septembre 1960 relative aux associations.",
-
     "location_presence": "Localisation et présence",
     "location_description": "Le siège social de l'organisation est stratégiquement situé à Abidjan, la capitale économique de la Côte d'Ivoire, plus précisément dans le quartier huppé de Cocody, à Angré 8ème Tranche, Cité les Arcades (08 B.P 702 Abidjan 08). Ce positionnement dans un quartier dynamique d'Abidjan témoigne de l'ambition de l'organisation d'être au cœur de l'action et facilement accessible pour ses partenaires et bénéficiaires.",
-
     "organizational_structure": "Structure organisationnelle",
     "organizational_description": "L'ONG dispose d'une structure de gouvernance claire et bien définie, avec un bureau exécutif composé de six membres occupant des postes clés :",
     "presidency": "Présidence",
@@ -72,20 +68,17 @@
     "treasury": "Trésorerie",
     "treasurer": "Trésorier Général",
     "deputy_treasurer": "Trésorier Général adjoint",
-
     "mission_objectives": "Mission et objectifs",
     "awareness_advocacy": "Sensibilisation et plaidoyer",
     "technical_support": "Support technique et expertise",
     "skills_development": "Développement des compétences",
     "gender_equality": "Promotion de l'égalité des genres",
     "economic_development": "Développement économique",
-
     "recognition_process": "Processus de reconnaissance",
     "impact_future": "Impact potentiel et perspective d'avenir",
     "heritage_preservation": "Préservation du patrimoine",
     "practice_modernization": "Modernisation des pratiques",
     "professional_development": "Développement professionnel",
-
     "strengths": "Particularités et points forts",
     "challenges_opportunities": "Défis et opportunités",
     "challenges": "Défis",
@@ -147,7 +140,8 @@
     "legal_duration": "Durée légale",
     "level": "Niveau",
     "code": "Code",
-    "title": "Intitulé","retention_charter": "Charte de conservation",
+    "title": "Intitulé",
+    "retention_charter": "Charte de conservation",
     "document_retention_charter": "Charte de conservation des documents",
     "table_of_contents": "Table des matières",
     "classes": "Classes",
@@ -182,33 +176,28 @@
     "search_term": "Terme de recherche",
     "type": "Typologie",
     "all_types": "Tous les types",
-
     "date_start": "Date début",
     "date_end": "Date fin",
     "search": "Rechercher",
     "search_results": "Résultats de recherche",
     "results_found": "trouvés",
-    "table": {
-        "type": "Type",
-        "name": "Nom",
-        "description": "Description",
-        "country": "Pays",
-        "date": "Date",
-        "actions": "Actions"},
+    "table.type": "Type",
+    "table.name": "Nom",
+    "table.description": "Description",
+    "table.country": "Pays",
+    "table.date": "Date",
+    "table.actions": "Actions",
     "validation": "Validation",
     "validated_by": "Validé par",
     "validation_date": "Date de validation",
-
     "classification_name": "Nom de la classification",
     "no_classifications": "Aucune classification",
     "associated_duls": "Duls associés",
     "duration": "Durée",
     "duration_years": "ans",
     "sort": "Sort",
-
-    "status": {
-        "active": "Active",
-        "inactive": "Inactive"},
+    "status.active": "Active",
+    "status.inactive": "Inactive",
     "associated_articles": "Articles associés",
     "article_name": "Nom de l'article",
     "no_articles": "Aucun article associé",
@@ -217,33 +206,23 @@
     "action": "Action",
     "view": "Consulter",
     "no_files": "Aucun fichier joint",
-
     "document_generated": "Document généré le",
     "conclusion_text": "L'ONG Archivistes Leaders International se présente comme une organisation professionnelle et structurée, avec des objectifs clairs et une vision ambitieuse pour le secteur des archives en Côte d'Ivoire. Sa reconnaissance officielle par les autorités ivoiriennes et sa structure de gouvernance solide lui donnent les bases nécessaires pour accomplir sa mission. Son approche multidimensionnelle, combinant sensibilisation, formation, support technique et promotion de l'entrepreneuriat, ainsi que son engagement pour l'égalité des genres, en fait un acteur potentiellement important dans la modernisation et la professionnalisation du secteur des archives en Côte d'Ivoire et potentiellement dans la région.",
-
-    "statistics": {
-        "countries": "Pays",
-        "classifications": "Classifications",
-        "rules": "Règles",
-        "references": "Références",
-        "articles": "Articles",
-        "typologies": "Typologies"
-    },
-
+    "statistics.countries": "Pays",
+    "statistics.classifications": "Classifications",
+    "statistics.rules": "Règles",
+    "statistics.references": "Références",
+    "statistics.articles": "Articles",
+    "statistics.typologies": "Typologies",
     "search_button": "Rechercher",
     "advanced_search": "Avancée",
-
     "see_details": "Voir",
-
     "also_see": "Voir aussi",
     "date_unavailable": "Date non disponible",
     "by": "par",
-    "pagination": {
-        "previous": "Précédent",
-        "next": "Suivant",
-        "pages": "Navigation des pages"
-    },
-
+    "pagination.previous": "Précédent",
+    "pagination.next": "Suivant",
+    "pagination.pages": "Navigation des pages",
     "download_pdf": "Télécharger en PDF",
     "download_excel": "Télécharger en Excel"
 }

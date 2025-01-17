@@ -1,4 +1,3 @@
-
 {
     "Rechercher": "Search",
     "Team": "Team",
@@ -38,30 +37,21 @@
     "all_countries": "All countries",
     "retention_period": "Retention period",
     "all_durations": "All durations",
-
-    "statistics": {
-        "countries": "Countries",
-        "classifications": "Classifications",
-        "rules": "Rules",
-        "references": "References",
-        "articles": "Articles",
-        "typologies": "Typologies"
-    },
-
+    "statistics.countries": "Countries",
+    "statistics.classifications": "Classifications",
+    "statistics.rules": "Rules",
+    "statistics.references": "References",
+    "statistics.articles": "Articles",
+    "statistics.typologies": "Typologies",
     "search_button": "Search",
     "advanced_search": "Advanced",
-
     "see_details": "View",
-
     "also_see": "See also",
     "date_unavailable": "Date unavailable",
     "by": "by",
-    "pagination": {
-        "previous": "Previous",
-        "next": "Next",
-        "pages": "Page navigation"
-    },
-
+    "pagination.previous": "Previous",
+    "pagination.next": "Next",
+    "pagination.pages": "Page navigation",
     "sort_by": "Sort by",
     "show_all": "Show all",
     "typologies": "Typologies",
@@ -80,10 +70,8 @@
     "view_all_classifications": "view all classifications",
     "who_we_are": "Who We Are?",
     "who_we_are_description": "Archivists Leaders International NGO is a foreign association officially recognized by the government of Côte d'Ivoire, as evidenced by ministerial order No. 0588/MIS/DGAT/DAG/SDVA issued by the Ministry of Interior and Security. This official recognition, granted on January 8, 2023, gives the organization legal status to operate in Ivorian territory, in accordance with Law No. 60-315 of September 21, 1960 relating to associations.",
-
     "location_presence": "Location and Presence",
     "location_description": "The organization's headquarters is strategically located in Abidjan, the economic capital of Côte d'Ivoire, specifically in the upscale neighborhood of Cocody, in Angré 8th Tranche, Cité les Arcades (08 B.P 702 Abidjan 08). This positioning in a dynamic district of Abidjan demonstrates the organization's ambition to be at the heart of action and easily accessible to its partners and beneficiaries.",
-
     "organizational_structure": "Organizational Structure",
     "organizational_description": "The NGO has a clear and well-defined governance structure, with an executive board composed of six members holding key positions:",
     "presidency": "Presidency",
@@ -95,20 +83,17 @@
     "treasury": "Treasury",
     "treasurer": "General Treasurer",
     "deputy_treasurer": "Deputy General Treasurer",
-
     "mission_objectives": "Mission and Objectives",
     "awareness_advocacy": "Awareness and Advocacy",
     "technical_support": "Technical Support and Expertise",
     "skills_development": "Skills Development",
     "gender_equality": "Gender Equality Promotion",
     "economic_development": "Economic Development",
-
     "recognition_process": "Recognition Process",
     "impact_future": "Potential Impact and Future Perspective",
     "heritage_preservation": "Heritage Preservation",
     "practice_modernization": "Practice Modernization",
     "professional_development": "Professional Development",
-
     "strengths": "Particularities and Strengths",
     "challenges_opportunities": "Challenges and Opportunities",
     "challenges": "Challenges",
@@ -193,7 +178,6 @@
     "articles": "Articles",
     "no_rules": "No rules defined",
     "category": "Category",
-
     "associated_articles": "Associated Articles",
     "article_name": "Article Name",
     "no_articles": "No associated articles",
@@ -202,22 +186,17 @@
     "action": "Action",
     "view": "View",
     "no_files": "No attached files",
-
     "validation": "Validation",
     "validated_by": "Validated by",
     "validation_date": "Validation date",
-
     "classification_name": "Classification name",
     "no_classifications": "No classifications",
     "associated_duls": "Associated Duls",
     "duration": "Duration",
     "duration_years": "years",
-
     "sort": "Sort",
-
-    "status": {
-        "active": "Active",
-        "inactive": "Inactive"},
+    "status.active": "Active",
+    "status.inactive": "Inactive",
     "document_generated": "Document generated on",
     "typology_name": "Typology Name",
     "no_typologies": "No associated typologies",
@@ -233,29 +212,22 @@
     "references": "References",
     "download_pdf": "Download PDF",
     "download_excel": "Download Excel",
-        "search_term": "Search term",
-
-        "type": "Type",
-        "all_types": "All types",
-
-        "date_start": "Start date",
-        "date_end": "End date",
-        "search": "Search",
-        "search_results": "Search results",
-        "results_found": "found",
-        "table": {
-            "type": "Type",
-            "name": "Name",
-            "description": "Description",
-            "country": "Country",
-            "date": "Date",
-            "actions": "Actions"
-        },
-        "badges": {
-            "rule": "Rule",
-            "class": "Classification",
-            "reference": "Reference"
-        },
-       "not_available": "N/A"
-
+    "search_term": "Search term",
+    "type": "Type",
+    "all_types": "All types",
+    "date_start": "Start date",
+    "date_end": "End date",
+    "search": "Search",
+    "search_results": "Search results",
+    "results_found": "found",
+    "table.type": "Type",
+    "table.name": "Name",
+    "table.description": "Description",
+    "table.country": "Country",
+    "table.date": "Date",
+    "table.actions": "Actions",
+    "badges.rule": "Rule",
+    "badges.class": "Classification",
+    "badges.reference": "Reference",
+    "not_available": "N/A"
 }
