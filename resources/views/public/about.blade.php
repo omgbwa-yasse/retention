@@ -1,196 +1,195 @@
-
 @extends('index')
 
 @section('content')
     <div class="container mt-4">
-        <h1 class="mb-4">Qui sommes-nous ?</h1>
+        <h1 class="mb-4">{{ __('who_we_are') }}</h1>
         <div class="card mb-4">
             <div class="card-body">
-                <p>L'ONG Archivistes Leaders International est une association étrangère officiellement reconnue par le gouvernement de la Côte d'Ivoire, comme en témoigne l'arrêté ministériel N°0588/MIS/DGAT/DAG/SDVA émis par le Ministère de l'Intérieur et de la Sécurité. Cette reconnaissance officielle, accordée le 8 janvier 2023, confère à l'organisation un statut légal pour opérer sur le territoire ivoirien, conformément à la loi N°60-315 du 21 septembre 1960 relative aux associations.</p>
+                <p>{{ __('who_we_are_description') }}</p>
             </div>
         </div>
 
-        <h2 class="mb-4">Localisation et présence</h2>
+        <h2 class="mb-4">{{ __('location_presence') }}</h2>
         <div class="card mb-4">
             <div class="card-body">
-                <p>Le siège social de l'organisation est stratégiquement situé à Abidjan, la capitale économique de la Côte d'Ivoire, plus précisément dans le quartier huppé de Cocody, à Angré 8ème Tranche, Cité les Arcades (08 B.P 702 Abidjan 08). Ce positionnement dans un quartier dynamique d'Abidjan témoigne de l'ambition de l'organisation d'être au cœur de l'action et facilement accessible pour ses partenaires et bénéficiaires.</p>
+                <p>{{ __('location_description') }}</p>
             </div>
         </div>
 
-        <h2 class="mb-4">Structure organisationnelle</h2>
+        <h2 class="mb-4">{{ __('organizational_structure') }}</h2>
         <div class="card mb-4">
             <div class="card-body">
-                <p>L'ONG dispose d'une structure de gouvernance claire et bien définie, avec un bureau exécutif composé de six membres occupant des postes clés :</p>
+                <p>{{ __('organizational_description') }}</p>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                        <strong>Présidence :</strong>
+                        <strong>{{ __('presidency') }}:</strong>
                         <ul>
-                            <li>Président : M. KAPET WANDAH JEAN-MARIE</li>
-                            <li>Vice-présidente : Mme OBE NTOUTOUME ESTELLE épouse ZOGHESSIE</li>
+                            <li>{{ __('president') }}: M. KAPET WANDAH JEAN-MARIE</li>
+                            <li>{{ __('vice_president') }}: Mme OBE NTOUTOUME ESTELLE épouse ZOGHESSIE</li>
                         </ul>
                     </li>
                     <li class="list-group-item">
-                        <strong>Secrétariat :</strong>
+                        <strong>{{ __('secretariat') }}:</strong>
                         <ul>
-                            <li>Secrétaire Général : M. AKA KOFFI AYMAR</li>
-                            <li>Secrétaire Général adjoint : M. OMGWA YASSE EMMANUEL FABRICE</li>
+                            <li>{{ __('secretary_general') }}: M. AKA KOFFI AYMAR</li>
+                            <li>{{ __('deputy_secretary') }}: M. OMGWA YASSE EMMANUEL FABRICE</li>
                         </ul>
                     </li>
                     <li class="list-group-item">
-                        <strong>Trésorerie :</strong>
+                        <strong>{{ __('treasury') }}:</strong>
                         <ul>
-                            <li>Trésorier Général : M. N'DA GUY LANDRY</li>
-                            <li>Trésorier Général adjoint : M. AGLIKPO HILDEBERT RANDOLPHE</li>
+                            <li>{{ __('treasurer') }}: M. N'DA GUY LANDRY</li>
+                            <li>{{ __('deputy_treasurer') }}: M. AGLIKPO HILDEBERT RANDOLPHE</li>
                         </ul>
                     </li>
                 </ul>
-                <p>Cette structure bicéphale à chaque niveau de responsabilité (avec un titulaire et un adjoint) permet d'assurer une continuité dans la gestion et la prise de décision.</p>
+                <p>{{ __('dual_structure_note') }}</p>
             </div>
         </div>
 
-        <h2 class="mb-4">Mission et objectifs</h2>
+        <h2 class="mb-4">{{ __('mission_objectives') }}</h2>
         <div class="card mb-4">
             <div class="card-body">
-                <p>L'ONG Archivistes Leaders International s'est fixé plusieurs objectifs ambitieux qui s'articulent autour de la promotion et de la préservation des archives. Ces objectifs peuvent être regroupés en plusieurs axes stratégiques :</p>
+                <p>{{ __('mission_objectives_intro') }}</p>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                        <strong>Sensibilisation et plaidoyer</strong>
-                        <p>L'organisation s'engage à sensibiliser différentes parties prenantes sur l'importance des archives, notamment :</p>
+                        <strong>{{ __('awareness_advocacy') }}</strong>
+                        <p>{{ __('awareness_advocacy_description') }}</p>
                         <ul>
-                            <li>Les gouvernants et décideurs politiques</li>
-                            <li>Les communautés locales</li>
-                            <li>Les entreprises</li>
-                            <li>Les ménages</li>
+                            <li>{{ __('stakeholder_govts') }}</li>
+                            <li>{{ __('stakeholder_communities') }}</li>
+                            <li>{{ __('stakeholder_businesses') }}</li>
+                            <li>{{ __('stakeholder_households') }}</li>
                         </ul>
-                        <p>Cette approche multi-acteurs démontre une compréhension de la nécessité d'impliquer l'ensemble de la société dans la préservation du patrimoine documentaire.</p>
+                        <p>{{ __('multi_stakeholder_approach') }}</p>
                     </li>
                     <li class="list-group-item">
-                        <strong>Support technique et expertise</strong>
-                        <p>L'ONG propose son expertise dans :</p>
+                        <strong>{{ __('technical_support') }}</strong>
+                        <p>{{ __('technical_support_description') }}</p>
                         <ul>
-                            <li>La définition de projets d'archivage</li>
-                            <li>Le pilotage et l'accompagnement des initiatives d'archivage</li>
-                            <li>La protection du patrimoine documentaire</li>
+                            <li>{{ __('archiving_project_definition') }}</li>
+                            <li>{{ __('archiving_initiative_support') }}</li>
+                            <li>{{ __('documentary_heritage_protection') }}</li>
                         </ul>
-                        <p>Ces services techniques permettent d'assurer une gestion professionnelle et pérenne des archives.</p>
+                        <p>{{ __('technical_services_note') }}</p>
                     </li>
                     <li class="list-group-item">
-                        <strong>Développement des compétences</strong>
-                        <p>Un accent particulier est mis sur le renforcement des capacités des professionnels du secteur des archives, démontrant l'engagement de l'organisation dans la professionnalisation du secteur.</p>
+                        <strong>{{ __('skills_development') }}</strong>
+                        <p>{{ __('skills_development_description') }}</p>
                     </li>
                     <li class="list-group-item">
-                        <strong>Promotion de l'égalité des genres</strong>
-                        <p>L'ONG se distingue par son engagement spécifique à valoriser la place des femmes dans le métier d'archiviste, contribuant ainsi à la promotion de l'égalité des genres dans ce secteur professionnel.</p>
+                        <strong>{{ __('gender_equality') }}</strong>
+                        <p>{{ __('gender_equality_description') }}</p>
                     </li>
                     <li class="list-group-item">
-                        <strong>Développement économique</strong>
-                        <p>L'organisation encourage et soutient les initiatives entrepreneuriales dans le domaine des archives, reconnaissant ainsi le potentiel économique de ce secteur et contribuant à sa modernisation.</p>
+                        <strong>{{ __('economic_development') }}</strong>
+                        <p>{{ __('economic_development_description') }}</p>
                     </li>
                 </ul>
             </div>
         </div>
 
-        <h2 class="mb-4">Processus de reconnaissance</h2>
+        <h2 class="mb-4">{{ __('recognition_process') }}</h2>
         <div class="card mb-4">
             <div class="card-body">
-                <p>La reconnaissance officielle de l'ONG a suivi un processus rigoureux, incluant :</p>
+                <p>{{ __('recognition_process_description') }}</p>
                 <ul>
-                    <li>Une enquête de moralité (rapport n°5698/MIS/DRG du 01 janvier 2022)</li>
-                    <li>L'examen du dossier de constitution soumis le 20 janvier 2022</li>
-                    <li>L'approbation finale par le Ministre de l'Intérieur et de la Sécurité</li>
+                    <li>{{ __('moral_investigation') }}</li>
+                    <li>{{ __('file_examination') }}</li>
+                    <li>{{ __('final_approval') }}</li>
                 </ul>
             </div>
         </div>
 
-        <h2 class="mb-4">Impact potentiel et perspective d'avenir</h2>
+        <h2 class="mb-4">{{ __('impact_future') }}</h2>
         <div class="card mb-4">
             <div class="card-body">
-                <p>L'ONG Archivistes Leaders International se positionne comme un acteur majeur dans le domaine de la gestion et de la préservation des archives en Côte d'Ivoire, avec un potentiel d'impact significatif sur :</p>
+                <p>{{ __('impact_future_intro') }}</p>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                        <strong>La préservation du patrimoine</strong>
+                        <strong>{{ __('heritage_preservation') }}</strong>
                         <ul>
-                            <li>Protection et conservation des documents historiques</li>
-                            <li>Maintien de la mémoire collective</li>
-                            <li>Sauvegarde du patrimoine documentaire national</li>
+                            <li>{{ __('historical_document_protection') }}</li>
+                            <li>{{ __('collective_memory_maintenance') }}</li>
+                            <li>{{ __('national_heritage_preservation') }}</li>
                         </ul>
                     </li>
                     <li class="list-group-item">
-                        <strong>La modernisation des pratiques</strong>
+                        <strong>{{ __('practice_modernization') }}</strong>
                         <ul>
-                            <li>Introduction de nouvelles méthodes d'archivage</li>
-                            <li>Formation aux technologies modernes</li>
-                            <li>Standardisation des pratiques</li>
+                            <li>{{ __('new_archiving_methods') }}</li>
+                            <li>{{ __('modern_technology_training') }}</li>
+                            <li>{{ __('practice_standardization') }}</li>
                         </ul>
                     </li>
                     <li class="list-group-item">
-                        <strong>Le développement professionnel</strong>
+                        <strong>{{ __('professional_development') }}</strong>
                         <ul>
-                            <li>Formation continue des archivistes</li>
-                            <li>Création d'opportunités professionnelles</li>
-                            <li>Promotion de l'excellence dans le métier</li>
+                            <li>{{ __('continuous_training') }}</li>
+                            <li>{{ __('professional_opportunities') }}</li>
+                            <li>{{ __('professional_excellence') }}</li>
                         </ul>
                     </li>
                     <li class="list-group-item">
-                        <strong>L'égalité des genres</strong>
+                        <strong>{{ __('gender_equality') }}</strong>
                         <ul>
-                            <li>Encouragement des femmes dans le secteur</li>
-                            <li>Création de modèles féminins</li>
-                            <li>Lutte contre les stéréotypes de genre</li>
+                            <li>{{ __('women_sector_encouragement') }}</li>
+                            <li>{{ __('female_role_models') }}</li>
+                            <li>{{ __('gender_stereotypes_fight') }}</li>
                         </ul>
                     </li>
                     <li class="list-group-item">
-                        <strong>L'innovation économique</strong>
+                        <strong>{{ __('economic_innovation') }}</strong>
                         <ul>
-                            <li>Développement de services d'archivage</li>
-                            <li>Création d'entreprises spécialisées</li>
-                            <li>Génération d'emplois dans le secteur</li>
+                            <li>{{ __('archiving_services_development') }}</li>
+                            <li>{{ __('specialized_business_creation') }}</li>
+                            <li>{{ __('sector_job_creation') }}</li>
                         </ul>
                     </li>
                 </ul>
             </div>
         </div>
 
-        <h2 class="mb-4">Particularités et points forts</h2>
+        <h2 class="mb-4">{{ __('strengths') }}</h2>
         <div class="card mb-4">
             <div class="card-body">
-                <p>Plusieurs éléments distinguent cette ONG :</p>
+                <p>{{ __('strengths_intro') }}</p>
                 <ul>
-                    <li>Son approche holistique</li>
-                    <li>Son engagement pour l'égalité des genres</li>
-                    <li>Sa vision entrepreneuriale</li>
-                    <li>Sa structure professionnelle</li>
+                    <li>{{ __('holistic_approach') }}</li>
+                    <li>{{ __('gender_commitment') }}</li>
+                    <li>{{ __('entrepreneurial_vision') }}</li>
+                    <li>{{ __('professional_structure') }}</li>
                 </ul>
             </div>
         </div>
 
-        <h2 class="mb-4">Défis et opportunités</h2>
+        <h2 class="mb-4">{{ __('challenges_opportunities') }}</h2>
         <div class="card mb-4">
             <div class="card-body">
-                <p>L'ONG fait face à plusieurs défis et opportunités :</p>
-                <h3>Défis :</h3>
+                <p>{{ __('challenges_opportunities_intro') }}</p>
+                <h3>{{ __('challenges') }}:</h3>
                 <ul>
-                    <li>Sensibilisation à l'importance des archives dans un contexte de digitalisation</li>
-                    <li>Modernisation des pratiques d'archivage</li>
-                    <li>Formation continue des professionnels</li>
-                    <li>Accès aux ressources et financement</li>
-                    <li>Coordination avec les institutions existantes</li>
+                    <li>{{ __('challenge_awareness') }}</li>
+                    <li>{{ __('challenge_modernization') }}</li>
+                    <li>{{ __('challenge_training') }}</li>
+                    <li>{{ __('challenge_resources') }}</li>
+                    <li>{{ __('challenge_coordination') }}</li>
                 </ul>
-                <h3>Opportunités :</h3>
+                <h3>{{ __('opportunities') }}:</h3>
                 <ul>
-                    <li>Demande croissante de services d'archivage professionnels</li>
-                    <li>Développement du numérique</li>
-                    <li>Besoin de préservation du patrimoine documentaire</li>
-                    <li>Potentiel de création d'emplois</li>
-                    <li>Collaboration internationale</li>
+                    <li>{{ __('opportunity_demand') }}</li>
+                    <li>{{ __('opportunity_digital') }}</li>
+                    <li>{{ __('opportunity_heritage') }}</li>
+                    <li>{{ __('opportunity_employment') }}</li>
+                    <li>{{ __('opportunity_collaboration') }}</li>
                 </ul>
             </div>
         </div>
 
-        <h2 class="mb-4">Conclusion</h2>
+        <h2 class="mb-4">{{ __('conclusion') }}</h2>
         <div class="card mb-4">
             <div class="card-body">
-                <p>L'ONG Archivistes Leaders International se présente comme une organisation professionnelle et structurée, avec des objectifs clairs et une vision ambitieuse pour le secteur des archives en Côte d'Ivoire. Sa reconnaissance officielle par les autorités ivoiriennes et sa structure de gouvernance solide lui donnent les bases nécessaires pour accomplir sa mission. Son approche multidimensionnelle, combinant sensibilisation, formation, support technique et promotion de l'entrepreneuriat, ainsi que son engagement pour l'égalité des genres, en fait un acteur potentiellement important dans la modernisation et la professionnalisation du secteur des archives en Côte d'Ivoire et potentiellement dans la région.</p>
+                <p>{{ __('conclusion_text') }}</p>
             </div>
         </div>
     </div>

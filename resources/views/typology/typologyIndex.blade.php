@@ -1,5 +1,4 @@
 @extends('index')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <style>
     body {
         background-color: #f8f9fa;
@@ -21,9 +20,6 @@
     }
     .form-control:focus {
         box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
-    }
-    .pagination {
-        justify-content: center;
     }
     .card-footer {
         background-color: transparent;
@@ -100,7 +96,3 @@
         </div>
     </div>
 @endsection
-
-@push('styles')
-
-@endpush

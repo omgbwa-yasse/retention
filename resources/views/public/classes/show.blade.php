@@ -1,54 +1,53 @@
 @extends('index')
 
 @section('content')
-
     <div class="container py-4">
-        <!-- En-tête du document -->
+        <!-- Document header -->
         <div class="card shadow-sm mb-4">
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-start mb-4">
                     <div>
                         <h1 class="display-6 mb-2">{{ $class->name }}</h1>
-                        <p class="text-muted mb-0">Code de référence: {{ $class->code }}</p>
+                        <p class="text-muted mb-0">{{ __('reference_code') }}: {{ $class->code }}</p>
                     </div>
                     <div class="text-end">
                         <div class="text-muted small">
-                            Créé par: {{ $class->user->name }}
+                            {{ __('created_by') }}: {{ $class->user->name }}
                             <br>
-                            Pays: {{ $class->country->name }}
+                            {{ __('country') }}: {{ $class->country->name }}
                         </div>
                     </div>
                 </div>
 
                 <!-- Description -->
                 <div class="mb-4">
-                    <h6 class="text-uppercase text-muted small mb-2">Description</h6>
+                    <h6 class="text-uppercase text-muted small mb-2">{{ __('description') }}</h6>
                     <p class="mb-0">{{ $class->description }}</p>
                 </div>
 
                 <!-- Classification -->
                 <div class="mb-4">
-                    <h6 class="text-uppercase text-muted small mb-2">Classification</h6>
+                    <h6 class="text-uppercase text-muted small mb-2">{{ __('classification') }}</h6>
                     <div class="row">
                         <div class="col-md-6">
                             <table class="table table-sm">
                                 <tr>
-                                    <th class="bg-light w-25">Parent</th>
-                                    <td>{{ $class->parent ? $class->parent->name : 'Non défini' }}</td>
+                                    <th class="bg-light w-25">{{ __('parent') }}</th>
+                                    <td>{{ $class->parent ? $class->parent->name : __('undefined') }}</td>
                                 </tr>
                             </table>
                         </div>
                     </div>
                 </div>
 
-                <!-- Sous-classes -->
+                <!-- Subclasses -->
                 <div class="mb-4">
-                    <h6 class="text-uppercase text-muted small mb-2">Sous-classes</h6>
+                    <h6 class="text-uppercase text-muted small mb-2">{{ __('subclasses') }}</h6>
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered">
                             <thead class="table-light">
                             <tr>
-                                <th>Nom</th>
+                                <th>{{ __('name') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -58,7 +57,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td class="text-muted">Aucune sous-classe enregistrée</td>
+                                    <td class="text-muted">{{ __('no_subclasses') }}</td>
                                 </tr>
                             @endforelse
                             </tbody>
@@ -66,17 +65,17 @@
                     </div>
                 </div>
 
-                <!-- Règles -->
+                <!-- Rules -->
                 <div class="mb-4">
-                    <h6 class="text-uppercase text-muted small mb-2">Règles applicables</h6>
+                    <h6 class="text-uppercase text-muted small mb-2">{{ __('applicable_rules') }}</h6>
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered">
                             <thead class="table-light">
                             <tr>
-                                <th>Règle</th>
-                                <th>Duls</th>
-                                <th>Trigger</th>
-                                <th>Articles</th>
+                                <th>{{ __('rule') }}</th>
+                                <th>{{ __('duls') }}</th>
+                                <th>{{ __('trigger') }}</th>
+                                <th>{{ __('articles') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -93,7 +92,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="text-muted">Aucune règle définie</td>
+                                    <td colspan="4" class="text-muted">{{ __('no_rules') }}</td>
                                 </tr>
                             @endforelse
                             </tbody>
@@ -103,12 +102,12 @@
 
                 <!-- Typologies -->
                 <div>
-                    <h6 class="text-uppercase text-muted small mb-2">Typologies</h6>
+                    <h6 class="text-uppercase text-muted small mb-2">{{ __('typologies') }}</h6>
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered">
                             <thead class="table-light">
                             <tr>
-                                <th>Nom de la typologie</th>
+                                <th>{{ __('typology_name') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -118,7 +117,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td class="text-muted">Aucune typologie associée</td>
+                                    <td class="text-muted">{{ __('no_typologies') }}</td>
                                 </tr>
                             @endforelse
                             </tbody>
@@ -127,11 +126,11 @@
                 </div>
             </div>
 
-            <!-- Pied de page du document -->
+            <!-- Document footer -->
             <div class="card-footer bg-light text-muted small p-3">
                 <div class="d-flex justify-content-between">
-                    <span>Document généré le {{ date('d/m/Y') }}</span>
-                    <span>Référence: {{ $class->code }}</span>
+                    <span>{{ __('generated_on') }} {{ date('d/m/Y') }}</span>
+                    <span>{{ __('reference') }}: {{ $class->code }}</span>
                 </div>
             </div>
         </div>
@@ -147,7 +146,18 @@
         .badge {
             font-weight: normal;
         }
+        @if(app()->getLocale() === 'ar')
+        .container {
+            direction: rtl;
+            text-align: right;
+        }
+        .text-end {
+            text-align: left !important;
+        }
+        .me-1 {
+            margin-left: 0.25rem !important;
+            margin-right: 0 !important;
+        }
+        @endif
     </style>
 @endsection
-
-

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Charte de conservation - {{ $classification->code }}</title>
+    <title>{{ __('retention_charter') }} - {{ $classification->code }}</title>
     <style>
         body {
             font-family: DejaVu Sans, sans-serif;
@@ -63,17 +63,25 @@
         .page-number:before {
             content: counter(page);
         }
+        @if(app()->getLocale() === 'ar')
+        body {
+            direction: rtl;
+        }
+        .title, .subtitle, th, td {
+            text-align: right;
+        }
+        @endif
     </style>
 </head>
 <body>
 <div class="header">
     <div class="title">{{ $classification->code }} - {{ $classification->name }}</div>
-    <div class="subtitle">Charte de conservation des documents</div>
+    <div class="subtitle">{{ __('document_retention_charter') }}</div>
 </div>
 
-<!-- Table des matières -->
+<!-- Table of Contents -->
 <div style="page-break-after: always;">
-    <h2>Table des matières</h2>
+    <h2>{{ __('table_of_contents') }}</h2>
     <ul>
         @foreach($classification->childrenRecursive as $class)
             <li>{{ $class->code }} - {{ $class->name }}</li>
@@ -81,16 +89,16 @@
     </ul>
 </div>
 
-<h2>Classes</h2>
+<h2>{{ __('classes') }}</h2>
 <table>
     <thead>
     <tr>
-        <th>Cote</th>
-        <th>Intitulé</th>
-        <th>Typologies</th>
-        <th>Durée légale Délai</th>
-        <th>Durée légale Déclencheur</th>
-        <th>Références</th>
+        <th>{{ __('code') }}</th>
+        <th>{{ __('title') }}</th>
+        <th>{{ __('typologies') }}</th>
+        <th>{{ __('legal_duration_delay') }}</th>
+        <th>{{ __('legal_duration_trigger') }}</th>
+        <th>{{ __('references') }}</th>
     </tr>
     </thead>
     <tbody>
@@ -130,53 +138,9 @@
             <td>
                 @if ($class->rules)
                     @foreach ($class->rules as $rule)
-                        @if ($rule->duas)
-                            @foreach ($rule->duas as $dua)
-                                {{ $dua->duration }}<br>
-                            @endforeach
-                        @endif
-                    @endforeach
-                @endif
-            </td>
-            <td>
-                @if ($class->rules)
-                    @foreach ($class->rules as $rule)
-                        @if ($rule->duas)
-                            @foreach ($rule->duas as $dua)
-                                {{ $dua->trigger->name }}<br>
-                            @endforeach
-                        @endif
-                    @endforeach
-                @endif
-            </td>
-            <td>
-                @if ($class->rules)
-                    @foreach ($class->rules as $rule)
-                        @if ($rule->duls)
-                            @foreach ($rule->duls as $dul)
-                                {{ $dul->duration }}<br>
-                            @endforeach
-                        @endif
-                    @endforeach
-                @endif
-            </td>
-            <td>
-                @if ($class->rules)
-                    @foreach ($class->rules as $rule)
-                        @if ($rule->duls)
-                            @foreach ($rule->duls as $dul)
-                                {{ $dul->trigger->name }}<br>
-                            @endforeach
-                        @endif
-                    @endforeach
-                @endif
-            </td>
-            <td>
-                @if ($class->rules)
-                    @foreach ($class->rules as $rule)
                         @if ($rule->articles)
                             @foreach ($rule->articles as $article)
-                                {{ $article->name }} -<br>
+                                {{ $article->name }}<br>
                             @endforeach
                         @endif
                     @endforeach
@@ -185,16 +149,12 @@
         </tr>
     @endforeach
     </tbody>
-
-
 </table>
 
-
-
 <div class="footer">
-    Page <span class="page-number"></span>
+    {{ __('page') }} <span class="page-number"></span>
     <br>
-    Généré le {{ now()->format('d/m/Y à H:i') }}
+    {{ __('generated_on') }} {{ now()->format('d/m/Y') }} {{ __('at') }} {{ now()->format('H:i') }}
 </div>
 </body>
 </html>
