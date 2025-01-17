@@ -86,13 +86,6 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="dul_description" class="form-label">Description</label>
-                                        <textarea class="form-control @error('dul_description') is-invalid @enderror" id="dul_description" rows="3" name="dul_description" required>{{ old('dul_description', $rule->dul_description) }}</textarea>
-                                        @error('dul_description')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
                                 </div>
                             </div>
 
