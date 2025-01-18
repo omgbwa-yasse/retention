@@ -1,72 +1,334 @@
-@extends('index')
 
+@extends('index')<style>
+    :root {
+        --transition-duration: 0.2s;
+    }
+
+    .charter-content {
+        min-height: 200px;
+    }
+
+    .card {
+        border: 1px solid rgba(0,0,0,0.1);
+        transition: box-shadow var(--transition-duration) ease-in-out;
+    }
+
+    .card:hover {
+        box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.1);
+    }
+
+    .search-wrapper {
+        transition: box-shadow var(--transition-duration) ease-in-out;
+    }
+
+    .search-wrapper:focus-within {
+        box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1);
+    }
+
+    .btn-group .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        transition: all var(--transition-duration) ease-in-out;
+    }
+
+    .btn-light:hover {
+        background-color: #f8f9fa;
+    }
+
+    .badge {
+        font-weight: 500;
+    }
+
+    .transition-shadow {
+        transition: box-shadow var(--transition-duration) ease-in-out;
+    }
+
+    @if(app()->getLocale() === 'ar')
+.me-1, .me-2 {
+        margin-left: 0.25rem !important;
+        margin-right: 0 !important;
+    }
+
+    .ms-1, .ms-2 {
+        margin-right: 0.25rem !important;
+        margin-left: 0 !important;
+    }
+
+    .rounded-start {
+        border-radius: 0 0.375rem 0.375rem 0 !important;
+    }
+
+    .rounded-end {
+        border-radius: 0.375rem 0 0 0.375rem !important;
+    }
+    @endif
+</style> <style>
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .animate-spin {
+        animation: spin 1s linear infinite;
+    }
+
+    /* Amélioration de l'accessibilité */
+    .btn:focus,
+    .btn:focus-visible {
+        outline: 2px solid #0d6efd;
+        outline-offset: 2px;
+    }
+
+    /* Support écrans haute résolution */
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+        .card {
+            border-width: 0.5px;
+        }
+    }
+
+    /* Support mode sombre du système */
+    @media (prefers-color-scheme: dark) {
+        .card {
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .btn-light {
+            background-color: rgba(255,255,255,0.1);
+            border-color: transparent;
+        }
+
+        .btn-light:hover {
+            background-color: rgba(255,255,255,0.15);
+        }
+    }
+
+    /* Optimisations pour les appareils tactiles */
+    @media (hover: none) {
+        .card:hover {
+            box-shadow: none;
+        }
+
+        .btn-light:hover {
+            background-color: initial;
+        }
+    }
+</style>
 @section('content')
-    <div class="container my-5">
-        @if($domaines->isEmpty())
-            <div class="alert alert-warning" role="alert">
-                {{ __('no_domains') }}
-            </div>
-        @else
-            @foreach($domaines as $domaine)
-                <div class="card mb-4 shadow-sm">
-                    <div class="card-header bg-gray text-primary">
-                        <h2 class="mb-0">
-                            <b>{{ $domaine->code }}</b> - {{ $domaine->name }} - {{ $country->name ?? '' }}
-                        </h2>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">{{ $domaine->description }}</p>
-                        <div class="d-flex flex-wrap gap-2 mb-3">
-                            <button class="btn btn-outline-danger btn-sm"
-                                    title="{{ __('title_print') }}"
-                                    onclick="window.location.href='{{ route('charter.print', $domaine->id) }}'">
-                                <i class="bi bi-printer me-1"></i> {{ __('print') }}
-                            </button>
-                            <button class="btn btn-outline-success btn-sm"
-                                    title="{{ __('title_export') }}"
-                                    onclick="window.location.href='{{ route('charter.export', $domaine->id) }}'">
-                                <i class="bi bi-download me-1"></i> {{ __('export') }}
-                            </button>
-                            <button class="btn btn-outline-secondary btn-sm"
-                                    title="{{ __('title_share_forum') }}"
-                                    onclick="window.location.href='{{ route('subject.create', ['class_id' => $domaine->id]) }}'">
-                                <i class="bi bi-share me-1"></i> {{ __('share_forum') }}
-                            </button>
-                            <button class="btn btn-outline-info btn-sm"
-                                    title="{{ __('title_comments') }}"
-                                    onclick="window.location.href='{{ route('subject.index') }}'">
-                                <i class="bi bi-chat-dots me-1"></i> {{ __('comments') }}
-                                <span class="badge bg-info text-white">{{ $domaine->subjects->count() }}</span>
-                            </button>
-                        </div>
-                        @include('charter.classes', ['classes' => $domaine->children])
+    <div class="container-fluid py-4">
+        {{-- Enhanced Search Bar --}}
+        <div class="row mb-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="search-wrapper position-relative">
+                    <div class="input-group border rounded-3 bg-white shadow-sm hover:shadow-md transition-shadow">
+                    <span class="input-group-text border-0 bg-transparent">
+                        <i class="bi bi-search text-gray-500"></i>
+                    </span>
+                        <input type="text"
+                               id="searchInput"
+                               class="form-control border-0 shadow-none py-2"
+                               placeholder="{{ __('search_placeholder') }}"
+                               aria-label="{{ __('search_placeholder') }}">
+                        <button class="btn btn-link text-secondary border-0"
+                                type="button"
+                                id="clearSearch"
+                                aria-label="{{ __('clear_search') }}">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
                     </div>
                 </div>
-            @endforeach
-        @endif
+            </div>
+        </div>
+
+        {{-- Main Content --}}
+        <div class="charter-content">
+            @if($domaines->isEmpty())
+                <div class="alert alert-warning py-3 rounded-3 shadow-sm" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>
+                        <span>{{ __('no_domains') }}</span>
+                    </div>
+                </div>
+            @else
+                @foreach($domaines as $domaine)
+                    <div class="card mb-4 rounded-3 shadow-sm hover:shadow transition-shadow">
+                        <div class="card-header bg-white py-3 px-4 border-bottom">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h2 class="h5 mb-0 d-flex align-items-center">
+                                        <span class="badge bg-primary rounded-pill me-2">{{ $domaine->code }}</span>
+                                        <span class="text-dark">{{ $domaine->name }}</span>
+                                        @if(isset($country))
+                                            <span class="text-muted ms-2">- {{ $country->name }}</span>
+                                        @endif
+                                    </h2>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="action-buttons d-flex gap-2">
+                                        <button type="button"
+                                                class="btn btn-light btn-sm rounded-pill shadow-sm hover:shadow-md transition-shadow"
+                                                onclick="toggleDescription({{ $domaine->id }})"
+                                                aria-expanded="false"
+                                                aria-controls="description-{{ $domaine->id }}">
+                                            <i class="bi bi-info-circle"></i>
+                                            <span class="ms-1 d-none d-sm-inline">{{ __('Info') }}</span>
+                                        </button>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ route('charter.print', $domaine->id) }}"
+                                               class="btn btn-light rounded-start shadow-sm hover:shadow-md transition-shadow"
+                                               title="{{ __('Print') }}">
+                                                <i class="bi bi-printer"></i>
+                                            </a>
+                                            <a href="{{ route('charter.export', $domaine->id) }}"
+                                               class="btn btn-light shadow-sm hover:shadow-md transition-shadow"
+                                               title="{{ __('Export') }}">
+                                                <i class="bi bi-download"></i>
+                                            </a>
+                                            <a href="{{ route('subject.create', ['class_id' => $domaine->id]) }}"
+                                               class="btn btn-light shadow-sm hover:shadow-md transition-shadow"
+                                               title="{{ __('Share') }}">
+                                                <i class="bi bi-share"></i>
+                                            </a>
+                                            <a href="{{ route('subject.index') }}"
+                                               class="btn btn-light rounded-end shadow-sm hover:shadow-md transition-shadow"
+                                               title="{{ __('Subjects') }}">
+                                                <i class="bi bi-chat-dots"></i>
+                                                <span class="badge bg-secondary rounded-pill ms-1">
+                                                {{ $domaine->subjects->count() }}
+                                            </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="collapse" id="description-{{ $domaine->id }}">
+                            <div class="card-body bg-light py-3 px-4 border-bottom">
+                                <p class="mb-0 text-muted">{{ $domaine->description }}</p>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-0">
+                            @include('charter.classes', ['classes' => $domaine->children])
+                        </div>
+                    </div>
+                @endforeach
+            @endif
+        </div>
     </div>
 
-    <style>
-        @if(app()->getLocale() === 'ar')
-    .container {
-            direction: rtl;
-            text-align: right;
-        }
-        .me-1 {
-            margin-left: 0.25rem !important;
-            margin-right: 0 !important;
-        }
-        .bi {
-            margin-left: 0.25rem;
-            margin-right: 0;
-        }
-        .btn .bi {
-            margin-left: 0.25rem;
-            margin-right: 0;
-        }
-        .d-flex {
-            flex-direction: row-reverse;
-        }
-        @endif
-    </style>
+    <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Search functionality
+                const searchInput = document.getElementById('searchInput');
+                const clearButton = document.getElementById('clearSearch');
+
+                function performSearch() {
+                    const searchTerm = searchInput.value.toLowerCase().trim();
+                    document.querySelectorAll('.searchable-row').forEach(row => {
+                        const text = row.textContent.toLowerCase();
+                        const shouldShow = text.includes(searchTerm);
+                        row.style.display = shouldShow ? '' : 'none';
+
+                        // Handle child rows visibility
+                        const childrenRow = row.nextElementSibling;
+                        if (childrenRow && childrenRow.classList.contains('children-row')) {
+                            childrenRow.style.display = shouldShow ? (childrenRow.classList.contains('d-none') ? 'none' : '') : 'none';
+                        }
+                    });
+                }
+
+                searchInput.addEventListener('input', performSearch);
+                clearButton.addEventListener('click', () => {
+                    searchInput.value = '';
+                    searchInput.focus();
+                    performSearch();
+                });
+
+                // Description toggle with Bootstrap collapse
+                window.toggleDescription = function(id) {
+                    const element = document.getElementById(`description-${id}`);
+                    if (element) {
+                        const button = document.querySelector(`[aria-controls="description-${id}"]`);
+                        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+
+                        $(element).collapse('toggle');
+                        button.setAttribute('aria-expanded', !isExpanded);
+                    }
+                };
+
+                // Tree view toggle with animation
+                document.querySelectorAll('.toggle-children').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const classId = this.dataset.classId;
+                        const childrenRow = document.querySelector(`[data-parent="${classId}"]`);
+                        const isExpanded = this.getAttribute('aria-expanded') ==='true';
+
+                        this.classList.toggle('expanded');
+                        this.setAttribute('aria-expanded', !isExpanded);
+                        childrenRow.classList.toggle('d-none');
+
+                        // Animate icon rotation
+                        const icon = this.querySelector('.bi-chevron-right');
+                        icon.style.transform = !isExpanded ? 'rotate(90deg)' : '';
+
+                        // If row is being expanded and is currently hidden due to search
+                        // make sure it remains hidden
+                        if (!isExpanded && searchInput.value) {
+                            const searchTerm = searchInput.value.toLowerCase().trim();
+                            const rowText = childrenRow.textContent.toLowerCase();
+                            if (!rowText.includes(searchTerm)) {
+                                childrenRow.style.display = 'none';
+                            }
+                        }
+                    });
+                });
+
+                // Handle keyboard navigation
+                document.addEventListener('keydown', function(event) {
+                    // Clear search on Escape
+                    if (event.key === 'Escape' && document.activeElement === searchInput) {
+                        searchInput.value = '';
+                        performSearch();
+                    }
+
+                    // Focus search on Ctrl/Cmd + F
+                    if ((event.ctrlKey || event.metaKey) && event.key === 'f') {
+                        event.preventDefault();
+                        searchInput.focus();
+                    }
+                });
+
+                // Initialize tooltips
+                const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+                tooltipTriggerList.forEach(function(tooltipTriggerEl) {
+                    new bootstrap.Tooltip(tooltipTriggerEl, {
+                        delay: { show: 500, hide: 100 }
+                    });
+                });
+
+                // Add loading states to buttons
+                document.querySelectorAll('a.btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const icon = this.querySelector('i');
+                        const originalClass = icon.className;
+                        icon.className = 'bi bi-hourglass-split animate-spin';
+
+                        // Restore original icon if navigation takes too long
+                        setTimeout(() => {
+                            if (document.body.contains(icon)) {
+                                icon.className = originalClass;
+                            }
+                        }, 5000);
+                    });
+                });
+            });
+        </script>
+
 @endsection
