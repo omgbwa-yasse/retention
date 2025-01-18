@@ -1,6 +1,5 @@
 
-@extends('index')
-<style>
+@extends('index')<style>
     :root {
         --transition-duration: 0.2s;
     }
@@ -65,35 +64,7 @@
         border-radius: 0.375rem 0 0 0.375rem !important;
     }
     @endif
-</style>
-<style>
-    .search-highlight {
-        background-color: #fff3cd;
-        padding: 0.1em 0.2em;
-        border-radius: 0.2em;
-        margin: 0 -0.2em;
-        transition: background-color 0.2s ease-in-out;
-        box-decoration-break: clone;
-        -webkit-box-decoration-break: clone;
-    }
-
-    @media (prefers-color-scheme: dark) {
-        .search-highlight {
-            background-color: #665e00;
-            color: #fff;
-        }
-    }
-
-    #searchCount {
-        font-size: 0.875rem;
-        padding: 0.25rem 0.5rem;
-        background-color: rgba(0, 0, 0, 0.05);
-        border-radius: 0.25rem;
-        z-index: 1000;
-    }
-
-</style>
-<style>
+</style> <style>
     @keyframes spin {
         from {
             transform: rotate(0deg);
@@ -147,6 +118,34 @@
             background-color: initial;
         }
     }
+</style>
+<style>
+    .search-highlight {
+        background-color: #fff3cd;
+        padding: 0.1em 0.2em;
+        border-radius: 0.2em;
+        margin: 0 -0.2em;
+        transition: background-color 0.2s ease-in-out;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .search-highlight {
+            background-color: #665e00;
+            color: #fff;
+        }
+    }
+
+    #searchCount {
+        font-size: 0.875rem;
+        padding: 0.25rem 0.5rem;
+        background-color: rgba(0, 0, 0, 0.05);
+        border-radius: 0.25rem;
+        z-index: 1000;
+    }
+
+
 </style>
 @section('content')
     <div class="container-fluid py-4">
@@ -251,6 +250,113 @@
         </div>
     </div>
 
+    <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Search functionality
+                const searchInput = document.getElementById('searchInput');
+                const clearButton = document.getElementById('clearSearch');
+
+                function performSearch() {
+                    const searchTerm = searchInput.value.toLowerCase().trim();
+                    document.querySelectorAll('.searchable-row').forEach(row => {
+                        const text = row.textContent.toLowerCase();
+                        const shouldShow = text.includes(searchTerm);
+                        row.style.display = shouldShow ? '' : 'none';
+
+                        // Handle child rows visibility
+                        const childrenRow = row.nextElementSibling;
+                        if (childrenRow && childrenRow.classList.contains('children-row')) {
+                            childrenRow.style.display = shouldShow ? (childrenRow.classList.contains('d-none') ? 'none' : '') : 'none';
+                        }
+                    });
+                }
+
+                searchInput.addEventListener('input', performSearch);
+                clearButton.addEventListener('click', () => {
+                    searchInput.value = '';
+                    searchInput.focus();
+                    performSearch();
+                });
+
+                // Description toggle with Bootstrap collapse
+                window.toggleDescription = function(id) {
+                    const element = document.getElementById(`description-${id}`);
+                    if (element) {
+                        const button = document.querySelector(`[aria-controls="description-${id}"]`);
+                        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+
+                        $(element).collapse('toggle');
+                        button.setAttribute('aria-expanded', !isExpanded);
+                    }
+                };
+
+                // Tree view toggle with animation
+                document.querySelectorAll('.toggle-children').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const classId = this.dataset.classId;
+                        const childrenRow = document.querySelector(`[data-parent="${classId}"]`);
+                        const isExpanded = this.getAttribute('aria-expanded') ==='true';
+
+                        this.classList.toggle('expanded');
+                        this.setAttribute('aria-expanded', !isExpanded);
+                        childrenRow.classList.toggle('d-none');
+
+                        // Animate icon rotation
+                        const icon = this.querySelector('.bi-chevron-right');
+                        icon.style.transform = !isExpanded ? 'rotate(90deg)' : '';
+
+                        // If row is being expanded and is currently hidden due to search
+                        // make sure it remains hidden
+                        if (!isExpanded && searchInput.value) {
+                            const searchTerm = searchInput.value.toLowerCase().trim();
+                            const rowText = childrenRow.textContent.toLowerCase();
+                            if (!rowText.includes(searchTerm)) {
+                                childrenRow.style.display = 'none';
+                            }
+                        }
+                    });
+                });
+
+                // Handle keyboard navigation
+                document.addEventListener('keydown', function(event) {
+                    // Clear search on Escape
+                    if (event.key === 'Escape' && document.activeElement === searchInput) {
+                        searchInput.value = '';
+                        performSearch();
+                    }
+
+                    // Focus search on Ctrl/Cmd + F
+                    if ((event.ctrlKey || event.metaKey) && event.key === 'f') {
+                        event.preventDefault();
+                        searchInput.focus();
+                    }
+                });
+
+                // Initialize tooltips
+                const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+                tooltipTriggerList.forEach(function(tooltipTriggerEl) {
+                    new bootstrap.Tooltip(tooltipTriggerEl, {
+                        delay: { show: 500, hide: 100 }
+                    });
+                });
+
+                // Add loading states to buttons
+                document.querySelectorAll('a.btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const icon = this.querySelector('i');
+                        const originalClass = icon.className;
+                        icon.className = 'bi bi-hourglass-split animate-spin';
+
+                        // Restore original icon if navigation takes too long
+                        setTimeout(() => {
+                            if (document.body.contains(icon)) {
+                                icon.className = originalClass;
+                            }
+                        }, 5000);
+                    });
+                });
+            });
+        </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.getElementById('searchInput');
