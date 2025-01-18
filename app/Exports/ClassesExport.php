@@ -8,12 +8,11 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
-use PhpOffice\PhpSpreadsheet\Style\Color;
 
 class ClassesExport implements FromArray, WithHeadings, ShouldAutoSize, WithStyles
 {
     protected $domaine;
-    protected $rowCount = 1; // Commencer après la ligne d'en-tête
+    protected $rowCount = 1;
     protected $parentRows = [];
 
     public function __construct($domaine)
@@ -33,25 +32,20 @@ class ClassesExport implements FromArray, WithHeadings, ShouldAutoSize, WithStyl
         foreach ($classes as $class) {
             $this->rowCount++;
 
-            // Ajouter des espaces pour l'indentation visuelle
             $indent = str_repeat('    ', $level);
 
-            // Stocker la ligne si c'est une classe parente
             if ($class->children->isNotEmpty()) {
                 $this->parentRows[] = $this->rowCount;
             }
 
+            // Aligné avec les champs de l'interface web et du PDF
             $data[] = [
-                'Cote' => $indent . $class->code,
-                'Intitulé' => $class->name,
-                'Typologies' => $this->getTypologies($class),
-                'Durée légale Délai' => $this->getDulDuration($class),
-                'Durée légale Déclencheur' => $this->getDulTrigger($class),
-                'Références' => $this->getReferences($class),
-                '_level' => $level, // Pour le style conditionnel
+                __('table_code') => $indent . $class->code,
+                __('table_title') => $class->name,
+                __('table_legal_duration') => $this->formatRules($class),
+                __('table_references') => $this->formatReferences($class),
             ];
 
-            // Traiter récursivement les sous-classes
             if ($class->children->isNotEmpty()) {
                 $this->processClasses($class->children, $data, $level + 1);
             }
@@ -61,19 +55,18 @@ class ClassesExport implements FromArray, WithHeadings, ShouldAutoSize, WithStyl
     public function headings(): array
     {
         return [
-            'Cote',
-            'Intitulé',
-            'Typologies',
-            'Durée légale Délai',
-            'Durée légale Déclencheur',
-            'Références',
+            __('table_code'),
+            __('table_title'),
+            __('table_legal_duration'),
+            __('table_references'),
         ];
     }
 
     public function styles(Worksheet $sheet)
     {
-        // Style de base pour tout le tableau
-        $sheet->getStyle('A1:F' . $this->rowCount)->applyFromArray([
+        // Style de base pour le tableau
+        $lastColumn = 'D'; // 4 colonnes maintenant
+        $sheet->getStyle('A1:' . $lastColumn . $this->rowCount)->applyFromArray([
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -82,20 +75,18 @@ class ClassesExport implements FromArray, WithHeadings, ShouldAutoSize, WithStyl
             ],
         ]);
 
-        // Style pour l'en-tête
-        $sheet->getStyle('A1:F1')->applyFromArray([
-            'font' => [
-                'bold' => true,
-            ],
+        // En-tête
+        $sheet->getStyle('A1:' . $lastColumn . '1')->applyFromArray([
+            'font' => ['bold' => true],
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
                 'startColor' => ['rgb' => 'F8F9FA'],
             ],
         ]);
 
-        // Style pour les classes parentes
+        // Classes parentes
         foreach ($this->parentRows as $row) {
-            $sheet->getStyle('A' . $row . ':F' . $row)->applyFromArray([
+            $sheet->getStyle('A' . $row . ':' . $lastColumn . $row)->applyFromArray([
                 'font' => [
                     'bold' => true,
                     'color' => ['rgb' => '3498DB'],
@@ -107,8 +98,13 @@ class ClassesExport implements FromArray, WithHeadings, ShouldAutoSize, WithStyl
             ]);
         }
 
-        // Ajuster la hauteur des lignes pour une meilleure lisibilité
+        // Configuration des cellules
         $sheet->getDefaultRowDimension()->setRowHeight(20);
+
+        // Activer le retour à la ligne automatique
+        $sheet->getStyle('A1:' . $lastColumn . $this->rowCount)
+            ->getAlignment()
+            ->setWrapText(true);
 
         return [
             1 => [
@@ -121,45 +117,39 @@ class ClassesExport implements FromArray, WithHeadings, ShouldAutoSize, WithStyl
         ];
     }
 
-    private function getTypologies($class)
+    private function formatRules($class)
     {
-        return $class->typologies ? implode("\n", $class->typologies->pluck('name')->toArray()) : '';
-    }
-
-    private function getDulDuration($class)
-    {
-        if (!$class->rules) return '';
+        if (!$class->rules || $class->rules->isEmpty()) {
+            return '';
+        }
 
         return $class->rules->map(function ($rule) {
-            if (!$rule->duls) return '';
-            $durations = $rule->duls->pluck('duration')->filter()->toArray();
-            return $rule->code . ': ' . implode(', ', $durations);
-        })->filter()->implode("\n");
+            $parts = [];
+            $parts[] = $rule->code;
+            $parts[] = $rule->name;
+
+            if ($rule->duration) {
+                $parts[] = $rule->duration;
+            }
+
+            return implode(' - ', array_filter($parts));
+        })->implode("\n");
     }
 
-    private function getDulTrigger($class)
+    private function formatReferences($class)
     {
-        if (!$class->rules) return '';
+        if (!$class->rules || $class->rules->isEmpty()) {
+            return '';
+        }
 
         return $class->rules->map(function ($rule) {
-            if (!$rule->duls) return '';
-            $triggers = $rule->duls->map(function ($dul) {
-                return $dul->trigger ? $dul->trigger->name : '';
-            })->filter()->toArray();
-            return $rule->code . ': ' . implode(', ', $triggers);
-        })->filter()->implode("\n");
-    }
+            if (!$rule->articles || $rule->articles->isEmpty()) {
+                return '';
+            }
 
-    private function getReferences($class)
-    {
-        if (!$class->rules) return '';
-
-        return $class->rules->map(function ($rule) {
-            if (!$rule->articles) return '';
-            $articles = $rule->articles->map(function ($article) {
+            return $rule->articles->map(function ($article) {
                 return $article->code . ' - ' . $article->name;
-            })->toArray();
-            return implode("\n", $articles);
+            })->implode("\n");
         })->filter()->implode("\n");
     }
 }
