@@ -28,9 +28,6 @@
             <div class="d-flex flex-column gap-2">
                 @foreach($rules as $rule)
                     <div class="d-flex align-items-center">
-                        <span class="fw-medium me-2">{{ $rule->code }}</span>
-                        <span class="me-2">-</span>
-                        <span>{{ $rule->name }}:</span>
                         @if($rule->duration)
                             <span class="badge bg-secondary rounded-pill ms-2">
                                 {{ $rule->duration }}

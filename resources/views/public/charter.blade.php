@@ -53,8 +53,7 @@
                             <th rowspan="2" class="align-middle">{{ __('level') }}</th>
                             <th rowspan="2" class="align-middle">{{ __('code') }}</th>
                             <th rowspan="2" class="align-middle">{{ __('title') }}</th>
-                            <th rowspan="2" class="align-middle">{{ __('typologies') }}</th>
-                            <th colspan="2" class="text-center bg-warning text-white">{{ __('legal_duration') }}</th>
+                            <th colspan="1" class="text-center bg-warning text-white">{{ __('legal_duration') }}</th>
                             <th rowspan="2" class="align-middle">{{ __('references') }}</th>
                         </tr>
                         </thead>
