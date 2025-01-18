@@ -1,85 +1,72 @@
+{{-- classes/view.blade.php --}}
 @php
-    // S'assurer que $level est défini, sinon utiliser 0 comme valeur par défaut
-    $level = $level ?? 0;
     $indentation = str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $level);
+    $rules = $classification->rules;
+    $hasRules = $rules->isNotEmpty();
 @endphp
 
-<tr class="charter-row" data-level="{{ $level }}">
-    <td class="text-center">{{ $level + 1 }}</td>
-    {{-- Vérifier que $classification existe et a une propriété code --}}
-    <td class="fw-bold">{{ $classification->code ?? '' }}</td>
-    <td>
+<tr class="charter-row hover:bg-gray-50 transition-colors" data-level="{{ $level }}">
+    <td class="fw-bold text-center" width="5%">{{ $level + 1 }}</td>
+
+    <td class="fw-bold" width="10%">{{ $classification->code }}</td>
+
+    <td width="25%">
         {!! $indentation !!}
         <span class="{{ $level === 0 ? 'fw-bold' : '' }}">
-            {{ $classification->name ?? '' }}
+            {{ $classification->name }}
         </span>
-        @if($classification && $classification->description)
+        @if($classification->description)
             <small class="d-block text-muted">
                 {{ Str::limit($classification->description, 100) }}
             </small>
         @endif
     </td>
-    <td>
-        @if($classification && $classification->typologies)
-            @foreach($classification->typologies as $typology)
-                <span class="badge bg-light text-dark mb-1">{{ $typology->name }}</span>
-            @endforeach
-        @endif
-    </td>
-
-    @php
-        $rules = $classification->rules ?? collect();
-        $hasRules = $rules->isNotEmpty();
-    @endphp
-
-    {{-- Délais actifs --}}
-    <td class="{{ $hasRules ? '' : 'table-light' }}">
-        @if($hasRules)
-            @foreach($rules as $rule)
-                @if($rule->duls)
-                    @foreach($rule->duls as $dul)
-                        {{ $dul->duration ?? '' }}<br>
-                    @endforeach
-                @endif
-            @endforeach
-        @endif
-    </td>
 
     {{-- Durée légale --}}
-    <td class="{{ $hasRules ? '' : 'table-light' }}">
+    <td class="{{ $hasRules ? '' : 'table-light' }}" width="30%">
         @if($hasRules)
-            @foreach($rules as $rule)
-                @if($rule->duls)
-                    @foreach($rule->duls as $dul)
-                        {{ $dul->duration ?? '' }}<br>
-                    @endforeach
-                @endif
-            @endforeach
-        @endif
-    </td>
-
-    <td class="{{ $hasRules ? '' : 'table-light' }}">
-        @if($hasRules)
-            @foreach($rules as $rule)
-                @if($rule->duls)
-                    @foreach($rule->duls as $dul)
-                        {{ $dul->trigger->name ?? '' }}<br>
-                    @endforeach
-                @endif
-            @endforeach
+            <div class="d-flex flex-column gap-2">
+                @foreach($rules as $rule)
+                    <div class="d-flex align-items-center">
+                        <span class="fw-medium me-2">{{ $rule->code }}</span>
+                        <span class="me-2">-</span>
+                        <span>{{ $rule->name }}:</span>
+                        @if($rule->duration)
+                            <span class="badge bg-secondary rounded-pill ms-2">
+                                {{ $rule->duration }}
+                            </span>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
         @endif
     </td>
 
     {{-- Références --}}
-    <td>
+    <td width="30%">
         @if($hasRules)
-            @foreach($rules as $rule)
-                @if($rule->articles)
-                    @foreach($rule->articles as $article)
-                        <span class="badge bg-secondary">{{ $article->name ?? '' }}</span><br>
-                    @endforeach
-                @endif
-            @endforeach
+            <div class="d-flex flex-column gap-2">
+                @foreach($rules as $rule)
+                    @if($rule->articles)
+                        @foreach($rule->articles as $article)
+                            <div class="d-flex align-items-center">
+                                <span class="fw-medium me-2">{{ $article->code }}</span>
+                                <span class="me-2">-</span>
+                                <span>{{ $article->name }}</span>
+                            </div>
+                        @endforeach
+                    @endif
+                @endforeach
+            </div>
         @endif
     </td>
 </tr>
+
+@if(isset($classification->children))
+    @foreach($classification->children as $child)
+        @include('public.charter.row', [
+            'classification' => $child,
+            'level' => $level + 1
+        ])
+    @endforeach
+@endif
