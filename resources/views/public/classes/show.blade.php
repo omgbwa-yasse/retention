@@ -73,8 +73,6 @@
                             <thead class="table-light">
                             <tr>
                                 <th>{{ __('rule') }}</th>
-                                <th>{{ __('duls') }}</th>
-                                <th>{{ __('trigger') }}</th>
                                 <th>{{ __('articles') }}</th>
                             </tr>
                             </thead>
@@ -82,8 +80,6 @@
                             @forelse($class->rules as $rule)
                                 <tr>
                                     <td class="fw-medium">{{ $rule->name }}</td>
-                                    <td>{{ $rule->duls->name }}</td>
-                                    <td>{{ $rule->duls->trigger->name }}</td>
                                     <td>
                                         @foreach($rule->articles as $article)
                                             <span class="badge bg-light text-dark me-1">{{ $article->name }}</span>

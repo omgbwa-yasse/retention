@@ -34,7 +34,7 @@ class PublicController extends Controller
 
      public function index()
      {
-
+         $countries = Country::all();
         $number_country = Country::count();
         $number_classes = Classification::count();
         $number_rules = Rule::count();
@@ -101,7 +101,7 @@ class PublicController extends Controller
              ['path' => request()->url()]
          );
 
-         return view('public.search.index', compact('records','number_country' ,'number_classes','number_rules','number_references','number_articles','number_typologies'));
+         return view('public.search.index', compact('records','number_country' ,'number_classes','number_rules','number_references','number_articles','number_typologies','countries'));
      }
 
 
@@ -315,7 +315,6 @@ class PublicController extends Controller
     {
         $classification = Classification::with([
             'childrenRecursive',
-            'rules.duls.trigger',
             'rules.articles',
             'typologies'
         ])->findOrFail($id);
@@ -336,7 +335,7 @@ class PublicController extends Controller
 
     public function showClass(INT $id)
     {
-        $class = Classification::with(['parent', 'childrenRecursive', 'rules.duls.trigger', 'rules.articles', 'typologies'])->findOrFail($id);
+        $class = Classification::with(['parent', 'childrenRecursive', 'rules.articles', 'typologies'])->findOrFail($id);
         return view('public.classes.show', compact('class'));
     }
 

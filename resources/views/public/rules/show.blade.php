@@ -11,8 +11,8 @@
                         <p class="text-muted mb-0">{{ __('code') }}: {{ $rule->code }}</p>
                     </div>
                     <div class="text-end">
-                        <span class="badge bg-{{ $rule->status->name === 'Active' ? 'success' : 'secondary' }} mb-2">
-                            {{ __('status.' . strtolower($rule->status->name)) }}
+                        <span class="badge bg-{{ $rule->status->name??'ND' === 'Active' ? 'success' : 'secondary' }} mb-2">
+                            {{ __('status : ' . strtolower($rule->status->name??'ND')) }}
                         </span>
                         <div class="text-muted small">
                             {{ __('country') }}: {{ $rule->country->name }}
