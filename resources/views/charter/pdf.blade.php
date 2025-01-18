@@ -45,7 +45,7 @@
 </head>
 <body>
 <div class="header">
-    <h1>{{ __('domain_code_name', ['code' => $domaine->code, 'name' => $domaine->name]) }}</h1>
+    <h1>{{ $domaine->code }} - {{ $domaine->name }}, ['code' => $domaine->code, 'name' => $domaine->name]) }}</h1>
     <p>{{ $domaine->description }}</p>
 </div>
 

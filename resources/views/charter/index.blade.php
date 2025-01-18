@@ -1,5 +1,6 @@
 
-@extends('index')<style>
+@extends('index')
+<style>
     :root {
         --transition-duration: 0.2s;
     }
@@ -64,7 +65,35 @@
         border-radius: 0.375rem 0 0 0.375rem !important;
     }
     @endif
-</style> <style>
+</style>
+<style>
+    .search-highlight {
+        background-color: #fff3cd;
+        padding: 0.1em 0.2em;
+        border-radius: 0.2em;
+        margin: 0 -0.2em;
+        transition: background-color 0.2s ease-in-out;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .search-highlight {
+            background-color: #665e00;
+            color: #fff;
+        }
+    }
+
+    #searchCount {
+        font-size: 0.875rem;
+        padding: 0.25rem 0.5rem;
+        background-color: rgba(0, 0, 0, 0.05);
+        border-radius: 0.25rem;
+        z-index: 1000;
+    }
+
+</style>
+<style>
     @keyframes spin {
         from {
             transform: rotate(0deg);
@@ -122,26 +151,25 @@
 @section('content')
     <div class="container-fluid py-4">
         {{-- Enhanced Search Bar --}}
-        <div class="row mb-4">
-            <div class="col-md-6 col-lg-4">
-                <div class="search-wrapper position-relative">
-                    <div class="input-group border rounded-3 bg-white shadow-sm hover:shadow-md transition-shadow">
-                    <span class="input-group-text border-0 bg-transparent">
-                        <i class="bi bi-search text-gray-500"></i>
-                    </span>
-                        <input type="text"
-                               id="searchInput"
-                               class="form-control border-0 shadow-none py-2"
-                               placeholder="{{ __('search_placeholder') }}"
-                               aria-label="{{ __('search_placeholder') }}">
-                        <button class="btn btn-link text-secondary border-0"
-                                type="button"
-                                id="clearSearch"
-                                aria-label="{{ __('clear_search') }}">
-                            <i class="bi bi-x-lg"></i>
-                        </button>
-                    </div>
+        <div class="search-wrapper position-relative">
+            <div class="input-group border rounded-3 bg-white shadow-sm hover:shadow-md transition-shadow">
+        <span class="input-group-text border-0 bg-transparent">
+            <i class="bi bi-search text-gray-500"></i>
+        </span>
+                <input type="text"
+                       id="searchInput"
+                       class="form-control border-0 shadow-none py-2"
+                       placeholder="{{ __('search_placeholder') }}"
+                       aria-label="{{ __('search_placeholder') }}">
+                <div id="searchCount" class="d-none position-absolute end-0 top-100 mt-1 small text-muted">
+                    <span id="searchResultCount">0</span> {{ __('results_found') }}
                 </div>
+                <button class="btn btn-link text-secondary border-0"
+                        type="button"
+                        id="clearSearch"
+                        aria-label="{{ __('clear_search') }}">
+                    <i class="bi bi-x-lg"></i>
+                </button>
             </div>
         </div>
 
@@ -224,111 +252,81 @@
     </div>
 
     <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Search functionality
-                const searchInput = document.getElementById('searchInput');
-                const clearButton = document.getElementById('clearSearch');
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const clearButton = document.getElementById('clearSearch');
+            const searchCount = document.getElementById('searchCount');
+            const searchResultCount = document.getElementById('searchResultCount');
 
-                function performSearch() {
-                    const searchTerm = searchInput.value.toLowerCase().trim();
-                    document.querySelectorAll('.searchable-row').forEach(row => {
-                        const text = row.textContent.toLowerCase();
-                        const shouldShow = text.includes(searchTerm);
-                        row.style.display = shouldShow ? '' : 'none';
-
-                        // Handle child rows visibility
-                        const childrenRow = row.nextElementSibling;
-                        if (childrenRow && childrenRow.classList.contains('children-row')) {
-                            childrenRow.style.display = shouldShow ? (childrenRow.classList.contains('d-none') ? 'none' : '') : 'none';
-                        }
-                    });
+            function highlightText(element, term) {
+                const text = element.textContent;
+                if (!term) {
+                    // Restaurer le texte original
+                    if (element._originalText) {
+                        element.innerHTML = element._originalText;
+                    }
+                    return;
                 }
 
-                searchInput.addEventListener('input', performSearch);
-                clearButton.addEventListener('click', () => {
-                    searchInput.value = '';
-                    searchInput.focus();
-                    performSearch();
-                });
+                // Sauvegarder le texte original si pas déjà fait
+                if (!element._originalText) {
+                    element._originalText = text;
+                }
 
-                // Description toggle with Bootstrap collapse
-                window.toggleDescription = function(id) {
-                    const element = document.getElementById(`description-${id}`);
-                    if (element) {
-                        const button = document.querySelector(`[aria-controls="description-${id}"]`);
-                        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                // Échapper les caractères spéciaux dans le terme de recherche
+                const safeSearchTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp(`(${safeSearchTerm})`, 'gi');
+                element.innerHTML = text.replace(regex, '<mark class="search-highlight">$1</mark>');
+            }
 
-                        $(element).collapse('toggle');
-                        button.setAttribute('aria-expanded', !isExpanded);
-                    }
-                };
+            function performSearch() {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                let visibleRowCount = 0;
 
-                // Tree view toggle with animation
-                document.querySelectorAll('.toggle-children').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const classId = this.dataset.classId;
-                        const childrenRow = document.querySelector(`[data-parent="${classId}"]`);
-                        const isExpanded = this.getAttribute('aria-expanded') ==='true';
+                document.querySelectorAll('.searchable-row').forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    const shouldShow = text.includes(searchTerm);
+                    row.style.display = shouldShow ? '' : 'none';
 
-                        this.classList.toggle('expanded');
-                        this.setAttribute('aria-expanded', !isExpanded);
-                        childrenRow.classList.toggle('d-none');
-
-                        // Animate icon rotation
-                        const icon = this.querySelector('.bi-chevron-right');
-                        icon.style.transform = !isExpanded ? 'rotate(90deg)' : '';
-
-                        // If row is being expanded and is currently hidden due to search
-                        // make sure it remains hidden
-                        if (!isExpanded && searchInput.value) {
-                            const searchTerm = searchInput.value.toLowerCase().trim();
-                            const rowText = childrenRow.textContent.toLowerCase();
-                            if (!rowText.includes(searchTerm)) {
-                                childrenRow.style.display = 'none';
-                            }
+                    if (shouldShow) {
+                        visibleRowCount++;
+                        if (searchTerm) {
+                            // Mettre en surbrillance dans chaque cellule
+                            row.querySelectorAll('td').forEach(cell => {
+                                // Éviter les éléments interactifs
+                                if (!cell.querySelector('button, .btn')) {
+                                    const textElements = cell.querySelectorAll('.fw-medium, span:not(.badge)');
+                                    textElements.forEach(el => highlightText(el, searchTerm));
+                                }
+                            });
                         }
-                    });
-                });
-
-                // Handle keyboard navigation
-                document.addEventListener('keydown', function(event) {
-                    // Clear search on Escape
-                    if (event.key === 'Escape' && document.activeElement === searchInput) {
-                        searchInput.value = '';
-                        performSearch();
+                    } else {
+                        // Restaurer le texte original
+                        row.querySelectorAll('td .fw-medium, td span:not(.badge)').forEach(el => {
+                            highlightText(el, '');
+                        });
                     }
 
-                    // Focus search on Ctrl/Cmd + F
-                    if ((event.ctrlKey || event.metaKey) && event.key === 'f') {
-                        event.preventDefault();
-                        searchInput.focus();
+                    // Gérer les lignes enfants
+                    const childrenRow = row.nextElementSibling;
+                    if (childrenRow && childrenRow.classList.contains('children-row')) {
+                        childrenRow.style.display = shouldShow ?
+                            (childrenRow.classList.contains('d-none') ? 'none' : '') : 'none';
                     }
                 });
 
-                // Initialize tooltips
-                const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
-                tooltipTriggerList.forEach(function(tooltipTriggerEl) {
-                    new bootstrap.Tooltip(tooltipTriggerEl, {
-                        delay: { show: 500, hide: 100 }
-                    });
-                });
+                // Mettre à jour le compteur de résultats
+                searchResultCount.textContent = visibleRowCount;
+                searchCount.classList.toggle('d-none', !searchTerm);
+            }
 
-                // Add loading states to buttons
-                document.querySelectorAll('a.btn').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const icon = this.querySelector('i');
-                        const originalClass = icon.className;
-                        icon.className = 'bi bi-hourglass-split animate-spin';
-
-                        // Restore original icon if navigation takes too long
-                        setTimeout(() => {
-                            if (document.body.contains(icon)) {
-                                icon.className = originalClass;
-                            }
-                        }, 5000);
-                    });
-                });
+            searchInput.addEventListener('input', performSearch);
+            clearButton.addEventListener('click', () => {
+                searchInput.value = '';
+                searchInput.focus();
+                performSearch();
             });
-        </script>
+        });
+    </script>
 
 @endsection
