@@ -10,7 +10,7 @@
     <!-- Meta tags and title -->
 
 
-    <!-- Custom CSS -->
+        <!-- Custom CSS -->
     {{--    <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">--}}
 
     <!-- jQuery -->
@@ -28,36 +28,91 @@
             padding: 1.5rem;
         }
 
-
         /* Button style */
         #container .btn {
             margin-bottom: 1rem;
         }
 
+        /* Visitor Stats Styling */
+        #visitorStats {
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
+        .visitor-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .visitor-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .visitor-count {
+            background-color: #4f46e5;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+        }
     </style>
+    @php
+        // Get visitor's IP
+        $ip = Request::ip();
+
+        // Only track if not already logged in session
+        if (!Session::has('visitor_logged')) {
+            try {
+                // Insert into database with just the IP for now
+                DB::table('visitor_stats')->insert([
+                    'ip_address' => $ip,
+                    'visited_at' => now(),
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+
+                // Mark as logged in session
+                Session::put('visitor_logged', true);
+
+            } catch (\Exception $e) {
+                // Log error silently
+                \Log::error('Visitor tracking error: ' . $e->getMessage());
+            }
+        }
+    @endphp
+
 
 </head>
 
 @extends('layouts.app')
 
 <body id="app">
-<div >
+<div>
     @auth
         @include('menuTop')
         <div class="row">
             <div class="col-md-2">
                 @include('menuAside')
             </div>
-            <div class="col-md-9  px-md-4">
-                {{--                <a href="{{ url()->previous() }}" class="btn btn-primary">Retour</a>--}}
+            <div class="col-md-9 px-md-4">
+                @if(auth()->user()->role === 'admin')
+                    <div id="visitorStats" class="card">
+                        <div class="card-body">
+                            Loading visitor statistics...
+                        </div>
+                    </div>
+                @endif
                 @yield('content')
             </div>
         </div>
     @else
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
-
-            <div class="container ">
+            <div class="container">
                 <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('public.index') }}">
                     <i class="fas fa-book-reader"></i>
                     <span>African Retention</span>
@@ -103,7 +158,7 @@
         <div class="container">
             <div class="">
                 {{-- Bouton Accueil avec icône maison --}}
-                <a href="{{ url('/') }}" class="btn btn-primary ">
+                <a href="{{ url('/') }}" class="btn btn-primary">
                     <i class="fas fa-home"></i> Accueil
                 </a>
 
@@ -121,8 +176,13 @@
     </div>
 </div>
 
-
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (document.getElementById('visitorStats')) {
+            fetchVisitorStats();
+        }
+    });
+</script>
 
 </body>
-
 </html>

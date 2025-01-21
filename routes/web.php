@@ -15,6 +15,8 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TriggerController;
 use App\Http\Controllers\TypologyCategoryController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\ActivityController;
@@ -165,7 +167,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('reference_categories', ReferenceCategoryController::class);
     Route::resource('typology_categories', TypologyCategoryController::class);
     Route::resource('SearchController', SearchController::class);
-
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/admin/visitor-stats', [App\Http\Controllers\DashboardController::class, 'getVisitorStats'])
+            ->name('admin.visitor-stats');
+    });
     //research
     Route::get('/search/index', [SearchController::class, 'search'])->name('search');
     Route::get('/search/advanced', [SearchController::class, 'advancedSearch'])->name('search.advanced');
