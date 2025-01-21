@@ -16,13 +16,12 @@
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1 fw-bold">{{ $item->name }}</h5>
                         <small class="text-muted">
-                            {{ __('created_at') }}: {{ $item->created_at->formatLocalized('%d %B %Y') }}
+                            {{ __('created_at') }}: {{ $item->created_at->format('d F Y') }}
                         </small>
                     </div>
                     <p class="mb-1">{{ $item->description }}</p>
                     <small class="text-muted">
-                        <i class="bi bi-person-fill"></i>
-                        {{ __('posted_by') }} {{ $item->user->name }}
+                        <i class="bi bi-person-fill"></i> {{ __('posted_by') }} {{ $item->user->name }}
                     </small>
                 </div>
             @endforeach
