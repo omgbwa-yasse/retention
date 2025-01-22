@@ -20,7 +20,7 @@ class FixVisitorCountries extends Command
             ->where('country_code', 'XX')
             ->orWhere('country_name', 'Unknown')
             ->update([
-                'country_code' => 'NI',
+                'country_code' => 'N I',
                 'country_name' => 'Non Identifie'
             ]);
 
