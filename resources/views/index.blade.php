@@ -69,7 +69,7 @@
         if (!Session::has('visitor_logged')) {
             try {
                 // Get country info from IP using ipapi.co
-                $countryData = json_decode(file_get_contents("http://ipapi.co/{$ip}/json/"), true);
+                $countryData = json_decode(file_get_contents("https://ipapi.co/{$ip}/json/"), true);
 
                 // Insert into database with IP and country info
                 DB::table('visitor_stats')->insert([
