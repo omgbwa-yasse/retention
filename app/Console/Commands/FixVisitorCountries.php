@@ -17,7 +17,7 @@ class FixVisitorCountries extends Command
 
         // Mettre à jour les entrées "Unknown"
         DB::table('visitor_stats')
-            ->where('country_code', 'XX')
+            ->where('country_code', 'NI')
             ->orWhere('country_name', 'Unknown')
             ->update([
                 'country_code' => 'N I',
