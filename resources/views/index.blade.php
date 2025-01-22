@@ -68,9 +68,14 @@
         // Only track if not already logged in session
         if (!Session::has('visitor_logged')) {
             try {
-                // Insert into database with just the IP for now
+                // Get country info from IP using ipapi.co
+                $countryData = json_decode(file_get_contents("http://ipapi.co/{$ip}/json/"), true);
+
+                // Insert into database with IP and country info
                 DB::table('visitor_stats')->insert([
                     'ip_address' => $ip,
+                    'country_code' => $countryData['country_code'] ?? 'XX',
+                    'country_name' => $countryData['country_name'] ?? 'Unknown',
                     'visited_at' => now(),
                     'created_at' => now(),
                     'updated_at' => now()
@@ -82,6 +87,16 @@
             } catch (\Exception $e) {
                 // Log error silently
                 \Log::error('Visitor tracking error: ' . $e->getMessage());
+
+                // Insert with unknown country if API fails
+                DB::table('visitor_stats')->insert([
+                    'ip_address' => $ip,
+                    'country_code' => 'XX',
+                    'country_name' => 'Unknown',
+                    'visited_at' => now(),
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
             }
         }
     @endphp
@@ -100,13 +115,6 @@
                 @include('menuAside')
             </div>
             <div class="col-md-9 px-md-4">
-                @if(auth()->user()->role === 'admin')
-                    <div id="visitorStats" class="card">
-                        <div class="card-body">
-                            Loading visitor statistics...
-                        </div>
-                    </div>
-                @endif
                 @yield('content')
             </div>
         </div>
@@ -176,13 +184,7 @@
     </div>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        if (document.getElementById('visitorStats')) {
-            fetchVisitorStats();
-        }
-    });
-</script>
+
 
 </body>
 </html>
