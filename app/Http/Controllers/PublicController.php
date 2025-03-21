@@ -68,12 +68,11 @@ class PublicController extends Controller
         $references->where(function ($q) use ($query, $request) {
             if ($query) {
                 $q->where('name', 'LIKE', "%{$query}%")
-                ->limit(20)
-                ->orWhere('description', 'LIKE', "%{$query}%")
-                ->orWhereHas('articles', function ($q) use ($query) {
-                    $q->where('name', 'LIKE', "%{$query}%")
-                      ->where('description', 'LIKE', "%{$query}%");
-                });
+                  ->orWhere('description', 'LIKE', "%{$query}%")
+                  ->orWhereHas('articles', function ($q) use ($query) {
+                      $q->where('name', 'LIKE', "%{$query}%")
+                        ->orWhere('description', 'LIKE', "%{$query}%");
+                  });
             }
             if ($request->input('country') !== '') {
                 $q->orWhereHas('country', function ($q) use ($request) {
