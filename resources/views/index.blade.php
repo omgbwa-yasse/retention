@@ -130,6 +130,7 @@
                         aria-label="{{ __('toggle_navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
@@ -143,6 +144,47 @@
                         </li>
                     </ul>
                 </div>
+
+
+                <div class="d-grid gap-3 d-md-flex align-items-center flex-column flex-md-row">
+                    @if(isset($number_country))
+                        <li class="nav-item d-flex align-items-center" style="padding: 0 10px;">
+                            <i class="fas fa-globe mr-2"></i>
+                            <span>{{ __('statistics.countries') }}: {{ $number_country }}</span>
+                        </li>
+                    @endif
+                    @if(isset($number_classes))
+                        <li class="nav-item d-flex align-items-center" style="padding: 0 10px;">
+                            <i class="fas fa-list-alt mr-2"></i>
+                            <span>{{ __('statistics.classifications') }}: {{ $number_classes }}</span>
+                        </li>
+                    @endif
+                    @if(isset($number_rules))
+                        <li class="nav-item d-flex align-items-center" style="padding: 0 10px;">
+                            <i class="fas fa-gavel mr-2"></i>
+                            <span>{{ __('statistics.rules') }}: {{ $number_rules }}</span>
+                        </li>
+                    @endif
+                    @if(isset($number_references))
+                        <li class="nav-item d-flex align-items-center" style="padding: 0 10px;">
+                            <i class="fas fa-book mr-2"></i>
+                            <span>{{ __('statistics.references') }}: {{ $number_references }}</span>
+                        </li>
+                    @endif
+                    @if(isset($number_articles))
+                        <li class="nav-item d-flex align-items-center" style="padding: 0 10px;">
+                            <i class="fas fa-newspaper mr-2"></i>
+                            <span>{{ __('statistics.articles') }}: {{ $number_articles }}</span>
+                        </li>
+                    @endif
+                    @if(isset($number_typologies))
+                        <li class="nav-item d-flex align-items-center" style="padding: 0 10px;">
+                            <i class="fas fa-th-list mr-2"></i>
+                            <span>{{ __('statistics.typologies') }}: {{ $number_typologies }}</span>
+                        </li>
+                    @endif
+                </div>
+
             </div>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <!-- Sélecteur de langue -->

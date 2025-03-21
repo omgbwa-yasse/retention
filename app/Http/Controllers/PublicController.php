@@ -42,140 +42,62 @@ class PublicController extends Controller
         $number_articles = ReferenceArticle::count();
         $number_typologies = Typology::count();
 
-         // Récupérer les règles
-         $rules = Rule::query()
-             ->latest()
-             ->get()
-             ->map(function($item) {
-                 return [
-                     'id' => $item->id,
-                     'name' => $item->name,
-                     'description' => $item->description,
-                     'type' => 'rule',
-                     'created_at' => $item->created_at
-                 ];
-             });
-
-         // Récupérer les classifications
-         $classes = Classification::query()
-             ->latest()
-             ->get()
-             ->map(function($item) {
-                 return [
-                     'id' => $item->id,
-                     'name' => $item->name,
-                     'description' => $item->description,
-                     'type' => 'class',
-                     'created_at' => $item->created_at
-                 ];
-             });
-
-         // Récupérer les références
          $references = Reference::query()
              ->latest()
-             ->get()
-             ->map(function($item) {
-                 return [
-                     'id' => $item->id,
-                     'name' => $item->name,
-                     'description' => $item->description,
-                     'type' => 'reference',
-                     'created_at' => $item->created_at
-                 ];
-             });
+             ->limit(20)
+             ->get();
 
-         // Combiner tous les résultats
-         $allRecords = $rules->concat($classes)->concat($references);
+             $references = $references->load('articles');
 
-         // Trier par date de création
-         $sortedRecords = $allRecords->sortByDesc('created_at');
-
-         // Paginer les résultats combinés
-         $perPage = 10;
-         $currentPage = request()->get('page', 1);
-         $records = new \Illuminate\Pagination\LengthAwarePaginator(
-             $sortedRecords->forPage($currentPage, $perPage),
-             $sortedRecords->count(),
-             $perPage,
-             $currentPage,
-             ['path' => request()->url()]
-         );
-
-         return view('public.search.index', compact('records','number_country' ,'number_classes','number_rules','number_references','number_articles','number_typologies','countries'));
+         return view('public.search.index', compact('references','number_country' ,'number_classes','number_rules','number_references','number_articles','number_typologies','countries'));
      }
 
 
 
 
 
-    public function advanced(Request $request)
-    {
-        $query = $request->input('term');
-        $type = $request->input('type');
 
-        $results = collect();
+     public function advanced(Request $request)
+     {
 
-        // Fonction de recherche pour chaque modèle
-        $searchQuery = function ($query) use ($request) {
-            $query->where(function ($q) use ($request) {
-                $q->where('name', 'LIKE', "%{$request->term}%")
-                    ->orWhere('description', 'LIKE', "%{$request->term}%");
-            });
-            if (!empty($request->country)) {
-                $query->whereHas('country', function ($q) use ($request) {
-                    $q->where('id', $request->country);
+
+
+        $query = trim($request->input('term', ''));
+        $references = Reference::query();
+
+        $references->where(function ($q) use ($query, $request) {
+            if ($query) {
+            $q->where('name', 'LIKE', "%{$query}%")
+              ->limit(20)
+              ->orWhere('description', 'LIKE', "%{$query}%");
+            }
+
+            if ($request->input('country') !== '') {
+                $q->orWhereHas('country', function ($q) use ($request) {
+                $q->where('id', $request->input('country'));
                 });
             }
 
-            if ($request->date) {
-                $query->whereDate('created_at', $request->date_operator ?? '=', $request->date);
-            } elseif ($request->date_from && $request->date_to) {
-                $query->whereBetween('created_at', [
-                    $request->date_from . ' 00:00:00',
-                    $request->date_to . ' 23:59:59'
-                ]);
+            if ($request->input('date_from') !== '') {
+                $q->orWhere('created_at', '=>', $request->input('date_from'));
             }
 
-            return $query;
-        };
+            if ($request->input('date_to') !== '') {
+                $q->orWhere('created_at', '=<', $request->input('date_to'));
+            }
+            });
 
-        // Récupération des résultats
-        if (!$type || $type === 'rule') {
-            $rules = Rule::where($searchQuery)->with('country')->get()
-                ->map(fn($item) => [...$item->toArray(), 'type' => 'rule']);
-            $results = $results->concat($rules);
-        }
 
-        if (!$type || $type === 'class') {
-            $classes = Classification::where($searchQuery)->with('country')->get()
-                ->map(fn($item) => [...$item->toArray(), 'type' => 'class']);
-            $results = $results->concat($classes);
-        }
+        $references = $references->get();
 
-        if (!$type || $type === 'reference') {
-            $references = Reference::where($searchQuery)->with('country')->get()
-                ->map(fn($item) => [...$item->toArray(), 'type' => 'reference']);
-            $results = $results->concat($references);
-        }
+         return view('public.search.advanced', [
+             'references' => $references,
+             'countries' => Country::all(),
+             'searchTerm' => $query
+         ]);
+     }
 
-        // Paginer les résultats
-        $perPage = 10;
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $currentItems = $results->slice(($currentPage - 1) * $perPage, $perPage)->values();
-        $records = new LengthAwarePaginator($currentItems, $results->count(), $perPage, $currentPage, [
-            'path' => LengthAwarePaginator::resolveCurrentPath(),
-        ]);
 
-        // Ajouter les paramètres de requête aux liens de pagination
-        $records->appends($request->except('page'));
-
-        $countries = Country::all();
-        return view('public.search.advanced', [
-            'records' => $records,
-            'countries' => $countries,
-            'searchTerm' => $query
-        ]);
-    }
 
 
 
@@ -205,89 +127,22 @@ class PublicController extends Controller
             }
         };
 
-        // Rechercher dans les règles avec eager loading de la relation country
-        $rules = Rule::with('country')
-                    ->where($searchFunction)
-                    ->get()
-                    ->map(function ($item) use ($searchTerms) {
-                        $relevance = $this->calculateRelevance($item, $searchTerms);
-                        return array_merge($item->toArray(), [
-                            'type' => 'rule',
-                            'relevance' => $relevance,
-                            'country_name' => $item->country ? $item->country->name : null
-                        ]);
-                    });
-
-
-        // Rechercher dans les classes avec eager loading de la relation country
-        $classes = Classification::with('country')
-                    ->where($searchFunction)
-                    ->get()
-                    ->map(function ($item) use ($searchTerms) {
-                        $relevance = $this->calculateRelevance($item, $searchTerms);
-                        return array_merge($item->toArray(), [
-                            'type' => 'class',
-                            'relevance' => $relevance,
-                        ]);
-                    });
-
         // Rechercher dans les références avec eager loading de la relation country
         $references = Reference::with('country')
-                    ->where($searchFunction)
-                    ->get()
-                    ->map(function ($item) use ($searchTerms) {
-                        $relevance = $this->calculateRelevance($item, $searchTerms);
-                        return array_merge($item->toArray(), [
-                            'type' => 'reference',
-                            'relevance' => $relevance
-                        ]);
-                    });
+                ->where($searchFunction)
+                ->get();
 
-        // Combiner et trier tous les résultats par pertinence
-        $records = $rules->concat($classes)
-                        ->concat($references)
-                        ->sortByDesc('relevance');
+        $references = $references->load('articles');
 
-        // Paginer les résultats
-        $perPage = 10;
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $currentItems = $records->slice(($currentPage - 1) * $perPage, $perPage)->values();
-        $records = new LengthAwarePaginator($currentItems, $records->count(), $perPage, $currentPage, [
-            'path' => LengthAwarePaginator::resolveCurrentPath(),
-        ]);
-
-
-        return view('public.search.index', compact('records', 'searchTerm'));
-    }
-    /**
-     * Calculer la pertinence pour un élément.
-     */
-    private function calculateRelevance($item, $searchTerms)
-    {
-        $relevance = 0;
-        foreach ($searchTerms as $term) {
-            if (stripos($item->name, $term) !== false) {
-                $relevance += 1;
-            }
-            if (stripos($item->description, $term) !== false) {
-                $relevance += 1;
-            }
-        }
-        return $relevance;
+        return view('public.search.index', compact('references', 'searchTerm'));
     }
 
 
 
 
-
-
-    /**
-     * Affiche la charte publique pour une classification
-     */
     public function showCharter($id)
     {
-        // Si c'est un parent, on récupère tous ses enfants
-        // Si c'est un enfant, on récupère son parent et tous les frères/sœurs
+
         $classification = Classification::with([
             'parent.childrenRecursive', // Parent et tous ses enfants
             'children', // Enfants directs
@@ -297,7 +152,6 @@ class PublicController extends Controller
             'typologies'
         ])->findOrFail($id);
 
-        // Si c'est un enfant, on remonte au parent
         $rootClassification = $classification->parent ?? $classification;
 
         return view('public.charter', [
@@ -308,9 +162,6 @@ class PublicController extends Controller
 
 
 
-    /**
-     * Télécharger la charte en PDF
-     */
     public function downloadCharter($id)
     {
         $classification = Classification::with([
@@ -324,14 +175,8 @@ class PublicController extends Controller
     }
 
 
-    /**
-     * Recherche globale
-     */
 
 
-    /**
-     * Affiche les détails d'une classe
-     */
 
     public function showClass(INT $id)
     {

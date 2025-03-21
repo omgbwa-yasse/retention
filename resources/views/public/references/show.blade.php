@@ -42,7 +42,11 @@
                             <tbody>
                             @forelse($reference->articles as $article)
                                 <tr>
-                                    <td>{{ $article->name }}</td>
+                                    <td>
+                                        <strong class="text-primary">{{ $article->code }}</strong> :
+                                        <strong class="text-primary">{{ $article->name }}</strong>
+                                        <strong class="text-second"><i>[ {{ $article->description }} ]</i></strong>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
@@ -53,7 +57,6 @@
                         </table>
                     </div>
                 </div>
-
                 <!-- Files -->
                 <div>
                     <h6 class="text-uppercase text-muted small mb-2">{{ __('attached_documents') }}</h6>

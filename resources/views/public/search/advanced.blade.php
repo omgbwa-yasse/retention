@@ -24,9 +24,6 @@
                             <div class="col-md-3">
                                 <div class="form-floating">
                                     <select class="form-select" id="type" name="type">
-                                        <option value="">{{ __('all_types') }}</option>
-                                        <option value="rule" {{ request('type') == 'rule' ? 'selected' : '' }}>{{ __('rules') }}</option>
-                                        <option value="class" {{ request('type') == 'class' ? 'selected' : '' }}>{{ __('classifications') }}</option>
                                         <option value="reference" {{ request('type') == 'reference' ? 'selected' : '' }}>{{ __('references') }}</option>
                                     </select>
                                     <label for="type">{{ __('type') }}</label>
@@ -38,7 +35,10 @@
                                 <div class="form-floating">
                                     <select class="form-select" id="countries" name="country">
                                         @foreach($countries as $country)
-                                            <option value="{{ $country->id }}" {{ request('country') == $country->id ? 'selected' : '' }}>
+                                            <option value="">
+                                                Tous les pays
+                                            </option>
+                                            <option value="{{ $country->id }}">
                                                 {{ $country->name }} ({{ $country->abbr }})
                                             </option>
                                         @endforeach
@@ -81,10 +81,10 @@
             </div>
 
             <!-- Search results -->
-            @if(isset($records) && $records->count() > 0)
+            @if(isset($references) && $references->count() > 0)
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">{{ __('search_results') }} ({{ $records->count() }} {{ __('results_found') }})</h5>
+                        <h5 class="card-title mb-0">{{ __('search_results') }} ({{ $references->count() }} {{ __('results_found') }})</h5>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -100,20 +100,10 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($records as $record)
+                                @foreach($references as $record)
                                     <tr>
                                         <td>
-                                            @switch($record['type'])
-                                                @case('rule')
-                                                    <span class="badge bg-primary">{{ __('badges.rule') }}</span>
-                                                    @break
-                                                @case('class')
-                                                    <span class="badge bg-success">{{ __('badges.class') }}</span>
-                                                    @break
-                                                @case('reference')
-                                                    <span class="badge bg-info">{{ __('badges.reference') }}</span>
-                                                    @break
-                                            @endswitch
+                                            <span class="badge bg-info">{{ __('badges.reference') }}</span>
                                         </td>
                                         <td>{{ $record['name'] }}</td>
                                         <td>{{ Str::limit($record['description'], 100) }}</td>
@@ -144,7 +134,6 @@
                             </table>
                         </div>
                     </div>
-                    {{ $records->links() }}
                 </div>
             @elseif(request()->has('term'))
                 <div class="alert alert-info">
