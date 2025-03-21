@@ -125,8 +125,12 @@ class PublicController extends Controller
                             ->orWhere('description', 'LIKE', "%{$term}%")
                             ->orWhereHas('country', function ($q) use ($term) {
                                 $q->where('name', 'LIKE', "%{$term}%");
+                            })
+                            ->orWhereHas('articles', function ($q) use ($term) {
+                                $q->where('name', 'LIKE', "%{$term}%")
+                                    ->where('description', 'LIKE', "%{$term}%");
                             });
-                });
+                    });
             }
         };
 
