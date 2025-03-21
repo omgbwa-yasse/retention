@@ -33,16 +33,24 @@ class PublicController extends Controller
         $countryFilter = $request->input('country');
         $dateFilter = $request->input('date');
 
+        $countries = Country::all();
+        $categories = ReferenceCategory::all();
+
         if (empty($searchTerm)) {
            if ($request->ajax() || $request->wantsJson() || $request->header('Accept') === 'application/json') {
               return response()->json([
                  'success' => true,
                  'results' => [],
                  'count' => 0,
-                 'message' => 'No search query provided'
+                 'message' => 'No search query provided',
+                 'countries' => $countries,
+                 'categories' => $categories
               ]);
            }
-           return view('public.search.index');
+           return view('public.search.index', [
+              'countries' => $countries,
+              'categories' => $categories
+           ]);
         }
 
         $searchTerms = preg_split('/\s+/', trim($searchTerm));
@@ -195,7 +203,9 @@ class PublicController extends Controller
            'success' => true,
            'count' => count($allResults),
            'query' => $searchTerm,
-           'results' => $allResults
+           'results' => $allResults,
+           'countries' => $countries,
+           'categories' => $categories
         ];
 
 
@@ -223,28 +233,13 @@ class PublicController extends Controller
 
      public function index()
      {
-         return view('public.search.index');
+         $countries = Country::all();
+         $categories = ReferenceCategory::all();
+         return view('public.search.index', [
+            'countries' => $countries,
+            'categories' => $categories
+         ]);
      }
-
-
-    public function filtre() {
-       $countries = Country::all();
-       $categories = ReferenceCategory::all();
-       return view('public.search.index', [
-          'countries' => $countries,
-          'categories' => $categories
-       ]);
-    }
-
-     public function advanced()
-     {
-         // Logique pour la recherche avancée
-         return view('public.search.advanced');
-     }
-
-
-
-
 
 
 

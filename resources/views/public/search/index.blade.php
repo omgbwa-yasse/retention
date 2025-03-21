@@ -204,6 +204,8 @@
         const searchForm = document.getElementById('search-form');
         const searchInput = document.getElementById('search-input');
         const resultsContainer = document.getElementById('search-results-container');
+        const categorySelect = document.querySelector('select[name="category"]');
+        const countrySelect = document.querySelector('select[name="country"]');
 
         // Vérifier si la recherche AJAX est activée
         const useAjaxSearch = true; // Mettre à true pour activer la recherche AJAX
@@ -231,6 +233,11 @@
             });
 
             function fetchSearchResults(query) {
+                // Récupérer les valeurs des filtres
+                const categoryValue = categorySelect ? categorySelect.value : "";
+                const countryValue = countrySelect ? countrySelect.value : "";
+                const dateValue = document.querySelector('input[name="date"]') ? document.querySelector('input[name="date"]').value : "";
+
                 // Afficher un indicateur de chargement
                 resultsContainer.innerHTML = `
                     <div class="row">
@@ -243,8 +250,23 @@
                     </div>
                 `;
 
+                // Construire l'URL avec tous les paramètres
+                let searchUrl = `${searchForm.action}?query=${encodeURIComponent(query)}`;
+
+                if (categoryValue) {
+                    searchUrl += `&category=${encodeURIComponent(categoryValue)}`;
+                }
+
+                if (countryValue) {
+                    searchUrl += `&country=${encodeURIComponent(countryValue)}`;
+                }
+
+                if (dateValue) {
+                    searchUrl += `&date=${encodeURIComponent(dateValue)}`;
+                }
+
                 // Effectuer la requête AJAX
-                fetch(`${searchForm.action}?query=${encodeURIComponent(query)}`, {
+                fetch(searchUrl, {
                     headers: {
                         'Accept': 'application/json'
                     }
@@ -253,6 +275,15 @@
                 .then(data => {
                     if (data.success && data.results && data.results.length > 0) {
                         displayResults(data);
+
+                        // Mettre à jour les options des sélecteurs si des données sont retournées
+                        if (data.categories && categorySelect) {
+                            updateSelectOptions(categorySelect, data.categories, "{{ __('all_categories') }}");
+                        }
+
+                        if (data.countries && countrySelect) {
+                            updateSelectOptions(countrySelect, data.countries, "{{ __('all_countries') }}");
+                        }
                     } else {
                         resultsContainer.innerHTML = `
                             <div class="row">
@@ -278,6 +309,30 @@
                             </div>
                         </div>
                     `;
+                });
+            }
+
+            // Fonction pour mettre à jour les options d'un select
+            function updateSelectOptions(selectElement, items, defaultLabel) {
+                // Garder l'option sélectionnée actuelle
+                const currentValue = selectElement.value;
+
+                // Vider le select
+                selectElement.innerHTML = '';
+
+                // Ajouter l'option par défaut
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = defaultLabel;
+                selectElement.appendChild(defaultOption);
+
+                // Ajouter les options
+                items.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = item.name;
+                    option.selected = currentValue == item.id;
+                    selectElement.appendChild(option);
                 });
             }
 
