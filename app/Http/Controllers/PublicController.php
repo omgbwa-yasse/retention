@@ -25,215 +25,216 @@ class PublicController extends Controller
      * Affiche la page d'accueil publique
      */
 
-     public function search(Request $request)
-     {
-         $searchTerm = $request->input('query');
+    public function search(Request $request)
+    {
 
-         if (empty($searchTerm)) {
-             // Si c'est une requête AJAX ou si on demande du JSON
-             if ($request->ajax() || $request->wantsJson() || $request->header('Accept') === 'application/json') {
-                 return response()->json([
-                     'success' => true,
-                     'results' => [],
-                     'count' => 0,
-                     'message' => 'No search query provided'
-                 ]);
-             }
+        $searchTerm = $request->input('query');
+        $categoryFilter = $request->input('category');
+        $countryFilter = $request->input('country');
+        $dateFilter = $request->input('date');
 
-             // Sinon, retourner la vue avec un tableau vide
-             return view('public.search.index');
-         }
+        if (empty($searchTerm)) {
+           if ($request->ajax() || $request->wantsJson() || $request->header('Accept') === 'application/json') {
+              return response()->json([
+                 'success' => true,
+                 'results' => [],
+                 'count' => 0,
+                 'message' => 'No search query provided'
+              ]);
+           }
+           return view('public.search.index');
+        }
 
-         // Diviser les mots-clés
-         $searchTerms = preg_split('/\s+/', trim($searchTerm));
-         $allResults = [];
+        $searchTerms = preg_split('/\s+/', trim($searchTerm));
+        $allResults = [];
 
-         // Rechercher dans les références
-         $references = Reference::with(['country', 'articles', 'category', 'user'])->get();
-         foreach ($references as $reference) {
-             $relevance = 0;
-             $matchesTitle = false;
-             $matchesDescription = false;
+        $references = Reference::with(['country', 'articles', 'category', 'user'])
+           ->when($categoryFilter, function ($query, $categoryFilter) {
+              return $query->where('category_id', $categoryFilter);
+           })
+           ->when($countryFilter, function ($query, $countryFilter) {
+              return $query->where('country_id', $countryFilter);
+           })
+           ->when($dateFilter, function ($query, $dateFilter) {
+              return $query->whereDate('created_at', $dateFilter);
+           })
+           ->get();
 
-             foreach ($searchTerms as $term) {
-                 // Vérifier le titre (priorité 1)
-                 if (stripos($reference->name, $term) !== false) {
-                     $relevance += 100; // Priorité 1
-                     $matchesTitle = true;
-                 }
+        foreach ($references as $reference) {
+           $relevance = 0;
+           $matchesTitle = false;
+           $matchesDescription = false;
 
-                 // Vérifier la description (priorité 2)
-                 if (stripos($reference->description, $term) !== false) {
-                     $relevance += 50; // Priorité 2
-                     $matchesDescription = true;
-                 }
+           foreach ($searchTerms as $term) {
+              if (stripos($reference->name, $term) !== false) {
+                 $relevance += 100;
+                 $matchesTitle = true;
+              }
+              if (stripos($reference->description, $term) !== false) {
+                 $relevance += 50;
+                 $matchesDescription = true;
+              }
+              if ($reference->country && stripos($reference->country->name, $term) !== false) {
+                 $relevance += 30;
+              }
+              if ($reference->category && stripos($reference->category->name, $term) !== false) {
+                 $relevance += 20;
+              }
+           }
 
-                 // Vérifier le pays (priorité supplémentaire)
-                 if ($reference->country && stripos($reference->country->name, $term) !== false) {
-                     $relevance += 30;
-                 }
+           if ($matchesTitle || $matchesDescription) {
+              $createdDate = strtotime($reference->created_at);
+              $currentDate = time();
+              $daysDifference = ($currentDate - $createdDate) / (60 * 60 * 24);
+              $dateRelevance = max(0, 20 - min(20, $daysDifference));
+              $relevance += $dateRelevance;
 
-                 // Vérifier la catégorie
-                 if ($reference->category && stripos($reference->category->name, $term) !== false) {
-                     $relevance += 20;
-                 }
-             }
+              $allResults[] = [
+                 'id' => $reference->id,
+                 'name' => $reference->name,
+                 'description' => $reference->description,
+                 'country' => [
+                    'name' => $reference->country ? $reference->country->name : null,
+                    'abbr' => $reference->country ? $reference->country->abbr : null,
+                 ],
+                 'category' => $reference->category ? [
+                    'name' => $reference->category->name,
+                    'id' => $reference->category->id,
+                 ] : null,
+                 'created_at' => $reference->created_at ? $reference->created_at->format('d/m/Y') : null,
+                 'user' => $reference->user ? [
+                    'name' => $reference->user->name,
+                    'id' => $reference->user->id,
+                 ] : null,
+                 'articles_count' => $reference->articles->count(),
+                 'type' => 'reference',
+                 'relevance' => $relevance
+              ];
+           }
+        }
 
-             // Si au moins un terme correspond au titre ou à la description
-             if ($matchesTitle || $matchesDescription) {
-                 // Ajouter la date (priorité 3)
-                 $createdDate = strtotime($reference->created_at);
-                 $currentDate = time();
-                 $daysDifference = ($currentDate - $createdDate) / (60 * 60 * 24);
+        $articles = ReferenceArticle::with(['reference', 'reference.country', 'user'])
+           ->when($categoryFilter, function ($query, $categoryFilter) {
+              return $query->whereHas('reference', function ($query) use ($categoryFilter) {
+                 $query->where('category_id', $categoryFilter);
+              });
+           })
+           ->when($countryFilter, function ($query, $countryFilter) {
+              return $query->whereHas('reference', function ($query) use ($countryFilter) {
+                 $query->where('country_id', $countryFilter);
+              });
+           })
+           ->when($dateFilter, function ($query, $dateFilter) {
+              return $query->whereDate('created_at', $dateFilter);
+           })
+           ->get();
 
-                 // Plus récent = plus pertinent (max 20 points pour les éléments créés aujourd'hui)
-                 $dateRelevance = max(0, 20 - min(20, $daysDifference));
-                 $relevance += $dateRelevance;
+        foreach ($articles as $article) {
+           $relevance = 0;
+           $matchesTitle = false;
+           $matchesDescription = false;
+           $matchesCode = false;
 
-                 // Structurer les données pour la vue
-                 $allResults[] = [
-                     'id' => $reference->id,
-                     'name' => $reference->name,
-                     'description' => $reference->description,
-                     'country' => [
-                         'name' => $reference->country ? $reference->country->name : null,
-                         'abbr' => $reference->country ? $reference->country->abbr : null,
-                     ],
-                     'category' => $reference->category ? [
-                         'name' => $reference->category->name,
-                         'id' => $reference->category->id,
-                     ] : null,
-                     'created_at' => $reference->created_at ? $reference->created_at->format('d/m/Y') : null,
-                     'user' => $reference->user ? [
-                         'name' => $reference->user->name,
-                         'id' => $reference->user->id,
-                     ] : null,
-                     'articles_count' => $reference->articles->count(),
-                     'type' => 'reference',
-                     'relevance' => $relevance
-                 ];
-             }
-         }
+           foreach ($searchTerms as $term) {
+              if (stripos($article->name, $term) !== false) {
+                 $relevance += 100;
+                 $matchesTitle = true;
+              }
+              if (stripos($article->code, $term) !== false) {
+                 $relevance += 90;
+                 $matchesCode = true;
+              }
+              if (stripos($article->description, $term) !== false) {
+                 $relevance += 50;
+                 $matchesDescription = true;
+              }
+              if ($article->reference && stripos($article->reference->name, $term) !== false) {
+                 $relevance += 40;
+              }
+              if ($article->reference && $article->reference->country &&
+                 stripos($article->reference->country->name, $term) !== false) {
+                 $relevance += 30;
+              }
+           }
 
-         // Rechercher dans les articles
-         $articles = ReferenceArticle::with(['reference', 'reference.country', 'user'])->get();
-         foreach ($articles as $article) {
-             $relevance = 0;
-             $matchesTitle = false;
-             $matchesDescription = false;
-             $matchesCode = false;
+           if ($matchesTitle || $matchesDescription || $matchesCode) {
+              $createdDate = strtotime($article->created_at);
+              $currentDate = time();
+              $daysDifference = ($currentDate - $createdDate) / (60 * 60 * 24);
+              $dateRelevance = max(0, 20 - min(20, $daysDifference));
+              $relevance += $dateRelevance;
 
-             foreach ($searchTerms as $term) {
-                 // Vérifier le titre (priorité 1)
-                 if (stripos($article->name, $term) !== false) {
-                     $relevance += 100; // Priorité 1
-                     $matchesTitle = true;
-                 }
+              $allResults[] = [
+                 'id' => $article->id,
+                 'name' => $article->name,
+                 'code' => $article->code,
+                 'description' => $article->description,
+                 'reference' => $article->reference ? $article->reference->name : null,
+                 'reference_id' => $article->reference ? $article->reference->id : null,
+                 'country' => $article->reference && $article->reference->country ? [
+                    'name' => $article->reference->country->name,
+                    'abbr' => $article->reference->country->abbr,
+                 ] : null,
+                 'created_at' => $article->created_at ? $article->created_at->format('d/m/Y') : null,
+                 'user' => $article->user ? [
+                    'name' => $article->user->name,
+                    'id' => $article->user->id,
+                 ] : null,
+                 'type' => 'article',
+                 'relevance' => $relevance
+              ];
+           }
+        }
 
-                 // Vérifier le code (priorité similaire au titre)
-                 if (stripos($article->code, $term) !== false) {
-                     $relevance += 90;
-                     $matchesCode = true;
-                 }
+        usort($allResults, function($a, $b) {
+           return $b['relevance'] <=> $a['relevance'];
+        });
 
-                 // Vérifier la description (priorité 2)
-                 if (stripos($article->description, $term) !== false) {
-                     $relevance += 50; // Priorité 2
-                     $matchesDescription = true;
-                 }
 
-                 // Vérifier la référence parente
-                 if ($article->reference && stripos($article->reference->name, $term) !== false) {
-                     $relevance += 40;
-                 }
+        $searchData = [
+           'success' => true,
+           'count' => count($allResults),
+           'query' => $searchTerm,
+           'results' => $allResults
+        ];
 
-                 // Vérifier le pays
-                 if ($article->reference && $article->reference->country &&
-                     stripos($article->reference->country->name, $term) !== false) {
-                     $relevance += 30;
-                 }
-             }
 
-             // Si au moins un terme correspond au titre, code ou à la description
-             if ($matchesTitle || $matchesDescription || $matchesCode) {
-                 // Ajouter la date (priorité 3)
-                 $createdDate = strtotime($article->created_at);
-                 $currentDate = time();
-                 $daysDifference = ($currentDate - $createdDate) / (60 * 60 * 24);
+        if ($request->ajax() || $request->wantsJson() || $request->header('Accept') === 'application/json') {
+           return response()->json($searchData);
+        }
 
-                 // Plus récent = plus pertinent (max 20 points pour les éléments créés aujourd'hui)
-                 $dateRelevance = max(0, 20 - min(20, $daysDifference));
-                 $relevance += $dateRelevance;
+        $perPage = 10;
+        $page = $request->input('page', 1);
+        $offset = ($page - 1) * $perPage;
 
-                 // Structurer les données pour la vue
-                 $allResults[] = [
-                     'id' => $article->id,
-                     'name' => $article->name,
-                     'code' => $article->code,
-                     'description' => $article->description,
-                     'reference' => $article->reference ? $article->reference->name : null,
-                     'reference_id' => $article->reference ? $article->reference->id : null,
-                     'country' => $article->reference && $article->reference->country ? [
-                         'name' => $article->reference->country->name,
-                         'abbr' => $article->reference->country->abbr,
-                     ] : null,
-                     'created_at' => $article->created_at ? $article->created_at->format('d/m/Y') : null,
-                     'user' => $article->user ? [
-                         'name' => $article->user->name,
-                         'id' => $article->user->id,
-                     ] : null,
-                     'type' => 'article',
-                     'relevance' => $relevance
-                 ];
-             }
-         }
+        $paginatedResults = array_slice($allResults, $offset, $perPage);
 
-         // Trier tous les résultats par pertinence (du plus élevé au plus bas)
-         usort($allResults, function($a, $b) {
-             return $b['relevance'] <=> $a['relevance'];
-         });
+        $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
+           $paginatedResults,
+           count($allResults),
+           $perPage,
+           $page,
+           ['path' => $request->url(), 'query' => $request->query()]
+        );
 
-         // Préparer les données pour le retour
-         $searchData = [
-             'success' => true,
-             'count' => count($allResults),
-             'query' => $searchTerm,
-             'results' => $allResults
-         ];
 
-         // Pour les requêtes AJAX ou demandant du JSON
-         if ($request->ajax() || $request->wantsJson() || $request->header('Accept') === 'application/json') {
-             return response()->json($searchData);
-         }
 
-         // Pour la pagination en mode non-AJAX
-         $perPage = 10; // Nombre d'éléments par page
-         $page = $request->input('page', 1);
-         $offset = ($page - 1) * $perPage;
-
-         $paginatedResults = array_slice($allResults, $offset, $perPage);
-
-         // Créer un paginateur personnalisé
-         $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
-             $paginatedResults,
-             count($allResults),
-             $perPage,
-             $page,
-             ['path' => $request->url(), 'query' => $request->query()]
-         );
-
-         // Pour les requêtes web classiques, charger la vue
-         return view('public.search.index', [
-             'searchData' => $searchData,
-             'paginator' => $paginator
-         ]);
-     }
+    }
 
      public function index()
      {
          return view('public.search.index');
      }
 
+
+    public function filtre() {
+       $countries = Country::all();
+       $categories = ReferenceCategory::all();
+       return view('public.search.index', [
+          'countries' => $countries,
+          'categories' => $categories
+       ]);
+    }
 
      public function advanced()
      {

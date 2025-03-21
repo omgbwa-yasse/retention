@@ -4,16 +4,34 @@
     <div class="container my-4">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <h1 class="text-center mb-4"><strong>{{ __('search') }}</strong></h1>
+            <h1 class="text-center mb-4"><strong>{{ __('search') }}</strong></h1>
 
-                <form id="search-form" method="GET" action="{{ route('public.search') }}" class="d-flex justify-content-center mb-5">
-                    <div class="input-group">
-                        <input type="text" name="query" id="search-input" class="form-control" placeholder="{{ __('search_placeholder') }}" value="{{ request('query') }}" />
-                        <button type="submit" class="btn btn-primary">{{ __('search_button') }}</button>
-                    </div>
-                </form>
+            <form id="search-form" method="GET" action="{{ route('public.search') }}" class="d-flex justify-content-center mb-5">
+                <div class="input-group">
+                <input type="text" name="query" id="search-input" class="form-control" placeholder="{{ __('search_placeholder') }}" value="{{ request('query') }}" />
+
+                <select name="category" class="form-select mx-2">
+                    <option value="">{{ __('all_categories') }}</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                    @endforeach
+                </select>
+
+                <select name="country" class="form-select mx-2">
+                    <option value="">{{ __('all_countries') }}</option>
+                    @foreach($countries as $country)
+                        <option value="{{ $country->id }}" {{ request('country') == $country->id ? 'selected' : '' }}>{{ $country->name }}</option>
+                    @endforeach
+                </select>
+
+                <input type="date" name="date" class="form-control mx-2" value="{{ request('date') }}" />
+                <button type="submit" class="btn btn-primary">{{ __('search_button') }}</button>
+                </div>
+            </form>
             </div>
         </div>
+
+
 
         <div id="search-results-container">
             @if(isset($searchData) && !empty($searchData))
