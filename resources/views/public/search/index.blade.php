@@ -6,10 +6,10 @@
             <div class="col-md-8">
             <h1 class="text-center mb-4"><strong>{{ __('search') }}</strong></h1>
 
-            <form id="search-form" method="GET" action="{{ route('public.search') }}" class="d-flex justify-content-center mb-5">
-                <div class="input-group">
-                <input type="text" name="query" id="search-input" class="form-control" placeholder="{{ __('search_placeholder') }}" value="{{ request('query') }}" />
+            <form id="search-form" method="GET" action="{{ route('public.search') }}" class="d-flex flex-column justify-content-center mb-5">
+                <input type="text" name="query" id="search-input" class="form-control mb-3" placeholder="{{ __('search_placeholder') }}" value="{{ request('query') }}" />
 
+                <div class="input-group">
                 <select name="category" class="form-select mx-2">
                     <option value="">{{ __('all_categories') }}</option>
                     @foreach($categories as $category)
@@ -23,9 +23,23 @@
                         <option value="{{ $country->id }}" {{ request('country') == $country->id ? 'selected' : '' }}>{{ $country->name }}</option>
                     @endforeach
                 </select>
+                </div>
 
-                <input type="date" name="date" class="form-control mx-2" value="{{ request('date') }}" />
-                <button type="submit" class="btn btn-primary">{{ __('search_button') }}</button>
+                <div class="mt-3">
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <label for="search-date-start" class="form-label">{{ __('start_date') }}</label>
+                            <input type="date" id="search-date-start" name="date_start" class="form-control" value="{{ request('date_start') }}" />
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label for="search-date-end" class="form-label">{{ __('end_date') }}</label>
+                            <input type="date" id="search-date-end" name="date_end" class="form-control" value="{{ request('date_end') }}" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary px-5">{{ __('search_button') }}</button>
                 </div>
             </form>
             </div>
@@ -236,7 +250,8 @@
                 // Récupérer les valeurs des filtres
                 const categoryValue = categorySelect ? categorySelect.value : "";
                 const countryValue = countrySelect ? countrySelect.value : "";
-                const dateValue = document.querySelector('input[name="date"]') ? document.querySelector('input[name="date"]').value : "";
+                const dateStartValue = document.querySelector('input[name="date_start"]') ? document.querySelector('input[name="date_start"]').value : "";
+                const dateEndValue = document.querySelector('input[name="date_end"]') ? document.querySelector('input[name="date_end"]').value : "";
 
                 // Afficher un indicateur de chargement
                 resultsContainer.innerHTML = `
@@ -261,8 +276,12 @@
                     searchUrl += `&country=${encodeURIComponent(countryValue)}`;
                 }
 
-                if (dateValue) {
-                    searchUrl += `&date=${encodeURIComponent(dateValue)}`;
+                if (dateStartValue) {
+                    searchUrl += `&date_start=${encodeURIComponent(dateStartValue)}`;
+                }
+
+                if (dateEndValue) {
+                    searchUrl += `&date_end=${encodeURIComponent(dateEndValue)}`;
                 }
 
                 // Effectuer la requête AJAX

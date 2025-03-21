@@ -31,7 +31,8 @@ class PublicController extends Controller
         $searchTerm = $request->input('query');
         $categoryFilter = $request->input('category');
         $countryFilter = $request->input('country');
-        $dateFilter = $request->input('date');
+        $dateStartFilter = $request->input('date_start');
+        $dateEndFilter = $request->input('date_end');
 
         $countries = Country::all();
         $categories = ReferenceCategory::all();
@@ -63,8 +64,11 @@ class PublicController extends Controller
            ->when($countryFilter, function ($query, $countryFilter) {
               return $query->where('country_id', $countryFilter);
            })
-           ->when($dateFilter, function ($query, $dateFilter) {
-              return $query->whereDate('created_at', $dateFilter);
+           ->when($dateStartFilter, function ($query, $dateStartFilter) {
+              return $query->whereDate('created_at', '>=', $dateStartFilter);
+           })
+           ->when($dateEndFilter, function ($query, $dateEndFilter) {
+              return $query->whereDate('created_at', '<=', $dateEndFilter);
            })
            ->get();
 
@@ -132,8 +136,11 @@ class PublicController extends Controller
                  $query->where('country_id', $countryFilter);
               });
            })
-           ->when($dateFilter, function ($query, $dateFilter) {
-              return $query->whereDate('created_at', $dateFilter);
+           ->when($dateStartFilter, function ($query, $dateStartFilter) {
+              return $query->whereDate('created_at', '>=', $dateStartFilter);
+           })
+           ->when($dateEndFilter, function ($query, $dateEndFilter) {
+              return $query->whereDate('created_at', '<=', $dateEndFilter);
            })
            ->get();
 

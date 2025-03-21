@@ -15,7 +15,14 @@ class Reference extends Model
         'description',
         'category_id',
         'country_id',
-        'user_id'
+        'user_id',
+        'published_at'
+    ];
+
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'published_at'
     ];
 
     public function category()

@@ -15,6 +15,7 @@ class ReferenceArticle extends Model
     protected $fillable = [
         'code',
         'name',
+        'published_at',
         'description',
         'reference_id',
         'user_id',
