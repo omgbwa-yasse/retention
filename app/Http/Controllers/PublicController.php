@@ -44,10 +44,8 @@ class PublicController extends Controller
 
          $references = Reference::query()
              ->latest()
-             ->limit(20)
-             ->get();
-
-             $references = $references->load('articles');
+             ->with('articles')
+             ->paginate(20);
 
          return view('public.search.index', compact('references','number_country' ,'number_classes','number_rules','number_references','number_articles','number_typologies','countries'));
      }
@@ -57,47 +55,56 @@ class PublicController extends Controller
 
 
 
-     public function advanced(Request $request)
-     {
+    public function advanced(Request $request)
+    {
+        $searchTerm = $request->input('term');
 
+        if (empty($searchTerm)) {
+            return $this->index();
+        }
 
+        $searchTerms = preg_split('/\s+/', trim($searchTerm));
 
-        $query = trim($request->input('term', ''));
-        $references = Reference::query();
-
-        $references->where(function ($q) use ($query, $request) {
-            if ($query) {
-                $q->where('name', 'LIKE', "%{$query}%")
-                  ->orWhere('description', 'LIKE', "%{$query}%")
-                  ->orWhereHas('articles', function ($q) use ($query) {
-                      $q->where('name', 'LIKE', "%{$query}%")
-                        ->orWhere('description', 'LIKE', "%{$query}%");
-                  });
+        $searchFunction = function ($query) use ($searchTerms, $request) {
+            foreach ($searchTerms as $term) {
+                $query->where(function ($subQuery) use ($term) {
+                    $subQuery->where('name', 'LIKE', "%{$term}%")
+                            ->orWhere('description', 'LIKE', "%{$term}%")
+                            ->orWhereHas('country', function ($q) use ($term) {
+                                $q->where('name', 'LIKE', "%{$term}%");
+                            })
+                            ->orWhereHas('articles', function ($q) use ($term) {
+                                $q->where('name', 'LIKE', "%{$term}%")
+                                    ->where('description', 'LIKE', "%{$term}%");
+                            });
+                });
             }
+
             if ($request->input('country') !== '') {
-                $q->orWhereHas('country', function ($q) use ($request) {
-                $q->where('id', $request->input('country'));
+                $query->orWhereHas('country', function ($q) use ($request) {
+                    $q->where('id', $request->input('country'));
                 });
             }
 
             if ($request->input('date_from') !== '') {
-                $q->orWhere('created_at', '=>', $request->input('date_from'));
+                $query->orWhere('created_at', '>=', $request->input('date_from'));
             }
 
             if ($request->input('date_to') !== '') {
-                $q->orWhere('created_at', '=<', $request->input('date_to'));
+                $query->orWhere('created_at', '<=', $request->input('date_to'));
             }
-            });
+        };
 
+        $references = Reference::with(['country', 'articles'])
+                ->where($searchFunction)
+                ->paginate(20);
 
-        $references = $references->get();
-
-         return view('public.search.advanced', [
-             'references' => $references,
-             'countries' => Country::all(),
-             'searchTerm' => $query
-         ]);
-     }
+        return view('public.search.advanced', [
+            'references' => $references,
+            'countries' => Country::all(),
+            'searchTerm' => $searchTerm
+        ]);
+    }
 
 
 
@@ -134,11 +141,9 @@ class PublicController extends Controller
         };
 
         // Rechercher dans les références avec eager loading de la relation country
-        $references = Reference::with('country')
+        $references = Reference::with(['country', 'articles'])
                 ->where($searchFunction)
-                ->get();
-
-        $references = $references->load('articles');
+                ->paginate(20);
 
         return view('public.search.index', compact('references', 'searchTerm'));
     }

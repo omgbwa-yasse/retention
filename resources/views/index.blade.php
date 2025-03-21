@@ -60,6 +60,15 @@
             border-radius: 9999px;
             font-size: 0.875rem;
         }
+
+        .stat-item {
+            font-size: 0.9rem;
+        }
+        @media (max-width: 768px) {
+            .d-flex.justify-content-center.flex-wrap.gap-3 {
+                justify-content: flex-start !important;
+            }
+        }
     </style>
     @php
         // Get visitor's IP
@@ -119,7 +128,7 @@
             </div>
         </div>
     @else
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-2">
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('public.index') }}">
                     <i class="fas fa-book-reader"></i>
@@ -134,6 +143,16 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/') }}">
+                                <i class="fas fa-home"></i> {{ __('home') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url()->previous() }}">
+                                <i class="fas fa-arrow-left"></i> {{ __('back') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('public.about')}}">{{ __('about') }}</a>
                         </li>
                         <li class="nav-item">
@@ -145,79 +164,73 @@
                     </ul>
                 </div>
 
-
-                <div class="d-grid gap-3 d-md-flex align-items-center flex-column flex-md-row">
-                    @if(isset($number_country))
-                        <li class="nav-item d-flex align-items-center" style="padding: 0 10px;">
-                            <i class="fas fa-globe mr-2"></i>
-                            <span>{{ __('statistics.countries') }}: {{ $number_country }}</span>
-                        </li>
-                    @endif
-                    @if(isset($number_classes))
-                        <li class="nav-item d-flex align-items-center" style="padding: 0 10px;">
-                            <i class="fas fa-list-alt mr-2"></i>
-                            <span>{{ __('statistics.classifications') }}: {{ $number_classes }}</span>
-                        </li>
-                    @endif
-                    @if(isset($number_rules))
-                        <li class="nav-item d-flex align-items-center" style="padding: 0 10px;">
-                            <i class="fas fa-gavel mr-2"></i>
-                            <span>{{ __('statistics.rules') }}: {{ $number_rules }}</span>
-                        </li>
-                    @endif
-                    @if(isset($number_references))
-                        <li class="nav-item d-flex align-items-center" style="padding: 0 10px;">
-                            <i class="fas fa-book mr-2"></i>
-                            <span>{{ __('statistics.references') }}: {{ $number_references }}</span>
-                        </li>
-                    @endif
-                    @if(isset($number_articles))
-                        <li class="nav-item d-flex align-items-center" style="padding: 0 10px;">
-                            <i class="fas fa-newspaper mr-2"></i>
-                            <span>{{ __('statistics.articles') }}: {{ $number_articles }}</span>
-                        </li>
-                    @endif
-                    @if(isset($number_typologies))
-                        <li class="nav-item d-flex align-items-center" style="padding: 0 10px;">
-                            <i class="fas fa-th-list mr-2"></i>
-                            <span>{{ __('statistics.typologies') }}: {{ $number_typologies }}</span>
-                        </li>
-                    @endif
-                </div>
-
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!-- Sélecteur de langue -->
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="langDropdown" data-bs-toggle="dropdown">
+                            {{ config('app.available_locales')[App::getLocale()] }}
+                        </button>
+                        <ul class="dropdown-menu">
+                            @foreach(config('app.available_locales') as $locale => $label)
+                                <li>
+                                    <a class="dropdown-item @if(App::getLocale() == $locale) active @endif"
+                                       href="{{ route('language.switch', $locale) }}">
+                                        {{ $label }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </ul>
             </div>
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <!-- Sélecteur de langue -->
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="langDropdown" data-bs-toggle="dropdown">
-                        {{ config('app.available_locales')[App::getLocale()] }}
-                    </button>
-                    <ul class="dropdown-menu">
-                        @foreach(config('app.available_locales') as $locale => $label)
-                            <li>
-                                <a class="dropdown-item @if(App::getLocale() == $locale) active @endif"
-                                   href="{{ route('language.switch', $locale) }}">
-                                    {{ $label }}
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </ul>
         </nav>
-        <div class="container">
-            <div class="">
-                {{-- Bouton Accueil avec icône maison --}}
-                <a href="{{ url('/') }}" class="btn btn-primary">
-                    <i class="fas fa-home"></i> Accueil
-                </a>
 
-                {{-- Bouton Retour avec icône flèche --}}
-                <a href="{{ url()->previous() }}" class="btn btn-primary">
-                    <i class="fas fa-arrow-left"></i> Retour
-                </a>
+        @if(isset($number_country) || isset($number_classes) || isset($number_rules) || isset($number_references) || isset($number_articles) || isset($number_typologies))
+            <div class="container mb-3">
+                <div class="bg-light py-2 px-3 rounded text-center">
+                    <div class="d-flex justify-content-center flex-wrap gap-3">
+                        @if(isset($number_country))
+                            <div class="stat-item d-inline-flex align-items-center mx-2">
+                                <i class="fas fa-globe me-2"></i>
+                                <span>{{ __('statistics.countries') }}: <strong>{{ $number_country }}</strong></span>
+                            </div>
+                        @endif
+                        @if(isset($number_classes))
+                            <div class="stat-item d-inline-flex align-items-center mx-2">
+                                <i class="fas fa-list-alt me-2"></i>
+                                <span>{{ __('statistics.classifications') }}: <strong>{{ $number_classes }}</strong></span>
+                            </div>
+                        @endif
+                        @if(isset($number_rules))
+                            <div class="stat-item d-inline-flex align-items-center mx-2">
+                                <i class="fas fa-gavel me-2"></i>
+                                <span>{{ __('statistics.rules') }}: <strong>{{ $number_rules }}</strong></span>
+                            </div>
+                        @endif
+                        @if(isset($number_references))
+                            <div class="stat-item d-inline-flex align-items-center mx-2">
+                                <i class="fas fa-book me-2"></i>
+                                <span>{{ __('statistics.references') }}: <strong>{{ $number_references }}</strong></span>
+                            </div>
+                        @endif
+                        @if(isset($number_articles))
+                            <div class="stat-item d-inline-flex align-items-center mx-2">
+                                <i class="fas fa-newspaper me-2"></i>
+                                <span>{{ __('statistics.articles') }}: <strong>{{ $number_articles }}</strong></span>
+                            </div>
+                        @endif
+                        @if(isset($number_typologies))
+                            <div class="stat-item d-inline-flex align-items-center mx-2">
+                                <i class="fas fa-th-list me-2"></i>
+                                <span>{{ __('statistics.typologies') }}: <strong>{{ $number_typologies }}</strong></span>
+                            </div>
+                        @endif
+                    </div>
+                </div>
             </div>
+        @endif
 
+        <div class="container">
             @yield('content')
         </div>
     @endauth
@@ -225,8 +238,6 @@
         @include('footer')
     </div>
 </div>
-
-
 
 </body>
 </html>
