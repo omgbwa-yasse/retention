@@ -65,10 +65,10 @@ class PublicController extends Controller
               return $query->where('country_id', $countryFilter);
            })
            ->when($dateStartFilter, function ($query, $dateStartFilter) {
-              return $query->whereDate('created_at', '>=', $dateStartFilter);
+              return $query->whereDate('published_at', '>=', $dateStartFilter);
            })
            ->when($dateEndFilter, function ($query, $dateEndFilter) {
-              return $query->whereDate('created_at', '<=', $dateEndFilter);
+              return $query->whereDate('published_at', '<=', $dateEndFilter);
            })
            ->get();
 
@@ -137,10 +137,14 @@ class PublicController extends Controller
               });
            })
            ->when($dateStartFilter, function ($query, $dateStartFilter) {
-              return $query->whereDate('created_at', '>=', $dateStartFilter);
+              return $query->whereHas('reference', function($q) use ($dateStartFilter) {
+                 $q->whereDate('published_at', '>=', $dateStartFilter);
+              });
            })
            ->when($dateEndFilter, function ($query, $dateEndFilter) {
-              return $query->whereDate('created_at', '<=', $dateEndFilter);
+              return $query->whereHas('reference', function($q) use ($dateEndFilter) {
+                 $q->whereDate('published_at', '<=', $dateEndFilter);
+              });
            })
            ->get();
 
