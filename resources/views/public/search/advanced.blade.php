@@ -10,153 +10,152 @@
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-body p-4">
                         <form action="{{ route('public.search.advanced.results') }}" method="GET">
-                            <!-- First row: Search term -->
-                            <div class="row mb-3">
-                                <div class="col-12">
-                                    <div class="form-floating mb-2">
-                                        <input type="text" class="form-control" id="term" name="term"
-                                               value="{{ request('term') }}" placeholder="{{ __('search_placeholder') }}">
-                                        <label for="term">{{ __('search_term') }}</label>
+                            <!-- Recherche principale -->
+                            <div class="mb-4">
+                                <h5 class="mb-3">Mots clés</h5>
+                                <input type="hidden" id="searchQuery" name="searchQuery" value="{{ request('searchQuery') }}">
+
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control form-control-lg" id="newTerm"
+                                            placeholder="Entrez vos termes de recherche">
+                                        <button type="button" class="btn btn-primary" id="addTermBtn">
+                                            <i class="bi bi-plus-lg"></i> Ajouter
+                                        </button>
                                     </div>
-                                    <input type="hidden" id="searchQuery" name="searchQuery" value="{{ request('searchQuery') }}">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <div class="input-group">
-                                            <select class="form-select" id="termSelector">
-                                                <option value="contains">Contient</option>
-                                                <option value="starts">Commence par</option>
-                                                <option value="except">Sauf</option>
-                                            </select>
-                                            <input type="text" class="form-control" id="newTerm" placeholder="Ajouter un terme">
-                                            <button type="button" class="btn btn-success" id="addTermBtn">
-                                                <i class="bi bi-plus-lg"></i> Ajouter
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div id="searchTerms" class="mb-2 d-flex flex-wrap gap-2">
-                                        <!-- Search terms will be displayed here -->
+                                    <div class="form-text">Ajoutez plusieurs mots clés pour affiner votre recherche</div>
+                                </div>
+
+                                <div id="searchTermsContainer" class="d-flex flex-wrap gap-2 mb-2">
+                                    <!-- Tags de recherche ajoutés dynamiquement -->
+                                    <div class="alert alert-info text-center w-100 mb-0 py-2" id="noTermsMessage">
+                                        Ajoutez des mots clés pour commencer votre recherche
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Second row: Type, Country, Dates -->
-                            <div class="row mb-4">
-                                <!-- Search type -->
-                                <div class="col-md-3 mb-3 mb-md-0">
-                                    <div class="form-floating">
-                                        <select class="form-select" id="type" name="type">
-                                            <option value="reference" {{ request('type') == 'reference' ? 'selected' : '' }}>{{ __('references') }}</option>
-                                        </select>
-                                        <label for="type">{{ __('type') }}</label>
-                                    </div>
+                            <!-- Options de filtrage -->
+                            <div class="mb-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <h5 class="mb-0">Filtres</h5>
+                                    <button type="button" class="btn btn-link ms-auto" id="resetFilters">
+                                        <i class="bi bi-arrow-counterclockwise"></i> Réinitialiser
+                                    </button>
                                 </div>
 
-                                <!-- Country -->
-                                <div class="col-md-3 mb-3 mb-md-0">
-                                    <div class="form-floating">
+                                <div class="row g-3">
+                                    <!-- Pays -->
+                                    <div class="col-md-4">
+                                        <label for="countries" class="form-label">Pays</label>
                                         <select class="form-select" id="countries" name="country">
+                                            <option value="">Tous les pays</option>
                                             @foreach($countries as $country)
-                                                <option value="">
-                                                    Tous les pays
-                                                </option>
-                                                <option value="{{ $country->id }}">
+                                                <option value="{{ $country->id }}" {{ request('country') == $country->id ? 'selected' : '' }}>
                                                     {{ $country->name }} ({{ $country->abbr }})
                                                 </option>
                                             @endforeach
                                         </select>
-                                        <label for="countries">{{ __('country') }}</label>
                                     </div>
-                                </div>
 
-                                <!-- Dates -->
-                                <div class="col-md-6">
-                                    <div class="row g-3">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <div class="form-floating">
-                                                <input type="date" class="form-control" id="date_from" name="date_from"
-                                                       value="{{ request('date_from') }}">
-                                                <label for="date_from">{{ __('date_start') }}</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-floating">
-                                                <input type="date" class="form-control" id="date_to" name="date_to"
-                                                       value="{{ request('date_to') }}">
-                                                <label for="date_to">{{ __('date_end') }}</label>
-                                            </div>
-                                        </div>
+                                    <!-- Dates -->
+                                    <div class="col-md-4">
+                                        <label for="date_from" class="form-label">Date de début</label>
+                                        <input type="date" class="form-control" id="date_from" name="date_from"
+                                               value="{{ request('date_from') }}">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="date_to" class="form-label">Date de fin</label>
+                                        <input type="date" class="form-control" id="date_to" name="date_to"
+                                               value="{{ request('date_to') }}">
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Third row: Search button -->
-                            <div class="row">
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-primary w-100 py-2" id="searchBtn">
-                                        <i class="bi bi-search me-2"></i> {{ __('search') }}
-                                    </button>
-                                </div>
+                            <!-- Bouton de recherche -->
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-lg w-100" id="searchBtn">
+                                    <i class="bi bi-search me-2"></i> Rechercher
+                                </button>
                             </div>
                         </form>
                     </div>
                 </div>
 
-                <!-- Search results -->
+                <!-- Résultats de recherche -->
                 @if(isset($references) && $references->count() > 0)
-                    <div class="card border-0 shadow-sm">
-                        <div class="bg-light py-2 px-3 mb-3">
-                            <h5 class="mb-0 fs-4">{{ __('search_results') }} ({{ $references->count() }} {{ __('results_found') }})</h5>
+                    <div class="border-0">
+                        <div class="bg-light py-2 px-3 mb-3 d-flex align-items-center">
+                            <h5 class="mb-0 fs-4">{{ __('search_results') }}</h5>
+                            <span class="ms-2 badge bg-secondary">{{ $references->total() }} résultats</span>
                         </div>
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="table-light">
-                                    <tr>
-                                        <th>{{ __('table.type') }}</th>
-                                        <th>{{ __('table.name') }}</th>
-                                        <th>{{ __('table.description') }}</th>
-                                        <th>{{ __('table.country') }}</th>
-                                        <th>{{ __('table.date') }}</th>
-                                        <th>{{ __('table.actions') }}</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($references as $record)
-                                        <tr>
-                                            <td>
-                                                <span class="badge bg-info">{{ __('badges.reference') }}</span>
-                                            </td>
-                                            <td class="fw-medium">{{ $record['name'] }}</td>
-                                            <td>{{ Str::limit($record['description'], 100) }}</td>
-                                            <td>{{ $record['country']['name'] ?? __('not_available') }}</td>
-                                            <td>{{ $record['created_at'] ? date('d/m/Y', strtotime($record['created_at'])) : __('not_available') }}</td>
-                                            <td>
-                                                @switch($record['type'])
-                                                    @case('rule')
-                                                        <a href="{{ route('public.rules.show', $record['id']) }}" class="btn btn-sm btn-primary">
-                                                            <i class="bi bi-eye me-1"></i> {{ __('view') }}
-                                                        </a>
-                                                        @break
-                                                    @case('class')
-                                                        <a href="{{ route('public.classes.show', $record['id']) }}" class="btn btn-sm btn-success">
-                                                            <i class="bi bi-eye me-1"></i> {{ __('view') }}
-                                                        </a>
-                                                        @break
-                                                    @case('reference')
-                                                        <a href="{{ route('public.references.show', $record['id']) }}" class="btn btn-sm btn-info">
-                                                            <i class="bi bi-eye me-1"></i> {{ __('view') }}
-                                                        </a>
-                                                        @break
-                                                @endswitch
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
+                        <div class="list-unstyled">
+                            @foreach($references as $value)
+                                <div class="bg-white p-3 mb-3 rounded shadow-sm">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <a href="{{ route('public.references.show', $value['id']) }}" class="text-decoration-none">
+                                            <h2 class="h5 fw-bold mb-0 text-primary hover-underline">{{ $value['name'] }}</h2>
+                                        </a>
+                                        <span class="badge {{ $value['type'] === 'reference' ? 'bg-success' : ($value['type'] === 'rule' ? 'bg-primary' : ($value['type'] === 'class' ? 'bg-secondary' : '')) }} ms-2">
+                                            <i class="bi bi-book me-1"></i>
+                                            {{ $value['type'] }}
+                                        </span>
+                                    </div>
+
+                                    <p class="mb-3">{{ Str::limit($value['description'], 150) }}</p>
+
+                                    <div class="d-flex flex-wrap text-muted small">
+                                        @if(isset($value['country']))
+                                            <div class="me-3 mb-1">
+                                                <i class="bi bi-geo-alt"></i>
+                                                <strong>{{ $value['country']['name'] }}</strong>
+                                                @if(isset($value['country']['abbr']))
+                                                    ({{ $value['country']['abbr'] }})
+                                                @endif
+                                            </div>
+                                        @endif
+
+                                        @if(isset($value['category']))
+                                            <div class="me-3 mb-1">
+                                                <i class="bi bi-folder"></i>
+                                                <strong>{{ $value->category->name }}</strong>
+                                            </div>
+                                        @endif
+
+                                        <div class="me-3 mb-1">
+                                            <i class="bi bi-calendar"></i>
+                                            @if(isset($value['created_at']))
+                                                {{ date('d/m/Y', strtotime($value['created_at'])) }}
+                                            @else
+                                                {{ __('date_unavailable') }}
+                                            @endif
+                                        </div>
+
+                                        @if(isset($value['user']))
+                                            <div class="mb-1">
+                                                <i class="bi bi-person"></i>
+                                                {{ $value['user']['name'] }}
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="mt-2">
+                                        <a href="{{ route('public.references.show', $value['id']) }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye me-1"></i> Voir le détail
+                                        </a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        @if(method_exists($references, 'links'))
+                            <div class="d-flex justify-content-center mt-4">
+                                {{ $references->appends(request()->except('page'))->links('pagination::bootstrap-5') }}
                             </div>
-                        </div>
+                        @endif
                     </div>
-                @elseif(request()->has('term'))
-                    <div class="alert alert-info text-center p-4 border-0">
+                @elseif(request()->has('searchQuery'))
+                    <div class="alert alert-info text-center p-4 border-0 shadow-sm">
                         <i class="bi bi-search fs-4 mb-2 d-block"></i>
                         <p class="mb-0 fs-5">{{ __('no_results') }}</p>
                     </div>
@@ -167,11 +166,11 @@
 
     <style>
         input, textarea, select {
-            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
         }
 
         .card {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             border-radius: 0.5rem;
         }
 
@@ -179,6 +178,49 @@
             text-decoration: underline !important;
         }
 
+        /* Badges de termes de recherche */
+        .search-term {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            background-color: #e3f2fd;
+            color: #0d47a1;
+            border: 1px solid #bbdefb;
+            transition: all 0.2s;
+        }
+
+        .search-term:hover {
+            background-color: #bbdefb;
+        }
+
+        .search-term-remove {
+            margin-left: 0.75rem;
+            font-size: 1.25rem;
+            line-height: 1;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .search-term-remove:hover {
+            opacity: 1;
+        }
+
+        /* Améliorations visuelles */
+        .form-control-lg {
+            height: calc(1.5em + 1rem + 2px);
+        }
+
+        .form-select:focus,
+        .form-control:focus {
+            border-color: #90caf9;
+            box-shadow: 0 0 0 0.25rem rgba(33, 150, 243, 0.15);
+        }
+
+        /* Styles RTL */
         @if(app()->getLocale() === 'ar')
         .container {
             direction: rtl;
@@ -187,7 +229,7 @@
         .text-center {
             text-align: center !important;
         }
-        .me-1, .me-2 {
+        .me-1, .me-2, .me-3 {
             margin-left: 0.5rem !important;
             margin-right: 0 !important;
         }
@@ -203,71 +245,62 @@
             margin-left: 0.5rem;
             margin-right: 0;
         }
+        .d-flex {
+            flex-direction: row-reverse;
+        }
+        .input-group {
+            flex-direction: row-reverse;
+        }
+        .pagination {
+            flex-direction: row-reverse;
+        }
+        .search-term-remove {
+            margin-right: 0.75rem;
+            margin-left: 0;
+        }
         @endif
-
-        .search-term-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.35rem 0.75rem;
-            border-radius: 1rem;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .search-term-badge .remove-term {
-            margin-left: 0.5rem;
-            cursor: pointer;
-        }
-
-        .contains-term {
-            background-color: #dff0d8;
-            color: #3c763d;
-        }
-
-        .starts-term {
-            background-color: #d9edf7;
-            color: #31708f;
-        }
-
-        .except-term {
-            background-color: #f2dede;
-            color: #a94442;
-        }
     </style>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const dateExact = document.getElementById('date');
-            const dateFrom = document.getElementById('date_from');
-            const dateTo = document.getElementById('date_to');
-
-            // Advanced search with term selectors
-            const termInput = document.getElementById('term');
-            const newTermInput = document.getElementById('newTerm');
-            const termSelector = document.getElementById('termSelector');
-            const addTermBtn = document.getElementById('addTermBtn');
-            const searchTermsContainer = document.getElementById('searchTerms');
+            // Sélecteurs DOM
             const searchQueryInput = document.getElementById('searchQuery');
-            const searchBtn = document.getElementById('searchBtn');
+            const newTermInput = document.getElementById('newTerm');
+            const addTermBtn = document.getElementById('addTermBtn');
+            const searchTermsContainer = document.getElementById('searchTermsContainer');
+            const noTermsMessage = document.getElementById('noTermsMessage');
+            const resetFiltersBtn = document.getElementById('resetFilters');
 
+            // Tableau des termes de recherche
             let searchTerms = [];
 
-            // Load any existing search query
+            // Initialiser les termes de recherche à partir du query existant
             if (searchQueryInput.value) {
                 try {
-                    searchTerms = JSON.parse(searchQueryInput.value);
+                    const parsedValue = JSON.parse(searchQueryInput.value);
+                    // Convertir l'ancien format avec sélecteurs au nouveau format simple
+                    if (Array.isArray(parsedValue)) {
+                        searchTerms = parsedValue.map(item => {
+                            // Si c'est l'ancien format avec sélecteur, extraire uniquement le terme
+                            if (item && typeof item === 'object' && item.term) {
+                                return item.term;
+                            }
+                            // Si c'est déjà une chaîne simple, la conserver
+                            return typeof item === 'string' ? item : '';
+                        }).filter(term => term !== '');
+                    }
                     renderSearchTerms();
                 } catch (e) {
-                    console.error('Error parsing search query', e);
+                    console.error('Erreur lors du parsing du query', e);
                 }
             }
 
-            // Add term button click
+            // Ajouter un terme avec le bouton
             addTermBtn.addEventListener('click', function() {
                 addSearchTerm();
             });
 
-            // Enter key in newTerm input
+            // Ajouter un terme avec la touche Enter
             newTermInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
@@ -275,55 +308,69 @@
                 }
             });
 
+            // Réinitialiser les filtres
+            resetFiltersBtn.addEventListener('click', function() {
+                document.getElementById('countries').value = '';
+                document.getElementById('date_from').value = '';
+                document.getElementById('date_to').value = '';
+            });
+
             function addSearchTerm() {
                 const term = newTermInput.value.trim();
                 if (term) {
-                    const selector = termSelector.value;
-                    searchTerms.push({
-                        selector: selector,
-                        term: term
-                    });
-
-                    newTermInput.value = '';
-                    renderSearchTerms();
-                    updateSearchInput();
+                    // Éviter les doublons
+                    if (!searchTerms.includes(term)) {
+                        searchTerms.push(term);
+                        newTermInput.value = '';
+                        newTermInput.focus();
+                        renderSearchTerms();
+                        updateSearchInput();
+                    } else {
+                        // Avertir l'utilisateur que le terme existe déjà
+                        highlightExistingTerm(term);
+                    }
                 }
             }
 
-            function renderSearchTerms() {
-                searchTermsContainer.innerHTML = '';
+            function highlightExistingTerm(term) {
+                const existingTerms = document.querySelectorAll('.search-term');
+                existingTerms.forEach(termEl => {
+                    if (termEl.textContent.trim().replace('×', '') === term) {
+                        // Animation de mise en évidence
+                        termEl.style.transform = 'scale(1.1)';
+                        termEl.style.boxShadow = '0 0 0 3px rgba(25, 118, 210, 0.4)';
 
-                if (searchTerms.length === 0) {
-                    return;
-                }
-
-                searchTerms.forEach((item, index) => {
-                    const termBadge = document.createElement('div');
-                    termBadge.className = `search-term-badge ${item.selector}-term`;
-
-                    let selectorText = '';
-                    switch (item.selector) {
-                        case 'contains':
-                            selectorText = 'Contient';
-                            break;
-                        case 'starts':
-                            selectorText = 'Commence par';
-                            break;
-                        case 'except':
-                            selectorText = 'Sauf';
-                            break;
+                        setTimeout(() => {
+                            termEl.style.transform = '';
+                            termEl.style.boxShadow = '';
+                        }, 800);
                     }
+                });
+            }
 
-                    termBadge.innerHTML = `
-                        <span><strong>${selectorText}:</strong> ${item.term}</span>
-                        <span class="remove-term" data-index="${index}">×</span>
+            function renderSearchTerms() {
+                // Vider le conteneur des termes de recherche
+                Array.from(searchTermsContainer.children)
+                    .filter(el => el.id !== 'noTermsMessage')
+                    .forEach(el => el.remove());
+
+                // Afficher ou masquer le message "pas de termes"
+                noTermsMessage.style.display = searchTerms.length === 0 ? 'block' : 'none';
+
+                // Créer les badges pour chaque terme
+                searchTerms.forEach((term, index) => {
+                    const termElement = document.createElement('div');
+                    termElement.className = 'search-term';
+                    termElement.innerHTML = `
+                        ${term}
+                        <span class="search-term-remove" data-index="${index}">&times;</span>
                     `;
 
-                    searchTermsContainer.appendChild(termBadge);
+                    searchTermsContainer.appendChild(termElement);
                 });
 
-                // Add event listeners to remove buttons
-                document.querySelectorAll('.remove-term').forEach(btn => {
+                // Ajouter les écouteurs d'événements pour la suppression
+                document.querySelectorAll('.search-term-remove').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const index = parseInt(this.getAttribute('data-index'));
                         searchTerms.splice(index, 1);
@@ -335,46 +382,21 @@
 
             function updateSearchInput() {
                 searchQueryInput.value = JSON.stringify(searchTerms);
-
-                // Update the main term input with a formatted representation
-                let formattedQuery = searchTerms.map(item => {
-                    switch (item.selector) {
-                        case 'contains':
-                            return item.term;
-                        case 'starts':
-                            return `^${item.term}`;
-                        case 'except':
-                            return `-${item.term}`;
-                        default:
-                            return item.term;
-                    }
-                }).join(' ');
-
-                termInput.value = formattedQuery;
             }
 
-            function toggleDateFields() {
-                const isDateExactFilled = dateExact?.value !== '';
-                if (dateFrom && dateTo && dateExact) {
-                    dateFrom.disabled = isDateExactFilled;
-                    dateTo.disabled = isDateExactFilled;
-
-                    if (isDateExactFilled) {
-                        dateFrom.value = '';
-                        dateTo.value = '';
-                    }
-                }
-            }
-
-            if (dateExact) {
-                dateExact.addEventListener('change', toggleDateFields);
-                toggleDateFields();
-            }
-
-            // Form submission
+            // Soumission du formulaire
             document.querySelector('form').addEventListener('submit', function(e) {
-                // Make sure the searchQuery is updated
+                // S'assurer que searchQuery est à jour
                 updateSearchInput();
+
+                // Ne soumettre que si des termes ont été ajoutés ou si des filtres sont définis
+                if (searchTerms.length === 0 &&
+                    !document.getElementById('countries').value &&
+                    !document.getElementById('date_from').value &&
+                    !document.getElementById('date_to').value) {
+                    e.preventDefault();
+                    alert('Veuillez ajouter au moins un mot clé ou sélectionner un filtre.');
+                }
             });
         });
     </script>

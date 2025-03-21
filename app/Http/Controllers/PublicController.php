@@ -55,55 +55,134 @@ class PublicController extends Controller
 
 
 
-    public function advanced(Request $request)
+    public function advancedSearchResults(Request $request)
     {
-        $searchTerm = $request->input('term');
+        $searchQuery = $request->input('searchQuery');
+        $country = $request->input('country');
+        $dateFrom = $request->input('date_from');
+        $dateTo = $request->input('date_to');
 
-        if (empty($searchTerm)) {
-            return $this->index();
+        // Initialiser la requête avec les relations nécessaires
+        $query = Reference::with(['country', 'articles']);
+
+        // Appliquer les termes de recherche
+        if (!empty($searchQuery)) {
+            $searchTerms = json_decode($searchQuery, true) ?: [];
+
+            if (!empty($searchTerms)) {
+                $query->where(function($mainQuery) use ($searchTerms) {
+                    foreach ($searchTerms as $index => $term) {
+                        if (is_string($term)) {
+                            // Nouveau format simplifié (sans sélecteurs)
+                            if ($index === 0) {
+                                // Premier terme - condition initiale
+                                $mainQuery->where(function($q) use ($term) {
+                                    $q->where('name', 'LIKE', "%{$term}%")
+                                      ->orWhere('description', 'LIKE', "%{$term}%")
+                                      ->orWhereHas('country', function($countryQ) use ($term) {
+                                          $countryQ->where('name', 'LIKE', "%{$term}%");
+                                      })
+                                      ->orWhereHas('articles', function($articlesQ) use ($term) {
+                                          $articlesQ->where('name', 'LIKE', "%{$term}%")
+                                                  ->orWhere('description', 'LIKE', "%{$term}%");
+                                      });
+                                });
+                            } else {
+                                // Termes suivants - AND avec les conditions précédentes
+                                $mainQuery->where(function($q) use ($term) {
+                                    $q->where('name', 'LIKE', "%{$term}%")
+                                      ->orWhere('description', 'LIKE', "%{$term}%")
+                                      ->orWhereHas('country', function($countryQ) use ($term) {
+                                          $countryQ->where('name', 'LIKE', "%{$term}%");
+                                      })
+                                      ->orWhereHas('articles', function($articlesQ) use ($term) {
+                                          $articlesQ->where('name', 'LIKE', "%{$term}%")
+                                                  ->orWhere('description', 'LIKE', "%{$term}%");
+                                      });
+                                });
+                            }
+                        }
+                        else if (is_array($term) && isset($term['term'])) {
+                            // Ancien format avec sélecteurs pour la compatibilité
+                            $termValue = $term['term'];
+                            $selector = $term['selector'] ?? 'contains';
+
+                            switch ($selector) {
+                                case 'contains':
+                                    $mainQuery->where(function($q) use ($termValue) {
+                                        $q->where('name', 'LIKE', "%{$termValue}%")
+                                          ->orWhere('description', 'LIKE', "%{$termValue}%")
+                                          ->orWhereHas('country', function($countryQ) use ($termValue) {
+                                              $countryQ->where('name', 'LIKE', "%{$termValue}%");
+                                          })
+                                          ->orWhereHas('articles', function($articlesQ) use ($termValue) {
+                                              $articlesQ->where('name', 'LIKE', "%{$termValue}%")
+                                                      ->orWhere('description', 'LIKE', "%{$termValue}%");
+                                          });
+                                    });
+                                    break;
+                                case 'starts':
+                                    $mainQuery->where(function($q) use ($termValue) {
+                                        $q->where('name', 'LIKE', "{$termValue}%")
+                                          ->orWhere('description', 'LIKE', "{$termValue}%")
+                                          ->orWhereHas('country', function($countryQ) use ($termValue) {
+                                              $countryQ->where('name', 'LIKE', "{$termValue}%");
+                                          })
+                                          ->orWhereHas('articles', function($articlesQ) use ($termValue) {
+                                              $articlesQ->where('name', 'LIKE', "{$termValue}%")
+                                                      ->orWhere('description', 'LIKE', "{$termValue}%");
+                                          });
+                                    });
+                                    break;
+                                case 'except':
+                                    $mainQuery->where(function($q) use ($termValue) {
+                                        $q->where('name', 'NOT LIKE', "%{$termValue}%")
+                                          ->where('description', 'NOT LIKE', "%{$termValue}%")
+                                          ->whereDoesntHave('country', function($countryQ) use ($termValue) {
+                                              $countryQ->where('name', 'LIKE', "%{$termValue}%");
+                                          })
+                                          ->whereDoesntHave('articles', function($articlesQ) use ($termValue) {
+                                              $articlesQ->where('name', 'LIKE', "%{$termValue}%")
+                                                      ->orWhere('description', 'LIKE', "%{$termValue}%");
+                                          });
+                                    });
+                                    break;
+                            }
+                        }
+                    }
+                });
+            }
         }
 
-        $searchTerms = preg_split('/\s+/', trim($searchTerm));
+        // Filtre par pays
+        if (!empty($country)) {
+            $query->where('country_id', $country);
+        }
 
-        $searchFunction = function ($query) use ($searchTerms, $request) {
-            foreach ($searchTerms as $term) {
-                $query->where(function ($subQuery) use ($term) {
-                    $subQuery->where('name', 'LIKE', "%{$term}%")
-                            ->orWhere('description', 'LIKE', "%{$term}%")
-                            ->orWhereHas('country', function ($q) use ($term) {
-                                $q->where('name', 'LIKE', "%{$term}%");
-                            })
-                            ->orWhereHas('articles', function ($q) use ($term) {
-                                $q->where('name', 'LIKE', "%{$term}%")
-                                    ->where('description', 'LIKE', "%{$term}%");
-                            });
-                });
-            }
+        // Filtre par date
+        if (!empty($dateFrom)) {
+            $query->whereDate('created_at', '>=', $dateFrom);
+        }
 
-            if ($request->input('country') !== '') {
-                $query->orWhereHas('country', function ($q) use ($request) {
-                    $q->where('id', $request->input('country'));
-                });
-            }
+        if (!empty($dateTo)) {
+            $query->whereDate('created_at', '<=', $dateTo);
+        }
 
-            if ($request->input('date_from') !== '') {
-                $query->orWhere('created_at', '>=', $request->input('date_from'));
-            }
-
-            if ($request->input('date_to') !== '') {
-                $query->orWhere('created_at', '<=', $request->input('date_to'));
-            }
-        };
-
-        $references = Reference::with(['country', 'articles'])
-                ->where($searchFunction)
-                ->paginate(20);
+        // Pagination des résultats
+        $references = $query->paginate(20);
 
         return view('public.search.advanced', [
             'references' => $references,
             'countries' => Country::all(),
-            'searchTerm' => $searchTerm
         ]);
+    }
+
+    /**
+     * Alias pour la méthode advancedSearchResults pour correspondre à la route
+     */
+    public function advanced(Request $request)
+    {
+        return $this->advancedSearchResults($request);
     }
 
 
