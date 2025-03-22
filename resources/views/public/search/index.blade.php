@@ -1,25 +1,24 @@
 @extends('index')
 
 @section('content')
-    <div class="container my-5">
+    <div class="container my-2">
         <div class="row justify-content-center">
             <div class="col-md-8">
             <div class="text-center mb-4">
-                <div class="d-inline-block bg-primary text-white rounded-circle p-3 mb-3">
-                    <i class="bi bi-search fs-3"></i>
-                </div>
-                <h1 class="fw-bold">{{ __('search') }}</h1>
-                <p class="text-muted">{{ __('search_description', ['default' => 'Find articles, references and regulations']) }}</p>
+                <h1 class="fw-bold">{{ __('portal_title') }}</h1>
             </div>
 
             <form id="search-form" method="GET" action="{{ route('public.search') }}" class="d-flex flex-column justify-content-center mb-5 p-4 bg-white rounded shadow-sm">
                 <div class="input-group mb-4">
                     <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
                     <input type="text" name="query" id="search-input" class="form-control border-start-0" placeholder="{{ __('search_placeholder') }}" value="{{ request('query') }}" />
+                    <button type="submit" class="btn btn-primary px-4 py-2 ms-2">
+                        <i class="bi bi-search me-2"></i>{{ __('search_button') }}
+                    </button>
                 </div>
 
                 <div class="row mb-4">
-                    <div class="col-md-6 mb-3 mb-md-0">
+                    <div class="col-md-3 mb-3 mb-md-0">
                         <div class="input-group">
                             <span class="input-group-text bg-white border-end-0"><i class="bi bi-folder"></i></span>
                             <select name="category" class="form-select border-start-0">
@@ -30,7 +29,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3 mb-3 mb-md-0">
                         <div class="input-group">
                             <span class="input-group-text bg-white border-end-0"><i class="bi bi-geo-alt"></i></span>
                             <select name="country" class="form-select border-start-0">
@@ -41,25 +40,22 @@
                             </select>
                         </div>
                     </div>
-                </div>
-
-                <div class="row mb-4">
-                    <div class="col-md-6 mb-3 mb-md-0">
-                        <label for="search-date-start" class="form-label"><i class="bi bi-calendar3 me-2"></i>{{ __('start_date') }}</label>
-                        <input type="date" id="search-date-start" name="date_start" class="form-control" value="{{ request('date_start') }}" />
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0"><i class="bi bi-calendar3"></i></span>
+                            <input type="date" id="search-date-start" name="date_start" class="form-control border-start-0" value="{{ request('date_start') }}" placeholder="{{ __('start_date') }}" />
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <label for="search-date-end" class="form-label"><i class="bi bi-calendar3-week me-2"></i>{{ __('end_date') }}</label>
-                        <input type="date" id="search-date-end" name="date_end" class="form-control" value="{{ request('date_end') }}" />
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0"><i class="bi bi-calendar3-week"></i></span>
+                            <input type="date" id="search-date-end" name="date_end" class="form-control border-start-0" value="{{ request('date_end') }}" placeholder="{{ __('end_date') }}" />
+                        </div>
                     </div>
-                </div>
-
-                <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill shadow-sm">
-                        <i class="bi bi-search me-2"></i>{{ __('search_button') }}
-                    </button>
                 </div>
             </form>
+
+
             </div>
         </div>
 
