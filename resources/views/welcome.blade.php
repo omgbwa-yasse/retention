@@ -40,7 +40,7 @@
                                     </a>
                                 @else
                                     <a href="{{ route('login') }}"
-                                       class="btn btn-outline-light btn-sm px-3 py-1 me-2 text-decoration-none">
+                                       class="btn btn-light btn-sm text-primary px-3 py-1 text-decoration-none">
                                         <i class="fas fa-sign-in-alt me-1"></i>
                                         <span>Log in</span>
                                     </a>
