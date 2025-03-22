@@ -19,6 +19,12 @@
                             </span>
                         </div>
                     </div>
+                    <div>
+                        <a href="{{ route('public.reference.download', $reference->id) }}" class="btn btn-primary">
+                            <i class="bi bi-file-pdf me-1"></i>
+                            {{ __('download_pdf') }}
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Description -->

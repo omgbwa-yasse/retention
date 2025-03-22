@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Str;
 
 class PublicController extends Controller
 {
@@ -317,7 +318,18 @@ class PublicController extends Controller
         return view('public.references.show', compact('reference'));
     }
 
+    /**
+     * Télécharge une référence au format PDF
+     */
+    public function downloadReference(INT $id)
+    {
+        $reference = Reference::with(['category', 'country', 'articles', 'files' => function($query) {
+            $query->whereNotNull('file_path');
+        }])->findOrFail($id);
 
+        $pdf = PDF::loadView('public.references.pdf', compact('reference'));
+        return $pdf->download($reference->id . '-' . Str::slug($reference->name) . '.pdf');
+    }
 
     /**
      * Affiche les détails d'une règle

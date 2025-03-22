@@ -79,6 +79,7 @@ Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->n
     Route::get('/rules/{rule}', [PublicController::class, 'showRule'])->name('public.rules.show');
     Route::get('/classes/{class}', [PublicController::class, 'showClass'])->name('public.classes.show');
     Route::get('/references/{reference}', [PublicController::class, 'showReference'])->name('public.references.show');
+    Route::get('/references/{reference}/pdf', [PublicController::class, 'downloadReference'])->name('public.reference.download');
 
     /*
         Pages statiques
