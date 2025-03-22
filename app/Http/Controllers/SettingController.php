@@ -3,9 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SettingController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            if (Auth::user()->status !== 'superadmin') {
+                return redirect()->route('home')->with('error', 'Accès non autorisé. Vous devez être un super administrateur pour accéder à cette section.');
+            }
+            return $next($request);
+        });
+    }
+
     /**
      * Display a listing of the resource.
      */

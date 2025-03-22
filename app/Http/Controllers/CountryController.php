@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\country;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CountryController extends Controller
 {
@@ -16,7 +17,11 @@ class CountryController extends Controller
     }
 
 
-
+    public function show($id)
+    {
+        $country = country::findOrFail($id);
+        return view('country.show', compact('country'));
+    }
 
 
 
