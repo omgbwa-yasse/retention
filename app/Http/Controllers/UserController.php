@@ -72,6 +72,43 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
+        // Check if this is an activation request from an admin
+        if (isset($request->is_actived) &&
+            (Auth::user()->status === 'admin' || Auth::user()->status === 'superadmin')) {
+
+            $user->is_actived = true;
+            $user->actived_at = now();
+            $user->actived_by = Auth::id();
+            $user->save();
+
+            return redirect()->route('user.pending')->with('success', 'Compte activé avec succès.');
+        }
+
+        // Check if this is an unarchive request from a superadmin
+        if (isset($request->is_archived) && $request->is_archived == 0 &&
+            Auth::user()->status === 'superadmin') {
+
+            $user->is_archived = false;
+            $user->archived_at = null;
+            $user->archived_by = null;
+            $user->save();
+
+            return redirect()->route('user.archived')->with('success', 'Compte restauré avec succès.');
+        }
+
+        // Check if this is an archive request from a superadmin
+        if (isset($request->is_archived) && $request->is_archived == 1 &&
+            Auth::user()->status === 'superadmin') {
+
+            $user->is_archived = true;
+            $user->archived_at = now();
+            $user->archived_by = Auth::id();
+            $user->save();
+
+            return redirect()->route('user.index')->with('success', 'Compte archivé avec succès.');
+        }
+
+        // Original profile update logic
         if (Auth::user()->id !== $user->id) {
             abort(403);
         }
@@ -86,5 +123,64 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('user.show', $user)->with('success', 'Profile updated successfully.');
+    }
+
+    /**
+     * Display a list of user accounts awaiting activation.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function pending()
+    {
+        // Check if user is admin or superadmin
+        if (Auth::user()->status !== 'admin' && Auth::user()->status !== 'superadmin') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Get all non-activated user accounts
+        $pendingUsers = User::where('is_actived', false)
+                            ->where('is_archived', false)
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+
+        return view('user.pending', compact('pendingUsers'));
+    }
+
+    /**
+     * Remove the specified user from storage.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(User $user)
+    {
+        // Check if user is admin or superadmin
+        if (Auth::user()->status !== 'admin' && Auth::user()->status !== 'superadmin') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $user->delete();
+
+        return redirect()->route('user.pending')->with('success', 'Compte supprimé avec succès.');
+    }
+
+    /**
+     * Display a list of archived user accounts.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function archived()
+    {
+        // Check if user is superadmin
+        if (Auth::user()->status !== 'superadmin') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Get all archived user accounts
+        $archivedUsers = User::where('is_archived', true)
+                             ->orderBy('archived_at', 'desc')
+                             ->get();
+
+        return view('user.archived', compact('archivedUsers'));
     }
 }

@@ -62,7 +62,11 @@
                         <i class="bi bi-chevron-down"></i>
                     </a>
                     <ul class="collapse show nav flex-column" id="parametre">
-
+                        @if(Auth::user()->status == 'superadmin')
+                            <li><a href="{{ route('user.pending') }}" class="nav-link link-light"><i class="bi bi-person-badge"></i>{{ __('Comptes en attente') }}</a></li>
+                            <li><a href="{{ route('user.index') }}" class="nav-link link-light"><i class="bi bi-people"></i>{{ __('Liste des comptes') }}</a></li>
+                            <li><a href="{{ route('user.archived') }}" class="nav-link link-light"><i class="bi bi-archive"></i>{{ __('Comptes archivés') }}</a></li>
+                        @endif
                         <li><a href="{{ route('user.show', Auth::user()->id) }}" class="nav-link link-light"><i class="bi bi-person-circle"></i>{{ __('Mon compte') }}</a></li>
                         <li><a href="{{ route('setting.index') }}" class="nav-link link-light"><i class="bi bi-sliders"></i>{{ __('Généraux') }}</a></li>
                     </ul>

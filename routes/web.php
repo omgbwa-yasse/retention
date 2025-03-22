@@ -138,6 +138,8 @@ Route::middleware(['auth', \App\Http\Middleware\CheckUserActive::class])->group(
     Route::get('/charter/print/{domaineId}', [CharterController::class, 'printPdf'])->name('charter.print');
     Route::get('/charter/export/{domaineId}', [CharterController::class, 'exportExcel'])->name('charter.export');
     Route::resource('user', UserController::class);
+    Route::get('/user/pending/list', [UserController::class, 'pending'])->name('user.pending');
+    Route::get('/user/archived/list', [UserController::class, 'archived'])->name('user.archived');
 
     /*
         Comité de validation
