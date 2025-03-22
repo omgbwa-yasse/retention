@@ -8,6 +8,12 @@
                 <h1 class="fw-bold">{{ __('portal_title') }}</h1>
             </div>
 
+            <div class="text-center mb-4">
+                <p style="font-size: 16px; color: #333; margin: 0;">Réalisé avec le soutien de la Commission du
+                    Programme du Conseil International des Archives (ICA) dans
+                    le cadre du <a href="https://www.ica.org/programme-commission/get-involved-in-pcom/" target="_blank" style="text-decoration: underline;">PCOM 2024</a> </p>
+            </div>
+
             <form id="search-form" method="GET" action="{{ route('public.search') }}" class="d-flex flex-column justify-content-center mb-5 p-4 bg-white rounded shadow-sm">
                 <div class="input-group mb-4">
                     <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
@@ -46,6 +52,7 @@
                             <input type="date" id="search-date-start" name="date_start" class="form-control border-start-0" value="{{ request('date_start') }}" placeholder="{{ __('start_date') }}" />
                         </div>
                     </div>
+
                     <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-text bg-white border-end-0"><i class="bi bi-calendar3-week"></i></span>
