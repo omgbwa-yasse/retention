@@ -15,6 +15,12 @@
                         </div>
                     @endif
 
+                    @if(session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
                     @if(count($users) > 0)
                         <div class="table-responsive">
                             <table class="table table-striped">
@@ -44,6 +50,42 @@
                                                     <span class="badge bg-warning">{{ __('Admin') }}</span>
                                                 @else
                                                     <span class="badge bg-info">{{ __('Lecteur') }}</span>
+                                                @endif
+
+                                                @if(Auth::user()->status == 'superadmin' && Auth::id() != $user->id)
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary ms-2" data-bs-toggle="modal" data-bs-target="#changeStatusModal{{ $user->id }}">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </button>
+
+                                                    <!-- Modal for changing status -->
+                                                    <div class="modal fade" id="changeStatusModal{{ $user->id }}" tabindex="-1" aria-labelledby="changeStatusModalLabel{{ $user->id }}" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <form action="{{ route('user.updateStatus', $user) }}" method="POST">
+                                                                    @csrf
+                                                                    @method('PUT')
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="changeStatusModalLabel{{ $user->id }}">{{ __('Modifier le statut de') }} {{ $user->name }} {{ $user->surname }}</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="form-group">
+                                                                            <label for="status">{{ __('Nouveau statut') }}</label>
+                                                                            <select class="form-control" id="status" name="status">
+                                                                                <option value="reader" {{ $user->status == 'reader' ? 'selected' : '' }}>{{ __('Lecteur') }}</option>
+                                                                                <option value="admin" {{ $user->status == 'admin' ? 'selected' : '' }}>{{ __('Admin') }}</option>
+                                                                                <option value="superadmin" {{ $user->status == 'superadmin' ? 'selected' : '' }}>{{ __('Super Admin') }}</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Annuler') }}</button>
+                                                                        <button type="submit" class="btn btn-primary">{{ __('Enregistrer') }}</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 @endif
                                             </td>
                                             <td>

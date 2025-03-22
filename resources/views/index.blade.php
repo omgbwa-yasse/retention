@@ -153,16 +153,19 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('public.about')}}">{{ __('about') }}</a>
+                            <a class="nav-link" href="{{ route('public.about')}}">
+                                <i class="fas fa-info-circle"></i> {{ __('about') }}
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('public.news') }}">{{ __('news') }}</a>
+                            <a class="nav-link" href="{{ route('public.news') }}">
+                                <i class="fas fa-newspaper"></i> {{ __('news') }}
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-primary ml-2" href="{{ route('login') }}">{{ __('login') }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-outline-primary ml-2" href="{{ route('register') }}">{{ __('Nous joindre') }}</a>
+                            <a class="nav-link" href="{{ route('proposal.create') }}">
+                                <i class="fas fa-plus"></i> Faire une proposition
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -184,6 +187,14 @@
                             @endforeach
                         </ul>
                     </div>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">{{ __('login') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('register') }}">{{ __('Nous joindre') }}</a>
+                    </li>
                 </ul>
             </div>
         </nav>

@@ -17,6 +17,7 @@
                         <li><a href="{{ route('rule.index') }}" class="nav-link link-light"><i class="bi bi-list-check"></i>{{ __('Règles') }}</a></li>
                         <li><a href="{{ route('typology.index') }}" class="nav-link link-light"><i class="bi bi-list-check"></i>{{ __('Typologies') }}</a></li>
                         <li><a href="{{ route('reference.index') }}" class="nav-link link-light"><i class="bi bi-list-check"></i>{{ __('Références') }}</a></li>
+                        <li><a href="{{ route('proposal.index') }}" class="nav-link link-light"><i class="bi bi-lightbulb"></i>{{ __('Propositions d\'idées') }}</a></li>
                     </ul>
                 </li>
 
@@ -63,6 +64,7 @@
                     </a>
                     <ul class="collapse show nav flex-column" id="parametre">
                         @if(Auth::user()->status == 'superadmin')
+
                             <li><a href="{{ route('user.pending') }}" class="nav-link link-light"><i class="bi bi-person-badge"></i>{{ __('Comptes en attente') }}</a></li>
                             <li><a href="{{ route('user.index') }}" class="nav-link link-light"><i class="bi bi-people"></i>{{ __('Liste des comptes') }}</a></li>
                             <li><a href="{{ route('user.archived') }}" class="nav-link link-light"><i class="bi bi-archive"></i>{{ __('Comptes archivés') }}</a></li>

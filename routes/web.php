@@ -41,6 +41,7 @@ use App\Http\Controllers\ForumSubjectController;
 use App\Http\Controllers\ForumChatController;
 use App\Http\Controllers\PublicNewsController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ProposalController;
 
 Route::get('reference/{reference}/file/{name}/preview', [FileController::class, 'preview'])->name('reference.file.preview');
 Route::get('/reference/{reference}/generate-pdf', [ReferenceController::class, 'generatePdf'])->name('reference.generatePdf');
@@ -90,6 +91,13 @@ Route::get('/charter/{id}/pdf', [PublicController::class, 'downloadCharter'])->n
     Route::get('/search', [PublicController::class, 'search'])->name('public.search');
     Route::get('/about', [PublicController::class, 'about'])->name('public.about');
     Route::get('/news', [PublicController::class, 'news'])->name('public.news');
+
+    /*
+        Propositions d'idées
+    */
+    Route::get('/proposal/create', [ProposalController::class, 'create'])->name('proposal.create');
+    Route::post('/proposal', [ProposalController::class, 'store'])->name('proposal.store');
+    Route::get('/proposal/thanks', [ProposalController::class, 'thanks'])->name('proposal.thanks');
 });
 
 Route::get('language/{locale}', [LanguageController::class, 'switch'])
@@ -140,6 +148,7 @@ Route::middleware(['auth', \App\Http\Middleware\CheckUserActive::class])->group(
     Route::resource('user', UserController::class);
     Route::get('/user/pending/list', [UserController::class, 'pending'])->name('user.pending');
     Route::get('/user/archived/list', [UserController::class, 'archived'])->name('user.archived');
+    Route::put('/user/{user}/status', [UserController::class, 'updateStatus'])->name('user.updateStatus');
 
     /*
         Comité de validation
@@ -180,6 +189,15 @@ Route::middleware(['auth', \App\Http\Middleware\CheckUserActive::class])->group(
 
     //Route::get('/activity/exportPdf', [ActivityController::class, 'exportPdf'])->name('activity.exportPdf');
     Route::resource('triggers', TriggerController::class);
+
+    /*
+        Propositions d'idées (espace admin)
+    */
+    Route::get('/proposal', [ProposalController::class, 'index'])->name('proposal.index');
+    Route::get('/proposal/{proposal}', [ProposalController::class, 'show'])->name('proposal.show');
+    Route::put('/proposal/{proposal}', [ProposalController::class, 'update'])->name('proposal.update');
+    Route::delete('/proposal/{proposal}', [ProposalController::class, 'destroy'])->name('proposal.destroy');
+    Route::get('/proposal/attachment/{attachment}/download', [ProposalController::class, 'downloadAttachment'])->name('proposal.attachment.download');
 });
 
 

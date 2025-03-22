@@ -183,4 +183,35 @@ class UserController extends Controller
 
         return view('user.archived', compact('archivedUsers'));
     }
+
+    /**
+     * Update user status (superadmin only).
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateStatus(Request $request, User $user)
+    {
+        // Check if user is superadmin
+        if (Auth::user()->status !== 'superadmin') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $request->validate([
+            'status' => 'required|in:reader,admin,superadmin',
+        ]);
+
+        // Prevent changing own status for security
+        if (Auth::id() === $user->id) {
+            return redirect()->route('user.index')
+                ->with('error', 'Vous ne pouvez pas modifier votre propre statut pour des raisons de sécurité.');
+        }
+
+        $user->status = $request->status;
+        $user->save();
+
+        return redirect()->route('user.index')
+            ->with('success', 'Le statut de l\'utilisateur a été mis à jour avec succès.');
+    }
 }
