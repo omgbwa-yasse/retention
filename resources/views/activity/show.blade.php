@@ -8,6 +8,7 @@
 
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                         <h2 class="mb-0">Détails de l'activité</h2>
+                        @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
                         <div class="d-flex">
                             <a href="{{ route('activity.edit', $activity->id) }}" class="btn btn-light btn-sm mr-2">Modifier</a>
                         </div>
@@ -16,6 +17,7 @@
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette activité ?')">Supprimer</button>
                         </form>
+                        @endif
                     </div>
 
                     <div class="card-body">
@@ -30,8 +32,10 @@
                             <div class="col-md-12">
                                 <h4>Actions</h4>
                                 <div class="d-flex">
+                                    @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
                                     <a href="{{ route('activity.typology.index', $activity ) }}" class="btn btn-outline-primary btn-sm mb-2 mr-2 me-2">Gérer les typologies</a>
                                     <a href="{{ route('activity.rule.index', $activity ) }}" class="btn btn-outline-primary btn-sm mb-2 me-2">Gérer les règles de conservation</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>

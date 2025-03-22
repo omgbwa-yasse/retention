@@ -19,14 +19,15 @@
                         <div class="card bg-light">
                             <div class="card-body">
                                 <h5 class="card-title">Informations</h5>
-                                <p class="card-text"><strong>Créé le :</strong> {{ $typology->created_at->format('d/m/Y H:i') }}</p>
-                                <p class="card-text"><strong>Mis à jour le :</strong> {{ $typology->updated_at->format('d/m/Y H:i') }}</p>
+                                <p class="card-text"><strong>Créé le :</strong> {{ $typology->created_at ? $typology->created_at->format('d/m/Y H:i') : 'N/A' }}</p>
+                                <p class="card-text"><strong>Mis à jour le :</strong> {{ $typology->updated_at ? $typology->updated_at->format('d/m/Y H:i') : 'N/A' }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="mt-4">
+                    @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
                     <a href="{{ route('typology.edit', $typology->id) }}" class="btn btn-warning">
                         <i class="fas fa-edit"></i> Modifier
                     </a>
@@ -38,6 +39,7 @@
                             <i class="fas fa-trash"></i> Supprimer
                         </button>
                     </form>
+                    @endif
                 </div>
             </div>
         </div>

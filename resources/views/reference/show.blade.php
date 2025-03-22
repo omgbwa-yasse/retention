@@ -39,9 +39,11 @@
                                 @endforeach
                             </div>
                         @endif
+                        @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
                         <a href="{{ route('reference.article.create', $reference->id) }}" class="btn btn-success mt-3">
                             <i class="fas fa-plus-circle me-2"></i>Ajouter un article
                         </a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -66,9 +68,11 @@
                                 @endforeach
                             </div>
                         @endif
+                        @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
                         <a href="{{ route('reference.file.create', $reference) }}" class="btn btn-success mt-3">
                             <i class="fas fa-file-upload me-2"></i>Ajouter un fichier
                         </a>
+                        @endif
                     </div>
                 </div>
 
@@ -90,15 +94,18 @@
                                 @endforeach
                             </div>
                         @endif
+                        @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
                         <a href="{{ route('reference.link.create', $reference)}}" class="btn btn-success mt-3">
                             <i class="fas fa-link me-2"></i>Ajouter un lien
                         </a>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="d-flex justify-content-between mt-4">
+            @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
             <form action="{{ route('reference.destroy', $reference) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette référence ?');">
                 @csrf
                 @method('DELETE')
@@ -110,6 +117,10 @@
                 <a href="#" class="btn btn-primary me-2">
                     <i class="fas fa-edit me-2"></i>Modifier
                 </a>
+            @else
+            <div class="ms-auto"></div>
+            <div>
+            @endif
                 <a href="{{ route('reference.generatePdf', $reference) }}" class="btn btn-secondary me-2">
                     <i class="fas fa-print me-2"></i>Imprimer
                 </a>

@@ -22,10 +22,12 @@
             <i class="bi bi-eye"></i> {{ __('view') }}
         </a>
 
+        @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
         <a href="{{ route('mission.edit', $mission->id) }}"
            class="btn btn-sm btn-outline-secondary">
             <i class="bi bi-pencil"></i> {{ __('edit') }}
         </a>
+        @endif
 
         <div class="small text-muted mt-1" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
             {{ Str::limit($mission->description, 50) }}

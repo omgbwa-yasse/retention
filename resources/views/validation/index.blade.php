@@ -238,6 +238,7 @@
                             </td>
                             <td>
                                 @if($rule->status_id == 1)
+                                    @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
                                     <form action="{{ route('committee.update', $rule->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('PUT')
@@ -254,6 +255,7 @@
                                             Rejeter
                                         </button>
                                     </form>
+                                    @endif
                                 @endif
                             </td>
                         </tr>

@@ -34,12 +34,14 @@
                 <h1 class="display-4 text-primary"><i class="bi bi-diagram-3 me-3"></i>Typologies documentaires</h1>
             </div>
             <div class="col-md-4 text-md-end">
+                @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
                 <a href="{{ route('typology.create') }}" class="btn btn-primary btn-lg me-2">
                     <i class="bi bi-plus-circle me-2"></i>Créer une Typologie
                 </a>
                 <a href="{{ route('typology.export') }}" class="btn btn-success btn-lg">
                     <i class="bi bi-file-earmark-pdf me-2"></i>Exporter en PDF
                 </a>
+                @endif
             </div>
         </div>
 

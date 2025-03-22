@@ -143,6 +143,7 @@
                                 <a href="{{ route('rule.show', $rule->id) }}" class="btn btn-outline-info" title="Voir">
                                     <i class="fas fa-eye"></i>
                                 </a>
+                                @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
                                 <a href="{{ route('rule.edit', $rule->id) }}" class="btn btn-outline-primary" title="Editer">
                                     <i class="fas fa-edit"></i>
                                 </a>
@@ -161,6 +162,7 @@
                                     <input type="hidden" name="status_id" value="3">
                                     <button type="submit" class="btn btn-success">Approuver </button>
                                 </form>
+                                @endif
                             </div>
                         </div>
                     </div>

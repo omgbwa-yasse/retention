@@ -10,9 +10,11 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
+                            @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
                             <a href="{{ route('rule.create') }}" class="btn btn-success">
                                 <i class="fas fa-plus me-2"></i>Ajouter une règle
                             </a>
+                            @endif
                         </div>
                         <div class="mb-3">
                             <form action="{{ route('rule.index') }}" method="GET" class="d-flex">

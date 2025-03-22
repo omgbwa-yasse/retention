@@ -101,6 +101,7 @@
 
 
                         <div class="d-flex gap-2">
+                            @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
                             <a href="{{ route('rule.edit', $rule->id) }}" class="btn btn-primary">
                                 <i class="fas fa-edit me-2"></i>Modifier
                             </a>
@@ -114,6 +115,9 @@
                                     <i class="fas fa-trash me-2"></i>Supprimer
                                 </button>
                             </form>
+                            @else
+                            <div class="ms-auto"></div>
+                            @endif
                         </div>
                     </div>
                 </div>

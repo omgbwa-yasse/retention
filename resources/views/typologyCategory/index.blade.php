@@ -14,7 +14,7 @@
                             </div>
                         @endif
 
-                        @if(auth()->check())
+                        @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
                             <a href="{{ route('typology_categories.create') }}" class="btn btn-primary mb-3">{{ __('Nouvelle catégorie de typologie') }}</a>
                         @endif
 
@@ -25,7 +25,7 @@
                                     <p class="text-muted">Description : {{ $typologyCategory->description }}</p>
                                     <p class="text-muted">Catégorie parente : @if($typologyCategory->parent) {{ $typologyCategory->parent->name }} @else {{ __('Aucune catégorie parente') }} @endif</p>
 
-                                    @if(auth()->check())
+                                    @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
                                         <a href="{{ route('typology_categories.edit', $typologyCategory->id) }}" class="btn btn-secondary btn-sm">{{ __('Modifier') }}</a>
 
                                         <form action="{{ route('typology_categories.destroy', $typologyCategory->id) }}" method="POST" class="d-inline-block">

@@ -5,12 +5,14 @@
         <div class="d-flex justify-content-between align-$items-center mb-4">
             <h1 class="mb-0 text-primary"><i class="bi bi-list-task me-2"></i>Activités {{ $country->name ?? ''}} </h1>
             <div>
+                @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
                 <a href="{{ route('activity.create') }}" class="btn btn-primary me-2">
                     <i class="bi bi-plus-circle me-2"></i>Nouvelle Activité
                 </a>
                 <a href="{{ route('activity.export') }}" class="btn btn-success">
                     <i class="bi bi-file-earmark-arrow-down me-2"></i>Exporter en PDF
                 </a>
+                @endif
             </div>
         </div>
 

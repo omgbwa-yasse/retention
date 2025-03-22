@@ -8,9 +8,11 @@
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-md-6 mb-3 mb-md-0">
+                                @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
                                 <a href="{{ route('reference.create') }}" class="btn btn-primary me-2">
                                     <i class="fas fa-plus"></i> Ajouter une référence
                                 </a>
+                                @endif
                                 <a href="#" class="btn btn-secondary">
                                     <i class="fas fa-print"></i> Imprimer
                                 </a>

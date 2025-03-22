@@ -21,6 +21,7 @@
                 </li>
 
                 <!-- Add -->
+                @if(Auth::user()->status != 'reader')
                 <li class="nav-item">
                     <a class="nav-link link-light d-flex align-items-center" data-bs-toggle="collapse" href="#ajouter">
                         <i class="bi bi-plus-circle"></i>
@@ -35,20 +36,23 @@
                         <li><a href="{{ route('reference.create') }}" class="nav-link link-light"><i class="bi bi-plus-square"></i>{{ __('Référence') }}</a></li>
                     </ul>
                 </li>
+                @endif
 
                 <!-- Control -->
-                <li class="nav-item">
-                    <a class="nav-link link-light d-flex align-items-center" data-bs-toggle="collapse" href="#controle">
-                        <i class="bi bi-shield-check"></i>
-                        <span>{{ __('Contrôle') }}</span>
-                        <i class="bi bi-chevron-down"></i>
-                    </a>
-                    <ul class="collapse show nav flex-column" id="controle">
-                        <li><a href="{{ route('committee.index') }}" class="nav-link link-light"><i class="bi bi-check-circle"></i>{{ __('Projet de règles') }}</a></li>
-                        <li><a href="{{ route('committee.examining') }}" class="nav-link link-light"><i class="bi bi-check-circle"></i>{{ __('Règles en examen') }}</a></li>
-                        <li><a href="{{ route('committee.approved') }}" class="nav-link link-light"><i class="bi bi-hourglass-split"></i>{{ __('Règles approuvées') }}</a></li>
-                    </ul>
-                </li>
+                @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
+                    <li class="nav-item">
+                        <a class="nav-link link-light d-flex align-items-center" data-bs-toggle="collapse" href="#controle">
+                            <i class="bi bi-shield-check"></i>
+                            <span>{{ __('Contrôle') }}</span>
+                            <i class="bi bi-chevron-down"></i>
+                        </a>
+                        <ul class="collapse show nav flex-column" id="controle">
+                            <li><a href="{{ route('committee.index') }}" class="nav-link link-light"><i class="bi bi-check-circle"></i>{{ __('Projet de règles') }}</a></li>
+                            <li><a href="{{ route('committee.examining') }}" class="nav-link link-light"><i class="bi bi-check-circle"></i>{{ __('Règles en examen') }}</a></li>
+                            <li><a href="{{ route('committee.approved') }}" class="nav-link link-light"><i class="bi bi-hourglass-split"></i>{{ __('Règles approuvées') }}</a></li>
+                        </ul>
+                    </li>
+                @endif
 
                 <!-- Settings -->
                 <li class="nav-item">
@@ -58,6 +62,7 @@
                         <i class="bi bi-chevron-down"></i>
                     </a>
                     <ul class="collapse show nav flex-column" id="parametre">
+
                         <li><a href="{{ route('user.show', Auth::user()->id) }}" class="nav-link link-light"><i class="bi bi-person-circle"></i>{{ __('Mon compte') }}</a></li>
                         <li><a href="{{ route('setting.index') }}" class="nav-link link-light"><i class="bi bi-sliders"></i>{{ __('Généraux') }}</a></li>
                     </ul>

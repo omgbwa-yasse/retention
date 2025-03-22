@@ -13,7 +13,9 @@
                         <p><strong>Email:</strong> {{ $user->email }}</p>
                         <p><strong>Creer a :</strong> {{ $user->created_at->diffForHumans() }}</p>
 
+                        @if(Auth::user()->id == $user->id || Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
                         <a href="{{ route('user.edit', $user) }}" class="btn btn-sm btn-warning mt-2">Modifier le Profil</a>
+                        @endif
                     </div>
                 </div>
             </div>

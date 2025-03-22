@@ -20,9 +20,11 @@
                 <h1 class="h2 fw-bold">{{ __('Mission') }}</h1>
             </div>
             <div class="col-md-6 text-md-end">
+                @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
                 <a href="{{ route('mission.create') }}" class="btn btn-primary">
                     <i class="bi bi-plus-circle me-2"></i>Create New Mission
                 </a>
+                @endif
             </div>
         </div>
 

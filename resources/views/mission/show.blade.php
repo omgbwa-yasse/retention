@@ -11,6 +11,7 @@
                     <a href="{{ route('mission.index') }}" class="btn btn-outline-secondary me-2">
                         <i class="bi bi-arrow-left"></i> Retour
                     </a>
+                    @if(Auth::user()->status == 'admin' || Auth::user()->status == 'superadmin')
                     <a href="{{ route('mission.edit', $item->id) }}" class="btn btn-primary me-2">
                         <i class="bi bi-pencil"></i> Modifier
                     </a>
@@ -21,6 +22,7 @@
                             <i class="bi bi-trash"></i> Supprimer
                         </button>
                     </form>
+                    @endif
                 </div>
             </div>
         </div>
