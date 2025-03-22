@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
 {
@@ -70,7 +72,10 @@ class RegisterController extends Controller
             'gender' => $data['gender'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'country_id' =>$data['country_id'],
+            'country_id' => $data['country_id'],
+            'status' => 'reader', // Default status
+            'is_actived' => false, // Set to false by default
+            'is_archived' => false, // Set to false by default
         ]);
     }
 
@@ -78,5 +83,26 @@ class RegisterController extends Controller
     {
         $countries = Country::all();
         return view('auth.register', compact('countries'));
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        return redirect()->route('login')
+            ->with('error', __('active_account'));
+    }
+
+    public function joindre()
+    {
+        return redirect('/register');
     }
 }

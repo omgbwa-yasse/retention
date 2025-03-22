@@ -25,6 +25,13 @@ class User extends Authenticatable
         'gender',
         'email_verified_at',
         'country_id',
+        'status',
+        'is_actived',
+        'is_archived',
+        'actived_at',
+        'archived_at',
+        'actived_by',
+        'archived_by',
     ];
 
     /**
@@ -47,6 +54,10 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'actived_at' => 'datetime',
+            'archived_at' => 'datetime',
+            'is_actived' => 'boolean',
+            'is_archived' => 'boolean',
         ];
     }
 
@@ -59,5 +70,14 @@ class User extends Authenticatable
         return $this->belongsTo(Country::class, 'country_id');
     }
 
+    public function activedBy()
+    {
+        return $this->belongsTo(User::class, 'actived_by');
+    }
+
+    public function archivedBy()
+    {
+        return $this->belongsTo(User::class, 'archived_by');
+    }
 
 }

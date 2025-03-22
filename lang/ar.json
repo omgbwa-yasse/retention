@@ -261,5 +261,6 @@
     "ica_retention_title": "ICA Retention - نظام إدارة المهام",
     "missions_country_title": "المهام - {name} ({abbr})",
     "document_generated_on": "تم إنشاء المستند في {date}",
-    "missions_management_system": "نظام إدارة المهام"
+    "missions_management_system": "نظام إدارة المهام",
+    "active_account": "تم إنشاء حسابك ولكن يجب تفعيله من قبل المسؤول. يرجى الانتظار حتى يتم تفعيل حسابك."
 }

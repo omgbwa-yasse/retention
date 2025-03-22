@@ -255,6 +255,6 @@
 
     "missions_management_system": "Système de Gestion des Missions",
     "edit": "Éditer",
-    "toggle_children": "Afficher/Masquer les sous-éléments"
-
+    "toggle_children": "Afficher/Masquer les sous-éléments",
+    "active_account": "Votre compte a été créé mais il doit être activé par un administrateur. Veuillez patienter jusqu'à l'activation de votre compte."
 }

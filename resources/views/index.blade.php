@@ -161,6 +161,9 @@
                         <li class="nav-item">
                             <a class="btn btn-primary ml-2" href="{{ route('login') }}">{{ __('login') }}</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="btn btn-outline-primary ml-2" href="{{ route('register') }}">{{ __('Nous joindre') }}</a>
+                        </li>
                     </ul>
                 </div>
 

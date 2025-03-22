@@ -260,5 +260,6 @@
 
     "missions_management_system": "Missions Management System",
     "edit": "Edit",
-    "toggle_children": "Toggle children"
+    "toggle_children": "Toggle children",
+    "active_account": "Your account has been created but must be activated by an administrator. Please wait until your account is activated."
 }

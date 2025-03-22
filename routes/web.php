@@ -98,7 +98,7 @@ Route::get('language/{locale}', [LanguageController::class, 'switch'])
 
 
 // Route group for authentication
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', \App\Http\Middleware\CheckUserActive::class])->group(function () {
     // Controllers
     Route::resource('mission', MissionController::class);
     Route::resource('basket', basketController::class);
