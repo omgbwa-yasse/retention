@@ -7,7 +7,7 @@
 
         function updateCharacterCount() {
             var remainingChars = maxLength - description.value.length;
-            characterCount.textContent = remainingChars + ' caractères restants';
+            characterCount.textContent = remainingChars + ' {{ __('remaining_characters') }}';
             characterCount.classList.toggle('text-danger', remainingChars <= 0);
         }
 
@@ -43,7 +43,7 @@
                     const noResultsOption = select.querySelector('option[data-no-results]');
                     if (!noResultsOption) {
                         const newNoResultsOption = document.createElement('option');
-                        newNoResultsOption.textContent = 'No results found';
+                        newNoResultsOption.textContent = '{{ __('no_results_found') }}';
                         newNoResultsOption.disabled = true;
                         newNoResultsOption.setAttribute('data-no-results', 'true');
                         select.appendChild(newNoResultsOption);
@@ -76,7 +76,7 @@
             <div class="">
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
-                        <h2 class="mb-0">Ajouter une activité</h2>
+                        <h2 class="mb-0">{{ __('add_activity') }}</h2>
                     </div>
                     <div class="card-body">
                         @if (session('success'))
@@ -91,30 +91,30 @@
                             <input type="hidden" name="country_id" value="{{ $auth->country_id }}">
 
                             <div class="mb-3">
-                                <label for="code" class="form-label">Cote</label>
+                                <label for="code" class="form-label">{{ __('code') }}</label>
                                 <input type="text" class="form-control" id="code" name="code" required>
                             </div>
 
                             <div class="mb-3">
-                                <label for="name" class="form-label">Titre</label>
+                                <label for="name" class="form-label">{{ __('title') }}</label>
                                 <input type="text" class="form-control" id="name" name="name" required>
                             </div>
 
                             <div class="mb-3">
-                                <label for="description" class="form-label">Description</label>
+                                <label for="description" class="form-label">{{ __('description') }}</label>
                                 <textarea class="form-control" id="description" name="description" rows="4"></textarea>
                                 <small id="character-count" class="form-text text-muted"></small>
                             </div>
 
                             <div class="mb-3">
-                                <label for="parent_id" class="form-label">Parent</label>
+                                <label for="parent_id" class="form-label">{{ __('parent') }}</label>
                                 <div class="select-with-search">
                                     <div class="input-group mb-2">
                                         <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                        <input type="text" class="form-control search-input" placeholder="Search parent...">
+                                        <input type="text" class="form-control search-input" placeholder="{{ __('search_parent') }}">
                                     </div>
                                     <select name="parent_id" id="parent_id" class="form-select" required>
-                                        <option value="" disabled selected>Sélectionner un parent</option>
+                                        <option value="" disabled selected>{{ __('select_parent') }}</option>
                                         @foreach ($activities->groupBy('parent_id') as $parentId => $groupedActivities)
                                             <optgroup label="Parent ID: {{ $parentId }}">
                                                 @foreach ($groupedActivities as $activity)
@@ -127,7 +127,7 @@
                             </div>
 
                             <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">Créer</button>
+                                <button type="submit" class="btn btn-primary">{{ __('create') }}</button>
                             </div>
                         </form>
                     </div>

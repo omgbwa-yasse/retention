@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des Activités - African Retention Portal</title>
+    <title>{{ __('activities_list') }} - {{ __('portal_title') }}</title>
     <style>
         @page {
             margin: 100px 25px;
@@ -66,24 +66,24 @@
 </head>
 <body>
 <div class="header">
-    ICA Retention - Système de Gestion des Activités
+    {{ __('activities_management_system') }}
 </div>
 
 <div class="footer">
-    Document généré le {{ date('d/m/Y') }} | Page <span class="page-number"></span>
+    {{ __('document_generated') }} {{ date('d/m/Y') }} | {{ __('page') }} <span class="page-number"></span>
 </div>
 
-<h1>Liste des Activités</h1>
+<h1>{{ __('activities_list') }}</h1>
 
 <table>
     <thead>
     <tr>
-        <th>Cote</th>
-        <th>Titre</th>
-        <th>Description</th>
-        <th>Parent</th>
-        <th>Sous-classes</th>
-        <th>Pays</th>
+        <th>{{ __('code') }}</th>
+        <th>{{ __('title') }}</th>
+        <th>{{ __('description') }}</th>
+        <th>{{ __('parent') }}</th>
+        <th>{{ __('subclasses') }}</th>
+        <th>{{ __('country') }}</th>
     </tr>
     </thead>
     <tbody>
